@@ -24,7 +24,7 @@ class SurveyList extends React.Component{
              <CardText color="rose">
                 <h4 className={classes.cardTitle}>Survey List</h4>
               </CardText>
-              <Button size="sm"  className={classes.buttonDisplay} > 
+              <Button size="sm"  className={classes.buttonDisplay} href="/survey/create"> 
                 New Survey
               </Button>
             </CardHeader>
