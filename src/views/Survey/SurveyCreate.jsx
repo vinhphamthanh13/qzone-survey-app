@@ -221,6 +221,7 @@ class SurveyCreate extends React.Component{
               </GridItem>
             </GridContainer>
             <GridContainer>
+              <SurveyEditor change={this.changeQuestions}/>
             </GridContainer>
           </form>
 		    </CardBody>
