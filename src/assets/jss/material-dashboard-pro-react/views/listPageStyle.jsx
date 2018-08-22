@@ -13,6 +13,9 @@ const listPageStyle = {
     "&:hover,&:focus": {
       backgroundColor: "#d81b60"
     }
+  },
+  justifyContentCenter: {
+    justifyContent: "center"
   }
 };
 export default listPageStyle;

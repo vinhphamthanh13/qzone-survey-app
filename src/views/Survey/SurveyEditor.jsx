@@ -20,6 +20,7 @@ import "icheck/skins/square/blue.css";
 
 import * as widgets from "surveyjs-widgets";
 
+// SurveyJSEditor.StylesManager.applyTheme("orange"); 
 widgets.icheck(SurveyKo, $);
 widgets.select2(SurveyKo, $);
 widgets.inputmask(SurveyKo);
