@@ -9,12 +9,18 @@ import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardText from "components/Card/CardText.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import listPageStyle from "assets/jss/material-dashboard-pro-react/views/listPageStyle.jsx";
+import {fetchSurveys} from "actions/survey.jsx"
 
 class SurveyList extends React.Component{
   constructor(props) {
     super(props);
     this.state = { surveyList: []}
+  }
+  componentWillMount(){
+    this.props.fetchSurveys()
   }
   render() {
     const { classes } = this.props;
@@ -61,8 +67,15 @@ class SurveyList extends React.Component{
   }
 }
 
+// function mapStateToProps(state) {
+//   return{providerLists: state.providers.data}
+// }  
+
 SurveyList.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(listPageStyle)(SurveyList);
+export default compose(
+  withStyles(listPageStyle),
+  connect(null, {fetchSurveys}),
+)(SurveyList);

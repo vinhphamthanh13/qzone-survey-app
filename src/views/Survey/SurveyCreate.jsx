@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from "prop-types";
-// import { connect } from 'react-redux';
+import "./style.css";
 import { compose } from 'redux';
 import withStyles from "@material-ui/core/styles/withStyles";
 import { FormLabel, MenuItem, FormControl, Select }  from "@material-ui/core";  
@@ -16,7 +16,6 @@ import CardFooter from "components/Card/CardFooter.jsx";
 import CustomCheckbox from 'components/CustomCheckbox/CustomCheckbox.jsx';
 import SurveyEditor from 'views/Survey/SurveyEditor.jsx';
 import validationFormStyle from "assets/jss/material-dashboard-pro-react/views/validationFormStyle.jsx";
-// import { createProvider } from 'actions/provider';
 import _ from 'lodash';
 
 class SurveyCreate extends React.Component{
@@ -169,57 +168,13 @@ class SurveyCreate extends React.Component{
                 />
               </GridItem>
             </GridContainer>
-            <GridContainer>
-              <GridItem xs={12} sm={3}>
-                <FormLabel className={classes.labelHorizontal}>
-                  Assessor Category
-                </FormLabel>
-              </GridItem>
-              <GridItem xs={12} sm={7}>
-                <FormControl
-                  fullWidth
-                  className={classes.selectFormControl}
-                >
-                  <Select
-                    value={this.state.survey.assessorCategory}
-                    onChange={event =>
-                      this.change(event, "assessorCategory")}
-                    classes={{ select: classes.select }}
-                  > 
-                    {categoryList.map(category => (
-                      <MenuItem
-                        key={category}
-                        value={category}
-                        
-                      >
-                        {category}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>                  
-              </GridItem>
+            <hr/>
+            <GridContainer  className={classes.justifyContentCenter}>
+              <h4>
+                You have to Save Survey before submitting the form. Otherwise your Questionnaire will not be saved.
+              </h4>
             </GridContainer>
-            <GridContainer>
-              <GridItem xs={12} sm={3}>
-                <FormLabel className={classes.labelHorizontal}>
-                  Assessor
-                </FormLabel>
-              </GridItem>
-              <GridItem xs={12} sm={7}>
-                <CustomInput
-                	labelText="Assessor"
-                  id="assessor"
-                  formControlProps={{
-                    fullWidth: true
-                  }}
-                  inputProps={{
-                  	onChange: event =>
-                    	this.change(event, "assessor"),
-                    type: "text"
-                  }}
-                />
-              </GridItem>
-            </GridContainer>
+            <hr/>
             <GridContainer>
               <SurveyEditor change={this.changeQuestions}/>
             </GridContainer>
@@ -227,7 +182,7 @@ class SurveyCreate extends React.Component{
 		    </CardBody>
 		    <CardFooter className={classes.justifyContentCenter}>
           <Button color="rose" onClick={this.handleService.bind(this)}>
-            Save & Exit
+            Submit Survey
           </Button>
         </CardFooter>
 		  </Card>

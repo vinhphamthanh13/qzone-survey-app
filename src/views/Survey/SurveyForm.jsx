@@ -14,7 +14,6 @@ import CardFooter from "components/Card/CardFooter.jsx";
 
 Survey.Survey.cssType = "bootstrap";
 Survey.defaultBootstrapCss.navigationButton = "btn btn-green";
-// Survey.StylesManager.applyTheme("orange"); 
 var survey= ''
 class SurveyForm extends React.Component{
   constructor(props) {

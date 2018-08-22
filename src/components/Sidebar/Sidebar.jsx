@@ -3,11 +3,9 @@ import PropTypes from "prop-types";
 import PerfectScrollbar from "perfect-scrollbar";
 import { NavLink } from "react-router-dom";
 import cx from "classnames";
-import withStyles from "@material-ui/core/styles/withStyles";
 import { Drawer, List, ListItem, ListItemIcon, ListItemText,Hidden, Collapse } from "@material-ui/core";
-// import HeaderLinks from "components/Header/HeaderLinks.jsx";
+import withStyles from "@material-ui/core/styles/withStyles";
 import sidebarStyle from "assets/jss/material-dashboard-pro-react/components/sidebarStyle.jsx";
-import avatar from "assets/img/faces/avatar.jpg";
 
 var ps;
 
@@ -26,10 +24,9 @@ class SidebarWrapper extends React.Component {
     }
   }
   render() {
-    const { className, user, links } = this.props;
+    const { className, links } = this.props;
     return (
       <div className={className} ref="sidebarWrapper">
-        {user}
         {links}
       </div>
     );
@@ -41,6 +38,11 @@ class Sidebar extends React.Component {
     super(props);
     this.state = {
       openAvatar: false,
+      openComponents: this.activeRoute("/components"),
+      openForms: this.activeRoute("/forms"),
+      openTables: this.activeRoute("/tables"),
+      openMaps: this.activeRoute("/maps"),
+      openPages: this.activeRoute("-page"),
       miniActive: true
     };
     this.activeRoute.bind(this);
@@ -63,119 +65,7 @@ class Sidebar extends React.Component {
       routes,
       bgColor
     } = this.props;
-    const itemText =
-      classes.itemText +
-      " " +
-      cx({
-        [classes.itemTextMini]: this.props.miniActive && this.state.miniActive,
-      });
-    const collapseItemText =
-      classes.collapseItemText +
-      " " +
-      cx({
-        [classes.collapseItemTextMini]:
-          this.props.miniActive && this.state.miniActive
-      });
-    const userWrapperClass =
-      classes.user +
-      " " +
-      cx({
-        [classes.whiteAfter]: bgColor === "white"
-      });
-    const caret =
-      classes.caret 
-    const collapseItemMini =
-      classes.collapseItemMini 
-    const photo =
-      classes.photo
-    var user = (
-      <div className={userWrapperClass}>
-        <div className={photo}>
-          <img src={avatar} className={classes.avatarImg} alt="..." />
-        </div>
-        <List className={classes.list}>
-          <ListItem className={classes.item + " " + classes.userItem}>
-            <NavLink
-              to={"#"}
-              className={classes.itemLink + " " + classes.userCollapseButton}
-              onClick={() => this.openCollapse("openAvatar")}
-            >
-              <ListItemText
-                primary={""}
-                secondary={
-                  <b
-                    className={
-                      caret +
-                      " " +
-                      classes.userCaret +
-                      " " +
-                      (this.state.openAvatar ? classes.caretActive : "")
-                    }
-                  />
-                }
-                disableTypography={true}
-                className={itemText + " " + classes.userItemText}
-              />
-            </NavLink>
-            <Collapse in={this.state.openAvatar} unmountOnExit>
-              <List className={classes.list + " " + classes.collapseList}>
-                <ListItem className={classes.collapseItem}>
-                  <NavLink
-                    to="#"
-                    className={
-                      classes.itemLink + " " + classes.userCollapseLinks
-                    }
-                  >
-                    <span className={collapseItemMini}>
-                      {"MP"}
-                    </span>
-                    <ListItemText
-                      primary={"My Profile"}
-                      disableTypography={true}
-                      className={collapseItemText}
-                    />
-                  </NavLink>
-                </ListItem>
-                <ListItem className={classes.collapseItem}>
-                  <NavLink
-                    to="#"
-                    className={
-                      classes.itemLink + " " + classes.userCollapseLinks
-                    }
-                  >
-                    <span className={collapseItemMini}>
-                      {"S"}
-                    </span>
-                    <ListItemText
-                      primary={"Settings"}
-                      disableTypography={true}
-                      className={collapseItemText}
-                    />
-                  </NavLink>
-                </ListItem>
-                <ListItem className={classes.collapseItem}>
-                  <NavLink
-                    to="/survey/list"
-                    className={
-                      classes.itemLink + " " + classes.userCollapseLinks
-                    }
-                  >
-                    <span className={collapseItemMini}>
-                      {"SL"}
-                    </span>
-                    <ListItemText
-                      primary={"Survey List"}
-                      disableTypography={true}
-                      className={collapseItemText}
-                    />
-                  </NavLink>
-                </ListItem>
-              </List>
-            </Collapse>
-          </ListItem>
-        </List>
-      </div>
-    );
+    
     var links = (
       <List className={classes.list}>
         {routes.map((prop, key) => {
@@ -358,7 +248,6 @@ class Sidebar extends React.Component {
             {brand}
             <SidebarWrapper
               className={sidebarWrapper}
-              user={user}
               links={links}
             />
             {image !== undefined ? (
@@ -383,7 +272,6 @@ class Sidebar extends React.Component {
             {brand}
             <SidebarWrapper
               className={sidebarWrapper}
-              user={user}
               links={links}
             />
             {image !== undefined ? (
