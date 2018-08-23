@@ -1,6 +1,6 @@
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import {  Person } from "@material-ui/icons";
-import SurveyForm from "views/Survey/SurveyForm.jsx";
+import SurveyQuestionnaire from "views/Survey/SurveyQuestionnaire.jsx";
 import SurveyList from "views/Survey/SurveyList.jsx";
 import SurveyCreate from "views/Survey/SurveyCreate.jsx";
 import Dashboard from "views/Dashboard/Dashboard.jsx";
@@ -21,7 +21,7 @@ export const dashboardRoutes = [
     component: Profile
   },
   {
-    path: "/survey/list",
+    path: "/admin/survey/list",
     name: "Survey List",
     icon: Person,
     component: SurveyList
@@ -31,13 +31,18 @@ export const dashboardRoutes = [
 ];
 export const otherRoutes=[
   {
-    path: "/survey/create",
+    path: "/admin/survey/create",
     name: "Survey Create",
     component: SurveyCreate
   },
   {
-    path: "/survey/form",
-    name: "Survey Form",
-    component: SurveyForm
+    path: "/admin/survey/show",
+    name: "Survey Questionnaire",
+    component: SurveyQuestionnaire
+  },
+  {
+    path: "/survey/show",
+    name: "Survey Questionnaire",
+    component: SurveyQuestionnaire
   },
 ]

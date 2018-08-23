@@ -1,154 +1,123 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
 import withStyles from "@material-ui/core/styles/withStyles";
+import { FormLabel}  from "@material-ui/core";      
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
-import Button from "components/CustomButtons/Button.jsx";
-import Card from "components/Card/Card.jsx";
-import CardBody from "components/Card/CardBody.jsx";
-import CardText from "components/Card/CardText.jsx";
-import CardHeader from "components/Card/CardHeader.jsx";
-import listPageStyle from "assets/jss/material-dashboard-pro-react/views/listPageStyle.jsx";
-import * as Survey from 'survey-react';
-import CardFooter from "components/Card/CardFooter.jsx";
+import CustomInput from "components/CustomInput/CustomInput.jsx";
+import CustomCheckbox from "components/CustomCheckbox/CustomCheckbox.jsx";
+import validationFormStyle from "assets/jss/material-dashboard-pro-react/views/validationFormStyle.jsx";
+import SurveyEditor from 'views/Survey/SurveyEditor.jsx';
 
-Survey.Survey.cssType = "bootstrap";
-Survey.defaultBootstrapCss.navigationButton = "btn btn-green";
-var survey= ''
 class SurveyForm extends React.Component{
-  constructor(props) {
-    super(props);
-    this.state = { 
-      data: {
-       "pages": [
-          {
-           "name": "page1",
-           "elements": [
-            {
-             "type": "dropdown",
-             "name": "question1",
-             "choices": [
-              "item1",
-              "item2",
-              "item3"
-             ]
-            },
-            {
-             "type": "radiogroup",
-             "name": "question2",
-             "choices": [
-              "item1",
-              "item2",
-              "item3"
-             ]
-            }
-           ]
-          }
-        ]
-      }
-    }
-  }
-
-  sendDataToServer(survey) {
-   var resultAsString = JSON.stringify(survey.data);
-   alert(resultAsString); 
-  };
-
-  render() {
-    const { classes } = this.props;
-
-    survey = new Survey.Model(this.state.data);
-    survey
-      .onComplete
-        .add(function (result) {
-            var resultAsString = JSON.stringify(result.data);
-            alert(resultAsString); 
-        });
-
-    survey.mode = 'display';
-    // survey.data = {"question1":"abc","question2":"item1"}
-    return(
-      <GridContainer>
-       <GridItem xs={12}>
-         <Card>
-            <CardHeader color="primary" icon>
-             <CardText color="rose">
-                <h4 className={classes.cardTitle}>Survey</h4>
-              </CardText>
-            </CardHeader>
-            <CardBody>
-              <GridContainer>
-                <GridItem xs={12} sm={3}>
-                  <h4>Title:</h4>
-                </GridItem>
-                <GridItem xs={12} sm={3}>
-                  <p>
-                    
-                  </p>
-                </GridItem>
-                <GridItem xs={12} sm={3}>
-                  <h4>Logo:</h4>
-                </GridItem>
-                <GridItem xs={12} sm={3}>
-                  <p>
-                    
-                  </p>
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={3}>
-                  <h4>Description:</h4>
-                </GridItem>
-                <GridItem xs={12} sm={7}>
-                  <p>
-                    
-                  </p>
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={3}>
-                  <h4>Assesor Category:</h4>
-                </GridItem>
-                <GridItem xs={12} sm={3}>
-                  <p>
-                    
-                  </p>
-                </GridItem>
-                <GridItem xs={12} sm={3}>
-                  <h4>Assesor: </h4>
-                </GridItem>
-                <GridItem xs={12} sm={3}>
-                  <p>
-                    
-                  </p>
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={7}>
-                  <Survey.Survey model={survey} />
-                </GridItem>
-              </GridContainer>
-             </CardBody>
-             <CardFooter className={classes.justifyContentCenter}>
-              <Button color="rose" >
-                Update
-              </Button>
-            </CardFooter>
-          </Card>
-        </GridItem>
-       </GridContainer>
-    )
-  }
+  
+	render() {
+    const { classes,surveyInfo} = this.props;
+    const {survey, titleState, descriptionState} = surveyInfo
+		return(
+      <form>
+        <GridContainer>
+          <GridItem xs={12} sm={3}>
+            <FormLabel className={classes.labelHorizontal}>
+              *Title
+            </FormLabel>
+          </GridItem>
+          <GridItem xs={12} sm={7}>
+            <CustomInput
+              labelText="Title"
+              success={titleState === "success"}
+              value={survey.title  || ''}
+              error={titleState === "error"}
+              id="title"
+              formControlProps={{
+                fullWidth: true
+              }}
+              inputProps={{
+                onChange: event =>
+                  this.props.change(event, "title", "title"),
+                type: "text"
+              }}
+            />
+          </GridItem>
+        </GridContainer>
+        <GridContainer>
+          <GridItem xs={12} sm={3}>
+            <FormLabel className={classes.labelHorizontal}>
+              *Description
+            </FormLabel>
+          </GridItem>
+          <GridItem xs={12} sm={7}>
+            <CustomInput
+              labelText="Description"
+              id="description"
+              success={descriptionState === "success"}
+              error={descriptionState === "error"}
+              value={survey.description || ''}
+              formControlProps={{
+                fullWidth: true
+              }}
+              inputProps={{
+                onChange: event =>
+                  this.props.change(event, "description"),
+                type: "text"
+              }}
+            />
+          </GridItem>
+        </GridContainer>
+        <GridContainer>
+          <GridItem xs={12} sm={3}>
+            <FormLabel className={classes.labelHorizontal}>
+              Logo
+            </FormLabel>
+          </GridItem>
+          <GridItem xs={12} sm={7}>
+            <CustomInput
+              id="logo"
+              formControlProps={{
+                fullWidth: true
+              }}
+              inputProps={{
+                onChange: event =>
+                  this.props.change(event, "logo"),
+                type: "file"
+              }}
+            />
+          </GridItem>
+        </GridContainer>
+        <GridContainer>
+          <GridItem xs={12} sm={3}>
+            <FormLabel
+              className={
+                classes.labelHorizontal +
+                " " +
+                classes.labelHorizontalRadioCheckbox
+              }
+            >
+              Privacy
+            </FormLabel>
+          </GridItem>
+          <GridItem xs={12} sm={7}>
+            <CustomCheckbox 
+              value=""
+              checked={survey.privacy || false}
+              label="" 
+              onClick={event =>this.props.change(event, "privacy")}
+              classes={classes}
+            />
+          </GridItem>
+        </GridContainer>
+        <hr/>
+        <GridContainer  className={classes.justifyContentCenter}>
+          <h4>
+            You have to Save Survey before submitting the form. Otherwise your Questionnaire will not be saved.
+          </h4>
+        </GridContainer>
+        <hr/>
+        <GridContainer>
+          <SurveyEditor change={this.props.changeQuestions} data={survey.questions}/>
+        </GridContainer>
+      </form>
+		)
+	}
 }
 
-
-SurveyForm.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(listPageStyle)(SurveyForm);
-
-
-
-
-
+export default withStyles(validationFormStyle)(SurveyForm);

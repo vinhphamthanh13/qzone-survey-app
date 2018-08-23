@@ -1,21 +1,16 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import "./style.css";
 import { compose } from 'redux';
 import withStyles from "@material-ui/core/styles/withStyles";
-import { FormLabel, MenuItem, FormControl, Select }  from "@material-ui/core";  
-import GridContainer from "components/Grid/GridContainer.jsx";
-import GridItem from "components/Grid/GridItem.jsx";
-import CustomInput from "components/CustomInput/CustomInput.jsx";
 import Button from "components/CustomButtons/Button.jsx";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardText from "components/Card/CardText.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
-import CustomCheckbox from 'components/CustomCheckbox/CustomCheckbox.jsx';
-import SurveyEditor from 'views/Survey/SurveyEditor.jsx';
 import validationFormStyle from "assets/jss/material-dashboard-pro-react/views/validationFormStyle.jsx";
+import SurveyForm from "views/Survey/SurveyForm"
+
 import _ from 'lodash';
 
 class SurveyCreate extends React.Component{
@@ -28,26 +23,27 @@ class SurveyCreate extends React.Component{
         description: '',
         logo: '',
         privacy: false,
-        assessorCategory: '',
-        assessor: '',
         questions: ''
       },
       titleState: '',
-      descriptionState: '' 
+      descriptionState: ''
     }
     this.changeQuestions = this.changeQuestions.bind(this)
+    this.change = this.change.bind(this)
+
 	}
 
 	handleService(option){
-    console.log(this.state)
     const {titleState, descriptionState, survey} = this.state
     const {title, description} = survey
 		if (_.isEmpty(title))
       this.setState({titleState: "error"})
     if (_.isEmpty(description))
       this.setState({descriptionState: "error"})
-    if (titleState === "success" && descriptionState === "success")
-      window.location = "/survey/list"
+    if (titleState === "success" && descriptionState === "success"){
+      // localStorage.setItem('survey', this.state)
+      window.location = "/admin/survey/list"
+    }
 	}
 
 	change(event, stateName){
@@ -70,7 +66,6 @@ class SurveyCreate extends React.Component{
 
 	render(){
 		const { classes } = this.props;
-    const categoryList = []
 		return(
 		  <Card>
 		    <CardHeader color="rose" text>
@@ -79,106 +74,7 @@ class SurveyCreate extends React.Component{
           </CardText>
         </CardHeader>
 		    <CardBody>
-		    	<form>
-            <GridContainer>
-              <GridItem xs={12} sm={3}>
-                <FormLabel className={classes.labelHorizontal}>
-                  *Title
-                </FormLabel>
-              </GridItem>
-              <GridItem xs={12} sm={7}>
-                <CustomInput
-                	labelText="Title"
-                  success={this.state.titleState === "success"}
-                  error={this.state.titleState === "error"}
-                  id="title"
-                  formControlProps={{
-                    fullWidth: true
-                  }}
-                  inputProps={{
-                  	onChange: event =>
-                    	this.change(event, "title"),
-                    type: "text"
-                  }}
-                />
-              </GridItem>
-            </GridContainer>
-            <GridContainer>
-              <GridItem xs={12} sm={3}>
-                <FormLabel className={classes.labelHorizontal}>
-                	*Description
-                </FormLabel>
-              </GridItem>
-              <GridItem xs={12} sm={7}>
-                <CustomInput
-                  labelText="Description"
-                  success={this.state.descriptionState === "success"}
-                  error={this.state.descriptionState === "error"}
-                  id="description"
-                  formControlProps={{
-                    fullWidth: true
-                  }}
-                  inputProps={{
-                    onChange: event =>
-                      this.change(event, "description"),
-                    type: "text"
-                  }}
-                />
-              </GridItem>
-            </GridContainer>
-            <GridContainer>
-              <GridItem xs={12} sm={3}>
-                <FormLabel className={classes.labelHorizontal}>
-                  Logo
-                </FormLabel>
-              </GridItem>
-              <GridItem xs={12} sm={7}>
-                <CustomInput
-                  id="address1"
-                  formControlProps={{
-                    fullWidth: true
-                  }}
-                  inputProps={{
-                    onChange: event =>
-                      this.change(event, "logo"),
-                    type: "file"
-                  }}
-                />
-              </GridItem>
-            </GridContainer>
-            <GridContainer>
-              <GridItem xs={12} sm={3}>
-                <FormLabel
-                  className={
-                    classes.labelHorizontal +
-                    " " +
-                    classes.labelHorizontalRadioCheckbox
-                  }
-                >
-                  Privacy
-                </FormLabel>
-              </GridItem>
-              <GridItem xs={12} sm={7}>
-                <CustomCheckbox 
-                  value=""
-                  checked={this.state.survey.privacy || false}
-                  label="" 
-                  onClick={event =>this.change(event, "privacy")}
-                  classes={classes}
-                />
-              </GridItem>
-            </GridContainer>
-            <hr/>
-            <GridContainer  className={classes.justifyContentCenter}>
-              <h4>
-                You have to Save Survey before submitting the form. Otherwise your Questionnaire will not be saved.
-              </h4>
-            </GridContainer>
-            <hr/>
-            <GridContainer>
-              <SurveyEditor change={this.changeQuestions}/>
-            </GridContainer>
-          </form>
+          <SurveyForm surveyInfo={this.state} change={this.change} classes={this.props.classes} changeQuestions={this.changeQuestions}/>
 		    </CardBody>
 		    <CardFooter className={classes.justifyContentCenter}>
           <Button color="rose" onClick={this.handleService.bind(this)}>

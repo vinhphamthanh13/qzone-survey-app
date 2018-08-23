@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import * as SurveyJSEditor from "surveyjs-editor";
-import * as SurveyKo from "survey-knockout";
 import "surveyjs-editor/surveyeditor.css";
+import "./style.css";
 
 class SurveyEditor extends Component {
   constructor(props){
     super(props);
-    SurveyJSEditor.StylesManager.applyTheme("default");
+    this.state={}
+    SurveyJSEditor.StylesManager.applyTheme("orange");
   }
   editor;
   componentDidMount() {
@@ -14,6 +15,7 @@ class SurveyEditor extends Component {
       "surveyEditorContainer"
     );
     this.editor.saveSurveyFunc = this.saveMySurvey;
+    this.editor.text = this.props.data
   }
   render() {
     return( 
