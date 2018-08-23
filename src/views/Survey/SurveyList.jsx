@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from "prop-types";
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -20,11 +21,10 @@ class SurveyList extends React.Component{
     this.state = { surveyList: []}
   }
   componentWillMount(){
-    this.props.fetchSurveys()
+    // this.props.fetchSurveys()
   }
   render() {
     const { classes } = this.props;
-    console.log(classes)
     return (
       <GridContainer>
         <GridItem xs={12}>
@@ -33,7 +33,7 @@ class SurveyList extends React.Component{
              <CardText color="rose">
                 <h4 className={classes.cardTitle}>Survey List</h4>
               </CardText>
-              <Button size="md"  className={classes.buttonDisplay} href="/survey/create"> 
+              <Button size="md"  className={classes.buttonDisplay} href="/admin/survey/create"> 
                 New Survey
               </Button>
             </CardHeader>
@@ -45,7 +45,9 @@ class SurveyList extends React.Component{
                   "Title",
                   "Description"
                 ]}
-                tableData={[]}
+                tableData={[
+                  [1, "Dummy Survey", "Dummy json is used to show survey page",<Link to="/admin/survey/show">show</Link>]
+                ]}
                 // customCellClasses={[
                 //   classes.center,
                 //   classes.right,
