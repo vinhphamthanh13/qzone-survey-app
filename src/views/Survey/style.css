@@ -23,11 +23,11 @@
     background-color: #fff;
 }
 
-input:focus, textarea:focus  { 
+/*input:focus, textarea:focus  { 
     outline: none !important;
     border-color: #d81b60 !important;
     box-shadow: 0 0 10px #d81b60;
-}
+}*/
 
 .nav-link {
   color: #d81b60 !important;
