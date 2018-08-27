@@ -11,51 +11,38 @@ import CardHeader from "components/Card/CardHeader.jsx";
 import listPageStyle from "assets/jss/material-dashboard-pro-react/views/listPageStyle.jsx";
 import * as Survey from 'survey-react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { fetchSurvey } from "actions/survey.jsx";
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 
 Survey.Survey.cssType = "bootstrap";
 Survey.defaultBootstrapCss.navigationButton = "btn btn-green";
-var survey= ''
+var surveyInfo= ''
 class SurveyQuestionnaire extends React.Component{
   constructor(props) {
     super(props);
-    this.state = { 
-      "title": "Dummy Survey",
-      "description": "Dummy json is used to show survey page",
-      "logo": "",
-      "data": {
-       "pages": [
-          {
-           "name": "page1",
-           "elements": [
-            {
-             "type": "dropdown",
-             "name": "question1",
-             "choices": [
-              "item1",
-              "item2",
-              "item3"
-             ]
-            },
-            {
-             "type": "radiogroup",
-             "name": "question2",
-             "choices": [
-              "item1",
-              "item2",
-              "item3"
-             ]
-            }
-           ]
-          }
-        ]
-      },
-      admin: false
+    this.state = {
+      surveyData: {
+        title: '',
+        description: '',
+        logo: '',
+        privacy: false,
+        id: '',
+        survey: {}
+      }
     }
   }
 
   componentWillMount(){
+    const { id } = this.props.match.params
+    this.props.fetchSurvey(id);
     if (window.location.href.indexOf("admin") > -1)
       this.setState({admin: true})
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({surveyData: nextProps.survey})
+    
   }
 
   sendDataToServer(survey) {
@@ -65,9 +52,9 @@ class SurveyQuestionnaire extends React.Component{
 
   render() {
     const { classes } = this.props;
-    const { title, description, data, logo } = this.state
-    survey = new Survey.Model(data);
-    survey
+    const { title, description, survey, logo } = this.state.surveyData
+    surveyInfo = new Survey.Model(survey);
+    surveyInfo
       .onComplete
         .add(function (result) {
             var resultAsString = JSON.stringify(result.data);
@@ -76,10 +63,10 @@ class SurveyQuestionnaire extends React.Component{
 
     if (!this.state.admin){
       // survey.data = {"question1":"abc","question2":"item1"}
-      survey.mode = '';
+      surveyInfo.mode = '';
     }
     else{
-    survey.mode = 'display';
+    surveyInfo.mode = 'display';
     }
     return(
       <GridContainer>
@@ -123,7 +110,7 @@ class SurveyQuestionnaire extends React.Component{
               <hr/>
               <GridContainer>
                 <GridItem xs={12} sm={10}>
-                  <Survey.Survey model={survey} />
+                  <Survey.Survey model={surveyInfo} />
                 </GridItem>
               </GridContainer>
             </CardBody>
@@ -138,9 +125,14 @@ SurveyQuestionnaire.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(listPageStyle)(SurveyQuestionnaire);
+function mapStateToProps(state) {
+  return{survey: state.surveys.data}
+} 
 
-
+export default compose(
+  withStyles(listPageStyle),
+  connect(mapStateToProps, {fetchSurvey}),
+)(SurveyQuestionnaire);
 
 
 

@@ -11,8 +11,8 @@ import SurveyEditor from 'views/Survey/SurveyEditor.jsx';
 class SurveyForm extends React.Component{
   
 	render() {
-    const { classes,surveyInfo} = this.props;
-    const {survey, titleState, descriptionState} = surveyInfo
+    const { classes,survey} = this.props;
+    const {surveyInfo, titleState, descriptionState} = survey
 		return(
       <form>
         <GridContainer>
@@ -25,7 +25,7 @@ class SurveyForm extends React.Component{
             <CustomInput
               labelText="Title"
               success={titleState === "success"}
-              value={survey.title  || ''}
+              value={surveyInfo.title  || ''}
               error={titleState === "error"}
               id="title"
               formControlProps={{
@@ -51,7 +51,7 @@ class SurveyForm extends React.Component{
               id="description"
               success={descriptionState === "success"}
               error={descriptionState === "error"}
-              value={survey.description || ''}
+              value={surveyInfo.description || ''}
               formControlProps={{
                 fullWidth: true
               }}
@@ -98,7 +98,7 @@ class SurveyForm extends React.Component{
           <GridItem xs={12} sm={7}>
             <CustomCheckbox 
               value=""
-              checked={survey.privacy || false}
+              checked={surveyInfo.privacy || false}
               label="" 
               onClick={event =>this.props.change(event, "privacy")}
               classes={classes}
@@ -113,7 +113,7 @@ class SurveyForm extends React.Component{
         </GridContainer>
         <hr/>
         <GridContainer>
-          <SurveyEditor change={this.props.changeQuestions} data={survey.questions}/>
+          <SurveyEditor change={this.props.changeQuestions} data={surveyInfo.survey}/>
         </GridContainer>
       </form>
 		)

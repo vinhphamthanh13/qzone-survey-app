@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import Button from "components/CustomButtons/Button.jsx";
-// import Table from "components/Table/Table.jsx";
 import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardText from "components/Card/CardText.jsx";
@@ -19,13 +18,18 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import SweetAlert from "react-bootstrap-sweetalert";
+import {deleteSurvey} from "actions/survey"
 
-const rows = ["","Title", "Description"]
+const rows = ["#","Title", "Description"]
 
 class SurveyList extends React.Component{
   constructor(props) {
     super(props);
-    this.state = { surveyList: []}
+    this.state = { surveyList: [],
+      sweetAlert: ''
+    }
+    this.successDelete = this.successDelete.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -35,6 +39,53 @@ class SurveyList extends React.Component{
   componentWillMount(){
     this.props.fetchSurveys()
   }
+
+  warningWithConfirmMessage(id) {
+    this.setState({
+      sweetAlert: (
+        <SweetAlert
+          warning
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Are you sure?"
+          onConfirm={() => this.successDelete(id)}
+          onCancel={() => this.setState({sweetAlert: ''})}
+          confirmBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.success
+          }
+          cancelBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.danger
+          }
+          confirmBtnText="Yes, delete it!"
+          cancelBtnText="Cancel"
+          showCancel
+        >
+          You will not be able to recover the Survey!
+        </SweetAlert>
+      )
+    });
+  }
+
+  successDelete(id) {
+    this.props.deleteSurvey(id, (response) => {
+      this.setState({
+        sweetAlert: (
+          <SweetAlert
+            success
+            style={{ display: "block", marginTop: "-100px" }}
+            title="Deleted!"
+            onConfirm={() => this.setState({sweetAlert: ''})}
+            onCancel={() => this.setState({sweetAlert: ''})}
+            confirmBtnCssClass={
+              this.props.classes.button + " " + this.props.classes.success
+            }
+          >
+            Survey has been deleted.
+          </SweetAlert>
+        )
+      });
+    })
+  }
+
   render() {
     const { classes } = this.props;
     if(!(this.state.surveyList.length > 0)){
@@ -82,12 +133,13 @@ class SurveyList extends React.Component{
                             </TableCell>
                             <TableCell >{n.title}</TableCell>
                             <TableCell >{n.description}</TableCell>
-                            <TableCell><Link to="/admin/survey/show">Show</Link></TableCell>
+                            <TableCell><Link to={`/admin/survey/show/${n.id}`}>Show</Link></TableCell>
                           </TableRow>
                         )
                     })}
                   </TableBody>
                 </Table>
+                {this.state.sweetAlert}
               </CardBody>
             </Card>
           </GridItem>
@@ -107,5 +159,5 @@ SurveyList.propTypes = {
 
 export default compose(
   withStyles(listPageStyle),
-  connect(mapStateToProps, {fetchSurveys}),
+  connect(mapStateToProps, {fetchSurveys, deleteSurvey}),
 )(SurveyList);

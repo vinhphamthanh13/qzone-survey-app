@@ -36,7 +36,12 @@ export const otherRoutes=[
     component: SurveyCreate
   },
   {
-    path: "/admin/survey/show",
+    path: "/admin/survey/show/:id",
+    name: "Survey Questionnaire",
+    component: SurveyQuestionnaire
+  },
+  {
+    path: "/admin/survey/delete/:id",
     name: "Survey Questionnaire",
     component: SurveyQuestionnaire
   },
