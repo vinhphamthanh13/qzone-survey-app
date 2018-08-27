@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import * as SurveyJSEditor from "surveyjs-editor";
 import "surveyjs-editor/surveyeditor.css";
-import "./style.css";
 
 class SurveyEditor extends Component {
   constructor(props){

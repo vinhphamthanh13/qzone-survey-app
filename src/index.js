@@ -8,6 +8,7 @@ import promise from 'redux-promise';
 import reducers from './reducers';
 import indexRoutes from "routes/index.jsx";
 import "assets/scss/material-dashboard-pro-react.css?v=1.2.0";
+import "assets/scss/style.css";
 
 const history = createBrowserHistory();
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
