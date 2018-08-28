@@ -34,15 +34,13 @@ export function deleteSurvey(id, callback) {
 
 export function createSurvey(values,callback) {
   axios.post(ROOT_URL,values)
-    .then(() => callback());
+    .then((response) => callback(response));
   return {
     type: CREATE_SURVEY
   }
 }
 
 export function editSurvey(values,callback) {
-  console.log("NNNNNNN")
-  console.log(values)
   axios.put(ROOT_URL,values)
     .then(() => callback());
   return {
