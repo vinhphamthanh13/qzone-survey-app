@@ -7,12 +7,14 @@ import CustomInput from "components/CustomInput/CustomInput.jsx";
 import CustomCheckbox from "components/CustomCheckbox/CustomCheckbox.jsx";
 import validationFormStyle from "assets/jss/material-dashboard-pro-react/views/validationFormStyle.jsx";
 import SurveyEditor from 'views/Survey/SurveyEditor.jsx';
-
+var editor = false
 class SurveyForm extends React.Component{
   
 	render() {
     const { classes,survey} = this.props;
-    const {surveyInfo, titleState, descriptionState} = survey
+    const {surveyInfo, titleState, descriptionState, mode} = survey
+    if(mode === 'create' || surveyInfo.survey)
+      editor = true
 		return(
       <form>
         <GridContainer>
@@ -113,7 +115,7 @@ class SurveyForm extends React.Component{
         </GridContainer>
         <hr/>
         <GridContainer>
-          <SurveyEditor change={this.props.changeQuestions} data={surveyInfo.survey}/>
+          {editor && <SurveyEditor change={this.props.changeQuestions} data={surveyInfo.survey}/>}
         </GridContainer>
       </form>
 		)

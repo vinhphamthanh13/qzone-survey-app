@@ -5,7 +5,7 @@ import SurveyList from "views/Survey/SurveyList.jsx";
 import SurveyCreate from "views/Survey/SurveyCreate.jsx";
 import Dashboard from "views/Dashboard/Dashboard.jsx";
 import Profile from "views/Profile/Profile.jsx";
-
+import SurveyEdit from "views/Survey/SurveyEdit.jsx";
 
 export const dashboardRoutes = [
   {
@@ -46,7 +46,12 @@ export const otherRoutes=[
     component: SurveyQuestionnaire
   },
   {
-    path: "/survey/show",
+    path: "/admin/survey/edit/:id",
+    name: "Survey Edit",
+    component: SurveyEdit
+  },
+  {
+    path: "/survey/show/:id",
     name: "Survey Questionnaire",
     component: SurveyQuestionnaire
   },

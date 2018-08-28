@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Link } from 'react-router-dom';
 import withStyles from "@material-ui/core/styles/withStyles";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import Button from "components/CustomButtons/Button.jsx";
@@ -76,7 +77,7 @@ class SurveyQuestionnaire extends React.Component{
               <CardText color="rose">
                 <h4 className={classes.cardTitle}>Survey</h4>
               </CardText>
-              <Button size="md" href="/" className={classes.buttonDisplay}> 
+              <Button size="md" href={`/admin/survey/edit/${this.props.match.params.id}`} className={classes.buttonDisplay}> 
                 Edit
               </Button>
             </CardHeader>

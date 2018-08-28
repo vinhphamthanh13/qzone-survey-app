@@ -4,7 +4,7 @@ export const FETCH_SURVEYS = 'fetch_surveys';
 export const CREATE_SURVEY = 'create_survey';
 export const FETCH_SURVEY = 'fetch_survey';
 export const DELETE_SURVEY = 'delete_survey';
-
+export const EDIT_SURVEY = 'edit_survey';
 
 const ROOT_URL = `http://45.117.170.211:8090/api/surveys`
 
@@ -26,6 +26,7 @@ export function fetchSurvey(id, callback) {
 
 export function deleteSurvey(id, callback) {
   axios.delete(`${ROOT_URL}/{id}?id=${id}`)
+    .then(() => callback())
   return {
     type: DELETE_SURVEY
   };
@@ -36,5 +37,15 @@ export function createSurvey(values,callback) {
     .then(() => callback());
   return {
     type: CREATE_SURVEY
+  }
+}
+
+export function editSurvey(values,callback) {
+  console.log("NNNNNNN")
+  console.log(values)
+  axios.put(ROOT_URL,values)
+    .then(() => callback());
+  return {
+    type: EDIT_SURVEY
   }
 }

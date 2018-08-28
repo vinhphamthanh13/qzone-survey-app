@@ -1,4 +1,6 @@
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
+import buttonStyle from "assets/jss/material-dashboard-pro-react/components/buttonStyle.jsx";
+
 const listPageStyle = {
   cardIconTitle: {
     ...cardTitle,
@@ -16,6 +18,7 @@ const listPageStyle = {
   },
   justifyContentCenter: {
     justifyContent: "center"
-  }
+  },
+  ...buttonStyle
 };
 export default listPageStyle;

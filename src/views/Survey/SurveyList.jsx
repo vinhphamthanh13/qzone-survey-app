@@ -21,7 +21,7 @@ import TableRow from "@material-ui/core/TableRow";
 import SweetAlert from "react-bootstrap-sweetalert";
 import {deleteSurvey} from "actions/survey"
 
-const rows = ["#","Title", "Description"]
+const rows = ["#","Title", "Description", "", ""]
 
 class SurveyList extends React.Component{
   constructor(props) {
@@ -73,10 +73,14 @@ class SurveyList extends React.Component{
             success
             style={{ display: "block", marginTop: "-100px" }}
             title="Deleted!"
-            onConfirm={() => this.setState({sweetAlert: ''})}
+            onConfirm={() => 
+              this.setState({sweetAlert: ''},() => {
+                window.location = '/admin/survey/list'
+              })
+            }
             onCancel={() => this.setState({sweetAlert: ''})}
             confirmBtnCssClass={
-              this.props.classes.button + " " + this.props.classes.success
+              this.props.classes.success
             }
           >
             Survey has been deleted.
@@ -88,10 +92,8 @@ class SurveyList extends React.Component{
 
   render() {
     const { classes } = this.props;
-    if(!(this.state.surveyList.length > 0)){
-      return null;
-    }
-    else{
+    
+    
       return (
         <GridContainer>
           <GridItem xs={12}>
@@ -134,6 +136,7 @@ class SurveyList extends React.Component{
                             <TableCell >{n.title}</TableCell>
                             <TableCell >{n.description}</TableCell>
                             <TableCell><Link to={`/admin/survey/show/${n.id}`}>Show</Link></TableCell>
+                            <TableCell><Link to="#" onClick={()=> this.warningWithConfirmMessage(n.id)}>Delete</Link></TableCell>
                           </TableRow>
                         )
                     })}
@@ -145,7 +148,7 @@ class SurveyList extends React.Component{
           </GridItem>
         </GridContainer>
       );
-    }
+    
   }
 }
 

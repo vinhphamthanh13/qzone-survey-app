@@ -27,7 +27,8 @@ class SurveyCreate extends React.Component{
         survey: ''
       },
       titleState: '',
-      descriptionState: ''
+      descriptionState: '',
+      mode: 'create'
     }
     this.changeQuestions = this.changeQuestions.bind(this)
     this.change = this.change.bind(this)
