@@ -4,7 +4,8 @@ import { Switch, Route } from "react-router-dom";
 import withStyles from "@material-ui/core/styles/withStyles";
 import pagesStyle from "assets/jss/material-dashboard-pro-react/layouts/pagesStyle.jsx";
 import bgImage from "assets/img/register.jpeg";
-import ParticipantResponse from "views/Participant/ParticipantResponse.jsx"
+import ParticipantResponseCreate from "views/Participant/ParticipantResponseCreate.jsx";
+import ParticipantResponseResult from "views/Participant/ParticipantResponseResult.jsx";
 
 class SurveyResponse extends React.Component {
   render() {
@@ -15,9 +16,14 @@ class SurveyResponse extends React.Component {
           <div className={classes.fullPage}>
             <Switch>
               <Route
+                path="/surveys/result/:id"
+                component={ParticipantResponseResult}
+                key={'ParticipantResponseResult'}
+              />
+              <Route
                 path="/surveys/:id"
-                component={ParticipantResponse}
-                key={'ParticipantResponse'}
+                component={ParticipantResponseCreate}
+                key={'ParticipantResponseCreate'}
               />
             </Switch>
             <div

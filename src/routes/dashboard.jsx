@@ -41,18 +41,8 @@ export const otherRoutes=[
     component: SurveyQuestionnaire
   },
   {
-    path: "/admin/survey/delete/:id",
-    name: "Survey Questionnaire",
-    component: SurveyQuestionnaire
-  },
-  {
     path: "/admin/survey/edit/:id",
     name: "Survey Edit",
     component: SurveyEdit
-  },
-  {
-    path: "/survey/show/:id",
-    name: "Survey Questionnaire",
-    component: SurveyQuestionnaire
-  },
+  }
 ]

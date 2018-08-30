@@ -10,10 +10,12 @@ import { fetchSurvey } from "actions/survey.jsx";
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import * as Survey from 'survey-react';
+import { createSurveyAnswer } from 'actions/surveyAnswer.jsx';
 
-var surveyInfo= ''
+var surveyInfo= '';
+var id= ''
 
-class ParticipantResponse extends React.Component {
+class ParticipantResponseCreate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,12 +26,18 @@ class ParticipantResponse extends React.Component {
         privacy: false,
         id: '',
         survey: {}
+      },
+      participantResponse: {
+        participantId: '',
+        surveyId: '',
+        questionAnswers: []
       }
     }
+    this.sendDataToServer = this.sendDataToServer.bind(this)
   }
 
   componentWillMount(){
-    const { id } = this.props.match.params
+    id  = this.props.match.params.id
     this.props.fetchSurvey(id);
   }
 
@@ -38,9 +46,12 @@ class ParticipantResponse extends React.Component {
   }
 
   sendDataToServer(survey) {
-
-   var resultAsString = JSON.stringify(survey.data);
-   alert(resultAsString); 
+    var resultAsString = JSON.stringify(survey.data);
+    this.setState({participantResponse: {participantId: '5', surveyId: id, questionAnswers: resultAsString}},() =>{
+      this.props.createSurveyAnswer(this.state.participantResponse, (response) => {
+        window.location = "/surveys/result/"+id
+      });
+    })
   };
 
   render() {
@@ -78,7 +89,7 @@ class ParticipantResponse extends React.Component {
   }
 }
 
-ParticipantResponse.propTypes = {
+ParticipantResponseCreate.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
@@ -88,5 +99,5 @@ function mapStateToProps(state) {
 
 export default compose(
   withStyles(registerPageStyle),
-  connect(mapStateToProps, {fetchSurvey}),
-)(ParticipantResponse);
+  connect(mapStateToProps, {fetchSurvey, createSurveyAnswer}),
+)(ParticipantResponseCreate);
