@@ -30,7 +30,7 @@ class ParticipantResponseCreate extends React.Component {
       participantResponse: {
         participantId: '',
         surveyId: '',
-        questionAnswers: []
+        questionAnswers: ''
       }
     }
     this.sendDataToServer = this.sendDataToServer.bind(this)
@@ -47,9 +47,10 @@ class ParticipantResponseCreate extends React.Component {
 
   sendDataToServer(survey) {
     var resultAsString = JSON.stringify(survey.data);
-    this.setState({participantResponse: {participantId: '5', surveyId: id, questionAnswers: resultAsString}},() =>{
+    this.setState({participantResponse: {participantId: '1', surveyId: id, questionAnswers: resultAsString}},() =>{
       this.props.createSurveyAnswer(this.state.participantResponse, (response) => {
-        window.location = "/surveys/result/"+id
+        // window.location = "/surveys/result/"+id
+        window.location = "/"
       });
     })
   };

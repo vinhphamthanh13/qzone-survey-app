@@ -63,7 +63,7 @@ class SurveyCreate extends React.Component{
   changeQuestions(event)
   {
     const { surveyInfo } = this.state
-    surveyInfo['survey']= event
+    surveyInfo['survey']= JSON.stringify(event)
     this.setState({surveyInfo: surveyInfo})
   }
 

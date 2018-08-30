@@ -41,7 +41,14 @@ class SurveyEdit extends React.Component{
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({surveyInfo: nextProps.survey})
+    const { surveyInfo } = this.state;
+    for(var key in nextProps.survey) {
+      if(key === 'survey')
+        surveyInfo[key]= JSON.parse(nextProps.survey.survey)
+      else
+        surveyInfo[key]= nextProps.survey[key]
+    };
+    this.setState({surveyInfo: surveyInfo})
   }
 
   change(event, stateName){
@@ -58,7 +65,7 @@ class SurveyEdit extends React.Component{
   changeQuestions(event)
   {
     const { surveyInfo } = this.state
-    surveyInfo['survey']= event
+    surveyInfo['survey']= JSON.stringify(event)
     this.setState({surveyInfo: surveyInfo})
   }
 
@@ -79,7 +86,6 @@ class SurveyEdit extends React.Component{
 
 	render() {
     const { classes } = this.props;
-    
     if(!this.state.surveyInfo)
       return null;
 		return(
