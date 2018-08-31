@@ -7,6 +7,7 @@ import GridItem from "components/Grid/GridItem.jsx";
 import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardText from "components/Card/CardText.jsx";
+import CardFooter from "components/Card/CardFooter.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import listPageStyle from "assets/jss/material-dashboard-pro-react/views/listPageStyle.jsx";
 import * as Survey from 'survey-react';
@@ -122,6 +123,11 @@ class SurveyQuestionnaire extends React.Component{
                 </GridItem>
               </GridContainer>
             </CardBody>
+            <CardFooter className={classes.justifyContentCenter}>
+              <Button color="rose" href='/admin/survey/list'>
+                Back To Survey List
+              </Button>
+            </CardFooter>
           </Card>
         </GridItem>
        </GridContainer>
