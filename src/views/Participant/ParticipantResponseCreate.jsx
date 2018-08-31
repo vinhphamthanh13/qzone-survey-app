@@ -49,8 +49,8 @@ class ParticipantResponseCreate extends React.Component {
     var resultAsString = JSON.stringify(survey.data);
     this.setState({participantResponse: {participantId: '1', surveyId: id, questionAnswers: resultAsString}},() =>{
       this.props.createSurveyAnswer(this.state.participantResponse, (response) => {
-        // window.location = "/surveys/result/"+id
-        window.location = "/"
+        window.location = "/surveys/result/"+id
+        // window.location = "/"
       });
     })
   };

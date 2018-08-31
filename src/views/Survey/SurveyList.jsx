@@ -146,6 +146,7 @@ class SurveyList extends React.Component{
                             <TableCell>{n.description}</TableCell>
                             <TableCell><Link to={`/admin/survey/show/${n.id}`}>Show</Link></TableCell>
                             <TableCell><Link to="#" onClick={()=> this.warningWithConfirmMessage(n.id)}>Delete</Link></TableCell>
+                            <TableCell><Link to={`/admin/survey/participant/${n.id}`}>Participants</Link></TableCell>
                             <TableCell/>
                           </TableRow>
                         )
@@ -174,3 +175,4 @@ export default compose(
   withStyles(listPageStyle),
   connect(mapStateToProps, {fetchSurveys, deleteSurvey, deleteAllSurvey}),
 )(SurveyList);
+ 
