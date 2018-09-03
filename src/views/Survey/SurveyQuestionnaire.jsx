@@ -45,8 +45,9 @@ class SurveyQuestionnaire extends React.Component{
     const { surveyData } = this.state;
     if(nextProps.survey){
       for(var key in nextProps.survey) {
-        if(key === 'survey')
-          surveyData[key]= JSON.parse(nextProps.survey.survey)
+        if(key === 'survey' && nextProps.survey.survey !== ''){
+          surveyData[key]= JSON.parse(nextProps.survey['survey'])
+        }
         else
           surveyData[key]= nextProps.survey[key]
       };
