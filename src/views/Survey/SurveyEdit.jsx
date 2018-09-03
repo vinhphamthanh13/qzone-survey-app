@@ -43,7 +43,7 @@ class SurveyEdit extends React.Component{
   componentWillReceiveProps(nextProps) {
     const { surveyInfo } = this.state;
     for(var key in nextProps.survey) {
-      if(key === 'survey')
+      if(key === 'survey' && nextProps.survey.survey !== '')
         surveyInfo[key]= JSON.parse(nextProps.survey.survey)
       else
         surveyInfo[key]= nextProps.survey[key]

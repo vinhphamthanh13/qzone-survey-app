@@ -11,6 +11,7 @@ import { fetchSurveyParticipantResponse } from "actions/surveyAnswer.jsx"
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import * as Survey from 'survey-react';
+import _ from 'lodash';
 
 var surveyInfo= '';
 var id= ''
@@ -38,7 +39,7 @@ class ParticipantResponseResult extends React.Component{
   componentWillMount(){
     id  = this.props.match.params.id
     this.props.fetchSurvey(id);
-    this.props.fetchSurveyParticipantResponse('1',id)
+    this.props.fetchSurveyParticipantResponse('6',id)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -49,11 +50,11 @@ class ParticipantResponseResult extends React.Component{
     const { classes } = this.props;
     const { surveyData,participantResponse } = this.state
     const {title, description, survey} = surveyData
+    console.log(_.isEmpty(surveyData))
     surveyInfo = new Survey.Model(survey);
     surveyInfo.mode = 'display';
-    if(surveyData === undefined)
-      return null
-    if (participantResponse === undefined || participantResponse.questionAnswers === '')
+    
+    if (participantResponse === undefined || participantResponse.questionAnswers === '' || !surveyData)
       return null;
     else{
       surveyInfo.data=JSON.parse(participantResponse.questionAnswers)

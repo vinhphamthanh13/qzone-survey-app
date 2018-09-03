@@ -24,7 +24,8 @@ class SurveyCreate extends React.Component{
         description: '',
         logo: '',
         privacy: false,
-        survey: ''
+        survey: '',
+        userId: '1'
       },
       titleState: '',
       descriptionState: '',
@@ -42,7 +43,7 @@ class SurveyCreate extends React.Component{
       this.setState({titleState: "error"})
     if (_.isEmpty(description))
       this.setState({descriptionState: "error"})
-    if (titleState === "success" && descriptionState === "success"){
+    if (titleState === "success" && descriptionState === "success" ){
       this.props.createSurvey(this.state.surveyInfo, (response) => {
         window.location = "/admin/survey/list"
       });

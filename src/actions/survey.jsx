@@ -18,7 +18,7 @@ export function fetchSurveys() {
 }
 
 export function fetchSurvey(id, callback) {
-  const request = axios.get(`${ROOT_URL}/{id}?id=${id}`)
+  const request = axios.get(`${ROOT_URL}/${id}`)
   return {
     type: FETCH_SURVEY,
     payload: request
@@ -26,7 +26,7 @@ export function fetchSurvey(id, callback) {
 }
 
 export function deleteSurvey(id, callback) {
-  axios.delete(`${ROOT_URL}/{id}?id=${id}`)
+  axios.delete(`${ROOT_URL}/${id}`)
     .then(() => callback())
   return {
     type: DELETE_SURVEY
