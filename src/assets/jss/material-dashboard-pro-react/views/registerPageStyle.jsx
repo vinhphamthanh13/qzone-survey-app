@@ -6,11 +6,12 @@ import {
   container,
   cardTitle
 } from "assets/jss/material-dashboard-pro-react.jsx";
-
+import customSelectStyle from "assets/jss/material-dashboard-pro-react/customSelectStyle.jsx";
 import customCheckboxRadioSwitch from "assets/jss/material-dashboard-pro-react/customCheckboxRadioSwitch.jsx";
 
 const registerPageStyle = {
   ...customCheckboxRadioSwitch,
+  ...customSelectStyle,
   cardTitle: {
     ...cardTitle,
     textAlign: "center"

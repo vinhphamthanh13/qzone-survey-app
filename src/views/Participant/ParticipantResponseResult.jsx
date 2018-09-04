@@ -37,7 +37,7 @@ class ParticipantResponseResult extends React.Component{
 
   componentWillMount(){
     sid  = this.props.match.params.sid;
-    pid = this.props.match.params.pid || '6'
+    pid = this.props.match.params.pid || '5'
     this.props.fetchSurvey(sid);
     this.props.fetchSurveyParticipantResponse(pid,sid)
   }
@@ -50,7 +50,6 @@ class ParticipantResponseResult extends React.Component{
     const { classes } = this.props;
     const { surveyData,participantResponse } = this.state
     
-    console.log(this.state)
     if (participantResponse === undefined || participantResponse.questionAnswers === "" || !surveyData || participantResponse === "")
       return <h1>Not Available</h1>;
     else{
