@@ -7,6 +7,8 @@ import Dashboard from "views/Dashboard/Dashboard.jsx";
 import Profile from "views/Profile/Profile.jsx";
 import SurveyEdit from "views/Survey/SurveyEdit.jsx";
 import ParticipantList from "views/Participant/ParticipantList.jsx";
+import ParticipantResponseResult from "views/Participant/ParticipantResponseResult.jsx";
+import ParticipantDetail from "views/Participant/ParticipantDetail.jsx";
 
 export const dashboardRoutes = [
   {
@@ -47,8 +49,19 @@ export const otherRoutes=[
     component: SurveyEdit
   },
   {
-    path: "/admin/survey/participant/:id",
+    path: "/admin/survey/participants/:sid",
     name: "Participant List",
     component: ParticipantList
+  },
+  {
+    path: "/admin/survey/p_result/:sid/:pid",
+    name: "Participant Result",
+    component: ParticipantResponseResult
+  },
+  {
+    path: "/admin/survey/p_detail/:sid/:pid",
+    name: "Participant Detail",
+    component: ParticipantDetail
   }
+
 ]

@@ -16,7 +16,7 @@ class SurveyResponse extends React.Component {
           <div className={classes.fullPage}>
             <Switch>
               <Route
-                path="/surveys/result/:id"
+                path="/surveys/result/:sid"
                 component={ParticipantResponseResult}
                 key={'ParticipantResponseResult'}
               />

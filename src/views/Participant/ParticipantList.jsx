@@ -1,6 +1,7 @@
 import React from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from "prop-types";
+import { Link } from 'react-router-dom';
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import Card from "components/Card/Card.jsx";
@@ -14,6 +15,7 @@ import {Table, TableBody, TableCell, TableHead, TableRow} from "@material-ui/cor
 import {fetchSurveys, deleteSurvey,deleteAllSurvey} from "actions/survey"
 
 const rows = ["#","Name", "Description", "", ""]
+var sid=''
 class ParticipantList extends React.Component{
   constructor(props) {
     super(props);
@@ -25,9 +27,9 @@ class ParticipantList extends React.Component{
   //   this.setState({surveyList: nextProps.surveyList})
   // }
 
-  // componentWillMount(){
-  //   this.props.fetchSurveys()
-  // }
+  componentWillMount(){
+    sid  = this.props.match.params.sid
+  }
 
   render() {
     const { classes } = this.props;
@@ -55,7 +57,22 @@ class ParticipantList extends React.Component{
                       }, this)}
                     </TableRow>
                   </TableHead>
-                  
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>1</TableCell>
+                      <TableCell>Raj</TableCell>
+                      <TableCell>ah cbhd dhsdc ahh</TableCell>
+                      <TableCell><Link to={`/admin/survey/p_result/${sid}/${5}`}>Result</Link></TableCell>
+                      <TableCell><Link to={`/admin/survey/p_detail/${sid}/${5}`}>Details</Link></TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>2</TableCell>
+                      <TableCell>Ana</TableCell>
+                      <TableCell>ah cbhd dhsdc ahh</TableCell>
+                      <TableCell><Link to={`/admin/survey/p_result/${sid}/${6}`}>Result</Link></TableCell>
+                      <TableCell><Link to={`/admin/survey/p_detail/${sid}/${6}`}>Details</Link></TableCell>
+                    </TableRow>
+                  </TableBody>
                 </Table>
               </CardBody>
             </Card>

@@ -97,6 +97,8 @@ class SurveyList extends React.Component{
 
   render() {
     const { classes } = this.props;
+      if (!this.state.surveyList)
+        return null;
       return (
         <GridContainer>
           <GridItem xs={12}>
@@ -146,7 +148,7 @@ class SurveyList extends React.Component{
                             <TableCell>{n.description}</TableCell>
                             <TableCell><Link to={`/admin/survey/show/${n.id}`}>Show</Link></TableCell>
                             <TableCell><Link to="#" onClick={()=> this.warningWithConfirmMessage(n.id)}>Delete</Link></TableCell>
-                            <TableCell><Link to={`/admin/survey/participant/${n.id}`}>Participants</Link></TableCell>
+                            <TableCell><Link to={`/admin/survey/participants/${n.id}`}>Participants</Link></TableCell>
                             <TableCell/>
                           </TableRow>
                         )

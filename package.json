@@ -12,6 +12,7 @@
     "react": "^16.4.2",
     "react-bootstrap-sweetalert": "^4.4.1",
     "react-dom": "^16.4.2",
+    "react-flash-message": "^1.0.2",
     "react-popper": "^1.0.2",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
