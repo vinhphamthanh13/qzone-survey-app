@@ -11,11 +11,10 @@ import { fetchSurveyParticipantResponse } from "actions/surveyAnswer.jsx"
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import * as Survey from 'survey-react';
-import _ from 'lodash';
 
 var surveyInfo= '';
-var id= ''
-
+var sid= ''
+var pid= ''
 class ParticipantResponseResult extends React.Component{
   constructor(props) {
     super(props);
@@ -37,9 +36,10 @@ class ParticipantResponseResult extends React.Component{
   }
 
   componentWillMount(){
-    id  = this.props.match.params.id
-    this.props.fetchSurvey(id);
-    this.props.fetchSurveyParticipantResponse('6',id)
+    sid  = this.props.match.params.sid;
+    pid = this.props.match.params.pid || '6'
+    this.props.fetchSurvey(sid);
+    this.props.fetchSurveyParticipantResponse(pid,sid)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -49,14 +49,14 @@ class ParticipantResponseResult extends React.Component{
   render() {
     const { classes } = this.props;
     const { surveyData,participantResponse } = this.state
-    const {title, description, survey} = surveyData
-    console.log(_.isEmpty(surveyData))
-    surveyInfo = new Survey.Model(survey);
-    surveyInfo.mode = 'display';
     
-    if (participantResponse === undefined || participantResponse.questionAnswers === '' || !surveyData)
-      return null;
+    console.log(this.state)
+    if (participantResponse === undefined || participantResponse.questionAnswers === "" || !surveyData || participantResponse === "")
+      return <h1>Not Available</h1>;
     else{
+      const {title, description, survey} = surveyData
+      surveyInfo = new Survey.Model(survey);
+      surveyInfo.mode = 'display';
       surveyInfo.data=JSON.parse(participantResponse.questionAnswers)
       return(
         <div className={classes.content}>
