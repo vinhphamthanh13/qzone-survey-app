@@ -73,6 +73,8 @@ class SurveyEdit extends React.Component{
   handleSurveyUpdate(option){
     const {titleState, descriptionState, surveyInfo} = this.state
     const {title, description} = surveyInfo
+    surveyInfo['survey']= JSON.stringify(this.state.surveyInfo.survey)
+    this.setState({surveyInfo: surveyInfo})
     if (_.isEmpty(title))
       this.setState({titleState: "error"})
     if (_.isEmpty(description))

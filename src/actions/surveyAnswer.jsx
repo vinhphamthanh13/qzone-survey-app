@@ -4,7 +4,7 @@ export const CREATE_SURVEY_ANSWER = 'create_survey_answer';
 export const FETCH_SURVEY_PARTICIPANT_RESPONSE = 'fetch_survey_participant_response';
 export const FETCH_SURVEY_RESPONSE = 'fetch_survey_response';
 
-const ROOT_URL = `http://45.117.170.211:8090/api`
+const ROOT_URL = `http://13.211.215.72:8092/api`
 
 export function createSurveyAnswer(values,callback) {
   axios.post(`${ROOT_URL}/survey-answers`,values)
