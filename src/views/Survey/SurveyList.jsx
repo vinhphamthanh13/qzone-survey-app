@@ -14,9 +14,13 @@ import { compose } from 'redux';
 import listPageStyle from "assets/jss/material-dashboard-pro-react/views/listPageStyle.jsx";
 import {Table, TableBody, TableCell, TableHead, TableRow, Checkbox} from "@material-ui/core";
 import SweetAlert from "react-bootstrap-sweetalert";
-import {fetchSurveys, deleteSurvey,deleteAllSurvey} from "actions/survey"
+import {fetchSurveys, deleteSurvey,deleteAllSurvey} from "actions/survey";
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+import Alert from 'react-s-alert';
+import 'react-s-alert/dist/s-alert-default.css';
+import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
 
-const rows = ["Title", "Description", "", ""]
+const rows = ["Title", "Description", "", "",""]
 class SurveyList extends React.Component{
   constructor(props) {
     super(props);
@@ -95,6 +99,15 @@ class SurveyList extends React.Component{
     })
   }
 
+  handleClick(e) {
+    console.log("KKKKKKK")
+    e.preventDefault();
+    Alert.info('Test message 2', {
+      position: 'bottom-right',
+      effect: 'bouncyflip'
+    });
+}
+
   render() {
     const { classes } = this.props;
       if (!this.state.surveyList)
@@ -149,7 +162,13 @@ class SurveyList extends React.Component{
                             <TableCell><Link to={`/admin/survey/show/${n.id}`}>Show</Link></TableCell>
                             <TableCell><Link to="#" onClick={()=> this.warningWithConfirmMessage(n.id)}>Delete</Link></TableCell>
                             <TableCell><Link to={`/admin/survey/participants/${n.id}`}>Participants</Link></TableCell>
-                            <TableCell/>
+                            <TableCell>
+                              <CopyToClipboard text={`http://surveyquestionnaireapp.herokuapp.com/surveys/${n.id}`} 
+                                
+                              >
+                                <Link to="#" onClick={this.handleClick}>Copy</Link>
+                              </CopyToClipboard>
+                            </TableCell>
                           </TableRow>
                         )
                     })}
