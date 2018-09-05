@@ -2225,11 +2225,11 @@ blockquote p {
   font-style: italic; }
 
 a {
-  color: #9c27b0;
+  color: #d81b60;
   text-decoration: none; }
 
 a:hover, a:focus {
-  color: #89229b;
+  color: #d81b60;
   text-decoration: none; }
 
 legend {

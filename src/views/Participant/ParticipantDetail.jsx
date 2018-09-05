@@ -26,7 +26,7 @@ class ParticipantDetail extends React.Component{
           </CardText>
         </CardHeader>
         <CardBody>
-          Waiting for API
+          Not completed Yet!
         </CardBody>
         <CardFooter className={classes.justifyContentCenter}>
         	<Button color="rose" href={`/admin/survey/participants/${sid}`}>

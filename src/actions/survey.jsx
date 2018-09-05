@@ -36,7 +36,16 @@ export function deleteSurvey(id, callback) {
 
 export function deleteAllSurvey(id, callback) {
   axios.delete(ROOT_URL)
-    .then(() => callback())
+    .then(
+      response => {
+        callback(response);
+        // return response.json();
+      },
+      error => {
+        callback(error.response)
+        return error.response;
+      }
+    )
   return {
     type: DELETE_ALL_SURVEY
   };

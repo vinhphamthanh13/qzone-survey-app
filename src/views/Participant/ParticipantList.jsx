@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import Card from "components/Card/Card.jsx";
+import Button from "components/CustomButtons/Button.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardText from "components/Card/CardText.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
@@ -12,7 +13,8 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import listPageStyle from "assets/jss/material-dashboard-pro-react/views/listPageStyle.jsx";
 import {Table, TableBody, TableCell, TableHead, TableRow} from "@material-ui/core";
-import {fetchSurveys, deleteSurvey,deleteAllSurvey} from "actions/survey"
+import CardFooter from "components/Card/CardFooter.jsx";
+import {fetchSurveys, deleteSurvey,deleteAllSurvey} from "actions/survey";
 
 const rows = ["#","Name", "Description", "", ""]
 var sid=''
@@ -43,6 +45,7 @@ class ParticipantList extends React.Component{
                 </CardText>
               </CardHeader>
               <CardBody>
+                <p>This page shows dummy data only</p>
                 <Table className={classes.table} aria-labelledby="tableTitle">
                   <TableHead>
                     <TableRow>
@@ -75,6 +78,11 @@ class ParticipantList extends React.Component{
                   </TableBody>
                 </Table>
               </CardBody>
+              <CardFooter className={classes.justifyContentCenter}>
+                <Button color="rose" href='/admin/survey/list'>
+                  Back To Survey List
+                </Button>
+              </CardFooter>
             </Card>
           </GridItem>
         </GridContainer>

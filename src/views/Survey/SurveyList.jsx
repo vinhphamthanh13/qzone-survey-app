@@ -19,8 +19,10 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 import Alert from 'react-s-alert';
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
+import { Info, Person, Delete, FileCopy } from "@material-ui/icons";
+import ReactTooltip from 'react-tooltip'
 
-const rows = ["Title", "Description", "", "",""]
+const rows = ["Title", "", "","",""]
 class SurveyList extends React.Component{
   constructor(props) {
     super(props);
@@ -144,7 +146,7 @@ class SurveyList extends React.Component{
                         );
                       }, this)}
                       <TableCell>
-                        {this.state.deleteAll && <Link to="#" onClick={()=> this.warningWithConfirmMessage("")}>Delete All</Link>}
+                        {this.state.deleteAll && <Link to="#" onClick={()=> this.warningWithConfirmMessage("")}><Delete/></Link>}
                       </TableCell>
                     </TableRow>
                   </TableHead>
@@ -158,16 +160,18 @@ class SurveyList extends React.Component{
                           >
                             <TableCell>{index+1}</TableCell>
                             <TableCell>{n.title}</TableCell>
-                            <TableCell>{n.description}</TableCell>
-                            <TableCell><Link to={`/admin/survey/show/${n.id}`}>Show</Link></TableCell>
-                            <TableCell><Link to="#" onClick={()=> this.warningWithConfirmMessage(n.id)}>Delete</Link></TableCell>
-                            <TableCell><Link to={`/admin/survey/participants/${n.id}`}>Participants</Link></TableCell>
+                            <TableCell><Link data-tip='Show' to={`/admin/survey/show/${n.id}`}><Info/></Link></TableCell>
+                            <TableCell><Link data-tip='Delete' to="#" onClick={()=> this.warningWithConfirmMessage(n.id)}><Delete/></Link></TableCell>
+                            <TableCell><Link data-tip='Participants' to={`/admin/survey/participants/${n.id}`}><Person/></Link></TableCell>
                             <TableCell>
                               <CopyToClipboard text={`http://surveyquestionnaireapp.herokuapp.com/surveys/${n.id}`} 
                                 
                               >
-                                <Link to="#" onClick={this.handleClick}>Copy</Link>
+                                <Link data-tip='Copy Link'  to="#" onClick={this.handleClick}><FileCopy/></Link>
                               </CopyToClipboard>
+                            </TableCell>
+                            <TableCell>
+                              <ReactTooltip />
                             </TableCell>
                           </TableRow>
                         )
