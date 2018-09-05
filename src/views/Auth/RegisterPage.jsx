@@ -47,13 +47,6 @@ class RegisterPage extends React.Component {
     return false;
   }
 
-  compare(string1, string2) {
-    if (string1 === string2) {
-      return true;
-    }
-    return false;
-  }
-
   registerClick() {
     if (this.state.loginState === "") {
       this.setState({ loginState: "error" });

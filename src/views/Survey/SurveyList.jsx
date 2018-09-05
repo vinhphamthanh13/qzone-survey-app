@@ -100,9 +100,9 @@ class SurveyList extends React.Component{
   }
 
   handleClick(e) {
-    console.log("KKKKKKK")
     e.preventDefault();
-    Alert.info('Test message 2', {
+    Alert.closeAll()
+    Alert.info('Copied', {
       position: 'bottom-right',
       effect: 'bouncyflip'
     });
@@ -175,6 +175,7 @@ class SurveyList extends React.Component{
                   </TableBody>
                 </Table>
                 {this.state.sweetAlert}
+                <Alert stack={true}/>
               </CardBody>
             </Card>
           </GridItem>
