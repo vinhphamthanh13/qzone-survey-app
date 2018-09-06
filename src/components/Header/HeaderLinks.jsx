@@ -72,7 +72,7 @@ class HeaderLinks extends React.Component {
               aria-label="Notifications"
               aria-owns={notificationOpen ? "menu-list" : null}
               aria-haspopup="true"
-              onClick={this.handleClick}
+              onClick={this.handleUserClick}
               className={classes.buttonLink}
               muiClasses={{
                 label: ""
@@ -146,7 +146,6 @@ class HeaderLinks extends React.Component {
             </ClickAwayListener>
           </Popper>
         </Manager>
-
         <Manager className={managerClasses}>
           <Target>
             <Button

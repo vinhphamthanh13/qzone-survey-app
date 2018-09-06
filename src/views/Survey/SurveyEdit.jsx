@@ -1,4 +1,5 @@
 import React from 'react';
+import { Route } from 'react-router-dom'
 import PropTypes from "prop-types";
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -14,6 +15,7 @@ import SurveyForm from "views/Survey/SurveyForm"
 import { fetchSurvey, editSurvey } from "actions/survey.jsx";
 import _ from 'lodash';
 
+var SID = ''
 class SurveyEdit extends React.Component{
 	constructor(props){
     super(props);
@@ -35,9 +37,9 @@ class SurveyEdit extends React.Component{
   }
 
   componentWillMount(){
-    const { id } = this.props.match.params
+    SID = this.props.match.params.id
     this.setState({edit: true})
-    this.props.fetchSurvey(id);
+    this.props.fetchSurvey(SID);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -101,6 +103,14 @@ class SurveyEdit extends React.Component{
           <SurveyForm survey={this.state}  change={this.change} changeQuestions={this.changeQuestions} classes={this.props.classes}/>
         </CardBody>
         <CardFooter className={classes.justifyContentCenter}>
+        <Route render={({ history}) => (
+            <Button
+              color="rose"
+              onClick={() => { history.push(`/admin/survey/show/${SID}`) }}
+            >
+              Back 
+            </Button>
+          )}/>
         	<Button color="rose" onClick={this.handleSurveyUpdate.bind(this)}>
             Update
           </Button>

@@ -15,6 +15,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { fetchSurvey } from "actions/survey.jsx";
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import { Route } from 'react-router-dom'
 
 Survey.Survey.cssType = "bootstrap";
 Survey.defaultBootstrapCss.navigationButton = "btn btn-green";
@@ -125,9 +126,14 @@ class SurveyQuestionnaire extends React.Component{
               </GridContainer>
             </CardBody>
             <CardFooter className={classes.justifyContentCenter}>
-              <Button color="rose" href='/admin/survey/list'>
-                Back To Survey List
+            <Route render={({ history}) => (
+              <Button
+                color="rose"
+                onClick={() => { history.push('/admin/survey/list') }}
+              >
+                Back 
               </Button>
+            )}/>
             </CardFooter>
           </Card>
         </GridItem>

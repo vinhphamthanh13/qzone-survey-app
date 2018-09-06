@@ -60,9 +60,7 @@ function Header({ ...props }) {
           </div>
         </Hidden>
         <div className={classes.flex}>
-          <Button href="#" className={classes.title} color="transparent">
-            {makeBrand()}
-          </Button>
+         
         </div>
         <Hidden smDown implementation="css">
           <HeaderLinks />

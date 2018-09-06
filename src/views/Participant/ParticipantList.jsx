@@ -1,4 +1,5 @@
 import React from "react";
+import { Route } from 'react-router-dom'
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from "prop-types";
 import { Link } from 'react-router-dom';
@@ -79,9 +80,14 @@ class ParticipantList extends React.Component{
                 </Table>
               </CardBody>
               <CardFooter className={classes.justifyContentCenter}>
-                <Button color="rose" href='/admin/survey/list'>
-                  Back To Survey List
-                </Button>
+                <Route render={({ history}) => (
+                  <Button
+                    color="rose"
+                    onClick={() => { history.push('/admin/survey/list') }}
+                  >
+                    Back 
+                  </Button>
+                )}/>
               </CardFooter>
             </Card>
           </GridItem>

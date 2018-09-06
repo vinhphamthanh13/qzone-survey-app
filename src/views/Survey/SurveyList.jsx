@@ -129,7 +129,7 @@ class SurveyList extends React.Component{
                 <Table className={classes.table} aria-labelledby="tableTitle">
                   <TableHead>
                     <TableRow>
-                      <TableCell colSpan={4} >
+                      <TableCell  >
                         <Checkbox
                           checked={this.state.deleteAll || false}
                           onChange= {(event)=>this.setState({deleteAll: !this.state.deleteAll})}
@@ -137,13 +137,12 @@ class SurveyList extends React.Component{
                       </TableCell>
                       <TableCell
                         key={'title'}
-                        colSpan={4}
                       >
                         Title
                       </TableCell>
-                      <TableCell colSpan={6}/>
+                      <TableCell />
                       <TableCell>
-                        {this.state.deleteAll && <Link to="#" onClick={()=> this.warningWithConfirmMessage("")}><Delete/></Link>}
+                        {this.state.deleteAll && <Link to="#" data-tip='Delete' onClick={()=> this.warningWithConfirmMessage("")}><Delete/></Link>}
                       </TableCell>
                     </TableRow>
                   </TableHead>
@@ -155,10 +154,9 @@ class SurveyList extends React.Component{
                             hover
                             key={index}
                           >
-                            <TableCell colSpan={4}>{index+1}</TableCell>
-                            <TableCell colSpan={4}>{n.title}</TableCell>
-                            <TableCell colSpan={6}>
-                              <Link data-tip='Show' to={`/admin/survey/show/${n.id}`}><Info/></Link>
+                            <TableCell >{index+1}</TableCell>
+                            <TableCell ><Link data-tip='Show' to={`/admin/survey/show/${n.id}`}>{n.title}</Link></TableCell>
+                            <TableCell >
                               <Link data-tip='Delete' to="#" onClick={()=> this.warningWithConfirmMessage(n.id)}><Delete/></Link>
                               <Link data-tip='Participants' to={`/admin/survey/participants/${n.id}`}><Person/></Link>
                               <CopyToClipboard text={`http://13.211.215.72:3000/surveys/${n.id}`} 
