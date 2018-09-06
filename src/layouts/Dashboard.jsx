@@ -6,7 +6,7 @@ import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 import { dashboardRoutes, otherRoutes } from "routes/dashboard.jsx";
 import Sidebar from "components/Sidebar/Sidebar.jsx";
-// import Header from "components/Header/Header.jsx";
+import Header from "components/Header/Header.jsx";
 import withStyles from "@material-ui/core/styles/withStyles";
 import appStyle from "assets/jss/material-dashboard-pro-react/layouts/dashboardStyle.jsx";
 import image from "assets/img/sidebar-2.jpg";
@@ -31,7 +31,7 @@ var ps;
 class Dashboard extends React.Component {
   state = {
     mobileOpen: false,
-    miniActive: false
+    miniActive: true
   };
   handleDrawerToggle = () => {
     this.setState({ mobileOpen: !this.state.mobileOpen });
@@ -89,7 +89,13 @@ class Dashboard extends React.Component {
           {...rest}
         />
         <div className={mainPanel} ref="mainPanel">
-          
+          <Header
+            sidebarMinimize={this.sidebarMinimize.bind(this)}
+            miniActive={this.state.miniActive}
+            routes={dashboardRoutes}
+            handleDrawerToggle={this.handleDrawerToggle}
+            {...rest}
+          />
           <div className={classes.content}>
             <div className={classes.container}>{switchRoutes}</div>
           </div> 
