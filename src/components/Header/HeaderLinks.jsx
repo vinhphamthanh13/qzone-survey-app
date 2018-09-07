@@ -20,10 +20,7 @@ class HeaderLinks extends React.Component {
     this.setState({ userOpen: !this.state.userOpen });
   };
   handleClose = () => {
-    this.setState({ notificationOpen: false });
-  };
-  handleUserClose = () => {
-    this.setState({ userOpen: false });
+    this.setState({ notificationOpen: false, userOpen: false });
   };
   handleLogout = () => {
     this.setState({ userOpen: false });
@@ -72,7 +69,7 @@ class HeaderLinks extends React.Component {
               aria-label="Notifications"
               aria-owns={notificationOpen ? "menu-list" : null}
               aria-haspopup="true"
-              onClick={this.handleUserClick}
+              onClick={this.handleClick}
               className={classes.buttonLink}
               muiClasses={{
                 label: ""
@@ -152,7 +149,7 @@ class HeaderLinks extends React.Component {
               color="transparent"
               justIcon
               aria-label="Person"
-              aria-owns={userOpen ? "menu-list" : null}
+              aria-owns={userOpen ? "menu-list1" : null}
               aria-haspopup="true"
               onClick={this.handleUserClick}
               className={classes.buttonLink}
@@ -183,16 +180,16 @@ class HeaderLinks extends React.Component {
               classes.pooperResponsive
             }
           >
-            <ClickAwayListener onClickAway={this.handleUserClose}>
+            <ClickAwayListener onClickAway={this.handleClose}>
               <Grow
                 in={userOpen}
-                id="menu-list"
+                id="menu-list1"
                 style={{ transformOrigin: "0 0 0" }}
               >
                 <Paper className={classes.dropdown}>
                   <MenuList role="menu">
                     <MenuItem
-                      onClick={this.handleUserClose}
+                      onClick={this.handleClose}
                       className={dropdownItem}
                     >
                       {"Profile"}

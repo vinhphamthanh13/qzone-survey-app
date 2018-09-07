@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from "prop-types";
+import { Route } from 'react-router-dom'
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -81,6 +82,14 @@ class SurveyCreate extends React.Component{
           <SurveyForm survey={this.state} change={this.change} classes={this.props.classes} changeQuestions={this.changeQuestions}/>
 		    </CardBody>
 		    <CardFooter className={classes.justifyContentCenter}>
+          <Route render={({ history}) => (
+            <Button
+              color="rose"
+              onClick={() => { history.push(`/admin/survey/list`) }}
+            >
+              Back 
+            </Button>
+          )}/>
           <Button color="rose" onClick={this.handleSurvey.bind(this)}>
             Submit Survey
           </Button>

@@ -9,7 +9,7 @@ import Sidebar from "components/Sidebar/Sidebar.jsx";
 import Header from "components/Header/Header.jsx";
 import withStyles from "@material-ui/core/styles/withStyles";
 import appStyle from "assets/jss/material-dashboard-pro-react/layouts/dashboardStyle.jsx";
-import image from "assets/img/sidebar-2.jpg";
+// import image from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/logo-white.svg";
 
 const switchRoutes = (
@@ -31,7 +31,7 @@ var ps;
 class Dashboard extends React.Component {
   state = {
     mobileOpen: false,
-    miniActive: true
+    miniActive: false
   };
   handleDrawerToggle = () => {
     this.setState({ mobileOpen: !this.state.mobileOpen });
@@ -80,7 +80,6 @@ class Dashboard extends React.Component {
           routes={dashboardRoutes}
           logoText={"Survey"}
           logo={logo}
-          image={image}
           handleDrawerToggle={this.handleDrawerToggle}
           open={this.state.mobileOpen}
           color="blue"

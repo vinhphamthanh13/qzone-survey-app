@@ -9,6 +9,7 @@ import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardText from "components/Card/CardText.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
+import CardIcon from "components/Card/CardIcon.jsx";
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import listPageStyle from "assets/jss/material-dashboard-pro-react/views/listPageStyle.jsx";
@@ -19,7 +20,7 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 import Alert from 'react-s-alert';
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
-import { Info, Person, Delete, FileCopy } from "@material-ui/icons";
+import { Info, Person, Delete, FileCopy, Poll } from "@material-ui/icons";
 import ReactTooltip from 'react-tooltip'
 
 class SurveyList extends React.Component{
@@ -117,10 +118,11 @@ class SurveyList extends React.Component{
         <GridContainer>
           <GridItem xs={12}>
             <Card>
-              <CardHeader color="primary" icon>
-               <CardText color="rose">
-                  <h4 className={classes.cardTitle}>Survey List</h4>
-                </CardText>
+              <CardHeader color="rose" icon>
+                <CardIcon color="rose">
+                  <Poll />
+                </CardIcon>
+                <h3 className={classes.cardIconTitle}>Survey List</h3>
                 <Button size="md"  className={classes.buttonDisplay} href="/admin/survey/create"> 
                   New Survey
                 </Button>

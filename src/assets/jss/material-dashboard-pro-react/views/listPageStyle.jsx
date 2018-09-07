@@ -11,9 +11,9 @@ const listPageStyle = {
     position: "absolute",
     right: 0,
     top: 10,
-    backgroundColor: "#d81b60",
+    backgroundColor: "#303f9f",
     "&:hover,&:focus": {
-      backgroundColor: "#d81b60"
+      backgroundColor: "#303f9f"
     }
   },
   justifyContentCenter: {
