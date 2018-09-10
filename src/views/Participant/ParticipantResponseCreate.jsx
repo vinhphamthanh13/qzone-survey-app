@@ -5,7 +5,7 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
-import registerPageStyle from "assets/jss/material-dashboard-pro-react/views/registerPageStyle";
+import listPageStyle from "assets/jss/material-dashboard-pro-react/views/registerPageStyle";
 import { fetchSurvey } from "actions/survey.jsx";
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -69,14 +69,13 @@ class ParticipantResponseCreate extends React.Component {
               <Card className={classes.cardSignup}>
                 <h2 className={classes.cardTitle}>{title}</h2>
                 <CardBody>
-                  <GridContainer justify="center">
-                    <GridItem xs={12} sm={12} md={6}>
-                      <div className={classes.center}>
-                        {description}
-                      </div>
-                      <form className={classes.form}>
-                        <Survey.Survey model={surveyInfo} onComplete={this.sendDataToServer} />
-                      </form>
+                  <div className={classes.center}>
+                    {description}
+                  </div>
+                  <hr/>
+                  <GridContainer>
+                    <GridItem xs={12} sm={10}>
+                      <Survey.Survey model={surveyInfo} className={classes.buttonDisplay} onComplete={this.sendDataToServer}/>
                     </GridItem>
                   </GridContainer>
                 </CardBody>
@@ -98,6 +97,6 @@ function mapStateToProps(state) {
 }
 
 export default compose(
-  withStyles(registerPageStyle),
+  withStyles(listPageStyle),
   connect(mapStateToProps, {fetchSurvey, createSurveyAnswer}),
 )(ParticipantResponseCreate);
