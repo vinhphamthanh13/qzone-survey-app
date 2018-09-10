@@ -7,7 +7,6 @@ import GridItem from "components/Grid/GridItem.jsx";
 import Button from "components/CustomButtons/Button.jsx";
 import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
-import CardText from "components/Card/CardText.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardIcon from "components/Card/CardIcon.jsx";
 import { connect } from 'react-redux';
@@ -20,8 +19,12 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 import Alert from 'react-s-alert';
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
-import { Info, Person, Delete, FileCopy, Poll } from "@material-ui/icons";
-import ReactTooltip from 'react-tooltip'
+import { Person, Delete, FileCopy, Poll } from "@material-ui/icons";
+import ReactTooltip from 'react-tooltip';
+
+const iconStyle = {
+  marginRight: 30
+};
 
 class SurveyList extends React.Component{
   constructor(props) {
@@ -159,8 +162,8 @@ class SurveyList extends React.Component{
                             <TableCell >{index+1}</TableCell>
                             <TableCell ><Link data-tip='Show' to={`/admin/survey/show/${n.id}`}>{n.title}</Link></TableCell>
                             <TableCell >
-                              <Link data-tip='Delete' to="#" onClick={()=> this.warningWithConfirmMessage(n.id)}><Delete/></Link>
-                              <Link data-tip='Participants' to={`/admin/survey/participants/${n.id}`}><Person/></Link>
+                              <Link style={iconStyle} data-tip='Delete' to="#" onClick={()=> this.warningWithConfirmMessage(n.id) }><Delete/></Link>
+                              <Link style={iconStyle} data-tip='Participants' to={`/admin/survey/participants/${n.id}`}><Person/></Link>
                               <CopyToClipboard text={`http://13.211.215.72:3000/surveys/${n.id}`} 
                               >
                                 <Link data-tip='Copy Link'  to="#" onClick={this.handleClick}><FileCopy/></Link>

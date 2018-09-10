@@ -16,6 +16,15 @@ const listPageStyle = {
       backgroundColor: "#303f9f"
     }
   },
+  linkDisplay:{
+    position: "absolute",
+    right: 0,
+    top: 10,
+    // backgroundColor: "#303f9f",
+    "&:hover,&:focus": {
+      // backgroundColor: "#303f9f"
+    }
+  },
   justifyContentCenter: {
     justifyContent: "center"
   },

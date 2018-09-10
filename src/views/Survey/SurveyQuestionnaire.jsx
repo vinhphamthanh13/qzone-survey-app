@@ -6,7 +6,7 @@ import Button from "components/CustomButtons/Button.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
-import CardText from "components/Card/CardText.jsx";
+import CardIcon from "components/Card/CardIcon.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import listPageStyle from "assets/jss/material-dashboard-pro-react/views/listPageStyle.jsx";
@@ -15,7 +15,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { fetchSurvey } from "actions/survey.jsx";
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Route } from 'react-router-dom'
+import { Poll } from "@material-ui/icons";
+import { Route } from 'react-router-dom';
 
 Survey.Survey.cssType = "bootstrap";
 Survey.defaultBootstrapCss.navigationButton = "btn btn-green";
@@ -84,9 +85,10 @@ class SurveyQuestionnaire extends React.Component{
         <GridItem xs={12}>
           <Card>
             <CardHeader color="primary" icon>
-              <CardText color="rose">
-                <h4 className={classes.cardTitle}>Survey</h4>
-              </CardText>
+              <CardIcon color="rose">
+                <Poll />
+              </CardIcon>
+              <h3 className={classes.cardIconTitle}>Survey</h3>
               <Button size="md" href={`/admin/survey/edit/${this.props.match.params.id}`} className={classes.buttonDisplay}> 
                 Edit
               </Button>

@@ -9,24 +9,24 @@ import Button from "components/CustomButtons/Button.jsx";
 import headerStyle from "assets/jss/material-dashboard-pro-react/components/headerStyle.jsx";
 
 function Header({ ...props }) {
-  function makeBrand() {
-    var name;
-    props.routes.map((prop, key) => {
-      if (prop.collapse) {
-        prop.views.map((prop, key) => {
-          if (prop.path === props.location.pathname) {
-            name = prop.name;
-          }
-          return null;
-        });
-      }
-      if (prop.path === props.location.pathname) {
-        name = prop.name;
-      }
-      return null;
-    });
-    return name;
-  }
+  // function makeBrand() {
+  //   var name;
+  //   props.routes.map((prop, key) => {
+  //     if (prop.collapse) {
+  //       prop.views.map((prop, key) => {
+  //         if (prop.path === props.location.pathname) {
+  //           name = prop.name;
+  //         }
+  //         return null;
+  //       });
+  //     }
+  //     if (prop.path === props.location.pathname) {
+  //       name = prop.name;
+  //     }
+  //     return null;
+  //   });
+  //   return name;
+  // }
   const { classes, color } = props;
   const appBarClasses = cx({
     [" " + classes[color]]: color

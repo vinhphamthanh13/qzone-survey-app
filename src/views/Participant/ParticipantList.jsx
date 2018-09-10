@@ -1,5 +1,5 @@
 import React from "react";
-import { Route } from 'react-router-dom'
+import { Route } from 'react-router-dom';
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from "prop-types";
 import { Link } from 'react-router-dom';
@@ -8,7 +8,7 @@ import GridItem from "components/Grid/GridItem.jsx";
 import Card from "components/Card/Card.jsx";
 import Button from "components/CustomButtons/Button.jsx";
 import CardBody from "components/Card/CardBody.jsx";
-import CardText from "components/Card/CardText.jsx";
+import CardIcon from "components/Card/CardIcon.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -16,6 +16,7 @@ import listPageStyle from "assets/jss/material-dashboard-pro-react/views/listPag
 import {Table, TableBody, TableCell, TableHead, TableRow} from "@material-ui/core";
 import CardFooter from "components/Card/CardFooter.jsx";
 import {fetchSurveys, deleteSurvey,deleteAllSurvey} from "actions/survey";
+import { Poll } from "@material-ui/icons";
 
 const rows = ["#","Name", "Description", "", ""]
 var sid=''
@@ -41,9 +42,13 @@ class ParticipantList extends React.Component{
           <GridItem xs={12}>
             <Card>
               <CardHeader color="primary" icon>
-               <CardText color="rose">
-                  <h4 className={classes.cardTitle}>Participant List</h4>
-                </CardText>
+                <CardIcon color="rose">
+                  <Poll />
+                </CardIcon>
+                <h3 className={classes.cardIconTitle}>Participant List</h3>
+                <Link  to={'/admin/survey/list'} className={classes.linkDisplay} > 
+                  <u>Back</u>
+                </Link>
               </CardHeader>
               <CardBody>
                 <p>This page shows dummy data only</p>
