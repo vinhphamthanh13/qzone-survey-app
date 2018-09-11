@@ -52,6 +52,7 @@ export function deleteAllSurvey(id, callback) {
 }
 
 export function createSurvey(values,callback) {
+  console.log(values)
   axios.post(ROOT_URL,values)
     .then((response) => callback(response));
   return {

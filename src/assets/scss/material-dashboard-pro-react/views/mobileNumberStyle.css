@@ -1,0 +1,15 @@
+.react-phone-number-input__row {
+  padding-top: 32px;
+  padding-bottom: 27px;
+}
+
+.react-phone-number-input__input {
+  border-bottom: 1px solid #D2D2D2;
+}
+.react-phone-number-input__input:focus {
+  border-bottom: 2px solid #303f9f;
+}
+
+.react-phone-number-input__icon {
+  border: 0px solid rgba(0, 0, 0, 0.5);
+}

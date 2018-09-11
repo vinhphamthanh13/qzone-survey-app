@@ -62,7 +62,16 @@ const registerPageStyle = {
   checkboxLabel: {
     marginLeft: "6px",
     color: "rgba(0, 0, 0, 0.26)"
-  }
+  },
+  linkDisplay:{
+    position: "absolute",
+    right: 0,
+    top: 10,
+    // backgroundColor: "#303f9f",
+    "&:hover,&:focus": {
+      // backgroundColor: "#303f9f"
+    }
+  },
 };
 
 export default registerPageStyle;

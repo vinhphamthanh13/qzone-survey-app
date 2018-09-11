@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { InputAdornment, Checkbox, FormControlLabel, MenuItem, Select,FormControl, InputLabel } from "@material-ui/core";
+import { InputAdornment, FormLabel, Checkbox, FormControlLabel, MenuItem, Select,FormControl, InputLabel } from "@material-ui/core";
 import { Email, Person, Check, Lock } from "@material-ui/icons";
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -12,24 +12,50 @@ import CustomInput from "components/CustomInput/CustomInput.jsx";
 import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import registerPageStyle from "assets/jss/material-dashboard-pro-react/views/registerPageStyle";
-import { registerUser } from "actions/auth.jsx";
+import { registerUser,verifyUser } from "actions/auth.jsx";
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
+import "assets/scss/material-dashboard-pro-react/views/mobileNumberStyle.css";
+import 'react-s-alert/dist/s-alert-default.css';
+import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
+import Alert from 'react-s-alert';
+import VerificationPage from "views/Auth/VerificationPage.jsx";
+
+
 const userTypes = ['ADMIN', 'ASSESSOR','CUSTOMER']
 class RegisterPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      name: {
+        firstname: "",
+        lastname: ""
+      },
+      companyName: "",
+      department: "",
+      firstnameState: "",
+      lastnameState: "",
       email: "",
       password: "",
-      login: "",
       userType:"",
-      userTypeState:"",
-      loginState: "",
       emailState: "",
       passwordState: "",
       registerCheckbox: false,
-      registerCheckboxState: ""
+      registerCheckboxState: "",
+      mobile: {
+        countrycode: "",
+        mobilenumber: ""
+      },
+      phone: "",
+      openVerificationModal: false,
+      code: "",
+      verifyCode: {
+        email: "",
+        code: ""
+      }
     };
     this.change = this.change.bind(this);
+
   }
 
   verifyEmail(value) {
@@ -48,8 +74,15 @@ class RegisterPage extends React.Component {
   }
 
   registerClick() {
-    if (this.state.loginState === "") {
-      this.setState({ loginState: "error" });
+    const {mobile,phone} = this.state
+    mobile['mobilenumber']= phone.substr(phone.length-10)
+    mobile['countrycode'] = phone.substr(0,phone.length-10)
+    this.setState({mobile})
+    if (this.state.name.firstname === "") {
+      this.setState({ firstnameState: "error" });
+    }
+    if (this.state.name.lastname === "") {
+      this.setState({ lastnameState: "error" });
     }
     if (this.state.emailState === "") {
       this.setState({ emailState: "error" });
@@ -60,25 +93,32 @@ class RegisterPage extends React.Component {
     if (this.state.registerCheckboxState === "" ) {
       this.setState({ registerCheckboxState: "error" });
     }
-    if (this.state.userType === "" ) {
-      this.setState({ userTypeState: "error" });
-    }
-    if (this.state.loginState === "success" && this.state.emailState === "success" && this.state.passwordState === "success" && this.state.registerCheckboxState === "success" && this.state.userTypeState !== "error") {
+    if (this.state.name.firstname !== "" && this.state.name.lastname !== "" && this.state.emailState === "success" && this.state.passwordState === "success" && this.state.registerCheckboxState === "success" ) {
       this.props.registerUser(this.state, (response) =>{
+        if (response.status === 201)
+        {
+          this.setState({openVerificationModal: true})
+        }
+        else
+        {
+          Alert.error('error', {
+            position: 'bottom-right',
+            effect: 'bouncyflip'
+          });
+        }
       })
     }
   }
 
+  
+
   change(event, stateName, type, stateNameEqualTo, maxValue) {
-    
     switch (type) {
-      case "login":
-        if (this.verifyLength(event.target.value, 3)) {
-          this.setState({ [stateName + "State"]: "success" });
-        } else {
-          this.setState({ [stateName + "State"]: "error" });
-        }
-        this.setState({[stateName]: event.target.value})
+      case "name":
+        this.setState({ [stateName + "State"]: "success" });
+        const {name} = this.state
+        name[stateName] = event.target.value
+        this.setState({name})
         break;
       case "email":
         if (this.verifyEmail(event.target.value)) {
@@ -120,41 +160,41 @@ class RegisterPage extends React.Component {
               <CardBody>
                 <GridContainer justify="center">
                   <GridItem xs={12} sm={12} md={6}>
-                    <div className={classes.center}>
-                      <Button justIcon round color="twitter" >
-                        <i className="fab fa-twitter" />
-                      </Button>
-                      {` `}
-                      <Button justIcon round color="dribbble">
-                        <i className="fab fa-dribbble" />
-                      </Button>
-                      {` `}
-                      <Button justIcon round color="facebook">
-                        <i className="fab fa-facebook-f" />
-                      </Button>
-                      {` `}
-                      <h4 className={classes.socialTitle}>or be classical</h4>
-                    </div>
                     <form className={classes.form}>
-                      <CustomInput
-                        labelText="UserName"
-                        success={this.state.loginState === "success"}
-                        error={this.state.loginState === "error"}
-                        id="login"
-                        formControlProps={{
-                          fullWidth: true
-                        }}
-                        inputProps={{
-                          onChange: event =>
-                            this.change(event, "login", "login"),
-                          type: "text",
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <Person className={classes.inputAdornmentIcon} />
-                            </InputAdornment>
-                          )
-                        }}
-                      />
+                      <GridContainer>
+                        <GridItem xs={12} sm={6}>
+                          <CustomInput
+                            labelText="First Name"
+                            success={this.state.firstnameState === "success"}
+                            error={this.state.firstnameState === "error"}
+                            id="firstname"
+                            formControlProps={{
+                              fullWidth: true
+                            }}
+                            inputProps={{
+                              onChange: event =>
+                                this.change(event, "firstname", "name"),
+                              type: "text"
+                            }}
+                          />
+                        </GridItem>
+                        <GridItem xs={12} sm={6}>
+                          <CustomInput
+                            labelText="Last Name"
+                            success={this.state.lastnameState === "success"}
+                            error={this.state.lastnameState === "error"}
+                            id="lastname"
+                            formControlProps={{
+                              fullWidth: true
+                            }}
+                            inputProps={{
+                              onChange: event =>
+                                this.change(event, "lastname","name"),
+                              type: "text"
+                            }}
+                          />
+                        </GridItem>
+                      </GridContainer>
                       <CustomInput
                         labelText="Email"
                         success={this.state.emailState === "success"}
@@ -193,6 +233,34 @@ class RegisterPage extends React.Component {
                           )
                         }}
                       />
+                      <CustomInput
+                        labelText="Company Name"
+                        id="companyName"
+                        formControlProps={{
+                          fullWidth: true
+                        }}
+                        inputProps={{
+                          onChange: event =>
+                            this.change(event, "companyName", "companyName"),
+                          type: "text",
+                        }}
+                      />
+                      <CustomInput
+                        labelText="Department Name"
+                        id="department"
+                        formControlProps={{
+                          fullWidth: true
+                        }}
+                        inputProps={{
+                          onChange: event =>
+                            this.change(event, "department", "department"),
+                          type: "text",
+                        }}
+                      />
+                      <PhoneInput
+                        placeholder="Phone Number"
+                        value={ this.state.phone }
+                        onChange={ phone => this.setState({ phone }) } />
                       <FormControl
                         fullWidth
                         className={classes.selectFormControl}
@@ -249,8 +317,11 @@ class RegisterPage extends React.Component {
                         </Button>
                       </div>
                     </form>
+                    
                   </GridItem>
                 </GridContainer>
+                {this.state.openVerificationModal && <VerificationPage email={this.state.email} classes={classes}/>}
+                <Alert stack={true}/>
               </CardBody>
             </Card>
           </GridItem>
@@ -266,5 +337,5 @@ RegisterPage.propTypes = {
 
 export default compose(
   withStyles(registerPageStyle),
-  connect(null,{registerUser})
+  connect(null,{registerUser, verifyUser})
 )(RegisterPage);
