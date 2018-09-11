@@ -54,7 +54,7 @@ class VerificationPage extends React.Component{
           <DialogTitle id="alert-dialog-title">{"Verification Code"}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Please enter code send to your email id
+              Please check your email at <b><u>{this.props.email}</u></b> and enter verification code .
             </DialogContentText>
             <TextField
               id="with-placeholder"

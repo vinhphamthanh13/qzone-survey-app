@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { InputAdornment, FormLabel, Checkbox, FormControlLabel, MenuItem, Select,FormControl, InputLabel } from "@material-ui/core";
+import { InputAdornment, Checkbox, FormControlLabel, MenuItem, Select,FormControl, InputLabel } from "@material-ui/core";
 import { Email, Person, Check, Lock } from "@material-ui/icons";
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -12,17 +12,17 @@ import CustomInput from "components/CustomInput/CustomInput.jsx";
 import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import registerPageStyle from "assets/jss/material-dashboard-pro-react/views/registerPageStyle";
-import { registerUser,verifyUser } from "actions/auth.jsx";
+import { registerUser } from "actions/auth.jsx";
 import PhoneInput from 'react-phone-number-input';
+import Alert from 'react-s-alert';
+import VerificationPage from "views/Auth/VerificationPage.jsx";
 import 'react-phone-number-input/style.css';
 import "assets/scss/material-dashboard-pro-react/views/mobileNumberStyle.css";
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
-import Alert from 'react-s-alert';
-import VerificationPage from "views/Auth/VerificationPage.jsx";
-
 
 const userTypes = ['ADMIN', 'ASSESSOR','CUSTOMER']
+
 class RegisterPage extends React.Component {
   constructor(props) {
     super(props);
@@ -156,15 +156,19 @@ class RegisterPage extends React.Component {
         <GridContainer justify="center">
           <GridItem xs={12} sm={12} md={10}>
             <Card className={classes.cardSignup}>
-              <h2 className={classes.cardTitle}>Register</h2>
+              <h2 className={classes.cardTitle}>Survey Registration</h2>
               <CardBody>
+                <div className={classes.center}>
+                  <p>Please provide all required Details to register yourself with us</p>
+                </div>
+                <hr/>
                 <GridContainer justify="center">
                   <GridItem xs={12} sm={12} md={6}>
                     <form className={classes.form}>
                       <GridContainer>
                         <GridItem xs={12} sm={6}>
                           <CustomInput
-                            labelText="First Name"
+                            labelText="First Name*"
                             success={this.state.firstnameState === "success"}
                             error={this.state.firstnameState === "error"}
                             id="firstname"
@@ -174,13 +178,18 @@ class RegisterPage extends React.Component {
                             inputProps={{
                               onChange: event =>
                                 this.change(event, "firstname", "name"),
-                              type: "text"
+                              type: "text",
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <Person className={classes.inputAdornmentIcon} />
+                                </InputAdornment>
+                              )
                             }}
                           />
                         </GridItem>
                         <GridItem xs={12} sm={6}>
                           <CustomInput
-                            labelText="Last Name"
+                            labelText="Last Name*"
                             success={this.state.lastnameState === "success"}
                             error={this.state.lastnameState === "error"}
                             id="lastname"
@@ -190,13 +199,18 @@ class RegisterPage extends React.Component {
                             inputProps={{
                               onChange: event =>
                                 this.change(event, "lastname","name"),
-                              type: "text"
+                              type: "text",
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <Person className={classes.inputAdornmentIcon} />
+                                </InputAdornment>
+                              )
                             }}
                           />
                         </GridItem>
                       </GridContainer>
                       <CustomInput
-                        labelText="Email"
+                        labelText="Email*"
                         success={this.state.emailState === "success"}
                         error={this.state.emailState === "error"}
                         id="email"
@@ -215,7 +229,7 @@ class RegisterPage extends React.Component {
                         }}
                       />
                       <CustomInput
-                        labelText="Password"
+                        labelText="Password*"
                         success={this.state.passwordState === "success"}
                         error={this.state.passwordState === "error"}
                         id="password"
@@ -312,12 +326,11 @@ class RegisterPage extends React.Component {
                         }
                       />
                       <div className={classes.center}>
-                        <Button round color="primary" onClick={this.registerClick.bind(this)}>
+                        <Button round color="rose" onClick={this.registerClick.bind(this)}>
                           Get started
                         </Button>
                       </div>
                     </form>
-                    
                   </GridItem>
                 </GridContainer>
                 {this.state.openVerificationModal && <VerificationPage email={this.state.email} classes={classes}/>}
@@ -337,5 +350,5 @@ RegisterPage.propTypes = {
 
 export default compose(
   withStyles(registerPageStyle),
-  connect(null,{registerUser, verifyUser})
+  connect(null,{registerUser})
 )(RegisterPage);
