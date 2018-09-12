@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { InputAdornment, Checkbox, FormControlLabel, MenuItem, Select,FormControl, InputLabel } from "@material-ui/core";
+import { InputAdornment, Checkbox, FormControlLabel } from "@material-ui/core";
 import { Email, Person, Check, Lock } from "@material-ui/icons";
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -21,8 +21,6 @@ import "assets/scss/material-dashboard-pro-react/views/mobileNumberStyle.css";
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
 
-const userTypes = ['ADMIN', 'ASSESSOR','CUSTOMER']
-
 class RegisterPage extends React.Component {
   constructor(props) {
     super(props);
@@ -37,7 +35,6 @@ class RegisterPage extends React.Component {
       lastnameState: "",
       email: "",
       password: "",
-      userType:"",
       emailState: "",
       passwordState: "",
       registerCheckbox: false,
@@ -101,9 +98,9 @@ class RegisterPage extends React.Component {
         }
         else
         {
-          Alert.error('error', {
+          Alert.error(response.data.message, {
             position: 'bottom-right',
-            effect: 'bouncyflip'
+            effect: 'bouncyflip',
           });
         }
       })
@@ -275,28 +272,6 @@ class RegisterPage extends React.Component {
                         placeholder="Phone Number"
                         value={ this.state.phone }
                         onChange={ phone => this.setState({ phone }) } />
-                      <FormControl
-                        fullWidth
-                        className={classes.selectFormControl}
-                      >
-                        <InputLabel error={this.state.userTypeState === "error"}>UserType</InputLabel>
-                        <Select
-                          value={this.state.userType}
-                          onChange={event =>
-                            this.change(event, "userType")}
-                          classes={{ select: classes.select }}
-                        > 
-                          {userTypes.map(userType => (
-                            <MenuItem
-                              key={userType}
-                              value={userType}
-                              
-                            >
-                              {userType}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
                       <FormControlLabel
                         control={
                           <Checkbox
