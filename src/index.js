@@ -6,13 +6,18 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import promise from 'redux-promise';
 import reducers from './reducers';
+import { sessionService } from 'redux-react-session';
 import indexRoutes from "routes/index.jsx";
 import "assets/scss/material-dashboard-pro-react.css?v=1.2.0";
 import "assets/scss/style.css";
 
+var token= '';
+var abc= false;
 const history = createBrowserHistory();
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 const store = createStoreWithMiddleware(reducers)
+sessionService.initSessionService(store,{ driver: 'LOCALSTORAGE' })
+
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>

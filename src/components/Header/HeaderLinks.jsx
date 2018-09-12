@@ -6,6 +6,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import { MenuItem, MenuList, ClickAwayListener, Paper, Grow, Hidden } from "@material-ui/core";
 import { Person, Notifications, Dashboard } from "@material-ui/icons";
 import Button from "components/CustomButtons/Button.jsx";
+import { sessionService } from 'redux-react-session';
 import headerLinksStyle from "assets/jss/material-dashboard-pro-react/components/headerLinksStyle";
 
 class HeaderLinks extends React.Component {
@@ -24,6 +25,8 @@ class HeaderLinks extends React.Component {
   };
   handleLogout = () => {
     this.setState({ userOpen: false });
+    sessionService.deleteSession();
+    sessionService.deleteUser();
     window.location = "/login"
   }
   render() {
