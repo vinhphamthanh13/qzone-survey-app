@@ -48,8 +48,12 @@ class LoginPage extends React.Component {
   }
 
   handleVerificationCode(){
-    console.log("kkkkkk")
+    console.log(this.state.openVerificationCode)
     this.setState({openVerificationCode: true})
+  }
+
+  handleClose(){
+    this.setState({openVerificationCode: false})
   }
 
   verifyEmail(value) {
@@ -114,7 +118,6 @@ class LoginPage extends React.Component {
 
   render() {
     const { classes } = this.props;
-    console.log(this.state.openVerificationCode)
     return (
       <div className={classes.content}>
         <div className={classes.container}>
@@ -196,14 +199,13 @@ class LoginPage extends React.Component {
                         )
                       }}
                     />
-                    {this.state.openVerificationCode && <VerificationPage email={this.state.email} classes={classes}/>}
                   </CardBody>
                   <CardFooter className={classes.justifyContentCenter}>
                     <Button color="rose"  onClick={this.loginClick}>
                       Let's Go
                     </Button>
                   </CardFooter>
-                  <Link to="#" style={{paddingLeft: '100px'}} onClick={this.handleVerificationCode}>Resend Verification Code</Link>
+                  <VerificationPage page={"login"} email={this.state.email} classes={classes}/>
                   <hr/>
                 </Card>
               </form>

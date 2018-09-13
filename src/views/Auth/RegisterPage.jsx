@@ -308,7 +308,7 @@ class RegisterPage extends React.Component {
                     </form>
                   </GridItem>
                 </GridContainer>
-                {this.state.openVerificationModal && <VerificationPage email={this.state.email} classes={classes}/>}
+                {this.state.openVerificationModal && <VerificationPage page={'register'} email={this.state.email} classes={classes}/>}
                 <Alert stack={true}/>
               </CardBody>
             </Card>

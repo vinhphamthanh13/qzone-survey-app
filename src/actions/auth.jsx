@@ -4,7 +4,7 @@ import { sessionService } from 'redux-react-session';
 export const REGISTER_USER = 'register_user';
 export const VERIFY_USER = 'verify_user';
 export const LOGIN_USER = 'login_user';
-
+export const VERIFY_RESEND_USER = 'verify_resend_user';
 
 const ROOT_URL = `http://45.117.170.211:8091/api/user`
 
@@ -42,6 +42,14 @@ export function verifyUser(values,callback) {
     )
   return {
     type: VERIFY_USER
+  }
+}
+
+export function verifyResendUser(values) {
+  axios.post(`${ROOT_URL}/resendEmailConfirm`,values)
+    
+  return {
+    type: VERIFY_RESEND_USER
   }
 }
 
