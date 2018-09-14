@@ -90,4 +90,16 @@ export function checkAuth(values,callback) {
   }
 }
 
+export function resetPassword(value,callback){
+  axios.post(`${ROOT_URL}/resetPassword`, value)
+    .then(
+      response => {
+        callback(response);
+      },
+      error => {
+        callback(error.response)
+      }
+    )
+  
+}
 

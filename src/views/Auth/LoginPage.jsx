@@ -48,13 +48,16 @@ class LoginPage extends React.Component {
   }
 
   handleVerificationCode(){
-    console.log(this.state.openVerificationCode)
     this.setState({openVerificationCode: true})
   }
 
   handleClose(){
     this.setState({openVerificationCode: false})
   }
+
+  // handleResetPassword(){
+  //   this.props.resetPassword()
+  // }
 
   verifyEmail(value) {
     var emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -199,15 +202,14 @@ class LoginPage extends React.Component {
                         )
                       }}
                     />
-                    <Link to="#">Forgot Password</Link>
-                    <VerificationPage page={"login"} email={this.state.email} classes={classes}/>
+                    <Link to="#" style={{paddingLeft: '195px',fontFamily: 'sans-serif', fontWeight: 'bold'}} onClick={this.handleResetPassword}>Forgot Password?</Link>
                   </CardBody>
                   <CardFooter className={classes.justifyContentCenter}>
-                    <Button color="rose"  onClick={this.loginClick}>
+                    <Button color="rose" style={{paddingLeft: '140px', paddingRight: '140px'}} onClick={this.loginClick}>
                       Let's Go
                     </Button>
                   </CardFooter>
-                  
+                  <VerificationPage page={"login"} email={this.state.email} classes={classes}/>
                   <hr/>
                 </Card>
               </form>

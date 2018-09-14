@@ -69,7 +69,7 @@ class VerificationPage extends React.Component{
   render() {
     return(
       <React.Fragment>
-        {this.props.page === 'login' &&<Link to="#" style={{paddingLeft: '125px'}} onClick={this.handleOpen} >Verification Code</Link>}
+        {this.props.page === 'login' &&<Link to="#" style={{paddingLeft: '125px',fontFamily: 'sans-serif', fontWeight: 'bold'}} onClick={this.handleOpen} >Verification Code</Link>}
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
