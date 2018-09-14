@@ -9,8 +9,10 @@ import Sidebar from "components/Sidebar/Sidebar.jsx";
 import Header from "components/Header/Header.jsx";
 import withStyles from "@material-ui/core/styles/withStyles";
 import appStyle from "assets/jss/material-dashboard-pro-react/layouts/dashboardStyle.jsx";
-// import image from "assets/img/sidebar-2.jpg";
+import { compose } from 'redux';
 import logo from "assets/img/logo-white.svg";
+import {checkAuth} from 'actions/auth';
+import { connect } from 'react-redux';
 
 const switchRoutes = (
   <Switch>
@@ -31,14 +33,25 @@ var ps;
 class Dashboard extends React.Component {
   state = {
     mobileOpen: false,
-    miniActive: false
+    miniActive: false,
+    isLoggedIn: true
   };
+
   handleDrawerToggle = () => {
     this.setState({ mobileOpen: !this.state.mobileOpen });
   };
+
   getRoute() {
     return this.props.location.pathname !== "/maps/full-screen-maps";
   }
+
+  componentWillMount(){
+    this.props.checkAuth('abc',response=>{
+      if (response===false)
+        this.setState({isLoggedIn: false})
+    });
+  }
+
   componentDidMount() {
     if (navigator.platform.indexOf("Win") > -1) {
       ps = new PerfectScrollbar(this.refs.mainPanel, {
@@ -48,11 +61,13 @@ class Dashboard extends React.Component {
       document.body.style.overflow = "hidden";
     }
   }
+
   componentWillUnmount() {
     if (navigator.platform.indexOf("Win") > -1) {
       ps.destroy();
     }
   }
+
   componentDidUpdate(e) {
     if (e.history.location.pathname !== e.location.pathname) {
       this.refs.mainPanel.scrollTop = 0;
@@ -61,9 +76,11 @@ class Dashboard extends React.Component {
       }
     }
   }
+
   sidebarMinimize() {
     this.setState({ miniActive: !this.state.miniActive });
   }
+
   render() {
     const { classes, ...rest } = this.props;
     const mainPanel =
@@ -74,6 +91,12 @@ class Dashboard extends React.Component {
         [classes.mainPanelWithPerfectScrollbar]:
           navigator.platform.indexOf("Win") > -1
       });
+
+    if (!this.state.isLoggedIn) {
+      window.location.pathname = '/login'
+      return (<div></div>)
+    }
+
     return (
       <div className={classes.wrapper}>
         <Sidebar
@@ -107,4 +130,7 @@ Dashboard.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(appStyle)(Dashboard);
+export default compose(
+  withStyles(appStyle),
+  connect(null,{checkAuth})
+)(Dashboard);

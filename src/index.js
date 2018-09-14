@@ -11,8 +11,6 @@ import indexRoutes from "routes/index.jsx";
 import "assets/scss/material-dashboard-pro-react.css?v=1.2.0";
 import "assets/scss/style.css";
 
-var token= '';
-var abc= false;
 const history = createBrowserHistory();
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 const store = createStoreWithMiddleware(reducers)

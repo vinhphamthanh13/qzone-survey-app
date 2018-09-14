@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Link } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -20,7 +21,6 @@ import Alert from 'react-s-alert';
 import { loginUser } from "actions/auth.jsx";
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
-import { Link } from 'react-router-dom';
 
 class LoginPage extends React.Component {
   constructor(props) {
@@ -199,13 +199,15 @@ class LoginPage extends React.Component {
                         )
                       }}
                     />
+                    <Link to="#">Forgot Password</Link>
+                    <VerificationPage page={"login"} email={this.state.email} classes={classes}/>
                   </CardBody>
                   <CardFooter className={classes.justifyContentCenter}>
                     <Button color="rose"  onClick={this.loginClick}>
                       Let's Go
                     </Button>
                   </CardFooter>
-                  <VerificationPage page={"login"} email={this.state.email} classes={classes}/>
+                  
                   <hr/>
                 </Card>
               </form>

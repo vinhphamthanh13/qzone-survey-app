@@ -4,19 +4,17 @@ import { sessionService } from 'redux-react-session';
 export const REGISTER_USER = 'register_user';
 export const VERIFY_USER = 'verify_user';
 export const LOGIN_USER = 'login_user';
+export const CHECK_AUTH = 'check_auth';
 export const VERIFY_RESEND_USER = 'verify_resend_user';
 
 const ROOT_URL = `http://45.117.170.211:8091/api/user`
 
 export function registerUser(values,callback) {
-  console.log("2222222222")
-  console.log(values)
   axios.post(`${ROOT_URL}/register/participants`,values)
     .then(
       response => {
         console.log(response)
         callback(response);
-        // return response.json();
       },
       error => {
         callback(error.response)
@@ -33,7 +31,6 @@ export function verifyUser(values,callback) {
     .then(
       response => {
         callback(response);
-        // return response.json();
       },
       error => {
         callback(error.response)
@@ -65,7 +62,6 @@ export function loginUser(values,callback) {
             callback(response);
           });
         });
-        // return response.json();
       },
       error => {
         callback(error.response)
@@ -78,4 +74,20 @@ export function loginUser(values,callback) {
     type: LOGIN_USER
   }
 }
+
+export function checkAuth(values,callback) {
+  sessionService.loadSession()
+    .then(
+      currentSession => {
+        callback(currentSession)
+      })
+    .catch( error => {
+        callback(false)
+      }
+    ) 
+  return{
+    type: CHECK_AUTH
+  }
+}
+
 
