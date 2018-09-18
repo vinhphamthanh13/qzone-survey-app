@@ -15,7 +15,7 @@ import { compose } from 'redux';
 import listPageStyle from "assets/jss/material-dashboard-pro-react/views/listPageStyle.jsx";
 import {Table, TableBody, TableCell, TableHead, TableRow} from "@material-ui/core";
 import CardFooter from "components/Card/CardFooter.jsx";
-import {fetchSurveys, deleteSurvey,deleteAllSurvey} from "actions/survey";
+import {fetchSurveyParticipantList} from "actions/surveyAnswer";
 import { Poll } from "@material-ui/icons";
 
 const rows = ["#","Name", "Description", "", ""]
@@ -33,10 +33,13 @@ class ParticipantList extends React.Component{
 
   componentWillMount(){
     sid  = this.props.match.params.sid
+    this.props.fetchSurveyParticipantList(sid)
   }
 
   render() {
     const { classes } = this.props;
+    console.log("@@@@@@@@2")
+    console.log(this.props.surveyParticipantList)
       return (
         <GridContainer>
           <GridItem xs={12}>
@@ -103,7 +106,9 @@ class ParticipantList extends React.Component{
 }
 
 function mapStateToProps(state) {
-  return{surveyList: state.surveys.data}
+  console.log("&&&&&&&&&&")
+  console.log(state)
+  return{surveyParticipantList: state.surveyParticipantAnswer.data}
 }  
 
 ParticipantList.propTypes = {
@@ -112,6 +117,6 @@ ParticipantList.propTypes = {
 
 export default compose(
   withStyles(listPageStyle),
-  connect(mapStateToProps, {fetchSurveys, deleteSurvey, deleteAllSurvey}),
+  connect(mapStateToProps, {fetchSurveyParticipantList}),
 )(ParticipantList);
  

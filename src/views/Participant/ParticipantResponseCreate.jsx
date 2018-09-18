@@ -10,6 +10,7 @@ import { fetchSurvey } from "actions/survey.jsx";
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import * as Survey from 'survey-react';
+import { sessionService } from 'redux-react-session';
 import { createSurveyAnswer } from 'actions/surveyAnswer.jsx';
 
 var surveyInfo= '';
@@ -31,7 +32,8 @@ class ParticipantResponseCreate extends React.Component {
         participantId: '',
         surveyId: '',
         questionAnswers: ''
-      }
+      },
+      userId:''
     }
     this.sendDataToServer = this.sendDataToServer.bind(this)
   }
@@ -39,6 +41,11 @@ class ParticipantResponseCreate extends React.Component {
   componentWillMount(){
     id  = this.props.match.params.id
     this.props.fetchSurvey(id);
+    sessionService.loadUser().then(currentUser => {
+      console.log(currentUser)
+      console.log("**************ww")
+      this.setState({userId: currentUser})})
+    
   }
 
   componentWillReceiveProps(nextProps) {
@@ -47,9 +54,11 @@ class ParticipantResponseCreate extends React.Component {
 
   sendDataToServer(survey) {
     var resultAsString = JSON.stringify(survey.data);
-    this.setState({participantResponse: {participantId: '5', surveyId: id, questionAnswers: resultAsString}},() =>{
+    this.setState({participantResponse: {participantId: this.state.userId, surveyId: id, questionAnswers: resultAsString}},() =>{
       this.props.createSurveyAnswer(this.state.participantResponse, (response) => {
-        window.location = "/surveys/result/"+id
+        console.log("0000000000000")
+        console.log(response)
+        // window.location = "/surveys/result/"+id
       });
     })
   };
@@ -58,7 +67,8 @@ class ParticipantResponseCreate extends React.Component {
     const { classes } = this.props;
     const {title, description, survey} = this.state.surveyData
     surveyInfo = new Survey.Model(survey);
-    
+    console.log("*************")
+    console.log(this.state.userId)
     if(!this.state.surveyData)
       return null
     return (
