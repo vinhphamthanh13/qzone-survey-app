@@ -84,14 +84,18 @@ class LoginPage extends React.Component {
     }
     if (this.state.emailState === "success" && this.state.passwordState === "success") {
       this.props.loginUser(this.state , (response)=>{
-        this.setState({laoding: false})
-        if(response.status === 200)
-          window.location = '/dashboard'
-        else{
-          Alert.error(response.data.message, {
-            position: 'bottom-right',
-            effect: 'bouncyflip'
-          });
+        console.log(response)
+        this.setState({loading: false})
+        if (response){
+          if(response.status === 200){
+            window.location = '/dashboard'
+          }
+          else{
+            Alert.error(response.data.message, {
+              position: 'bottom-right',
+              effect: 'bouncyflip'
+            });
+          }
         }
       })
     }
