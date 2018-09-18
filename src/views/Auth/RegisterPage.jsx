@@ -26,10 +26,8 @@ class RegisterPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: {
-        firstname: "",
-        lastname: ""
-      },
+      firstname: "",
+      lastname: "",
       companyName: "",
       department: "",
       firstnameState: "",
@@ -40,11 +38,8 @@ class RegisterPage extends React.Component {
       passwordState: "",
       registerCheckbox: false,
       registerCheckboxState: "",
-      mobile: {
-        countrycode: "",
-        mobilenumber: ""
-      },
-      phone: "",
+      phoneNumber: "",
+      userType: "PARTICIPANT",
       openVerificationModal: false,
       code: "",
       verifyCode: {
@@ -74,14 +69,10 @@ class RegisterPage extends React.Component {
 
   registerClick() {
     this.setState({loading: true})
-    const {mobile,phone} = this.state
-    mobile['mobilenumber']= phone.substr(phone.length-10)
-    mobile['countrycode'] = phone.substr(0,phone.length-10)
-    this.setState({mobile})
-    if (this.state.name.firstname === "") {
+    if (this.state.firstname === "") {
       this.setState({ firstnameState: "error" });
     }
-    if (this.state.name.lastname === "") {
+    if (this.state.lastname === "") {
       this.setState({ lastnameState: "error" });
     }
     if (this.state.emailState === "") {
@@ -93,9 +84,9 @@ class RegisterPage extends React.Component {
     if (this.state.registerCheckboxState === "" ) {
       this.setState({ registerCheckboxState: "error" });
     }
-    if (this.state.name.firstname !== "" && this.state.name.lastname !== "" && this.state.emailState === "success" && this.state.passwordState === "success" && this.state.registerCheckboxState === "success" ) {
+    if (this.state.firstname !== "" && this.state.lastname !== "" && this.state.emailState === "success" && this.state.passwordState === "success" && this.state.registerCheckboxState === "success" ) {
       this.props.registerUser(this.state, (response) =>{
-        this.setState({laoding: false})
+        this.setState({loading: false})
         if(response){
           if (response.status === 201)
           {
@@ -113,15 +104,12 @@ class RegisterPage extends React.Component {
     }
   }
 
-  
-
   change(event, stateName, type, stateNameEqualTo, maxValue) {
     switch (type) {
       case "name":
         this.setState({ [stateName + "State"]: "success" });
-        const {name} = this.state
-        name[stateName] = event.target.value
-        this.setState({name})
+        
+        this.setState({[stateName]: event.target.value})
         break;
       case "email":
         if (this.verifyEmail(event.target.value)) {
@@ -277,8 +265,8 @@ class RegisterPage extends React.Component {
                       />
                       <PhoneInput
                         placeholder="Phone Number"
-                        value={ this.state.phone }
-                        onChange={ phone => this.setState({ phone }) } />
+                        value={ this.state.phoneNumber }
+                        onChange={ phoneNumber => this.setState({ phoneNumber }) } />
                       <FormControlLabel
                         control={
                           <Checkbox

@@ -8,11 +8,28 @@ export const CHECK_AUTH = 'check_auth';
 export const RESET_PASSWORD = 'reset_password';
 export const CHANGE_PASSWORD = 'change_password';
 export const VERIFY_RESEND_USER = 'verify_resend_user';
+export const FETCH_USERTYPE_LIST = 'fetch_usertype_list';
 
 const ROOT_URL = `http://45.117.170.211:8091/api/user`
-
+const token = localStorage.getItem('token')
+console.log("KKKKKKKKKK")
+console.log(token)
 export function registerUser(values,callback) {
-  axios.post(`${ROOT_URL}/register/participants`,values)
+  // const token = values.token
+  // let axiosConfig = {
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     'Accept': 'application/json',
+  //     'mode': 'cors',
+  //     'credentials': 'include'
+  //   }
+  // };
+
+  // let axiosCredentials = {
+  //   withCredentials: true
+  // };
+  
+  axios.post(`${ROOT_URL}/register`,values)
     .then(
       response => {
         console.log(response)
@@ -119,5 +136,21 @@ export function changePassword(value,callback){
     )
   return{
     type: CHANGE_PASSWORD
+  }
+}
+
+export function fetchUserTypeList(value,callback){
+  const request = axios.post(`${ROOT_URL}/getListUsersByUserType`, value)
+    .then(
+      response => {
+        callback(response);
+      },
+      error => {
+        callback(error.response)
+      }
+    )
+  return{
+    type: FETCH_USERTYPE_LIST,
+    payload: request
   }
 }
