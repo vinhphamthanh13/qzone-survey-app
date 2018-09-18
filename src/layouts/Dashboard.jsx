@@ -46,6 +46,7 @@ class Dashboard extends React.Component {
   }
 
   componentWillMount(){
+    
     this.props.checkAuth('abc',response=>{
       if (response===false)
         this.setState({isLoggedIn: false})

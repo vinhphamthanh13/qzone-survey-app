@@ -21,7 +21,6 @@ import Alert from 'react-s-alert';
 import { loginUser} from "actions/auth.jsx";
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
-import 'assets/scss/material-dashboard-pro-react/views/reactLoader.css'
 import ReactLoader from 'views/ReactLoader.jsx';
 import ResetPassword from 'views/Auth/ResetPassword.jsx';
 
