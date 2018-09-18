@@ -20,6 +20,7 @@ import 'react-phone-number-input/style.css';
 import "assets/scss/material-dashboard-pro-react/views/mobileNumberStyle.css";
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
+import ReactLoader from 'views/ReactLoader.jsx'
 
 class RegisterPage extends React.Component {
   constructor(props) {
@@ -49,7 +50,8 @@ class RegisterPage extends React.Component {
       verifyCode: {
         email: "",
         code: ""
-      }
+      },
+      loading: false
     };
     this.change = this.change.bind(this);
 
@@ -71,6 +73,7 @@ class RegisterPage extends React.Component {
   }
 
   registerClick() {
+    this.setState({loading: true})
     const {mobile,phone} = this.state
     mobile['mobilenumber']= phone.substr(phone.length-10)
     mobile['countrycode'] = phone.substr(0,phone.length-10)
@@ -92,16 +95,19 @@ class RegisterPage extends React.Component {
     }
     if (this.state.name.firstname !== "" && this.state.name.lastname !== "" && this.state.emailState === "success" && this.state.passwordState === "success" && this.state.registerCheckboxState === "success" ) {
       this.props.registerUser(this.state, (response) =>{
-        if (response.status === 201)
-        {
-          this.setState({openVerificationModal: true})
-        }
-        else
-        {
-          Alert.error(response.data.message, {
-            position: 'bottom-right',
-            effect: 'bouncyflip',
-          });
+        this.setState({laoding: false})
+        if(response){
+          if (response.status === 201)
+          {
+            this.setState({openVerificationModal: true})
+          }
+          else
+          {
+            Alert.error(response.data.message, {
+              position: 'bottom-right',
+              effect: 'bouncyflip',
+            });
+          }
         }
       })
     }
@@ -150,6 +156,7 @@ class RegisterPage extends React.Component {
     const { classes } = this.props;
     return (
       <div className={classes.container}>
+      {this.state.loading && <ReactLoader loading={this.state.loading}/> }
         <GridContainer justify="center">
           <GridItem xs={12} sm={12} md={10}>
             <Card className={classes.cardSignup}>

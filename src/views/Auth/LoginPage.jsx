@@ -18,9 +18,12 @@ import loginPageStyle from "assets/jss/material-dashboard-pro-react/views/loginP
 import _ from 'lodash';
 import VerificationPage from "views/Auth/VerificationPage.jsx";
 import Alert from 'react-s-alert';
-import { loginUser } from "actions/auth.jsx";
+import { loginUser} from "actions/auth.jsx";
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
+import 'assets/scss/material-dashboard-pro-react/views/reactLoader.css'
+import ReactLoader from 'views/ReactLoader.jsx';
+import ResetPassword from 'views/Auth/ResetPassword.jsx';
 
 class LoginPage extends React.Component {
   constructor(props) {
@@ -31,11 +34,12 @@ class LoginPage extends React.Component {
       emailState: "",
       password: "",
       passwordState: "",
-      openVerificationCode: false
+      openVerificationCode: false,
+      loading: false
     };
 
     this.loginClick = this.loginClick.bind(this);
-    this.handleVerificationCode = this.handleVerificationCode.bind(this);
+    // this.handleVerificationCode = this.handleVerificationCode.bind(this);
 
   }
   componentDidMount() {
@@ -47,17 +51,14 @@ class LoginPage extends React.Component {
     );
   }
 
-  handleVerificationCode(){
-    this.setState({openVerificationCode: true})
-  }
-
-  handleClose(){
-    this.setState({openVerificationCode: false})
-  }
-
-  // handleResetPassword(){
-  //   this.props.resetPassword()
+  // handleVerificationCode(){
+  //   this.setState({openVerificationCode: true})
   // }
+
+  // handleClose(){
+  //   this.setState({openVerificationCode: false})
+  // }
+
 
   verifyEmail(value) {
     var emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -75,6 +76,7 @@ class LoginPage extends React.Component {
   }
 
   loginClick() {
+    this.setState({loading: true})
     if (this.state.emailState === "") {
       this.setState({ emailState: "error" });
     }
@@ -83,6 +85,7 @@ class LoginPage extends React.Component {
     }
     if (this.state.emailState === "success" && this.state.passwordState === "success") {
       this.props.loginUser(this.state , (response)=>{
+        this.setState({laoding: false})
         if(response.status === 200)
           window.location = '/dashboard'
         else{
@@ -124,6 +127,7 @@ class LoginPage extends React.Component {
     return (
       <div className={classes.content}>
         <div className={classes.container}>
+          {this.state.loading && <ReactLoader loading={this.state.loading}/>}
           <GridContainer justify="center">
             <GridItem xs={12} sm={6} md={4}>
               <form>
@@ -202,7 +206,7 @@ class LoginPage extends React.Component {
                         )
                       }}
                     />
-                    <Link to="#" style={{paddingLeft: '195px',fontFamily: 'sans-serif', fontWeight: 'bold'}} onClick={this.handleResetPassword}>Forgot Password?</Link>
+                    <ResetPassword classes={classes}/>
                   </CardBody>
                   <CardFooter className={classes.justifyContentCenter}>
                     <Button color="rose" style={{paddingLeft: '140px', paddingRight: '140px'}} onClick={this.loginClick}>
