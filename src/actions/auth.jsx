@@ -5,6 +5,8 @@ export const REGISTER_USER = 'register_user';
 export const VERIFY_USER = 'verify_user';
 export const LOGIN_USER = 'login_user';
 export const CHECK_AUTH = 'check_auth';
+export const RESET_PASSWORD = 'reset_password';
+export const CHANGE_PASSWORD = 'change_password';
 export const VERIFY_RESEND_USER = 'verify_resend_user';
 
 const ROOT_URL = `http://45.117.170.211:8091/api/user`
@@ -57,7 +59,7 @@ export function loginUser(values,callback) {
         const token = response.data.jwtToken
         sessionService.saveSession({ token })
         .then(() => {
-          sessionService.saveUser(response.data.email)
+          sessionService.saveUser(response.data.userId)
           .then((abc) => {
             callback(response);
           });
@@ -100,6 +102,22 @@ export function resetPassword(value,callback){
         callback(error.response)
       }
     )
-  
+  return{
+    type: RESET_PASSWORD
+  }
 }
 
+export function changePassword(value,callback){
+  axios.post(`${ROOT_URL}/changePassword`, value)
+    .then(
+      response => {
+        callback(response);
+      },
+      error => {
+        callback(error.response)
+      }
+    )
+  return{
+    type: CHANGE_PASSWORD
+  }
+}

@@ -50,7 +50,6 @@ class VerificationPage extends React.Component{
   }
 
   handleResendVerificationCode(){
-    console.log(this.props.email)
     const {verifyCode} = this.state
     verifyCode['email'] = this.props.email
     this.setState({verifyCode},()=>{
