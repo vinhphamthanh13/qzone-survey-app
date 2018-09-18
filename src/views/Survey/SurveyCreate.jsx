@@ -15,6 +15,7 @@ import SurveyForm from "views/Survey/SurveyForm";
 import { createSurvey } from "actions/survey.jsx";
 import { Poll } from "@material-ui/icons";
 import _ from 'lodash';
+import { sessionService } from 'redux-react-session';
 
 class SurveyCreate extends React.Component{
 
@@ -27,11 +28,12 @@ class SurveyCreate extends React.Component{
         logo: '',
         privacy: false,
         survey: '',
-        userId: '1'
+        userId:''
       },
       titleState: '',
       descriptionState: '',
-      mode: 'create'
+      mode: 'create',
+      token: ''
     }
     this.changeQuestions = this.changeQuestions.bind(this)
     this.change = this.change.bind(this)
@@ -46,11 +48,17 @@ class SurveyCreate extends React.Component{
     if (_.isEmpty(description))
       this.setState({descriptionState: "error"})
     if (titleState === "success" && descriptionState === "success" ){
-      this.props.createSurvey(this.state.surveyInfo, (response) => {
+      this.props.createSurvey(this.state.surveyInfo,this.state.token, (response) => {
         window.location = "/admin/survey/list"
       });
     }
 	}
+
+  componentWillMount(){
+    sessionService.loadSession().then(currentSession =>{
+      this.setState({token: currentSession.token})
+    })
+  }
 
 	change(event, stateName){
     if (_.isEmpty(event.target.value))

@@ -16,6 +16,7 @@ import { fetchSurvey } from "actions/survey.jsx";
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Poll } from "@material-ui/icons";
+import { sessionService } from 'redux-react-session';
 import { Route } from 'react-router-dom';
 
 Survey.Survey.cssType = "bootstrap";
@@ -31,16 +32,20 @@ class SurveyQuestionnaire extends React.Component{
         logo: '',
         privacy: false,
         id: '',
-        survey: ''
+        survey: '',
+        token: ''
       }
     }
   }
-
   componentWillMount(){
     const { id } = this.props.match.params
-    this.props.fetchSurvey(id);
-    if (window.location.href.indexOf("admin") > -1)
-      this.setState({admin: true})
+    sessionService.loadSession().then(currentSession =>{
+      this.setState({token: currentSession.token}, () => {
+        this.props.fetchSurvey(id,this.state.token);
+        if (window.location.href.indexOf("admin") > -1)
+          this.setState({admin: true})
+      })
+    })
   }
 
   componentWillReceiveProps(nextProps) {

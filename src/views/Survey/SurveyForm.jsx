@@ -1,20 +1,46 @@
 import React from 'react';
 import withStyles from "@material-ui/core/styles/withStyles";
-import { FormLabel}  from "@material-ui/core";      
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { FormLabel, Select, MenuItem, FormControl}  from "@material-ui/core";      
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import CustomInput from "components/CustomInput/CustomInput.jsx";
 import CustomCheckbox from "components/CustomCheckbox/CustomCheckbox.jsx";
 import validationFormStyle from "assets/jss/material-dashboard-pro-react/views/validationFormStyle.jsx";
 import SurveyEditor from 'views/Survey/SurveyEditor.jsx';
+import { Link } from 'react-router-dom';
+import { fetchUserTypeList } from 'actions/auth.jsx';
+import Assessor from 'views/Survey/Assessor.jsx';
+import { sessionService } from 'redux-react-session';
+
 var editor = false
 class SurveyForm extends React.Component{
-  
+  constructor(props){
+    super(props);
+    this.state = {
+      userType: 'ASSESSOR',
+      token: '',
+    }
+  }
+
+  componentWillMount(){
+    sessionService.loadSession().then(currentSession =>{
+      this.setState({token: currentSession.token}, () => {
+        this.props.fetchUserTypeList(this.state, (response)=>{
+          console.log(response)
+        })
+      })
+    })
+    
+  }
 	render() {
     const { classes,survey} = this.props;
     const {surveyInfo, titleState, descriptionState, mode} = survey
     if(mode === 'create' || surveyInfo.survey)
       editor = true
+    if (!this.props.AssessorList)
+      return <div></div>
 		return(
       <form>
         <GridContainer>
@@ -68,6 +94,39 @@ class SurveyForm extends React.Component{
         <GridContainer>
           <GridItem xs={12} sm={3}>
             <FormLabel className={classes.labelHorizontal}>
+              Assessor
+            </FormLabel>
+          </GridItem>
+          <GridItem xs={12} sm={7}>
+            <FormControl
+              fullWidth
+              className={classes.selectFormControl}
+            >
+              <Select
+                value={surveyInfo.userId || ''}
+                onChange={event =>
+                  this.props.change(event, "userId")}
+                classes={{ select: classes.select }}
+              > 
+                {(this.props.AssessorList).map(assessor => (
+                  <MenuItem
+                    key={assessor.id}
+                    value={assessor.id}
+                    
+                  >
+                    {assessor.email}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>                  
+          </GridItem>
+          <GridItem>
+            <Assessor classes={classes}/>
+          </GridItem>
+        </GridContainer>
+        <GridContainer>
+          <GridItem xs={12} sm={3}>
+            <FormLabel className={classes.labelHorizontal}>
               Logo
             </FormLabel>
           </GridItem>
@@ -107,6 +166,7 @@ class SurveyForm extends React.Component{
             />
           </GridItem>
         </GridContainer>
+
         <hr/>
         <GridContainer  className={classes.justifyContentCenter}>
           <h4>
@@ -122,4 +182,11 @@ class SurveyForm extends React.Component{
 	}
 }
 
-export default withStyles(validationFormStyle)(SurveyForm);
+function mapStateToProps(state){
+  return {AssessorList: state.user.data}
+}
+
+export default compose(
+  withStyles(validationFormStyle),
+  connect(mapStateToProps,{fetchUserTypeList})
+)(SurveyForm);

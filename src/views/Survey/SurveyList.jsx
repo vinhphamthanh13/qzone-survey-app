@@ -20,6 +20,7 @@ import Alert from 'react-s-alert';
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
 import { Person, Delete, FileCopy, Poll } from "@material-ui/icons";
+import { sessionService } from 'redux-react-session';
 import ReactTooltip from 'react-tooltip';
 
 const iconStyle = {
@@ -31,7 +32,8 @@ class SurveyList extends React.Component{
     super(props);
     this.state = { surveyList: [],
       sweetAlert: '',
-      deleteAll: false
+      deleteAll: false,
+      token: ''
     }
     this.successDelete = this.successDelete.bind(this);
   }
@@ -41,7 +43,11 @@ class SurveyList extends React.Component{
   }
 
   componentWillMount(){
-    this.props.fetchSurveys()
+    sessionService.loadSession().then(currentSession =>{
+      this.setState({token: currentSession.token}, () => {
+        this.props.fetchSurveys(this.state.token)
+      })
+    })
   }
 
   warningWithConfirmMessage(id) {

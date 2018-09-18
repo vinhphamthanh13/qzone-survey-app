@@ -11,9 +11,7 @@ export const VERIFY_RESEND_USER = 'verify_resend_user';
 export const FETCH_USERTYPE_LIST = 'fetch_usertype_list';
 
 const ROOT_URL = `http://45.117.170.211:8091/api/user`
-const token = localStorage.getItem('token')
-console.log("KKKKKKKKKK")
-console.log(token)
+
 export function registerUser(values,callback) {
   // const token = values.token
   // let axiosConfig = {
@@ -140,15 +138,23 @@ export function changePassword(value,callback){
 }
 
 export function fetchUserTypeList(value,callback){
-  const request = axios.post(`${ROOT_URL}/getListUsersByUserType`, value)
-    .then(
-      response => {
-        callback(response);
-      },
-      error => {
-        callback(error.response)
-      }
-    )
+  const token = value.token
+  let axiosConfig = {
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer '+token
+    }
+  };
+  const request = axios.post(`${ROOT_URL}/getListUsersByUserType`, value, axiosConfig)
+    // .then(
+    //   response => {
+    //     callback(response);
+    //   },
+    //   error => {
+    //     callback(error.response)
+    //   }
+    // )
   return{
     type: FETCH_USERTYPE_LIST,
     payload: request
