@@ -19,7 +19,7 @@ class VerificationPage extends React.Component{
         email:"",
         code:""
       },
-      open: false
+      open: true
     }
     this.handleVerificationCode = this.handleVerificationCode.bind(this);
     this.handleResendVerificationCode = this.handleResendVerificationCode.bind(this);
@@ -27,8 +27,7 @@ class VerificationPage extends React.Component{
   }
 
   componentWillMount(){
-    if (this.props.page === 'register')
-      this.setState({open: true})
+    this.setState({open: true})
   }
 
   handleVerificationCode(){
@@ -68,14 +67,9 @@ class VerificationPage extends React.Component{
     this.setState({open: false})
   }
 
-  handleOpen = () =>{
-    this.setState({open: true})
-  }
-
   render() {
     return(
       <React.Fragment>
-        {this.props.page === 'login' &&<Link to="#" style={{paddingLeft: '125px',fontFamily: 'sans-serif', fontWeight: 'bold'}} onClick={this.handleOpen} >Verification Code</Link>}
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}

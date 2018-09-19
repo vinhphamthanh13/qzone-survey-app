@@ -33,7 +33,7 @@ class LoginPage extends React.Component {
       emailState: "",
       password: "",
       passwordState: "",
-      openVerificationCode: false,
+      openVerificationModal: false,
       loading: false
     };
 
@@ -64,7 +64,7 @@ class LoginPage extends React.Component {
   }
 
   loginClick() {
-    const { from } = this.props.location.state || { from: { pathname: '/' } }
+    const { from } = this.props.location.state || { from: '/' }
     this.setState({loading: true})
     if (this.state.emailState === "") {
       this.setState({ emailState: "error" });
@@ -79,6 +79,9 @@ class LoginPage extends React.Component {
         if (response){
           if(response.status === 200){
             window.location = from
+          }
+          else if(response.data.message === "User is not confirmed."){
+            this.setState({openVerificationModal: true})
           }
           else{
             Alert.error(response.data.message, {
@@ -200,13 +203,13 @@ class LoginPage extends React.Component {
                       }}
                     />
                     <ResetPassword classes={classes}/>
+                    {this.state.openVerificationModal && <VerificationPage page={'login'} email={this.state.email} classes={classes}/>}
                   </CardBody>
                   <CardFooter className={classes.justifyContentCenter}>
                     <Button color="rose" style={{paddingLeft: '140px', paddingRight: '140px'}} onClick={this.loginClick}>
                       Let's Go
                     </Button>
                   </CardFooter>
-                  <VerificationPage page={"login"} email={this.state.email} classes={classes}/>
                   <hr/>
                 </Card>
               </form>

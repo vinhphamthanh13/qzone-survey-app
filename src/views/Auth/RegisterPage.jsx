@@ -154,6 +154,8 @@ class RegisterPage extends React.Component {
 
   render() {
     const { classes } = this.props;
+    console.log(this.state.openVerificationModal)
+
     return (
       <div className={classes.content}>
         <div className={classes.container}>
@@ -337,7 +339,6 @@ class RegisterPage extends React.Component {
                     Get started
                   </Button>
                 </CardFooter>
-                <VerificationPage page={"login"} email={this.state.email} classes={classes}/>
                 <hr/>
               </Card>
             </GridItem>
