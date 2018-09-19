@@ -9,34 +9,27 @@ import CardIcon from "components/Card/CardIcon.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import Timeline from "@material-ui/icons/Timeline";
 
-var delays = 80,
-  durations = 500;
+// var delays = 80,
+//   durations = 500;
 var delays2 = 80,
   durations2 = 500;
+const labels = ['Question1', 'Question2', 'Question3', 'Question4']
+const series = [
+  [40, 40, 60, 0], 
+  [20, 20, 40, 0],
+  [20, 20, 0, 0],
+  [20, 0, 0, 0],
+  [0, 0, 0, 0],
+  [0, 20, 0, 0]
+]
 const multipleBarsChart = {
   data: {
-    labels: [
-      "Q1",
-      "Q2",
-      "Q3",
-      "Q4",
-      "Q5",
-      "Q6",
-      "Q7",
-      "Q8",
-      "Q9",
-      "Q10",
-      "Q11",
-      "Q12"
-    ],
-    series: [
-      [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895],
-      [412, 243, 280, 580, 453, 353, 300, 364, 368, 410, 636, 695]
-    ]
+    labels: labels,
+    series: series
   },
   options: {
     seriesBarDistance: 10,
-    stackBars: true,
+    stackBars: false,
     axisX: {
       showGrid: false
     },

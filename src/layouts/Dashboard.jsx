@@ -82,8 +82,6 @@ class Dashboard extends React.Component {
 
   render() {
     const { classes, ...rest } = this.props;
-    console.log(this.props)
-    const destinationPath = this.props.location.pathname
     const mainPanel =
       classes.mainPanel +
       " " +

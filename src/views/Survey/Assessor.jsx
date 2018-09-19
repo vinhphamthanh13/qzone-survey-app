@@ -11,7 +11,6 @@ import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
 import { registerUser } from "actions/auth.jsx";
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import Generator from 'generate-password'
 
 class Assessor extends React.Component{
   constructor(props){
