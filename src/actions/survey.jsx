@@ -39,8 +39,15 @@ export function fetchSurvey(id,token, callback) {
   };
 }
 
-export function deleteSurvey(id, callback) {
-  axios.delete(`${ROOT_URL}/${id}`)
+export function deleteSurvey(id,token, callback) {
+  let axiosConfig = {
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer '+token
+    }
+  };
+  axios.delete(`${ROOT_URL}/${id}`,axiosConfig)
     .then(() => callback())
   return {
     type: DELETE_SURVEY
@@ -48,8 +55,15 @@ export function deleteSurvey(id, callback) {
 }
 
 
-export function deleteAllSurvey(id, callback) {
-  axios.delete(ROOT_URL)
+export function deleteAllSurvey(id,token, callback) {
+  let axiosConfig = {
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer '+token
+    }
+  };
+  axios.delete(ROOT_URL, axiosConfig)
     .then(
       response => {
         callback(response);

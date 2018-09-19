@@ -87,7 +87,7 @@ class SurveyList extends React.Component{
     }
     else
       api= this.props.deleteAllSurvey
-    api(SID, (response) => {
+    api(SID,this.state.token, (response) => {
       this.setState({
         sweetAlert: (
           <SweetAlert
@@ -106,7 +106,7 @@ class SurveyList extends React.Component{
           </SweetAlert>
         )
       });
-      this.props.fetchSurveys()
+      this.props.fetchSurveys(this.state.token)
     })
   }
 
