@@ -59,8 +59,17 @@ export function verifyUser(values,callback) {
   }
 }
 
-export function verifyResendUser(values) {
+export function verifyResendUser(values, callback) {
   axios.post(`${ROOT_URL}/resendEmailConfirm`,values)
+    .then(
+      response => {
+        callback(response);
+      },
+      error => {
+        callback(error.response)
+        return error.response;
+      }
+    )
     
   return {
     type: VERIFY_RESEND_USER

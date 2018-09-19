@@ -53,7 +53,14 @@ class VerificationPage extends React.Component{
     const {verifyCode} = this.state
     verifyCode['email'] = this.props.email
     this.setState({verifyCode},()=>{
-      this.props.verifyResendUser(this.state.verifyCode)
+      this.props.verifyResendUser(this.state.verifyCode,(response) =>{
+        if(response.status !== 200){
+          Alert.error(response.data.message, {
+            position: 'bottom-right',
+            effect: 'bouncyflip'
+          });
+        }
+      })
     })
   }
 

@@ -84,6 +84,7 @@ class Dashboard extends React.Component {
 
   render() {
     const { classes, ...rest } = this.props;
+    const destinationPath = this.props.location.pathname
     const mainPanel =
       classes.mainPanel +
       " " +
@@ -95,6 +96,18 @@ class Dashboard extends React.Component {
 
     if (!this.state.isLoggedIn) {
       window.location.pathname = '/login'
+      // console.log("HHHHHHHHH")
+      // return <Redirect
+      //   to={{
+      //     pathname: "/login",
+      //     state: { from: this.props.location.pathname }
+      //   }}
+      // />
+      // console.log(destinationPath)
+      // replace({
+      //   pathname: '/login',
+      //   query: {destinationPath}
+      // });
       return (<div></div>)
     }
 

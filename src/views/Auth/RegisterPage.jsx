@@ -10,8 +10,10 @@ import GridItem from "components/Grid/GridItem.jsx";
 import Button from "components/CustomButtons/Button.jsx";
 import CustomInput from "components/CustomInput/CustomInput.jsx";
 import Card from "components/Card/Card.jsx";
+import CardHeader from "components/Card/CardHeader.jsx";
+import CardFooter from "components/Card/CardFooter.jsx";
 import CardBody from "components/Card/CardBody.jsx";
-import registerPageStyle from "assets/jss/material-dashboard-pro-react/views/registerPageStyle";
+import loginPageStyle from "assets/jss/material-dashboard-pro-react/views/loginPageStyle";
 import { registerUser } from "actions/auth.jsx";
 import PhoneInput from 'react-phone-number-input';
 import Alert from 'react-s-alert';
@@ -21,6 +23,7 @@ import "assets/scss/material-dashboard-pro-react/views/mobileNumberStyle.css";
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
 import ReactLoader from 'views/ReactLoader.jsx'
+
 
 class RegisterPage extends React.Component {
   constructor(props) {
@@ -49,7 +52,15 @@ class RegisterPage extends React.Component {
       loading: false
     };
     this.change = this.change.bind(this);
+  }
 
+  componentDidMount() {
+    setTimeout(
+      function() {
+        this.setState({ cardAnimaton: "" });
+      }.bind(this),
+      700
+    );
   }
 
   verifyEmail(value) {
@@ -140,175 +151,198 @@ class RegisterPage extends React.Component {
         break;
     }
   }
+
   render() {
     const { classes } = this.props;
     return (
-      <div className={classes.container}>
-      {this.state.loading && <ReactLoader loading={this.state.loading}/> }
-        <GridContainer justify="center">
-          <GridItem xs={12} sm={12} md={10}>
-            <Card className={classes.cardSignup}>
-              <h2 className={classes.cardTitle}>Survey Registration</h2>
-              <CardBody>
-                <div className={classes.center}>
-                  <p>Please provide all required Details to register yourself with us</p>
-                </div>
+      <div className={classes.content}>
+        <div className={classes.container}>
+          {this.state.loading && <ReactLoader loading={this.state.loading}/>}
+          <GridContainer justify="center">
+            <GridItem xs={12} sm={6} md={4}>
+              <Card login className={classes[this.state.cardAnimaton]}>
+                <CardHeader
+                  className={`${classes.cardHeader} ${classes.textCenter}`}
+                  color="rose"
+                >
+                  <h4 className={classes.cardTitle}>Register</h4>
+                  <div className={classes.socialLine}>
+                    <Button
+                      justIcon
+                      href="https://www.twitter.com"
+                      target="_blank"
+                      color="transparent"
+                    >
+                      <i className={"fab fa-twitter"} />
+                    </Button>
+                    <Button
+                      justIcon
+                      href="https://www.facebook.com"
+                      target="_blank"
+                      color="transparent"
+                    >
+                      <i className={"fab fa-facebook"} />
+                    </Button>
+                    <Button
+                      justIcon
+                      href="https://www.plus.google.com"
+                      target="_blank"
+                      color="transparent"
+
+                    >
+                      <i className={"fab fa-google-plus-g"} />
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardBody>
+                  <form className={classes.form}>
+                    <CustomInput
+                      labelText="First Name*"
+                      success={this.state.firstnameState === "success"}
+                      error={this.state.firstnameState === "error"}
+                      id="firstname"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        onChange: event =>
+                          this.change(event, "firstname", "name"),
+                        type: "text",
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Person className={classes.inputAdornmentIcon} />
+                          </InputAdornment>
+                        )
+                      }}
+                    />
+                    <CustomInput
+                      labelText="Last Name*"
+                      success={this.state.lastnameState === "success"}
+                      error={this.state.lastnameState === "error"}
+                      id="lastname"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        onChange: event =>
+                          this.change(event, "lastname","name"),
+                        type: "text",
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Person className={classes.inputAdornmentIcon} />
+                          </InputAdornment>
+                        )
+                      }}
+                    />
+                    <CustomInput
+                      labelText="Email*"
+                      success={this.state.emailState === "success"}
+                      error={this.state.emailState === "error"}
+                      id="email"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        onChange: event =>
+                          this.change(event, "email", "email"),
+                        type: "email",
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Email className={classes.inputAdornmentIcon} />
+                          </InputAdornment>
+                        )
+                      }}
+                    />
+                    <CustomInput
+                      labelText="Password*"
+                      success={this.state.passwordState === "success"}
+                      error={this.state.passwordState === "error"}
+                      id="password"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        onChange: event =>
+                          this.change(event, "password", "password"),
+                        type: "password",
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Lock className={classes.inputAdornmentIcon}/>
+                          </InputAdornment>
+                        )
+                      }}
+                    />
+                    <CustomInput
+                      labelText="Company Name"
+                      id="companyName"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        onChange: event =>
+                          this.change(event, "companyName", "companyName"),
+                        type: "text",
+                      }}
+                    />
+                    <CustomInput
+                      labelText="Department Name"
+                      id="department"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        onChange: event =>
+                          this.change(event, "department", "department"),
+                        type: "text",
+                      }}
+                    />
+                    <PhoneInput
+                      placeholder="Phone Number"
+                      value={ this.state.phoneNumber }
+                      onChange={ phoneNumber => this.setState({ phoneNumber }) } />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          tabIndex={-1}
+                          onClick={event =>
+                            this.change(event, "registerCheckbox", "checkbox")
+                          }
+                          checkedIcon={<Check className={classes.checkedIcon} />}
+                          icon={<Check className={classes.uncheckedIcon} />}
+                          classes={{
+                            checked: classes.checked
+                          }}
+                        />
+                      }
+                      classes={{
+                        label:
+                          classes.label +
+                          (this.state.registerCheckboxState === "error"
+                            ? " " + classes.labelError
+                            : "")
+                      }}
+                      label={
+                        <span>
+                          I agree to the terms and conditions
+                          
+                        </span>
+                      }
+                    />
+                    {this.state.openVerificationModal && <VerificationPage page={'register'} email={this.state.email} classes={classes}/>}
+                    <Alert stack={true}/>
+                  </form>
+                </CardBody>
+                <CardFooter className={classes.justifyContentCenter}>
+                  <Button  color="rose" onClick={this.registerClick.bind(this)}>
+                    Get started
+                  </Button>
+                </CardFooter>
+                <VerificationPage page={"login"} email={this.state.email} classes={classes}/>
                 <hr/>
-                <GridContainer justify="center">
-                  <GridItem xs={12} sm={12} md={6}>
-                    <form className={classes.form}>
-                      <GridContainer>
-                        <GridItem xs={12} sm={6}>
-                          <CustomInput
-                            labelText="First Name*"
-                            success={this.state.firstnameState === "success"}
-                            error={this.state.firstnameState === "error"}
-                            id="firstname"
-                            formControlProps={{
-                              fullWidth: true
-                            }}
-                            inputProps={{
-                              onChange: event =>
-                                this.change(event, "firstname", "name"),
-                              type: "text",
-                              endAdornment: (
-                                <InputAdornment position="end">
-                                  <Person className={classes.inputAdornmentIcon} />
-                                </InputAdornment>
-                              )
-                            }}
-                          />
-                        </GridItem>
-                        <GridItem xs={12} sm={6}>
-                          <CustomInput
-                            labelText="Last Name*"
-                            success={this.state.lastnameState === "success"}
-                            error={this.state.lastnameState === "error"}
-                            id="lastname"
-                            formControlProps={{
-                              fullWidth: true
-                            }}
-                            inputProps={{
-                              onChange: event =>
-                                this.change(event, "lastname","name"),
-                              type: "text",
-                              endAdornment: (
-                                <InputAdornment position="end">
-                                  <Person className={classes.inputAdornmentIcon} />
-                                </InputAdornment>
-                              )
-                            }}
-                          />
-                        </GridItem>
-                      </GridContainer>
-                      <CustomInput
-                        labelText="Email*"
-                        success={this.state.emailState === "success"}
-                        error={this.state.emailState === "error"}
-                        id="email"
-                        formControlProps={{
-                          fullWidth: true
-                        }}
-                        inputProps={{
-                          onChange: event =>
-                            this.change(event, "email", "email"),
-                          type: "email",
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <Email className={classes.inputAdornmentIcon} />
-                            </InputAdornment>
-                          )
-                        }}
-                      />
-                      <CustomInput
-                        labelText="Password*"
-                        success={this.state.passwordState === "success"}
-                        error={this.state.passwordState === "error"}
-                        id="password"
-                        formControlProps={{
-                          fullWidth: true
-                        }}
-                        inputProps={{
-                          onChange: event =>
-                            this.change(event, "password", "password"),
-                          type: "password",
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <Lock className={classes.inputAdornmentIcon}/>
-                            </InputAdornment>
-                          )
-                        }}
-                      />
-                      <CustomInput
-                        labelText="Company Name"
-                        id="companyName"
-                        formControlProps={{
-                          fullWidth: true
-                        }}
-                        inputProps={{
-                          onChange: event =>
-                            this.change(event, "companyName", "companyName"),
-                          type: "text",
-                        }}
-                      />
-                      <CustomInput
-                        labelText="Department Name"
-                        id="department"
-                        formControlProps={{
-                          fullWidth: true
-                        }}
-                        inputProps={{
-                          onChange: event =>
-                            this.change(event, "department", "department"),
-                          type: "text",
-                        }}
-                      />
-                      <PhoneInput
-                        placeholder="Phone Number"
-                        value={ this.state.phoneNumber }
-                        onChange={ phoneNumber => this.setState({ phoneNumber }) } />
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            tabIndex={-1}
-                            onClick={event =>
-                              this.change(event, "registerCheckbox", "checkbox")
-                            }
-                            checkedIcon={<Check className={classes.checkedIcon} />}
-                            icon={<Check className={classes.uncheckedIcon} />}
-                            classes={{
-                              checked: classes.checked
-                            }}
-                          />
-                        }
-                        classes={{
-                          label:
-                            classes.label +
-                            (this.state.registerCheckboxState === "error"
-                              ? " " + classes.labelError
-                              : "")
-                        }}
-                        label={
-                          <span>
-                            I agree to the terms and conditions
-                            
-                          </span>
-                        }
-                      />
-                      <div className={classes.center}>
-                        <Button round color="rose" onClick={this.registerClick.bind(this)}>
-                          Get started
-                        </Button>
-                      </div>
-                    </form>
-                  </GridItem>
-                </GridContainer>
-                {this.state.openVerificationModal && <VerificationPage page={'register'} email={this.state.email} classes={classes}/>}
-                <Alert stack={true}/>
-              </CardBody>
-            </Card>
-          </GridItem>
-        </GridContainer>
+              </Card>
+            </GridItem>
+          </GridContainer>
+        </div>
       </div>
     );
   }
@@ -319,6 +353,6 @@ RegisterPage.propTypes = {
 };
 
 export default compose(
-  withStyles(registerPageStyle),
+  withStyles(loginPageStyle),
   connect(null,{registerUser})
 )(RegisterPage);
