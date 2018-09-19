@@ -15,6 +15,7 @@ import SurveyForm from "views/Survey/SurveyForm"
 import { fetchSurvey, editSurvey } from "actions/survey.jsx";
 import { Poll } from "@material-ui/icons";
 import _ from 'lodash';
+import { sessionService } from 'redux-react-session';
 
 var SID = ''
 class SurveyEdit extends React.Component{
@@ -31,7 +32,8 @@ class SurveyEdit extends React.Component{
       },
       titleState: '',
       descriptionState: '',
-      mode: 'edit'
+      mode: 'edit',
+      token: ''
     }
     this.changeQuestions = this.changeQuestions.bind(this)
     this.change = this.change.bind(this)
@@ -40,7 +42,11 @@ class SurveyEdit extends React.Component{
   componentWillMount(){
     SID = this.props.match.params.id
     this.setState({edit: true})
-    this.props.fetchSurvey(SID);
+    sessionService.loadSession().then(currentSession =>{
+      this.setState({token: currentSession.token}, () => {
+        this.props.fetchSurvey(SID,this.state.token);
+      })
+    })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -83,7 +89,7 @@ class SurveyEdit extends React.Component{
     if (_.isEmpty(description))
       this.setState({descriptionState: "error"})
     if (titleState !== "error" && descriptionState !== "error"){
-      this.props.editSurvey(this.state.surveyInfo, (response) => {
+      this.props.editSurvey(this.state.surveyInfo,this.state.token, (response) => {
         window.location = "/admin/survey/list"
       });
     }
@@ -91,7 +97,7 @@ class SurveyEdit extends React.Component{
 
 	render() {
     const { classes } = this.props;
-    if(!this.state.surveyInfo)
+    if(!this.state.surveyInfo.id)
       return null;
 		return(
       <Card>
