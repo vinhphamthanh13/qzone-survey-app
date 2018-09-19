@@ -25,7 +25,7 @@ class ResetPassword extends React.Component{
     this.props.resetPassword(this.state, (response)=>{
         if(response.status === 200){
           this.setState({open: false,openChangePassword: true})
-          Alert.success("Email is successfully send", {
+          Alert.success("Code is successfully send to your email", {
             position: 'bottom-right',
             effect: 'bouncyflip'
           });
@@ -40,7 +40,7 @@ class ResetPassword extends React.Component{
   }
 
   handleClose = () =>{
-    this.setState({open: false})
+    this.setState({open: false,openChangePassword: false})
   }
 
   handleOpen = () =>{
@@ -65,6 +65,7 @@ class ResetPassword extends React.Component{
               <TextField
                 margin="dense"
                 id="email"
+                type="email"
                 label="Enter Email"
                 onChange={(event) =>{this.setState({email: event.target.value})}}
               />
@@ -79,7 +80,7 @@ class ResetPassword extends React.Component{
             </Button>
           </DialogActions>
         </Dialog>
-        <ChangePassword openChangePassword={this.state.openChangePassword} email={this.state.email}classes={this.props.classes}/>
+        <ChangePassword openChangePassword={this.state.openChangePassword} closeChangePassword={this.handleClose} email={this.state.email} classes={this.props.classes}/>
       </React.Fragment>
     )
   }

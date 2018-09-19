@@ -3,7 +3,6 @@ import { TextField,Dialog, DialogContent, DialogTitle, DialogActions, DialogCont
 import Button from "components/CustomButtons/Button.jsx";
 import Alert from 'react-s-alert';
 import PropTypes from "prop-types";
-import { Link } from 'react-router-dom';
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import 'react-s-alert/dist/s-alert-default.css';
@@ -45,6 +44,7 @@ class ChangePassword extends React.Component{
 
   handleClose = () =>{
     this.setState({open: false})
+    this.props.closeChangePassword()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -72,6 +72,7 @@ class ChangePassword extends React.Component{
                   <TextField
                     margin="dense"
                     id="email"
+                    type="email"
                     label="Enter Email"
                     onChange={(event) =>{this.setState({email: event.target.value})}}
                     value={this.state.email}
@@ -83,6 +84,7 @@ class ChangePassword extends React.Component{
                   <TextField
                     margin="dense"
                     id="code"
+                    type="number"
                     label="Enter Code"
                     onChange={(event) =>{this.setState({code: event.target.value})}}
                   />
