@@ -16,8 +16,9 @@ class SurveyEditor extends Component {
       "surveyEditorContainer"
     );
     this.editor.saveSurveyFunc = this.saveMySurvey;
-    if(this.props.data)
+    if(this.props.data){
       this.editor.text = JSON.stringify(this.props.data)
+    }
   }
   render() {
     return( 

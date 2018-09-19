@@ -18,9 +18,7 @@ export function createSurveyAnswer(values,token, callback) {
   axios.post(`${ROOT_URL}/survey-answers`,values, axiosConfig)
     .then(
       response => {
-        
         callback(response);
-        // return response.json();
       },
       error => {
         callback(error.response)
@@ -55,8 +53,15 @@ export function fetchSurveyResponse(sid,callback) {
   }
 }
 
-export function fetchSurveyParticipantList(sid,callback) {
-  const request = axios.get(`${ROOT_URL}/listParticipantBySurveyId/{surveyId}?surveyId=${sid}`)
+export function fetchSurveyParticipantList(sid,token,callback) {
+  let axiosConfig = {
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer '+token
+    }
+  };
+  const request = axios.get(`${ROOT_URL}/listParticipantBySurveyId/{surveyId}?surveyId=${sid}`,axiosConfig)
   return {
     type: FETCH_SURVEY_PARTICIPANT_LIST,
     payload: request

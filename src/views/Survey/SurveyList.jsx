@@ -113,7 +113,7 @@ class SurveyList extends React.Component{
   handleClick(e) {
     e.preventDefault();
     Alert.closeAll()
-    Alert.info('Copied', {
+    Alert.success('Copied', {
       position: 'bottom-right',
       effect: 'bouncyflip'
     });

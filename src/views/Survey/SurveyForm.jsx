@@ -9,7 +9,6 @@ import CustomInput from "components/CustomInput/CustomInput.jsx";
 import CustomCheckbox from "components/CustomCheckbox/CustomCheckbox.jsx";
 import validationFormStyle from "assets/jss/material-dashboard-pro-react/views/validationFormStyle.jsx";
 import SurveyEditor from 'views/Survey/SurveyEditor.jsx';
-import { Link } from 'react-router-dom';
 import { fetchUserTypeList } from 'actions/auth.jsx';
 import Assessor from 'views/Survey/Assessor.jsx';
 import { sessionService } from 'redux-react-session';
@@ -21,25 +20,33 @@ class SurveyForm extends React.Component{
     this.state = {
       userType: 'ASSESSOR',
       token: '',
+      assessorList: ''
     }
+    this.reloadAssessorList = this.reloadAssessorList.bind(this)
   }
 
   componentWillMount(){
     sessionService.loadSession().then(currentSession =>{
       this.setState({token: currentSession.token}, () => {
-        this.props.fetchUserTypeList(this.state, (response)=>{
-          console.log(response)
-        })
+        this.props.fetchUserTypeList(this.state)
       })
     })
-    
   }
+
+  componentWillReceiveProps(nextProps){
+    this.setState({assessorList: nextProps.AssessorList})
+  }
+
+  reloadAssessorList(){
+    this.props.fetchUserTypeList(this.state)
+  }
+
 	render() {
     const { classes,survey} = this.props;
     const {surveyInfo, titleState, descriptionState, mode} = survey
     if(mode === 'create' || surveyInfo.survey)
       editor = true
-    if (!this.props.AssessorList)
+    if (!this.state.assessorList)
       return <div></div>
 		return(
       <form>
@@ -108,7 +115,7 @@ class SurveyForm extends React.Component{
                   this.props.change(event, "userId")}
                 classes={{ select: classes.select }}
               > 
-                {(this.props.AssessorList).map(assessor => (
+                {(this.state.assessorList).map(assessor => (
                   <MenuItem
                     key={assessor.id}
                     value={assessor.id}
@@ -121,7 +128,7 @@ class SurveyForm extends React.Component{
             </FormControl>                  
           </GridItem>
           <GridItem>
-            <Assessor classes={classes}/>
+            <Assessor classes={classes} reloadAssessorList={this.reloadAssessorList}/>
           </GridItem>
         </GridContainer>
         <GridContainer>

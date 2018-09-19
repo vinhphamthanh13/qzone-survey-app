@@ -28,7 +28,8 @@ class SurveyEdit extends React.Component{
         logo: '',
         privacy: false,
         id: '',
-        survey: ''
+        survey: '',
+        userId: ''
       },
       titleState: '',
       descriptionState: '',

@@ -9,28 +9,14 @@ export const RESET_PASSWORD = 'reset_password';
 export const CHANGE_PASSWORD = 'change_password';
 export const VERIFY_RESEND_USER = 'verify_resend_user';
 export const FETCH_USERTYPE_LIST = 'fetch_usertype_list';
+export const FETCH_USER_BY_USERID = 'fetch_user_by_userid';
 
 const ROOT_URL = `http://45.117.170.211:8091/api/user`
 
 export function registerUser(values,callback) {
-  // const token = values.token
-  // let axiosConfig = {
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     'Accept': 'application/json',
-  //     'mode': 'cors',
-  //     'credentials': 'include'
-  //   }
-  // };
-
-  // let axiosCredentials = {
-  //   withCredentials: true
-  // };
-  
   axios.post(`${ROOT_URL}/register`,values)
     .then(
       response => {
-        console.log(response)
         callback(response);
       },
       error => {
@@ -70,7 +56,6 @@ export function verifyResendUser(values, callback) {
         return error.response;
       }
     )
-    
   return {
     type: VERIFY_RESEND_USER
   }
@@ -94,8 +79,6 @@ export function loginUser(values,callback) {
         return error.response;
       }
     )
-
-
   return {
     type: LOGIN_USER
   }
@@ -156,16 +139,23 @@ export function fetchUserTypeList(value,callback){
     }
   };
   const request = axios.post(`${ROOT_URL}/getListUsersByUserType`, value, axiosConfig)
-    // .then(
-    //   response => {
-    //     callback(response);
-    //   },
-    //   error => {
-    //     callback(error.response)
-    //   }
-    // )
   return{
     type: FETCH_USERTYPE_LIST,
+    payload: request
+  }
+}
+
+export function fetchUserByUserId(id,token,callback){
+  let axiosConfig = {
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer '+token
+    }
+  };
+  const request = axios.get(`${ROOT_URL}/getUserByUserId/${id}`, axiosConfig)
+  return{
+    type: FETCH_USER_BY_USERID,
     payload: request
   }
 }

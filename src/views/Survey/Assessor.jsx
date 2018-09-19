@@ -8,22 +8,61 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
-import { changePassword } from "actions/auth.jsx";
+import { registerUser } from "actions/auth.jsx";
 import { connect } from 'react-redux';
+import { compose } from 'redux';
+import Generator from 'generate-password'
 
 class Assessor extends React.Component{
   constructor(props){
     super(props);
     this.state={
       email:"",
-      firstName:'',
-      lastName:'',
+      firstname:'',
+      lastname:'',
+      userType: 'ASSESSOR',
       open: false,
+      password: "Survey@2019"
     }
+    this.handleAssessor = this.handleAssessor.bind(this)
   }
 
-  handleAssessor(){
+  // componentWillMount(){
+  //   var password = this.randomPassword(8);
+  //   console.log(password)
+  //   this.setState({password})
+  // }
 
+  // randomPassword(length) {
+  //   var chars = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
+  //   var pass = "";
+  //   for (var x = 0; x < length; x++) {
+  //       var i = Math.floor(Math.random() * chars.length);
+  //       pass += chars.charAt(i);
+  //   }
+  //   return pass;
+  // }
+
+  handleAssessor(){
+    this.props.registerUser(this.state, (response) =>{
+      if(response){
+        if (response.status !== 201 )
+        {
+          Alert.error(response.data.message, {
+            position: 'bottom-right',
+            effect: 'bouncyflip',
+          });
+        }
+        else{
+          Alert.success("Assessor Added successfully", {
+            position: 'bottom-right',
+            effect: 'bouncyflip',
+          });
+          this.props.reloadAssessorList()
+          this.setState({open: false})
+        }
+      }
+    })
   }
 
   handleClose = () =>{
@@ -56,7 +95,7 @@ class Assessor extends React.Component{
                     margin="dense"
                     id="firstName"
                     label="Enter First Name"
-                    onChange={(event) =>{this.setState({firstName: event.target.value})}}
+                    onChange={(event) =>{this.setState({firstname: event.target.value})}}
                   />
                 </GridItem>
               </GridContainer>
@@ -66,7 +105,7 @@ class Assessor extends React.Component{
                     margin="dense"
                     id="lastName"
                     label="Enter Last Name"
-                    onChange={(event) =>{this.setState({lastName: event.target.value})}}
+                    onChange={(event) =>{this.setState({lastname: event.target.value})}}
                   />
                 </GridItem>
               </GridContainer>
@@ -82,6 +121,7 @@ class Assessor extends React.Component{
                 </GridItem>
               </GridContainer>
             </div>
+            <Alert stack={true}/>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} >
@@ -101,4 +141,6 @@ Assessor.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default connect(null,{changePassword})(Assessor);
+export default compose(
+  connect(null,{registerUser})
+)(Assessor);

@@ -33,15 +33,18 @@ class SurveyQuestionnaire extends React.Component{
         privacy: false,
         id: '',
         survey: '',
-        token: ''
-      }
+        token: '',
+        userId: ''
+      },
+      assessorName:''
     }
   }
+
   componentWillMount(){
     const { id } = this.props.match.params
     sessionService.loadSession().then(currentSession =>{
       this.setState({token: currentSession.token}, () => {
-        this.props.fetchSurvey(id,this.state.token);
+        this.props.fetchSurvey(id,this.state.token)
         if (window.location.href.indexOf("admin") > -1)
           this.setState({admin: true})
       })
@@ -49,6 +52,7 @@ class SurveyQuestionnaire extends React.Component{
   }
 
   componentWillReceiveProps(nextProps) {
+    const fullName = nextProps.survey.user.firstname + ' ' + nextProps.survey.user.lastname
     const { surveyData } = this.state;
     if(nextProps.survey){
       for(var key in nextProps.survey) {
@@ -58,14 +62,9 @@ class SurveyQuestionnaire extends React.Component{
         else
           surveyData[key]= nextProps.survey[key]
       };
-      this.setState({surveyData: surveyData})
+      this.setState({surveyData: surveyData, assessorName: fullName})
     }
   }
-
-  sendDataToServer(survey) {
-   var resultAsString = JSON.stringify(survey.data);
-   alert(resultAsString); 
-  };
 
   render() {
     const { classes } = this.props;
@@ -79,7 +78,6 @@ class SurveyQuestionnaire extends React.Component{
         });
 
     if (!this.state.admin){
-      // survey.data = {"question1":"abc","question2":"item1"}
       surveyInfo.mode = '';
     }
     else{
@@ -125,6 +123,16 @@ class SurveyQuestionnaire extends React.Component{
                   </h4>
                 </GridItem>
               </GridContainer>
+              <GridContainer>
+                <GridItem xs={12} sm={3}>
+                  <h4>Assessor:</h4>
+                </GridItem>
+                <GridItem xs={12} sm={7}>
+                  <h4>
+                    {this.state.assessorName}
+                  </h4>
+                </GridItem>
+              </GridContainer>
               <hr/>
               <GridContainer>
                 <GridItem xs={12} sm={10}>
@@ -154,7 +162,7 @@ SurveyQuestionnaire.propTypes = {
 };
 
 function mapStateToProps(state) {
-  return{survey: state.surveys.data}
+  return{survey: state.surveys.data, user: state.user.data}
 } 
 
 export default compose(
