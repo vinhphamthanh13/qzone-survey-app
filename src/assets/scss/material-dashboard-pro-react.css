@@ -2225,11 +2225,11 @@ blockquote p {
   font-style: italic; }
 
 a {
-  color: #9c27b0;
+  color: #303f9f;;
   text-decoration: none; }
 
 a:hover, a:focus {
-  color: #89229b;
+  color: #303f9f;
   text-decoration: none; }
 
 legend {
@@ -2264,7 +2264,7 @@ output {
 label {
   font-size: 14px;
   line-height: 1.42857;
-  color: #AAAAAA;
+  color: #3C4858;
   font-weight: 400; }
 
 footer {

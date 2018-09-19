@@ -6,11 +6,12 @@ import {
   container,
   cardTitle
 } from "assets/jss/material-dashboard-pro-react.jsx";
-
+import customSelectStyle from "assets/jss/material-dashboard-pro-react/customSelectStyle.jsx";
 import customCheckboxRadioSwitch from "assets/jss/material-dashboard-pro-react/customCheckboxRadioSwitch.jsx";
 
 const registerPageStyle = {
   ...customCheckboxRadioSwitch,
+  ...customSelectStyle,
   cardTitle: {
     ...cardTitle,
     textAlign: "center"
@@ -19,7 +20,7 @@ const registerPageStyle = {
     ...container,
     position: "relative",
     zIndex: "3",
-    paddingTop: "23vh",
+    paddingTop: "0vh",
   },
   cardSignup: {
     borderRadius: "6px",
@@ -61,7 +62,16 @@ const registerPageStyle = {
   checkboxLabel: {
     marginLeft: "6px",
     color: "rgba(0, 0, 0, 0.26)"
-  }
+  },
+  linkDisplay:{
+    position: "absolute",
+    right: 0,
+    top: 10,
+    // backgroundColor: "#303f9f",
+    "&:hover,&:focus": {
+      // backgroundColor: "#303f9f"
+    }
+  },
 };
 
 export default registerPageStyle;

@@ -1,8 +1,9 @@
 import {
-  primaryColor,
+  // primaryColor,
   dangerColor,
   successColor,
-  defaultFont
+  defaultFont,
+  roseColor
 } from "assets/jss/material-dashboard-pro-react.jsx";
 
 const customInputStyle = {
@@ -17,7 +18,7 @@ const customInputStyle = {
       borderWidth: "1px !important"
     },
     "&:after": {
-      borderColor: primaryColor
+      borderColor: roseColor
     }
   },
   underlineError: {

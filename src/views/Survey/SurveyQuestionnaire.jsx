@@ -6,67 +6,71 @@ import Button from "components/CustomButtons/Button.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
-import CardText from "components/Card/CardText.jsx";
+import CardIcon from "components/Card/CardIcon.jsx";
+import CardFooter from "components/Card/CardFooter.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import listPageStyle from "assets/jss/material-dashboard-pro-react/views/listPageStyle.jsx";
 import * as Survey from 'survey-react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { fetchSurvey } from "actions/survey.jsx";
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { Poll } from "@material-ui/icons";
+import { sessionService } from 'redux-react-session';
+import { Route } from 'react-router-dom';
 
 Survey.Survey.cssType = "bootstrap";
 Survey.defaultBootstrapCss.navigationButton = "btn btn-green";
-var survey= ''
+var surveyInfo= ''
 class SurveyQuestionnaire extends React.Component{
   constructor(props) {
     super(props);
-    this.state = { 
-      "title": "Dummy Survey",
-      "description": "Dummy json is used to show survey page",
-      "logo": "",
-      "data": {
-       "pages": [
-          {
-           "name": "page1",
-           "elements": [
-            {
-             "type": "dropdown",
-             "name": "question1",
-             "choices": [
-              "item1",
-              "item2",
-              "item3"
-             ]
-            },
-            {
-             "type": "radiogroup",
-             "name": "question2",
-             "choices": [
-              "item1",
-              "item2",
-              "item3"
-             ]
-            }
-           ]
-          }
-        ]
+    this.state = {
+      surveyData: {
+        title: '',
+        description: '',
+        logo: '',
+        privacy: false,
+        id: '',
+        survey: '',
+        token: '',
+        userId: ''
       },
-      admin: false
+      assessorName:''
     }
   }
 
   componentWillMount(){
-    if (window.location.href.indexOf("admin") > -1)
-      this.setState({admin: true})
+    const { id } = this.props.match.params
+    sessionService.loadSession().then(currentSession =>{
+      this.setState({token: currentSession.token}, () => {
+        this.props.fetchSurvey(id,this.state.token)
+        if (window.location.href.indexOf("admin") > -1)
+          this.setState({admin: true})
+      })
+    })
   }
 
-  sendDataToServer(survey) {
-   var resultAsString = JSON.stringify(survey.data);
-   alert(resultAsString); 
-  };
+  componentWillReceiveProps(nextProps) {
+    const fullName = nextProps.survey.user.firstname + ' ' + nextProps.survey.user.lastname
+    const { surveyData } = this.state;
+    if(nextProps.survey){
+      for(var key in nextProps.survey) {
+        if(key === 'survey' && nextProps.survey.survey !== ''){
+          surveyData[key]= JSON.parse(nextProps.survey['survey'])
+        }
+        else
+          surveyData[key]= nextProps.survey[key]
+      };
+      this.setState({surveyData: surveyData, assessorName: fullName})
+    }
+  }
 
   render() {
     const { classes } = this.props;
-    const { title, description, data, logo } = this.state
-    survey = new Survey.Model(data);
-    survey
+    const { title, description, survey, logo } = this.state.surveyData
+    surveyInfo = new Survey.Model(survey);
+    surveyInfo
       .onComplete
         .add(function (result) {
             var resultAsString = JSON.stringify(result.data);
@@ -74,21 +78,21 @@ class SurveyQuestionnaire extends React.Component{
         });
 
     if (!this.state.admin){
-      // survey.data = {"question1":"abc","question2":"item1"}
-      survey.mode = '';
+      surveyInfo.mode = '';
     }
     else{
-    survey.mode = 'display';
+    surveyInfo.mode = 'display';
     }
     return(
       <GridContainer>
         <GridItem xs={12}>
           <Card>
             <CardHeader color="primary" icon>
-              <CardText color="rose">
-                <h4 className={classes.cardTitle}>Survey</h4>
-              </CardText>
-              <Button size="md" href="/" className={classes.buttonDisplay}> 
+              <CardIcon color="rose">
+                <Poll />
+              </CardIcon>
+              <h3 className={classes.cardIconTitle}>Survey</h3>
+              <Button size="md" href={`/admin/survey/edit/${this.props.match.params.id}`} className={classes.buttonDisplay}> 
                 Edit
               </Button>
             </CardHeader>
@@ -119,13 +123,33 @@ class SurveyQuestionnaire extends React.Component{
                   </h4>
                 </GridItem>
               </GridContainer>
+              <GridContainer>
+                <GridItem xs={12} sm={3}>
+                  <h4>Assessor:</h4>
+                </GridItem>
+                <GridItem xs={12} sm={7}>
+                  <h4>
+                    {this.state.assessorName}
+                  </h4>
+                </GridItem>
+              </GridContainer>
               <hr/>
               <GridContainer>
                 <GridItem xs={12} sm={10}>
-                  <Survey.Survey model={survey} />
+                  <Survey.Survey model={surveyInfo} />
                 </GridItem>
               </GridContainer>
             </CardBody>
+            <CardFooter className={classes.justifyContentCenter}>
+            <Route render={({ history}) => (
+              <Button
+                color="rose"
+                onClick={() => { history.push('/admin/survey/list') }}
+              >
+                Back 
+              </Button>
+            )}/>
+            </CardFooter>
           </Card>
         </GridItem>
        </GridContainer>
@@ -137,9 +161,14 @@ SurveyQuestionnaire.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(listPageStyle)(SurveyQuestionnaire);
+function mapStateToProps(state) {
+  return{survey: state.surveys.data, user: state.user.data}
+} 
 
-
+export default compose(
+  withStyles(listPageStyle),
+  connect(mapStateToProps, {fetchSurvey}),
+)(SurveyQuestionnaire);
 
 
 

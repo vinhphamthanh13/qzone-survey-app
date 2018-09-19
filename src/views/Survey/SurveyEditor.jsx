@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import * as SurveyJSEditor from "surveyjs-editor";
 import "surveyjs-editor/surveyeditor.css";
-import "./style.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class SurveyEditor extends Component {
   constructor(props){
@@ -10,12 +10,15 @@ class SurveyEditor extends Component {
     SurveyJSEditor.StylesManager.applyTheme("orange");
   }
   editor;
-  componentDidMount() {
+ 
+  componentDidMount(){
     this.editor = new SurveyJSEditor.SurveyEditor(
       "surveyEditorContainer"
     );
     this.editor.saveSurveyFunc = this.saveMySurvey;
-    this.editor.text = this.props.data
+    if(this.props.data){
+      this.editor.text = JSON.stringify(this.props.data)
+    }
   }
   render() {
     return( 
