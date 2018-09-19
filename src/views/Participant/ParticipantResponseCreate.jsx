@@ -33,19 +33,21 @@ class ParticipantResponseCreate extends React.Component {
         surveyId: '',
         questionAnswers: ''
       },
-      userId:''
+      userId:'',
+      token: ''
     }
     this.sendDataToServer = this.sendDataToServer.bind(this)
   }
 
   componentWillMount(){
     id  = this.props.match.params.id
-    this.props.fetchSurvey(id);
     sessionService.loadUser().then(currentUser => {
-      console.log(currentUser)
-      console.log("**************ww")
       this.setState({userId: currentUser})})
-    
+    sessionService.loadSession().then(currentSession =>{
+      this.setState({token: currentSession.token}, () => {
+        this.props.fetchSurvey(id,this.state.token)
+      })
+    })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -55,10 +57,8 @@ class ParticipantResponseCreate extends React.Component {
   sendDataToServer(survey) {
     var resultAsString = JSON.stringify(survey.data);
     this.setState({participantResponse: {participantId: this.state.userId, surveyId: id, questionAnswers: resultAsString}},() =>{
-      this.props.createSurveyAnswer(this.state.participantResponse, (response) => {
-        console.log("0000000000000")
-        console.log(response)
-        // window.location = "/surveys/result/"+id
+      this.props.createSurveyAnswer(this.state.participantResponse,this.state.token, (response) => {
+        window.location = "/surveys/result/"+id
       });
     })
   };
@@ -67,8 +67,6 @@ class ParticipantResponseCreate extends React.Component {
     const { classes } = this.props;
     const {title, description, survey} = this.state.surveyData
     surveyInfo = new Survey.Model(survey);
-    console.log("*************")
-    console.log(this.state.userId)
     if(!this.state.surveyData)
       return null
     return (

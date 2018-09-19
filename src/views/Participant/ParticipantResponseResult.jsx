@@ -11,6 +11,7 @@ import { fetchSurveyParticipantResponse } from "actions/surveyAnswer.jsx"
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import * as Survey from 'survey-react';
+import { sessionService } from 'redux-react-session';
 
 var surveyInfo= '';
 var sid= ''
@@ -31,15 +32,23 @@ class ParticipantResponseResult extends React.Component{
         participantId: '',
         surveyId: '',
         questionAnswers: ''
-      }
+      },
+      token: ''
     }
   }
 
   componentWillMount(){
+    console.log(this.props)
     sid  = this.props.match.params.sid;
-    pid = this.props.match.params.pid || '5'
-    this.props.fetchSurvey(sid);
-    this.props.fetchSurveyParticipantResponse(pid,sid)
+    sessionService.loadUser().then(currentUser => {
+      pid = currentUser
+    })
+    sessionService.loadSession().then(currentSession =>{
+      this.setState({token: currentSession.token}, () => {
+        this.props.fetchSurvey(sid, this.state.token);
+        this.props.fetchSurveyParticipantResponse(pid,sid,this.state.token)
+      })
+    })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -49,7 +58,6 @@ class ParticipantResponseResult extends React.Component{
   render() {
     const { classes } = this.props;
     const { surveyData,participantResponse } = this.state
-    
     if (participantResponse === undefined || participantResponse.questionAnswers === "" || !surveyData || participantResponse === "")
       return <h1>Not Available</h1>;
     else{
