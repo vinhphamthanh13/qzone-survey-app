@@ -31,22 +31,20 @@ const switchRoutes = (
 );
 var ps;
 class Dashboard extends React.Component {
-  state = {
-    mobileOpen: false,
-    miniActive: false,
-    isLoggedIn: true
-  };
-
-  handleDrawerToggle = () => {
-    this.setState({ mobileOpen: !this.state.mobileOpen });
-  };
-
+  constructor(props){
+    super(props)
+    this.state = {
+      mobileOpen: false,
+      miniActive: false,
+      isLoggedIn: true
+    };
+  }
+ 
   getRoute() {
     return this.props.location.pathname !== "/maps/full-screen-maps";
   }
 
   componentWillMount(){
-    
     this.props.checkAuth('abc',response=>{
       if (response===false)
         this.setState({isLoggedIn: false})
@@ -84,6 +82,7 @@ class Dashboard extends React.Component {
 
   render() {
     const { classes, ...rest } = this.props;
+    console.log(this.props)
     const destinationPath = this.props.location.pathname
     const mainPanel =
       classes.mainPanel +
@@ -95,20 +94,16 @@ class Dashboard extends React.Component {
       });
 
     if (!this.state.isLoggedIn) {
-      window.location.pathname = '/login'
-      // console.log("HHHHHHHHH")
-      // return <Redirect
-      //   to={{
-      //     pathname: "/login",
-      //     state: { from: this.props.location.pathname }
-      //   }}
-      // />
-      // console.log(destinationPath)
-      // replace({
-      //   pathname: '/login',
-      //   query: {destinationPath}
-      // });
-      return (<div></div>)
+      return( 
+        <div className={mainPanel} ref="mainPanel">
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: this.props.location.pathname }
+            }}
+          />
+        </div>
+      )
     }
 
     return (

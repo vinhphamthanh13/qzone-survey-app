@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Redirect } from "react-router-dom";
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -37,8 +38,6 @@ class LoginPage extends React.Component {
     };
 
     this.loginClick = this.loginClick.bind(this);
-    // this.handleVerificationCode = this.handleVerificationCode.bind(this);
-
   }
   componentDidMount() {
     setTimeout(
@@ -48,15 +47,6 @@ class LoginPage extends React.Component {
       700
     );
   }
-
-  // handleVerificationCode(){
-  //   this.setState({openVerificationCode: true})
-  // }
-
-  // handleClose(){
-  //   this.setState({openVerificationCode: false})
-  // }
-
 
   verifyEmail(value) {
     var emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -74,6 +64,7 @@ class LoginPage extends React.Component {
   }
 
   loginClick() {
+    const { from } = this.props.location.state || { from: { pathname: '/' } }
     this.setState({loading: true})
     if (this.state.emailState === "") {
       this.setState({ emailState: "error" });
@@ -87,7 +78,7 @@ class LoginPage extends React.Component {
         this.setState({loading: false})
         if (response){
           if(response.status === 200){
-            window.location = '/dashboard'
+            window.location = from
           }
           else{
             Alert.error(response.data.message, {
