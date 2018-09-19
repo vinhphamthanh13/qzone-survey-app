@@ -71,18 +71,6 @@ class ChangePassword extends React.Component{
                 <GridItem>
                   <TextField
                     margin="dense"
-                    id="email"
-                    type="email"
-                    label="Enter Email"
-                    onChange={(event) =>{this.setState({email: event.target.value})}}
-                    value={this.state.email}
-                  />
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem>
-                  <TextField
-                    margin="dense"
                     id="code"
                     type="number"
                     label="Enter Code"
