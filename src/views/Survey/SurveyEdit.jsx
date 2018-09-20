@@ -55,6 +55,8 @@ class SurveyEdit extends React.Component{
     for(var key in nextProps.survey) {
       if(key === 'survey' && nextProps.survey.survey !== '')
         surveyInfo[key]= JSON.parse(nextProps.survey.survey)
+      else if(key === 'user')
+        surveyInfo['userId'] = nextProps.survey.user.id
       else
         surveyInfo[key]= nextProps.survey[key]
     };
