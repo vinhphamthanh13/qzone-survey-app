@@ -73,7 +73,6 @@ class LoginPage extends React.Component {
     }
     if (this.state.emailState === "success" && this.state.passwordState === "success") {
       this.props.loginUser(this.state , (response)=>{
-        console.log(response)
         this.setState({loading: false})
         if (response){
           if(response.status === 200){
