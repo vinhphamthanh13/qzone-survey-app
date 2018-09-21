@@ -18,8 +18,9 @@ import CardFooter from "components/Card/CardFooter.jsx";
 import {fetchSurveyParticipantList} from "actions/surveyAnswer";
 import { Poll } from "@material-ui/icons";
 import { sessionService } from 'redux-react-session';
+import { fullName } from 'variables/FullName';
 
-const rows = ["#","Name", "Description", "", ""]
+const rows = ["#","Name", "Email", "", ""]
 var sid=''
 class ParticipantList extends React.Component{
   constructor(props) {
@@ -76,7 +77,7 @@ class ParticipantList extends React.Component{
                         return(
                           <TableRow key={index}>
                             <TableCell>{index+1}</TableCell>
-                            <TableCell>{participant.firstname}</TableCell>
+                            <TableCell>{fullName(participant)}</TableCell>
                             <TableCell>{participant.email}</TableCell>
                             <TableCell><Link to={`/admin/survey/p_result/${sid}/${participant.id}`}>Result</Link></TableCell>
                             <TableCell><Link to={`/admin/survey/p_detail/${sid}/${participant.id}`}>Details</Link></TableCell>

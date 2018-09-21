@@ -69,6 +69,8 @@ class SurveyQuestionnaire extends React.Component{
     const { title, description, survey, logo,user } = this.state.surveyData
     surveyInfo = new Survey.Model(survey);
     surveyInfo.mode = 'display';
+    if (!this.state.surveyData.survey)
+      return null
     return(
       <GridContainer>
         <GridItem xs={12}>
