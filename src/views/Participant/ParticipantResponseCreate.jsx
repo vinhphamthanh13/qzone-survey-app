@@ -65,34 +65,36 @@ class ParticipantResponseCreate extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const {title, description, survey} = this.state.surveyData
-    surveyInfo = new Survey.Model(survey);
     if(!this.state.surveyData)
       return null
-    return (
-      <div className={classes.content}>
-        <div className={classes.container}>
-          <GridContainer justify="center">
-            <GridItem xs={12} sm={12} md={10}>
-              <Card className={classes.cardSignup}>
-                <h2 className={classes.cardTitle}>{title}</h2>
-                <CardBody>
-                  <div className={classes.center}>
-                    {description}
-                  </div>
-                  <hr/>
-                  <GridContainer>
-                    <GridItem xs={12} sm={10}>
-                      <Survey.Survey model={surveyInfo} className={classes.buttonDisplay} onComplete={this.sendDataToServer}/>
-                    </GridItem>
-                  </GridContainer>
-                </CardBody>
-              </Card>
-            </GridItem>
-          </GridContainer>
+    else{
+      const {title, description, survey} = this.state.surveyData
+      surveyInfo = new Survey.Model(survey);
+      return (
+        <div className={classes.content}>
+          <div className={classes.container}>
+            <GridContainer justify="center">
+              <GridItem xs={12} sm={12} md={10}>
+                <Card className={classes.cardSignup}>
+                  <h2 className={classes.cardTitle}>{title}</h2>
+                  <CardBody>
+                    <div className={classes.center}>
+                      {description}
+                    </div>
+                    <hr/>
+                    <GridContainer>
+                      <GridItem xs={12} sm={10}>
+                        <Survey.Survey model={surveyInfo} className={classes.buttonDisplay} onComplete={this.sendDataToServer}/>
+                      </GridItem>
+                    </GridContainer>
+                  </CardBody>
+                </Card>
+              </GridItem>
+            </GridContainer>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 

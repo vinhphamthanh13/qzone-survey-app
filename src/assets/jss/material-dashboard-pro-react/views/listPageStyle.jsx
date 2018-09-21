@@ -1,4 +1,4 @@
-import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
+import { cardTitle, container } from "assets/jss/material-dashboard-pro-react.jsx";
 import buttonStyle from "assets/jss/material-dashboard-pro-react/components/buttonStyle.jsx";
 
 const listPageStyle = {
@@ -15,6 +15,12 @@ const listPageStyle = {
     "&:hover,&:focus": {
       backgroundColor: "#303f9f"
     }
+  },
+  container: {
+    ...container,
+    position: "relative",
+    zIndex: "3",
+    paddingTop: "5vh",
   },
   linkDisplay:{
     position: "absolute",

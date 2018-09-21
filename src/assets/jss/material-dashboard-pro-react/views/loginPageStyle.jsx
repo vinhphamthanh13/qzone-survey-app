@@ -6,8 +6,11 @@ import {
   container,
   cardTitle
 } from "assets/jss/material-dashboard-pro-react.jsx";
+import customCheckboxRadioSwitch from "assets/jss/material-dashboard-pro-react/customCheckboxRadioSwitch.jsx";
+
 
 const loginPageStyle = {
+  ...customCheckboxRadioSwitch,
   container,
   cardTitle: {
     ...cardTitle,

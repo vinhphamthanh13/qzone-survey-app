@@ -114,6 +114,7 @@ class SurveyForm extends React.Component{
                 onChange={event =>
                   this.props.change(event, "userId")}
                 classes={{ select: classes.select }}
+                style={{paddingTop: '20px'}}
               > 
                 {(this.state.assessorList).map(assessor => (
                   <MenuItem
@@ -148,6 +149,8 @@ class SurveyForm extends React.Component{
                   this.props.change(event, "logo"),
                 type: "file"
               }}
+              style={{paddingTop: '20px'}}
+
             />
           </GridItem>
         </GridContainer>

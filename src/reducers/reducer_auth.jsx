@@ -6,8 +6,6 @@ export default function(state = {}, action) {
     case FETCH_USERTYPE_LIST:
       return {...state, data: action.payload.data}
     case FETCH_USER_BY_USERID:
-    	console.log("rrr")
-    	console.log(action.payload)
       return {...state, data: action.payload.data}
     default:
       return state;

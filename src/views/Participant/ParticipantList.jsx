@@ -17,8 +17,10 @@ import {Table, TableBody, TableCell, TableHead, TableRow} from "@material-ui/cor
 import CardFooter from "components/Card/CardFooter.jsx";
 import {fetchSurveyParticipantList} from "actions/surveyAnswer";
 import { Poll } from "@material-ui/icons";
+import { sessionService } from 'redux-react-session';
+import { fullName } from 'variables/FullName';
 
-const rows = ["#","Name", "Description", "", ""]
+const rows = ["#","Name", "Email", "", ""]
 var sid=''
 class ParticipantList extends React.Component{
   constructor(props) {
@@ -27,19 +29,23 @@ class ParticipantList extends React.Component{
     }
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   this.setState({surveyList: nextProps.surveyList})
-  // }
+  componentWillReceiveProps(nextProps) {
+    this.setState({participantList: nextProps.surveyParticipantList})
+  }
 
   componentWillMount(){
     sid  = this.props.match.params.sid
-    this.props.fetchSurveyParticipantList(sid)
+    sessionService.loadSession().then(currentSession =>{
+      this.setState({token: currentSession.token}, () => {
+        this.props.fetchSurveyParticipantList(sid,this.state.token)
+      })
+    })
   }
 
   render() {
     const { classes } = this.props;
-    console.log("@@@@@@@@2")
-    console.log(this.props.surveyParticipantList)
+      if (!this.state.participantList)
+        return null
       return (
         <GridContainer>
           <GridItem xs={12}>
@@ -49,12 +55,8 @@ class ParticipantList extends React.Component{
                   <Poll />
                 </CardIcon>
                 <h3 className={classes.cardIconTitle}>Participant List</h3>
-                <Link  to={'/admin/survey/list'} className={classes.linkDisplay} > 
-                  <u>Back</u>
-                </Link>
               </CardHeader>
               <CardBody>
-                <p>This page shows dummy data only</p>
                 <Table className={classes.table} aria-labelledby="tableTitle">
                   <TableHead>
                     <TableRow>
@@ -70,20 +72,19 @@ class ParticipantList extends React.Component{
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    <TableRow>
-                      <TableCell>1</TableCell>
-                      <TableCell>Raj</TableCell>
-                      <TableCell>ah cbhd dhsdc ahh</TableCell>
-                      <TableCell><Link to={`/admin/survey/p_result/${sid}/${5}`}>Result</Link></TableCell>
-                      <TableCell><Link to={`/admin/survey/p_detail/${sid}/${5}`}>Details</Link></TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>2</TableCell>
-                      <TableCell>Ana</TableCell>
-                      <TableCell>ah cbhd dhsdc ahh</TableCell>
-                      <TableCell><Link to={`/admin/survey/p_result/${sid}/${6}`}>Result</Link></TableCell>
-                      <TableCell><Link to={`/admin/survey/p_detail/${sid}/${6}`}>Details</Link></TableCell>
-                    </TableRow>
+                    {
+                      (this.state.participantList).map((participant,index) =>{
+                        return(
+                          <TableRow key={index}>
+                            <TableCell>{index+1}</TableCell>
+                            <TableCell>{fullName(participant)}</TableCell>
+                            <TableCell>{participant.email}</TableCell>
+                            <TableCell><Link to={`/admin/survey/p_result/${sid}/${participant.id}`}>Result</Link></TableCell>
+                            <TableCell><Link to={`/admin/survey/p_detail/${sid}/${participant.id}`}>Details</Link></TableCell>
+                          </TableRow>
+                        )
+                      })
+                    }
                   </TableBody>
                 </Table>
               </CardBody>
@@ -106,8 +107,6 @@ class ParticipantList extends React.Component{
 }
 
 function mapStateToProps(state) {
-  console.log("&&&&&&&&&&")
-  console.log(state)
   return{surveyParticipantList: state.surveyParticipantAnswer.data}
 }  
 

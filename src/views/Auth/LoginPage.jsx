@@ -33,7 +33,8 @@ class LoginPage extends React.Component {
       password: "",
       passwordState: "",
       openVerificationModal: false,
-      loading: false
+      loading: false,
+      disable: false
     };
 
     this.loginClick = this.loginClick.bind(this);
@@ -64,7 +65,7 @@ class LoginPage extends React.Component {
 
   loginClick() {
     const { from } = this.props.location.state || { from: '/' }
-    this.setState({loading: true})
+    this.setState({loading: true, disabled: true})
     if (this.state.emailState === "") {
       this.setState({ emailState: "error" });
     }
@@ -73,8 +74,7 @@ class LoginPage extends React.Component {
     }
     if (this.state.emailState === "success" && this.state.passwordState === "success") {
       this.props.loginUser(this.state , (response)=>{
-        console.log(response)
-        this.setState({loading: false})
+        this.setState({loading: false, disabled: false})
         if (response){
           if(response.status === 200){
             window.location = from
@@ -126,7 +126,7 @@ class LoginPage extends React.Component {
           <GridContainer justify="center">
             <GridItem xs={12} sm={6} md={4}>
               <form>
-                <Card login className={classes[this.state.cardAnimaton]}>
+                <Card login className={classes[this.state.cardAnimaton]} >
                   <CardHeader
                     className={`${classes.cardHeader} ${classes.textCenter}`}
                     color="rose"
@@ -205,7 +205,7 @@ class LoginPage extends React.Component {
                     {this.state.openVerificationModal && <VerificationPage page={'login'} email={this.state.email} classes={classes}/>}
                   </CardBody>
                   <CardFooter className={classes.justifyContentCenter}>
-                    <Button color="rose" style={{paddingLeft: '140px', paddingRight: '140px'}} onClick={this.loginClick}>
+                    <Button color="rose" style={{paddingLeft: '140px', paddingRight: '140px'}} disabled={this.state.disabled} onClick={this.loginClick}>
                       Let's Go
                     </Button>
                   </CardFooter>
