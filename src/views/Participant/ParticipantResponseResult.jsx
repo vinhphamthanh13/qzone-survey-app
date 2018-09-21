@@ -5,17 +5,25 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
-import registerPageStyle from "assets/jss/material-dashboard-pro-react/views/registerPageStyle";
+import listPageStyle from "assets/jss/material-dashboard-pro-react/views/listPageStyle.jsx";
 import { fetchSurvey } from "actions/survey.jsx";
 import { fetchSurveyParticipantResponse } from "actions/surveyAnswer.jsx"
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import * as Survey from 'survey-react';
 import { sessionService } from 'redux-react-session';
+import Button from "components/CustomButtons/Button.jsx";
+import CardIcon from "components/Card/CardIcon.jsx";
+import CardFooter from "components/Card/CardFooter.jsx";
+import CardHeader from "components/Card/CardHeader.jsx";
+import { Poll } from "@material-ui/icons";
+import { Route } from 'react-router-dom';
+import { fullName } from 'variables/FullName.jsx';
 
 var surveyInfo= '';
 var sid= ''
 var pid= ''
+
 class ParticipantResponseResult extends React.Component{
   constructor(props) {
     super(props);
@@ -26,7 +34,8 @@ class ParticipantResponseResult extends React.Component{
         logo: '',
         privacy: false,
         id: '',
-        survey: {}
+        survey: {},
+        user: ''
       },
       participantResponse: {
         participantId: '',
@@ -58,38 +67,86 @@ class ParticipantResponseResult extends React.Component{
   render() {
     const { classes } = this.props;
     const { surveyData,participantResponse } = this.state
-    if (participantResponse === undefined || participantResponse.questionAnswers === "" || !surveyData || participantResponse === "")
-      return <h1>Not Available</h1>;
+    if (participantResponse === undefined || participantResponse.questionAnswers === "" ||  !surveyData || surveyData.user === "" || participantResponse === "")
+      return null;
     else{
-      const {title, description, survey} = surveyData
+      const {title, description, survey,user} = surveyData
       surveyInfo = new Survey.Model(survey);
       surveyInfo.mode = 'display';
       surveyInfo.data=JSON.parse(participantResponse.questionAnswers)
       return(
         <div className={classes.content}>
           <div className={classes.container}>
-            <GridContainer justify="center">
-              <GridItem xs={12} sm={12} md={10}>
-                <Card className={classes.cardSignup}>
-                  <h2 className={classes.cardTitle}>{title}</h2>
+            <GridContainer>
+              <GridItem xs={12}>
+                <Card>
+                  <CardHeader color="primary" icon>
+                    <CardIcon color="rose">
+                      <Poll />
+                    </CardIcon>
+                    <h3 className={classes.cardIconTitle}>Survey Result</h3>
+                  </CardHeader>
                   <CardBody>
-                    <GridContainer justify="center">
-                      <GridItem xs={12} sm={12} md={6}>
-                        <div className={classes.center}>
+                    <GridContainer>
+                      <GridItem xs={12} sm={3}>
+                        <h4>Title:</h4>
+                      </GridItem>
+                      <GridItem xs={12} sm={7}>
+                        <h4>{title}</h4>
+                      </GridItem>
+                    </GridContainer>
+                    <GridContainer>
+                      <GridItem xs={12} sm={3}>
+                        <h4>Logo:</h4>
+                      </GridItem>
+                      <GridItem xs={12} sm={7}>
+                        <img src={surveyData.logo
+                        }/>
+                      </GridItem>
+                    </GridContainer>
+                    <GridContainer>
+                      <GridItem xs={12} sm={3}>
+                        <h4>Description:</h4>
+                      </GridItem>
+                      <GridItem xs={12} sm={7}>
+                        <h4>
                           {description}
-                        </div>
-                        <form className={classes.form}>
-                          <Survey.Survey model={surveyInfo} />
-                        </form>
+                        </h4>
+                      </GridItem>
+                    </GridContainer>
+                    <GridContainer>
+                      <GridItem xs={12} sm={3}>
+                        <h4>Assessor:</h4>
+                      </GridItem>
+                      <GridItem xs={12} sm={7}>
+                        <h4>
+                          {fullName(user)}
+                        </h4>
+                      </GridItem>
+                    </GridContainer>
+                    <hr/>
+                    <GridContainer>
+                      <GridItem xs={12} sm={10}>
+                        <Survey.Survey model={surveyInfo} />
                       </GridItem>
                     </GridContainer>
                   </CardBody>
+                  <CardFooter className={classes.justifyContentCenter}>
+                  <Route render={({ history}) => (
+                    <Button
+                      color="rose"
+                      onClick={() => { history.push(`/admin/survey/participants/${sid}`) }}
+                    >
+                      Go To Participant List 
+                    </Button>
+                  )}/>
+                  </CardFooter>
                 </Card>
               </GridItem>
             </GridContainer>
           </div>
         </div>
-      )
+      ) 
     }
   }
 }
@@ -103,6 +160,7 @@ function mapStateToProps(state) {
 }
 
 export default compose(
-  withStyles(registerPageStyle),
+  withStyles(listPageStyle),
   connect(mapStateToProps, {fetchSurvey,fetchSurveyParticipantResponse}),
 )(ParticipantResponseResult);
+

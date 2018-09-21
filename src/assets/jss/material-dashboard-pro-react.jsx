@@ -52,7 +52,7 @@ const container = {
     width: "970px"
   },
   "@media (min-width: 1200px)": {
-    width: "1170px"
+    width: "983px"
   },
   "&:before,&:after": {
     display: "table",

@@ -17,6 +17,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Poll } from "@material-ui/icons";
 import { sessionService } from 'redux-react-session';
+import { fullName } from 'variables/FullName.jsx';
 import { Route } from 'react-router-dom';
 
 Survey.Survey.cssType = "bootstrap";
@@ -34,7 +35,7 @@ class SurveyQuestionnaire extends React.Component{
         id: '',
         survey: '',
         token: '',
-        userId: ''
+        user: ''
       },
       assessorName:''
     }
@@ -45,14 +46,11 @@ class SurveyQuestionnaire extends React.Component{
     sessionService.loadSession().then(currentSession =>{
       this.setState({token: currentSession.token}, () => {
         this.props.fetchSurvey(id,this.state.token)
-        if (window.location.href.indexOf("admin") > -1)
-          this.setState({admin: true})
       })
     })
   }
 
   componentWillReceiveProps(nextProps) {
-    const fullName = nextProps.survey.user.firstname + ' ' + nextProps.survey.user.lastname
     const { surveyData } = this.state;
     if(nextProps.survey){
       for(var key in nextProps.survey) {
@@ -62,27 +60,15 @@ class SurveyQuestionnaire extends React.Component{
         else
           surveyData[key]= nextProps.survey[key]
       };
-      this.setState({surveyData: surveyData, assessorName: fullName})
+      this.setState({surveyData: surveyData})
     }
   }
 
   render() {
     const { classes } = this.props;
-    const { title, description, survey, logo } = this.state.surveyData
+    const { title, description, survey, logo,user } = this.state.surveyData
     surveyInfo = new Survey.Model(survey);
-    surveyInfo
-      .onComplete
-        .add(function (result) {
-            var resultAsString = JSON.stringify(result.data);
-            alert(resultAsString); 
-        });
-
-    if (!this.state.admin){
-      surveyInfo.mode = '';
-    }
-    else{
     surveyInfo.mode = 'display';
-    }
     return(
       <GridContainer>
         <GridItem xs={12}>
@@ -129,7 +115,7 @@ class SurveyQuestionnaire extends React.Component{
                 </GridItem>
                 <GridItem xs={12} sm={7}>
                   <h4>
-                    {this.state.assessorName}
+                    {fullName(user)}
                   </h4>
                 </GridItem>
               </GridContainer>
