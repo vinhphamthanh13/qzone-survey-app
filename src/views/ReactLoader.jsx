@@ -1,31 +1,19 @@
 import React from "react";
-import { ClipLoader } from 'react-spinners';
-import { css } from 'react-emotion';
+import Pace from 'react-pace-progress'
 
 class ReactLoader extends React.Component {
 
   render(){
-    const override = css`
-      display: flex;
-      position: fixed;
-      z-index: 999;
-      margin: auto;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      height: 50%;
-      width: 50%;
-    `;
+    const style = {
+      top: '0',
+      position: 'absolute',
+      width: '101%',
+      left: '0'
+    }
+
     return(
-      <div className='sweet-loading' >
-        <ClipLoader
-          className={override}
-          sizeUnit={"px"}
-          size={75}
-          color={'#123abc'}
-          loading={this.props.loading}
-        />
+      <div className='sweet-loading' style={style}>
+        <Pace color="#ffffff" height='3px' />
       </div>
     )
   }

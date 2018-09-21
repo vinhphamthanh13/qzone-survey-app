@@ -68,7 +68,7 @@ class ParticipantResponseResult extends React.Component{
     const { classes } = this.props;
     const { surveyData,participantResponse } = this.state
     if (participantResponse === undefined || participantResponse.questionAnswers === "" ||  !surveyData || surveyData.user === "" || participantResponse === "")
-      return null;
+      return <div>Participant is not associated with this survey</div>;
     else{
       const {title, description, survey,user} = surveyData
       surveyInfo = new Survey.Model(survey);
@@ -76,7 +76,7 @@ class ParticipantResponseResult extends React.Component{
       surveyInfo.data=JSON.parse(participantResponse.questionAnswers)
       return(
         <div className={classes.content}>
-          <div className={classes.container}>
+          <div className={classes.container} style={{width: '983px'}}>
             <GridContainer>
               <GridItem xs={12}>
                 <Card>
