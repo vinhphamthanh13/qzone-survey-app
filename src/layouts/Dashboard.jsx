@@ -29,7 +29,7 @@ const switchRoutes = (
     })}
   </Switch>
 );
-var ps;
+
 class Dashboard extends React.Component {
   constructor(props){
     super(props)
@@ -39,6 +39,8 @@ class Dashboard extends React.Component {
       isLoggedIn: true
     };
   }
+
+  ps = null;
  
   getRoute() {
     return this.props.location.pathname !== "/maps/full-screen-maps";
@@ -52,8 +54,8 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    if (navigator.platform.indexOf("Win") > -1) {
-      ps = new PerfectScrollbar(this.refs.mainPanel, {
+    if (navigator.platform.includes("Win")) {
+      this.ps = new PerfectScrollbar(this.refs.mainPanel, {
         suppressScrollX: true,
         suppressScrollY: false
       });
@@ -62,8 +64,8 @@ class Dashboard extends React.Component {
   }
 
   componentWillUnmount() {
-    if (navigator.platform.indexOf("Win") > -1) {
-      ps.destroy();
+    if (this.ps !== null && navigator.platform.includes("Win")) {
+      this.ps.destroy();
     }
   }
 

@@ -254,6 +254,25 @@ const cardLink = {
   }
 };
 
+const alertWrapper = {
+  backgroundColor: '#fff3cd',
+  border: '1px solid #ffeeba',
+  borderRadius: 4,
+  padding: '16px 24px',
+  marginTop: 16,
+};
+
+const alertLink = {
+  color: '#533f03',
+  fontWeight: 'bold',
+  '&:hover, &:focus': {
+    color: '#533f03',
+  },
+  '&:hover': {
+    textDecoration: 'underline',
+  }
+};
+
 export {
   //variables
   drawerWidth,
@@ -297,5 +316,8 @@ export {
   title,
   cardTitle,
   cardSubtitle,
-  cardLink
+  cardLink,
+  // alert
+  alertWrapper,
+  alertLink
 };

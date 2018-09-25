@@ -1,73 +1,67 @@
 import React from 'react';
-import { TextField,Dialog, DialogContent, DialogTitle, DialogActions, DialogContentText } from "@material-ui/core";
-import Button from "components/CustomButtons/Button.jsx";
+import { TextField, Dialog, DialogContent, DialogTitle, DialogActions, DialogContentText } from "@material-ui/core";
 import Alert from 'react-s-alert';
 import PropTypes from "prop-types";
 import { Link } from 'react-router-dom';
-import 'react-s-alert/dist/s-alert-default.css';
-import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
-import { resetPassword } from "actions/auth.jsx";
 import { connect } from 'react-redux';
-import ChangePassword from 'views/Auth/ChangePassword.jsx'
+import Button from "components/CustomButtons/Button";
+import { resetPassword } from "actions/auth";
+import ChangePassword from 'views/Auth/ChangePassword'
 
-class ResetPassword extends React.Component{
-  constructor(props){
+class ResetPassword extends React.Component {
+  constructor(props) {
     super(props);
-    this.state={
-      email:"",
+    this.state = {
+      email: '',
       open: false,
       openChangePassword: false,
     }
-    this.handleResetPassword = this.handleResetPassword.bind(this)
   }
 
-  handleResetPassword(){
-    this.props.resetPassword(this.state, (response)=>{
-        if(response.status === 200){
-          this.setState({open: false,openChangePassword: true})
-          Alert.success("Code is successfully send to your email", {
-            position: 'bottom-right',
-            effect: 'bouncyflip'
-          });
-        }
-        else{
-          Alert.error(response.data.message, {
-            position: 'bottom-right',
-            effect: 'bouncyflip'
-          });
-        }
-      })
+  handleResetPassword = () => {
+    this.props.resetPassword(this.state, (response) => {
+      if (response.status === 200) {
+        this.setState({ open: false, openChangePassword: true })
+        Alert.success("Code is successfully send to your email", { effect: 'bouncyflip' });
+      } else {
+        Alert.error(response.data.message, { effect: 'bouncyflip' });
+      }
+    })
   }
 
-  handleClose = () =>{
-    this.setState({open: false,openChangePassword: false})
+  handleClose = () => {
+    this.setState({ open: false, openChangePassword: false })
   }
 
-  handleOpen = () =>{
-    this.setState({open: true})
+  handleOpen = () => {
+    this.setState({ open: true })
   }
 
   render() {
-    return(
+    const { classes } = this.props;
+
+    return (
       <React.Fragment>
-        <Link to="#" style={{paddingLeft: '195px',fontFamily: 'sans-serif', fontWeight: 'bold'}} onClick={this.handleOpen}>Forgot Password?</Link>
+        <div className={classes.alertWrapper}>
+          <Link to="#" className={classes.alertLink} onClick={this.handleOpen}>Did you forget your password?</Link>
+        </div>
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">{"Reset Password"}</DialogTitle>
+          <DialogTitle id="form-dialog-title">Reset password</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Please enter your email Id to reset Password
+              Please enter your email to reset password
             </DialogContentText>
             <div>
               <TextField
                 margin="dense"
                 id="email"
                 type="email"
-                label="Enter Email"
-                onChange={(event) =>{this.setState({email: event.target.value})}}
+                label="Enter email"
+                onChange={(event) => { this.setState({ email: event.target.value }) }}
               />
             </div>
           </DialogContent>
@@ -75,12 +69,12 @@ class ResetPassword extends React.Component{
             <Button onClick={this.handleClose} >
               Cancel
             </Button>
-            <Button  onClick={this.handleResetPassword} color="rose">
+            <Button onClick={this.handleResetPassword} color="rose">
               Submit
             </Button>
           </DialogActions>
         </Dialog>
-        <ChangePassword openChangePassword={this.state.openChangePassword} closeChangePassword={this.handleClose} email={this.state.email} classes={this.props.classes}/>
+        <ChangePassword openChangePassword={this.state.openChangePassword} closeChangePassword={this.handleClose} email={this.state.email} classes={classes} />
       </React.Fragment>
     )
   }
@@ -90,4 +84,4 @@ ResetPassword.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default connect(null,{resetPassword})(ResetPassword);
+export default connect(null, { resetPassword })(ResetPassword);

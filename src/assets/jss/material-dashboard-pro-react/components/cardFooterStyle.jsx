@@ -1,8 +1,6 @@
 const cardFooterStyle = {
   cardFooter: {
-    padding: "0",
-    paddingTop: "10px",
-    margin: "0 15px 10px",
+    padding: "0.75rem 1.25rem",
     borderRadius: "0",
     justifyContent: "space-between",
     alignItems: "center",

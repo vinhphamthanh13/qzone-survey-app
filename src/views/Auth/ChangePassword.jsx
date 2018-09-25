@@ -1,67 +1,42 @@
 import React from 'react';
-import { TextField,Dialog, DialogContent, DialogTitle, DialogActions, DialogContentText } from "@material-ui/core";
-import Button from "components/CustomButtons/Button.jsx";
+import { connect } from 'react-redux';
+import { TextField, Dialog, DialogContent, DialogTitle, DialogActions, DialogContentText } from "@material-ui/core";
 import Alert from 'react-s-alert';
 import PropTypes from "prop-types";
+import Button from "components/CustomButtons/Button.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
-import 'react-s-alert/dist/s-alert-default.css';
-import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
 import { changePassword } from "actions/auth.jsx";
-import { connect } from 'react-redux';
 
-
-class ChangePassword extends React.Component{
-  constructor(props){
+class ChangePassword extends React.Component {
+  constructor(props) {
     super(props);
-    this.state={
-      email:"",
-      code:'',
-      newPassword:'',
-      open: false,
-      openChangePassword: false
+    this.state = {
+      code: '',
+      newPassword: '',
     }
-    this.handleChangePassword = this.handleChangePassword.bind(this)
   }
 
-  handleChangePassword(){
-    this.props.changePassword(this.state, (response)=>{
-        if(response.status === 200){
-          this.setState({open: false})
-          Alert.success("Password is successfully updated", {
-            position: 'bottom-right',
-            effect: 'bouncyflip'
-          });
-        }
-        else{
-          Alert.error(response.data.message, {
-            position: 'bottom-right',
-            effect: 'bouncyflip'
-          });
-        }
-      })
+  handleChangePassword = () => {
+    this.props.changePassword({ ...this.state, email: this.props.email }, (response) => {
+      if (response.status === 200) {
+        this.props.closeChangePassword();
+        Alert.success("Password is successfully updated", { effect: 'bouncyflip' });
+      } else {
+        Alert.error(response.data.message, { effect: 'bouncyflip' });
+      }
+    })
   }
-
-  handleClose = () =>{
-    this.setState({open: false})
-    this.props.closeChangePassword()
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({open: nextProps.openChangePassword,email: nextProps.email})
-  }
-  
 
   render() {
-
-    return(
+    return (
       <React.Fragment>
         <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
+          open={this.props.openChangePassword}
+          onClose={this.props.closeChangePassword}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">{"Update Password"}</DialogTitle>
+          <DialogTitle id="form-dialog-title">Update Password</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               Please enter your new Password
@@ -74,7 +49,7 @@ class ChangePassword extends React.Component{
                     id="code"
                     type="number"
                     label="Enter Code"
-                    onChange={(event) =>{this.setState({code: event.target.value})}}
+                    onChange={(event) => { this.setState({ code: event.target.value }) }}
                   />
                 </GridItem>
               </GridContainer>
@@ -85,17 +60,17 @@ class ChangePassword extends React.Component{
                     id="password"
                     type="password"
                     label="Enter New Password"
-                    onChange={(event) =>{this.setState({newPassword: event.target.value})}}
+                    onChange={(event) => { this.setState({ newPassword: event.target.value }) }}
                   />
                 </GridItem>
               </GridContainer>
             </div>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} >
+            <Button onClick={this.props.closeChangePassword} >
               Cancel
             </Button>
-            <Button  onClick={this.handleChangePassword} color="rose">
+            <Button onClick={this.handleChangePassword} color="rose">
               Submit
             </Button>
           </DialogActions>
@@ -109,4 +84,4 @@ ChangePassword.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default connect(null,{changePassword})(ChangePassword);
+export default connect(null, { changePassword })(ChangePassword);
