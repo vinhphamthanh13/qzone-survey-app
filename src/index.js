@@ -10,6 +10,8 @@ import { sessionService } from 'redux-react-session';
 import indexRoutes from "routes/index.jsx";
 import "assets/scss/material-dashboard-pro-react.css?v=1.2.0";
 import "assets/scss/style.css";
+import 'react-s-alert/dist/s-alert-default.css';
+import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
 
 const history = createBrowserHistory();
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);

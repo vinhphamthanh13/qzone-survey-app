@@ -4,7 +4,7 @@
 
 import {
   container,
-  cardTitle
+  cardTitle,
 } from "assets/jss/material-dashboard-pro-react.jsx";
 import customSelectStyle from "assets/jss/material-dashboard-pro-react/customSelectStyle.jsx";
 import customCheckboxRadioSwitch from "assets/jss/material-dashboard-pro-react/customCheckboxRadioSwitch.jsx";
@@ -12,6 +12,9 @@ import customCheckboxRadioSwitch from "assets/jss/material-dashboard-pro-react/c
 const registerPageStyle = {
   ...customCheckboxRadioSwitch,
   ...customSelectStyle,
+  standardCardTitle: {
+    ...cardTitle,
+  },
   cardTitle: {
     ...cardTitle,
     textAlign: "center"
@@ -21,6 +24,16 @@ const registerPageStyle = {
     position: "relative",
     zIndex: "3",
     paddingTop: "0vh",
+  },
+  content: {
+    paddingTop: 80,
+    minHeight: "calc(100vh - 80px)",
+    position: "relative",
+    zIndex: "4"
+  },
+  cardHidden: {
+    opacity: "0",
+    transform: "translate3d(0, -60px, 0)"
   },
   cardSignup: {
     borderRadius: "6px",
@@ -38,10 +51,6 @@ const registerPageStyle = {
   },
   left: {
     textAlign: "left"
-  },
-  form: {
-    padding: "0 20px",
-    position: "relative"
   },
   socialTitle: {
     fontSize: "18px"
@@ -72,6 +81,30 @@ const registerPageStyle = {
       // backgroundColor: "#303f9f"
     }
   },
+  inputWrapper: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    '&> div[class*="CustomInput-formControl"]': {
+      flex: '1 1 auto',
+    },
+    '&> div[class*="CustomInput-formControl"]:first-child': {
+      marginRight: 32,
+    }
+  },
+  footerWrapper: {
+    justifyContent: 'flex-end',
+    borderTop: '1px solid #d2d2d26e',
+  },
+  registerTermsWrapper: {
+    marginBottom: 0,
+    marginTop: 12,
+  },
+  headerWrapper: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderBottom: '1px solid #d2d2d26e',
+  }
 };
 
 export default registerPageStyle;
