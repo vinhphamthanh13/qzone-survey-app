@@ -27,7 +27,7 @@ class HeaderLinks extends React.Component {
     this.setState({ userOpen: false });
     sessionService.deleteSession();
     sessionService.deleteUser();
-    window.location = "/login"
+    window.location = "/login";
   }
   render() {
     const { classes } = this.props;

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { Checkbox, FormControlLabel } from "@material-ui/core";
+import { Checkbox, FormControlLabel, Button as MaterialButton } from "@material-ui/core";
 import { Check } from "@material-ui/icons";
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -21,6 +21,9 @@ import VerificationPage from "views/Auth/VerificationPage";
 import ReactLoader from 'views/ReactLoader';
 import 'react-phone-number-input/style.css';
 import "assets/scss/material-dashboard-pro-react/views/mobileNumberStyle.css";
+import validatePassword from "../../utils/validatePassword";
+import validateEmail from "../../utils/validateEmail";
+import PasswordField from "./PasswordField";
 
 class RegisterPage extends React.Component {
   constructor(props) {
@@ -42,10 +45,6 @@ class RegisterPage extends React.Component {
       userType: "PARTICIPANT",
       openVerificationModal: false,
       code: '',
-      verifyCode: {
-        email: '',
-        code: ''
-      },
       loading: false
     };
   }
@@ -56,18 +55,8 @@ class RegisterPage extends React.Component {
     }, 200);
   }
 
-  verifyEmail(value) {
-    const emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return emailRex.test(value);
-  }
-
   verifyLength(value, length) {
     return value.length >= length;
-  }
-
-  verifyPassword(pwd) {
-    const pwdReg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
-    return pwdReg.test(pwd);
   }
 
   register = () => {
@@ -81,8 +70,9 @@ class RegisterPage extends React.Component {
           if (response) {
             if (response.status === 201) {
               newState.openVerificationModal = true;
+              Alert.success('Thank you for registering!', { effect: 'bouncyflip' });
             } else {
-              Alert.error('Cannot connect to server', { effect: 'bouncyflip' });
+              Alert.error(response.data.message, { effect: 'bouncyflip' });
             }
           }
 
@@ -129,7 +119,7 @@ class RegisterPage extends React.Component {
         return;
       case 'email':
         this.setState({
-          [`${stateName}State`]: this.verifyEmail(value) ? 'success' : 'error',
+          [`${stateName}State`]: validateEmail(value) ? 'success' : 'error',
           [stateName]: value,
         });
         return;
@@ -137,7 +127,7 @@ class RegisterPage extends React.Component {
         const newState = {
           [`${stateName}State`]: value.length >= 8
             && value.length <= 60
-            && this.verifyPassword(value) ? 'success' : 'error',
+            && validatePassword(value) ? 'success' : 'error',
           [stateName]: value,
         };
 
@@ -164,6 +154,10 @@ class RegisterPage extends React.Component {
         this.setState({ [stateName]: value })
         return;
     }
+  }
+
+  goToLogin = () => {
+    this.props.history.push('/login');
   }
 
   render() {
@@ -214,33 +208,12 @@ class RegisterPage extends React.Component {
                         type: "email",
                       }}
                     />
-                    <div className={classes.inputWrapper}>
-                      <CustomInput
-                        labelText="Password (required)"
-                        success={this.state.passwordState === "success"}
-                        error={this.state.passwordState === "error"}
-                        id="password"
-                        inputProps={{
-                          onChange: event => this.change(event, "password", "password"),
-                          type: "password",
-                        }}
-                      />
-                      <CustomInput
-                        labelText="Confirm password (required)"
-                        success={this.state.confirmPwdState === "success"}
-                        error={this.state.confirmPwdState === "error"}
-                        id="confirmPwd"
-                        inputProps={{
-                          onChange: event => this.change(event, "confirmPwd", "confirmPwd"),
-                          type: "password",
-                        }}
-                      />
-                    </div>
-                    <small>
-                      Password must be from 8 to 60 characters.<br />
-                      Password must include at least 1 lowercase character(s), 1 uppercase character(s), 1 digit(s)
-                      and 1 special character(s) such as #?!@$%^&*-
-                    </small>
+                    <PasswordField
+                      onChangePassword={event => this.change(event, "password", "password")}
+                      onChangeConfirmPwd={event => this.change(event, "confirmPwd", "confirmPwd")}
+                      passwordState={this.state.passwordState}
+                      confirmPwdState={this.state.confirmPwdState}
+                    />
                     <FormControlLabel
                       className={classes.registerTermsWrapper}
                       control={
@@ -263,10 +236,21 @@ class RegisterPage extends React.Component {
                         </span>
                       }
                     />
-                    {this.state.openVerificationModal && <VerificationPage page="register" email={this.state.email} classes={classes} history={history} />}
+                    <VerificationPage
+                      open={this.state.openVerificationModal}
+                      email={this.state.email}
+                      history={history}
+                      page="register"
+                    />
                   </form>
                 </CardBody>
                 <CardFooter className={classes.footerWrapper}>
+                  <MaterialButton
+                    className={classes.loginButton}
+                    onClick={this.goToLogin}
+                  >
+                    Log in
+                  </MaterialButton>
                   <Button
                     color="rose"
                     onClick={this.registerClick}

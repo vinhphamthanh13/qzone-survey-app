@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField, Dialog, DialogContent, DialogTitle, DialogActions, DialogContentText } from "@material-ui/core";
+import { Dialog, DialogContent, DialogTitle, DialogActions, DialogContentText } from "@material-ui/core";
 import Alert from 'react-s-alert';
 import PropTypes from "prop-types";
 import { Link } from 'react-router-dom';
@@ -7,16 +7,21 @@ import { connect } from 'react-redux';
 import Button from "components/CustomButtons/Button";
 import { resetPassword } from "actions/auth";
 import ChangePassword from 'views/Auth/ChangePassword'
+import CustomInput from "components/CustomInput/CustomInput";
+import validateEmail from '../../utils/validateEmail';
 
 class ResetPassword extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      email: '',
-      open: false,
-      openChangePassword: false,
-    }
+    this.state = { ...this.defaultState };
   }
+
+  defaultState = {
+    email: '',
+    emailState: false,
+    open: false,
+    openChangePassword: false,
+  };
 
   handleResetPassword = () => {
     this.props.resetPassword(this.state, (response) => {
@@ -30,23 +35,30 @@ class ResetPassword extends React.Component {
   }
 
   handleClose = () => {
-    this.setState({ open: false, openChangePassword: false })
+    this.setState(this.defaultState);
   }
 
   handleOpen = () => {
-    this.setState({ open: true })
+    this.setState({ open: true });
+  }
+
+  onChangeEmail = (event) => {
+    this.setState({
+      email: event.target.value,
+      emailState: validateEmail(event.target.value) ? 'success' : 'error',
+    });
   }
 
   render() {
     const { classes } = this.props;
-
+    const { open, emailState, openChangePassword } = this.state;
     return (
       <React.Fragment>
         <div className={classes.alertWrapper}>
           <Link to="#" className={classes.alertLink} onClick={this.handleOpen}>Did you forget your password?</Link>
         </div>
         <Dialog
-          open={this.state.open}
+          open={open}
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
         >
@@ -56,25 +68,33 @@ class ResetPassword extends React.Component {
               Please enter your email to reset password
             </DialogContentText>
             <div>
-              <TextField
-                margin="dense"
+              <CustomInput
+                labelText="Enter email"
+                success={emailState === "success"}
+                error={emailState === "error"}
                 id="email"
-                type="email"
-                label="Enter email"
-                onChange={(event) => { this.setState({ email: event.target.value }) }}
+                formControlProps={{ fullWidth: true }}
+                inputProps={{
+                  onChange: this.onChangeEmail,
+                  type: "email"
+                }}
               />
             </div>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} >
-              Cancel
+              Close
             </Button>
             <Button onClick={this.handleResetPassword} color="rose">
               Submit
             </Button>
           </DialogActions>
         </Dialog>
-        <ChangePassword openChangePassword={this.state.openChangePassword} closeChangePassword={this.handleClose} email={this.state.email} classes={classes} />
+        <ChangePassword
+          openChangePassword={openChangePassword}
+          closeChangePassword={this.handleClose}
+          email={this.state.email}
+        />
       </React.Fragment>
     )
   }

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import withStyles from "@material-ui/core/styles/withStyles";
 import AuthHeader from "components/Header/AuthHeader.jsx";
 import authRoutes from "routes/auth.jsx";
@@ -13,23 +13,15 @@ class Auth extends React.Component {
     return (
       <div>
         <AuthHeader {...rest} />
-        <div className={classes.wrapper} ref="wrapper">
+        <div className={classes.wrapper}>
           <div className={classes.fullPage}>
             <Switch>
-              {authRoutes.map((prop, key) => {
-                if (prop.collapse) {
-                  return null;
-                }
-                if (prop.redirect) {
-                  return (
-                    <Redirect from={prop.path} to={prop.pathTo} key={key} />
-                  );
-                }
+              {authRoutes.map((route) => {
                 return (
                   <Route
-                    path={prop.path}
-                    component={prop.component}
-                    key={key}
+                    path={route.path}
+                    component={route.component}
+                    key={route.path}
                   />
                 );
               })}

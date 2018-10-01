@@ -26,8 +26,7 @@ const registerPageStyle = {
     paddingTop: "0vh",
   },
   content: {
-    paddingTop: 80,
-    minHeight: "calc(100vh - 80px)",
+    minHeight: "100vh",
     position: "relative",
     zIndex: "4"
   },
@@ -92,8 +91,10 @@ const registerPageStyle = {
     }
   },
   footerWrapper: {
-    justifyContent: 'flex-end',
     borderTop: '1px solid #d2d2d26e',
+  },
+  loginButton: {
+    padding: '12px 30px',
   },
   registerTermsWrapper: {
     marginBottom: 0,

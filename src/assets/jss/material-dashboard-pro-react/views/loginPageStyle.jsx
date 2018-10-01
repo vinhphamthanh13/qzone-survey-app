@@ -7,8 +7,8 @@ import {
   cardTitle,
   alertWrapper,
   alertLink,
-} from "assets/jss/material-dashboard-pro-react.jsx";
-import customCheckboxRadioSwitch from "assets/jss/material-dashboard-pro-react/customCheckboxRadioSwitch.jsx";
+} from 'assets/jss/material-dashboard-pro-react.jsx';
+import customCheckboxRadioSwitch from 'assets/jss/material-dashboard-pro-react/customCheckboxRadioSwitch.jsx';
 
 
 const loginPageStyle = {
@@ -20,39 +20,38 @@ const loginPageStyle = {
     ...cardTitle,
   },
   textCenter: {
-    textAlign: "center"
+    textAlign: 'center'
   },
   content: {
-    paddingTop: 80,
-    minHeight: "calc(100vh - 80px)",
-    position: "relative",
-    zIndex: "4"
+    minHeight: '100vh',
+    position: 'relative',
+    zIndex: '4'
   },
   justifyContentCenter: {
-    justifyContent: "center !important"
+    justifyContent: 'center'
   },
   customButtonClass: {
-    "&,&:focus,&:hover": {
-      color: "#FFFFFF"
+    '&,&:focus,&:hover': {
+      color: '#FFFFFF'
     },
-    marginLeft: "5px",
-    marginRight: "5px"
+    marginLeft: '5px',
+    marginRight: '5px'
   },
   inputAdornment: {
-    marginRight: "18px"
+    marginRight: '18px'
   },
   inputAdornmentIcon: {
-    color: "#555"
+    color: '#555'
   },
   cardHidden: {
-    opacity: "0",
-    transform: "translate3d(0, -60px, 0)"
+    opacity: '0',
+    transform: 'translate3d(0, -60px, 0)'
   },
   cardHeader: {
-    marginBottom: "20px"
+    marginBottom: '20px'
   },
   socialLine: {
-    padding: "0.9375rem 0",
+    padding: '0.9375rem 0',
     display: 'flex',
   },
   socialButton: {

@@ -19,6 +19,15 @@ import { Poll } from "@material-ui/icons";
 import { sessionService } from 'redux-react-session';
 import { fullName } from 'variables/FullName.jsx';
 import { Route } from 'react-router-dom';
+import { css } from 'react-emotion';
+// First way to import
+import { ClipLoader } from 'react-spinners';
+
+const override = css`
+    display: block;
+    margin: 0 auto;
+    border-color: red;
+`;
 
 Survey.Survey.cssType = "bootstrap";
 Survey.defaultBootstrapCss.navigationButton = "btn btn-green";
@@ -32,6 +41,7 @@ class SurveyQuestionnaire extends React.Component{
         description: '',
         logo: '',
         privacy: false,
+        loading: true,
         id: '',
         survey: '',
         token: '',
@@ -42,6 +52,7 @@ class SurveyQuestionnaire extends React.Component{
   }
 
   componentWillMount(){
+    setTimeout(() => this.setState({ loading: false }), 1500); 
     const { id } = this.props.match.params
     sessionService.loadSession().then(currentSession =>{
       this.setState({token: currentSession.token}, () => {
@@ -73,6 +84,15 @@ class SurveyQuestionnaire extends React.Component{
       return null
     return(
       <GridContainer>
+
+          <ClipLoader
+          className={override}
+          sizeUnit={"px"}
+          size={70}
+          color={'#123abc'}
+          loading={this.state.loading}
+        />
+        
         <GridItem xs={12}>
           <Card>
             <CardHeader color="primary" icon>
