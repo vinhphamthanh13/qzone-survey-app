@@ -19,6 +19,7 @@ import { loginUser } from "actions/auth";
 import ReactLoader from 'views/ReactLoader';
 import VerificationPage from "./VerificationPage";
 import ResetPassword from './ResetPassword';
+import validateEmail from "../../utils/validateEmail";
 
 class LoginPage extends React.Component {
   constructor(props) {
@@ -41,11 +42,6 @@ class LoginPage extends React.Component {
     }, 200);
   }
 
-  verifyEmail(value) {
-    const emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return emailRex.test(value);
-  }
-
   verifyLength(value, length) {
     return value.length >= length;
   }
@@ -56,18 +52,19 @@ class LoginPage extends React.Component {
         this.props.loginUser(this.state, (response) => {
           if (response) {
             if (response.status === 200) {
-              this.props.history.push('/');
+              this.props.history.push('/dashboard');
             } else {
               const newState = { loading: false, disabled: false };
 
               if (response.data.message === 'User is not confirmed.') {
                 newState.openVerificationModal = true;
-              } else {
-                Alert.error(response.status === 500 ?
-                  'Cannot connect to server' : 'Your email or password is incorrect',
-                  { effect: 'bouncyflip' },
-                );
               }
+
+              Alert.error(
+                ['User is not confirmed.', 'User does not exist.', 'Incorrect username or password.']
+                  .includes(response.data.message) ? response.data.message : 'Cannot connect to server',
+                { effect: 'bouncyflip' },
+              );
 
               this.setState(newState);
             }
@@ -97,7 +94,7 @@ class LoginPage extends React.Component {
       case 'email':
         this.setState({
           [stateName]: value,
-          [`${stateName}State`]: this.verifyEmail(value) ? 'success' : 'error',
+          [`${stateName}State`]: validateEmail(value) ? 'success' : 'error',
         });
         return;
       case 'password':
@@ -155,7 +152,13 @@ class LoginPage extends React.Component {
                       </span>
                       <Link to="/register" className={classes.alertLink}>Register a new account</Link>
                     </div>
-                    {this.state.openVerificationModal && <VerificationPage page="login" email={this.state.email} classes={classes} history={history} />}
+                    <VerificationPage
+                      open={this.state.openVerificationModal}
+                      email={this.state.email}
+                      history={history}
+                      page="login"
+                      actionAfterSubmit={this.login}
+                    />
                   </CardBody>
                   <CardFooter className={classes.footerWrapper}>
                     <Button

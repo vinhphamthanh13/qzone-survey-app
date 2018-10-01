@@ -179,9 +179,9 @@ class SurveyForm extends React.Component{
 
         <hr/>
         <GridContainer  className={classes.justifyContentCenter}>
-          <h4>
+          <warn>
             You have to Save Survey before submitting the form. Otherwise your Questionnaire will not be saved.
-          </h4>
+          </warn>
         </GridContainer>
         <hr/>
         <GridContainer>

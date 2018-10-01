@@ -22,6 +22,16 @@ import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
 import { Person, Delete, FileCopy, Poll } from "@material-ui/icons";
 import { sessionService } from 'redux-react-session';
 import ReactTooltip from 'react-tooltip';
+import { css } from 'react-emotion';
+// First way to import
+import { ClipLoader } from 'react-spinners';
+// Another way to import
+
+const override = css`
+    display: block;
+    margin: 0 auto;
+    border-color: red;
+`;
 
 const iconStyle = {
   marginRight: 30
@@ -33,6 +43,7 @@ class SurveyList extends React.Component{
     this.state = { surveyList: [],
       sweetAlert: '',
       deleteAll: false,
+      loading: true,
       token: ''
     }
     this.successDelete = this.successDelete.bind(this);
@@ -43,6 +54,7 @@ class SurveyList extends React.Component{
   }
 
   componentWillMount(){
+    setTimeout(() => this.setState({ loading: false }), 1500); 
     sessionService.loadSession().then(currentSession =>{
       this.setState({token: currentSession.token}, () => {
         this.props.fetchSurveys(this.state.token)
@@ -120,12 +132,20 @@ class SurveyList extends React.Component{
 }
 
   render() {
+
     const { classes } = this.props;
       if (!this.state.surveyList)
         return null;
       return (
-        <GridContainer>
-          <GridItem xs={12}>
+          <GridContainer>
+            <ClipLoader
+          className={override}
+          sizeUnit={"px"}
+          size={70}
+          color={'#123abc'}
+          loading={this.state.loading}
+        />
+           <GridItem xs={12}>
             <Card>
               <CardHeader color="rose" icon>
                 <CardIcon color="rose">
@@ -136,6 +156,7 @@ class SurveyList extends React.Component{
                   New Survey
                 </Button>
               </CardHeader>
+
               <CardBody>
                 <Table className={classes.table} aria-labelledby="tableTitle">
                   <TableHead>

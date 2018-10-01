@@ -27,7 +27,7 @@ class SurveyResponse extends React.Component {
     if (!this.state.isLoggedIn) {
       return <Redirect
         to={{
-          pathname: "/login",
+          pathname: "/register",
           state: { from: this.props.location.pathname }
         }}
       />

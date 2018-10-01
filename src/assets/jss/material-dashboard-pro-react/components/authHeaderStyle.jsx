@@ -38,19 +38,15 @@ const pagesHeaderStyle = theme => ({
     ...container,
     minHeight: "50px"
   },
-  flex: {
-    flex: 1
-  },
   title: {
     ...defaultFont,
     lineHeight: "30px",
-    fontSize: "18px",
-    borderRadius: "3px",
+    fontSize: "24px",
     textTransform: "none",
     color: "#FFFFFF",
     "&:hover,&:focus": {
-      background: "transparent",
-      color: "#FFFFFF"
+      opacity: 0.8,
+      color: "#FFFFFF",
     }
   },
   appResponsive: {

@@ -16,6 +16,15 @@ import { createSurvey } from "actions/survey.jsx";
 import { Poll } from "@material-ui/icons";
 import _ from 'lodash';
 import { sessionService } from 'redux-react-session';
+import { css } from 'react-emotion';
+// First way to import
+import { ClipLoader } from 'react-spinners';
+
+const override = css`
+    display: block;
+    margin: 0 auto;
+    border-color: red;
+`;
 
 class SurveyCreate extends React.Component{
 
@@ -30,7 +39,9 @@ class SurveyCreate extends React.Component{
         survey: '',
         userId:''
       },
+      isSavedSurvey: false,
       titleState: '',
+      loading: true,
       descriptionState: '',
       mode: 'create',
       token: ''
@@ -41,13 +52,16 @@ class SurveyCreate extends React.Component{
 	}
 
 	handleSurvey(option){
-    const {titleState, descriptionState, surveyInfo} = this.state
-    const {title, description} = surveyInfo
-		if (_.isEmpty(title))
+    console.log('option: ' + option);
+    const {titleState, descriptionState, surveyInfo, isSavedSurvey} = this.state;
+    console.log('this.state.surveyInfo: ' + this.state.surveyInfo.survey);
+    const {title, description} = surveyInfo;
+    console.log('this.state.surveyInfo: ' + this.state.surveyInfo.survey);
+    if (_.isEmpty(title))
       this.setState({titleState: "error"})
     if (_.isEmpty(description))
       this.setState({descriptionState: "error"})
-    if (titleState === "success" && descriptionState === "success" ){
+    if (titleState === "success" && descriptionState === "success"){
       this.props.createSurvey(this.state.surveyInfo,this.state.token, (response) => {
         window.location = "/admin/survey/list"
       });
@@ -55,6 +69,7 @@ class SurveyCreate extends React.Component{
 	}
 
   componentWillMount(){
+    setTimeout(() => this.setState({ loading: false }), 1500); 
     sessionService.loadSession().then(currentSession =>{
       this.setState({token: currentSession.token})
     })
@@ -74,7 +89,10 @@ class SurveyCreate extends React.Component{
   changeQuestions(event)
   {
     const { surveyInfo } = this.state
-    surveyInfo['survey']= JSON.stringify(event)
+    surveyInfo['survey']= JSON.stringify(event);
+    console.log('surveyInfo : ' + surveyInfo['survey']);
+    console.log('event : ' + event);
+    this.setState({isSavedSurvey:true});
     this.setState({surveyInfo: surveyInfo})
   }
 
@@ -82,6 +100,15 @@ class SurveyCreate extends React.Component{
 		const { classes } = this.props;
 		return(
 		  <Card>
+
+          <ClipLoader
+          className={override}
+          sizeUnit={"px"}
+          size={70}
+          color={'#123abc'}
+          loading={this.state.loading}
+        />
+
 		    <CardHeader color="rose" text>
           <CardIcon color="rose">
             <Poll />
@@ -95,7 +122,7 @@ class SurveyCreate extends React.Component{
           <SurveyForm survey={this.state} change={this.change} classes={this.props.classes} changeQuestions={this.changeQuestions}/>
 		    </CardBody>
 		    <CardFooter className={classes.justifyContentCenter}>
-          <Button color="rose" onClick={this.handleSurvey.bind(this)}>
+          <Button disabled = {!this.state.isSavedSurvey} color="rose" onClick={this.handleSurvey.bind(this)}>
             Submit Survey
           </Button>
         </CardFooter>

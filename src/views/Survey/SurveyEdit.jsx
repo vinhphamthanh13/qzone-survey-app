@@ -16,6 +16,16 @@ import { fetchSurvey, editSurvey } from "actions/survey.jsx";
 import { Poll } from "@material-ui/icons";
 import _ from 'lodash';
 import { sessionService } from 'redux-react-session';
+import { css } from 'react-emotion';
+// First way to import
+import { ClipLoader } from 'react-spinners';
+
+const override = css`
+    display: block;
+    margin: 0 auto;
+    border-color: red;
+`;
+
 
 var SID = ''
 class SurveyEdit extends React.Component{
@@ -27,11 +37,13 @@ class SurveyEdit extends React.Component{
         description: '',
         logo: '',
         privacy: false,
+        loading: true,
         id: '',
         survey: '',
         userId: ''
       },
       titleState: '',
+      isSavedSurvey: false,
       descriptionState: '',
       mode: 'edit',
       token: ''
@@ -41,13 +53,15 @@ class SurveyEdit extends React.Component{
   }
 
   componentWillMount(){
-    SID = this.props.match.params.id
-    this.setState({edit: true})
+    setTimeout(() => this.setState({ loading: false }), 2000); 
+    SID = this.props.match.params.id;
+    this.setState({edit: true});
     sessionService.loadSession().then(currentSession =>{
       this.setState({token: currentSession.token}, () => {
         this.props.fetchSurvey(SID,this.state.token);
+        console.log(" >> componentWillMount");
       })
-    })
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -68,6 +82,7 @@ class SurveyEdit extends React.Component{
       this.setState({[stateName + "State"]: "error"})
     else {
       this.setState({ [stateName + "State"]: "success" });
+      console.log(" >> this page 2");
     }
     const { surveyInfo } = this.state
     surveyInfo[stateName]= (event.target.value || event.target.checked)
@@ -76,6 +91,7 @@ class SurveyEdit extends React.Component{
 
   changeQuestions(event)
   {
+    this.setState({isSavedSurvey:true});
     const { surveyInfo } = this.state
     surveyInfo['survey']= JSON.stringify(event)
     this.setState({surveyInfo: surveyInfo})
@@ -83,15 +99,18 @@ class SurveyEdit extends React.Component{
 
 
   handleSurveyUpdate(option){
-    const {titleState, descriptionState, surveyInfo} = this.state
+    const {titleState, descriptionState, surveyInfo, isSavedSurvey} = this.state
     const {title, description} = surveyInfo
-    surveyInfo['survey']= JSON.stringify(this.state.surveyInfo.survey)
+    if(typeof this.state.surveyInfo.survey !== "string") {
+     surveyInfo['survey']= JSON.stringify(this.state.surveyInfo.survey);
+    }
     this.setState({surveyInfo: surveyInfo})
     if (_.isEmpty(title))
       this.setState({titleState: "error"})
     if (_.isEmpty(description))
       this.setState({descriptionState: "error"})
     if (titleState !== "error" && descriptionState !== "error"){
+      console.log('this.state.surveyInfo ' + this.state.surveyInfo.survey);
       this.props.editSurvey(this.state.surveyInfo,this.state.token, (response) => {
         window.location = "/admin/survey/list"
       });
@@ -99,12 +118,20 @@ class SurveyEdit extends React.Component{
   }
 
 	render() {
+    const { loading } = this.state;
     const { classes } = this.props;
     if(!this.state.surveyInfo.id)
       return null;
 		return(
       <Card>
-        <CardHeader color="rose" text>
+      <ClipLoader
+      className={override}
+      sizeUnit={"px"}
+      size={70}
+      color={'#123abc'}
+      loading={this.state.loading}
+    />
+         <CardHeader color="rose" text>
           <CardIcon color="rose">
             <Poll />
           </CardIcon>
@@ -117,7 +144,7 @@ class SurveyEdit extends React.Component{
           <SurveyForm survey={this.state}  change={this.change} changeQuestions={this.changeQuestions} classes={this.props.classes}/>
         </CardBody>
         <CardFooter className={classes.justifyContentCenter}>
-        	<Button color="rose" onClick={this.handleSurveyUpdate.bind(this)}>
+        	<Button disabled = {!this.state.isSavedSurvey} color="rose" onClick={this.handleSurveyUpdate.bind(this)}>
             Update
           </Button>
         </CardFooter>
