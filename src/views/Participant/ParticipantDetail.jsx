@@ -16,9 +16,9 @@ import { sessionService } from 'redux-react-session';
 import { fetchUserByUserId } from "actions/auth.jsx";
 import { fullName } from "variables/FullName.jsx";
 
-var sid= '';
-var pid= '';
-class ParticipantDetail extends React.Component{
+var sid = '';
+var pid = '';
+class ParticipantDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,26 +26,26 @@ class ParticipantDetail extends React.Component{
       user: ''
     }
   }
-  componentWillMount(){
+  componentWillMount() {
     sid = this.props.match.params.sid
     pid = this.props.match.params.pid
-    sessionService.loadSession().then(currentSession =>{
-      this.setState({token: currentSession.token}, () => {
-        this.props.fetchUserByUserId(pid,this.state.token)
+    sessionService.loadSession().then(currentSession => {
+      this.setState({ token: currentSession.token }, () => {
+        this.props.fetchUserByUserId(pid, this.state.token)
       })
     })
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({user: nextProps.user})
+    this.setState({ user: nextProps.user })
   }
 
-	render() {
+  render() {
     const { classes } = this.props;
-    if(!this.state.user)
+    if (!this.state.user)
       return null
-    const { email, companyName, department, phoneNumber} = this.state.user
-		return(
+    const { email, companyName, department, phoneNumber } = this.state.user
+    return (
       <Card>
         <CardHeader color="rose" text>
           <CardText color="rose">
@@ -95,13 +95,13 @@ class ParticipantDetail extends React.Component{
           </GridContainer>
         </CardBody>
         <CardFooter className={classes.justifyContentCenter}>
-        	<Button color="rose" href={`/admin/survey/participants/${sid}`}>
+          <Button color="rose" href={`/admin/survey/participants/${sid}`}>
             Back To Participant List
           </Button>
         </CardFooter>
       </Card>
-		)
-	}
+    )
+  }
 }
 
 ParticipantDetail.propTypes = {
@@ -109,11 +109,11 @@ ParticipantDetail.propTypes = {
 };
 
 function mapStateToProps(state) {
-  return{user: state.user.data}
-} 
+  return { user: state.user.detail }
+}
 
 export default compose(
   withStyles(listPageStyle),
-  connect(mapStateToProps,{fetchUserByUserId})
+  connect(mapStateToProps, { fetchUserByUserId })
 )(ParticipantDetail);
 

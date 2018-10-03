@@ -1,37 +1,44 @@
 import React from "react";
-import cx from "classnames";
+import classnames from "classnames";
 import PropTypes from "prop-types";
 import { Switch, Route, Redirect } from "react-router-dom";
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import PerfectScrollbar from "perfect-scrollbar";
-import "perfect-scrollbar/css/perfect-scrollbar.css";
-import { dashboardRoutes, otherRoutes } from "routes/dashboard.jsx";
+import withStyles from "@material-ui/core/styles/withStyles";
+import ReactLoader from 'views/ReactLoader';
+import { commonRoutes, adminRoutes, participantRoutes, otherRoutes } from "routes/dashboard.jsx";
 import Sidebar from "components/Sidebar/Sidebar.jsx";
 import Header from "components/Header/Header.jsx";
-import withStyles from "@material-ui/core/styles/withStyles";
 import appStyle from "assets/jss/material-dashboard-pro-react/layouts/dashboardStyle.jsx";
-import { compose } from 'redux';
 import logo from "assets/img/logo-white.svg";
-import {checkAuth} from 'actions/auth';
-import { connect } from 'react-redux';
+import { checkAuth, fetchUserByUserId } from 'actions/auth';
+import { getUserFromSession } from 'utils/session';
+import "perfect-scrollbar/css/perfect-scrollbar.css";
+import { UserType } from "../constants";
 
 const switchRoutes = (
   <Switch>
-    {[...otherRoutes, ...dashboardRoutes].map((prop, key) => {
-      if (prop.redirect)
-        return <Redirect from={prop.path} to={prop.pathTo} key={key} />;
-      if (prop.collapse)
-        return prop.views.map((prop, key) => {
+    {[...adminRoutes, ...commonRoutes, ...participantRoutes, ...otherRoutes].map((route) => {
+      if (route.redirect) {
+        return <Redirect from={route.path} to={route.pathTo} key={route.path} />;
+      }
+
+      if (route.collapse) {
+        return route.views.map((childRoute) => {
           return (
-            <Route path={prop.path} component={prop.component} key={key} />
+            <Route path={childRoute.path} component={childRoute.component} key={childRoute.path} />
           );
         });
-      return <Route path={prop.path} component={prop.component} key={key} />;
+      }
+
+      return <Route path={route.path} component={route.component} key={route.path} />;
     })}
   </Switch>
 );
 
 class Dashboard extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props)
     this.state = {
       mobileOpen: false,
@@ -41,19 +48,21 @@ class Dashboard extends React.Component {
   }
 
   ps = null;
- 
+
   getRoute() {
     return this.props.location.pathname !== "/maps/full-screen-maps";
   }
 
-  componentWillMount(){
-    this.props.checkAuth('abc',response=>{
-      if (response===false)
-        this.setState({isLoggedIn: false})
-    });
-  }
-
   componentDidMount() {
+    this.props.checkAuth(async (session) => {
+      if (session) {
+        const { userId } = await getUserFromSession();
+        this.props.fetchUserByUserId(userId, session.token);
+      } else {
+        this.setState({ isLoggedIn: false });
+      }
+    });
+
     if (navigator.platform.includes("Win")) {
       this.ps = new PerfectScrollbar(this.refs.mainPanel, {
         suppressScrollX: true,
@@ -69,77 +78,79 @@ class Dashboard extends React.Component {
     }
   }
 
-  componentDidUpdate(e) {
-    if (e.history.location.pathname !== e.location.pathname) {
-      this.refs.mainPanel.scrollTop = 0;
-      if(this.state.mobileOpen){
-        this.setState({mobileOpen: false})
+  componentDidUpdate(prevProps) {
+    if (prevProps.history.location.pathname !== prevProps.location.pathname) {
+      if (this.state.mobileOpen) {
+        this.setState({ mobileOpen: false })
       }
     }
   }
 
-  sidebarMinimize() {
-    this.setState({ miniActive: !this.state.miniActive });
+  sidebarMinimize = () => {
+    this.setState(oldState => ({ miniActive: !oldState.miniActive }));
   }
 
   render() {
-    const { classes, ...rest } = this.props;
+    const { classes, location, user, surveyLoading } = this.props;
+    const { isLoggedIn, miniActive, mobileOpen } = this.state;
     const mainPanel =
-      classes.mainPanel +
-      " " +
-      cx({
-        [classes.mainPanelSidebarMini]: this.state.miniActive,
-        [classes.mainPanelWithPerfectScrollbar]:
-          navigator.platform.indexOf("Win") > -1
-      });
-
-    if (!this.state.isLoggedIn) {
-      return( 
-        <div className={mainPanel} ref="mainPanel">
-          <Redirect
-            to={{
-              pathname: "/login",
-              state: { from: this.props.location.pathname }
-            }}
-          />
-        </div>
-      )
-    }
+      `${classes.mainPanel} ${classnames({
+        [classes.mainPanelSidebarMini]: miniActive,
+        [classes.mainPanelWithPerfectScrollbar]: navigator.platform.includes('Win')
+      })}`;
+    const sidebarRoutes = (user.userType === null) ||  !user.userType || user.userType === UserType.participant ?
+      commonRoutes.concat(participantRoutes) : commonRoutes.concat(adminRoutes);
 
     return (
-      <div className={classes.wrapper}>
-        <Sidebar
-          routes={dashboardRoutes}
-          logoText={"Survey"}
-          logo={logo}
-          handleDrawerToggle={this.handleDrawerToggle}
-          open={this.state.mobileOpen}
-          color="blue"
-          bgColor="black"
-          miniActive={this.state.miniActive}
-          {...rest}
-        />
-        <div className={mainPanel} ref="mainPanel">
-          <Header
-            sidebarMinimize={this.sidebarMinimize.bind(this)}
-            miniActive={this.state.miniActive}
-            routes={dashboardRoutes}
-            handleDrawerToggle={this.handleDrawerToggle}
-            {...rest}
+      !isLoggedIn ?
+        <div className={mainPanel}>
+          <Redirect
+            to={{
+              pathname: '/login',
+              state: { from: location.pathname }
+            }}
           />
-          <div className={classes.content}>
-            <div className={classes.container}>{switchRoutes}</div>
-          </div> 
-        </div>   
-      </div>
+        </div> :
+        <div className={classes.wrapper}>
+          <Sidebar
+            routes={sidebarRoutes}
+            logoText="Assessment"
+            logo={logo}
+            handleDrawerToggle={this.handleDrawerToggle}
+            open={mobileOpen}
+            color="blue"
+            bgColor="black"
+            miniActive={miniActive}
+            location={location}
+          />
+          <div className={mainPanel} ref="mainPanel">
+            {surveyLoading && <ReactLoader loading={surveyLoading} />}
+            <Header
+              sidebarMinimize={this.sidebarMinimize}
+              miniActive={miniActive}
+              routes={sidebarRoutes}
+              handleDrawerToggle={this.handleDrawerToggle}
+            />
+            <div className={classes.content}>
+              <div className={classes.container}>{switchRoutes}</div>
+            </div>
+          </div>
+        </div>
     )
   }
 }
+
 Dashboard.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  surveyLoading: PropTypes.bool.isRequired,
 };
+
+function mapStateToProps(state) {
+  return { user: state.user.detail, surveyLoading: state.surveys.loading };
+}
 
 export default compose(
   withStyles(appStyle),
-  connect(null,{checkAuth})
+  connect(mapStateToProps, { checkAuth, fetchUserByUserId })
 )(Dashboard);

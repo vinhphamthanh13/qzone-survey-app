@@ -1,6 +1,6 @@
 import Dashboard from "layouts/Dashboard.jsx";
-import SurveyResponse from "layouts/SurveyResponse.jsx";
 import Auth from "layouts/Auth.jsx";
+import SurveyResponse from "layouts/SurveyResponse.jsx";
 
 var indexRoutes = [
   { path: '/login', name: "Auth", component: Auth },

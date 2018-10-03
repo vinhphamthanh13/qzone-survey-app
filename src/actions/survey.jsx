@@ -6,6 +6,7 @@ export const FETCH_SURVEY = 'fetch_survey';
 export const DELETE_SURVEY = 'delete_survey';
 export const DELETE_ALL_SURVEY = 'delete_all_survey';
 export const EDIT_SURVEY = 'edit_survey';
+export const TOGGLE_LOADING = 'survey_toggle_loading';
 
 const ROOT_URL = `http://45.117.170.211:8090/api/surveys`
 
@@ -107,4 +108,8 @@ export function editSurvey(values,token,callback) {
   return {
     type: EDIT_SURVEY
   }
+}
+
+export function toggleLoading() {
+  return { type: TOGGLE_LOADING };
 }

@@ -1,12 +1,19 @@
-import { FETCH_SURVEYS } from 'actions/survey';
-import { FETCH_SURVEY } from 'actions/survey';
+import { FETCH_SURVEYS, FETCH_SURVEY, TOGGLE_LOADING } from 'actions/survey';
 
-export default function(state = {}, action) {
+const initialState = {
+  list: [],
+  detail: {},
+  loading: false,
+}
+
+export default function (state = initialState, action) {
   switch (action.type) {
     case FETCH_SURVEYS:
-      return {...state, data: action.payload.data}
-     case FETCH_SURVEY:
-      return {data: action.payload.data}
+      return { ...state, list: action.payload.data };
+    case FETCH_SURVEY:
+      return { ...state, detail: action.payload.data };
+    case TOGGLE_LOADING:
+      return { ...state, loading: !state.loading };
     default:
       return state;
   }

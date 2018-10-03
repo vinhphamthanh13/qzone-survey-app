@@ -8,8 +8,8 @@ class PasswordField extends PureComponent {
   static propTypes = {
     onChangePassword: PropTypes.func.isRequired,
     onChangeConfirmPwd: PropTypes.func.isRequired,
-    passwordState: PropTypes.bool.isRequired,
-    confirmPwdState: PropTypes.bool.isRequired,
+    passwordState: PropTypes.string.isRequired,
+    confirmPwdState: PropTypes.string.isRequired,
     classes: PropTypes.object.isRequired,
   }
 

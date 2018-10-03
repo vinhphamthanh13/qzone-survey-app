@@ -2,16 +2,20 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Switch, Route } from "react-router-dom";
 import withStyles from "@material-ui/core/styles/withStyles";
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import AuthHeader from "components/Header/AuthHeader.jsx";
 import authRoutes from "routes/auth.jsx";
 import pagesStyle from "assets/jss/material-dashboard-pro-react/layouts/pagesStyle.jsx";
 import bgImage from "assets/img/register.jpeg";
+import ReactLoader from 'views/ReactLoader';
 
 class Auth extends React.Component {
   render() {
-    const { classes, ...rest } = this.props;
+    const { classes, userLoading, ...rest } = this.props;
     return (
       <div>
+        {userLoading && <ReactLoader loading={userLoading} />}
         <AuthHeader {...rest} />
         <div className={classes.wrapper}>
           <div className={classes.fullPage}>
@@ -38,7 +42,15 @@ class Auth extends React.Component {
 }
 
 Auth.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  userLoading: PropTypes.bool.isRequired,
 };
 
-export default withStyles(pagesStyle)(Auth);
+function mapStateToProps(state) {
+  return { userLoading: state.user.loading };
+}
+
+export default compose(
+  connect(mapStateToProps),
+  withStyles(pagesStyle),
+)(Auth);

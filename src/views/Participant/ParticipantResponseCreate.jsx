@@ -31,7 +31,8 @@ class ParticipantResponseCreate extends React.Component {
       participantResponse: {
         participantId: '',
         surveyId: '',
-        questionAnswers: ''
+        questionAnswers: '',
+        status:'COMPLETED'
       },
       userId:'',
       token: ''
@@ -42,7 +43,7 @@ class ParticipantResponseCreate extends React.Component {
   componentWillMount(){
     id  = this.props.match.params.id
     sessionService.loadUser().then(currentUser => {
-      this.setState({userId: currentUser})})
+      this.setState({userId: currentUser.userId})})
     sessionService.loadSession().then(currentSession =>{
       this.setState({token: currentSession.token}, () => {
         this.props.fetchSurvey(id,this.state.token)
@@ -59,9 +60,10 @@ class ParticipantResponseCreate extends React.Component {
     if(typeof(resultAsString) !== "string") {
        resultAsString = JSON.stringify(survey.data);
     }
-    this.setState({participantResponse: {participantId: this.state.userId, surveyId: id, questionAnswers: resultAsString}},() =>{
+    this.setState({participantResponse: {participantId: this.state.userId, status:'COMPLETED', surveyId: id, questionAnswers: resultAsString}},() =>{
       this.props.createSurveyAnswer(this.state.participantResponse,this.state.token, (response) => {
-        window.location = "/surveys/result/"+id
+        //window.location = "/surveys/result/"+id
+        window.location = "/admin/survey/p_result/" + id + "/" +  this.state.userId 
       });
     })
   };
@@ -106,7 +108,7 @@ ParticipantResponseCreate.propTypes = {
 };
 
 function mapStateToProps(state) {
-  return{survey: state.surveys.data}
+  return{survey: state.surveys.detail}
 }
 
 export default compose(

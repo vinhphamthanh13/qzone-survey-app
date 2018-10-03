@@ -6,7 +6,7 @@ import pagesStyle from "assets/jss/material-dashboard-pro-react/layouts/pagesSty
 import bgImage from "assets/img/register.jpeg";
 import ParticipantResponseCreate from "views/Participant/ParticipantResponseCreate.jsx";
 import ParticipantResponseResult from "views/Participant/ParticipantResponseResult.jsx";
-import {checkAuth} from 'actions/auth';
+import { checkAuth } from 'actions/auth';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 
@@ -15,10 +15,10 @@ class SurveyResponse extends React.Component {
     isLoggedIn: true
   };
 
-  componentWillMount(){
-    this.props.checkAuth('abc',response=>{
-      if (response===false)
-        this.setState({isLoggedIn: false})
+  componentWillMount() {
+    this.props.checkAuth(response => {
+      if (response === false)
+        this.setState({ isLoggedIn: false })
     });
   }
 
@@ -65,5 +65,5 @@ SurveyResponse.propTypes = {
 
 export default compose(
   withStyles(pagesStyle),
-  connect(null,{checkAuth})
+  connect(null, { checkAuth })
 )(SurveyResponse);

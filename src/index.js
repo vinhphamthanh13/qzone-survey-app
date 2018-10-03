@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { createBrowserHistory } from "history";
 import { Router, Route, Switch } from "react-router-dom";
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import promise from 'redux-promise';
 import reducers from './reducers';
 import { sessionService } from 'redux-react-session';
@@ -14,9 +14,12 @@ import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
 
 const history = createBrowserHistory();
-const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
-const store = createStoreWithMiddleware(reducers)
-sessionService.initSessionService(store,{ driver: 'LOCALSTORAGE' })
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(
+  reducers,
+  composeEnhancers(applyMiddleware(promise)),
+);
+sessionService.initSessionService(store, { driver: 'LOCALSTORAGE' })
 
 ReactDOM.render(
   <Provider store={store}>

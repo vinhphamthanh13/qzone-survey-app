@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField,Dialog, DialogContent, DialogTitle, DialogActions, DialogContentText } from "@material-ui/core";
+import { TextField, Dialog, DialogContent, DialogTitle, DialogActions, DialogContentText } from "@material-ui/core";
 import Button from "components/CustomButtons/Button.jsx";
 import Alert from 'react-s-alert';
 import PropTypes from "prop-types";
@@ -8,22 +8,23 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
-import { registerUser } from "actions/auth.jsx";
+import { registerUser } from "actions/auth";
+import { toggleLoading } from "actions/survey";
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import { UserType } from '../../constants';
 
-class Assessor extends React.Component{
-  constructor(props){
+class Assessor extends React.Component {
+  constructor(props) {
     super(props);
-    this.state={
-      email:"",
-      firstname:'',
-      lastname:'',
-      userType: 'ASSESSOR',
+    this.state = {
+      email: '',
+      firstname: '',
+      lastname: '',
+      userType: UserType.assessor,
       open: false,
       password: "Survey@2019"
     }
-    this.handleAssessor = this.handleAssessor.bind(this)
   }
 
   // componentWillMount(){
@@ -42,41 +43,41 @@ class Assessor extends React.Component{
   //   return pass;
   // }
 
-  handleAssessor(){
-    this.props.registerUser(this.state, (response) =>{
-      if(response){
-        if (response.status !== 201 )
-        {
+  handleAssessor = () => {
+    this.props.toggleLoading();
+    this.props.registerUser(this.state, (response) => {
+      if (response) {
+        this.props.toggleLoading();
+        if (response.status !== 201) {
           Alert.error(response.data.message, {
             position: 'bottom-right',
             effect: 'bouncyflip',
           });
         }
-        else{
+        else {
           Alert.success("Assessor Added successfully", {
             position: 'bottom-right',
             effect: 'bouncyflip',
           });
-          this.props.reloadAssessorList()
-          this.setState({open: false})
+          this.setState({ open: false }, this.props.reloadAssessorList);
         }
       }
-    })
+    });
   }
 
-  handleClose = () =>{
-    this.setState({open: false})
+  handleClose = () => {
+    this.setState({ open: false })
   }
 
-  handleOpen = () =>{
-    this.setState({open: true})
+  handleOpen = () => {
+    this.setState({ open: true })
   }
-  
+
 
   render() {
-    return(
+    return (
       <React.Fragment>
-        <Link to='#' style={{fontFamily: 'sans-serif', fontWeight: 'bold'}} onClick={this.handleOpen} >Add Assessor</Link>
+        <Link to='#' style={{ fontFamily: 'sans-serif', fontWeight: 'bold' }} onClick={this.handleOpen} >Add Assessor</Link>
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
@@ -94,7 +95,7 @@ class Assessor extends React.Component{
                     margin="dense"
                     id="firstName"
                     label="Enter First Name"
-                    onChange={(event) =>{this.setState({firstname: event.target.value})}}
+                    onChange={(event) => { this.setState({ firstname: event.target.value }) }}
                   />
                 </GridItem>
               </GridContainer>
@@ -104,7 +105,7 @@ class Assessor extends React.Component{
                     margin="dense"
                     id="lastName"
                     label="Enter Last Name"
-                    onChange={(event) =>{this.setState({lastname: event.target.value})}}
+                    onChange={(event) => { this.setState({ lastname: event.target.value }) }}
                   />
                 </GridItem>
               </GridContainer>
@@ -115,31 +116,33 @@ class Assessor extends React.Component{
                     id="email"
                     type="email"
                     label="Enter Email"
-                    onChange={(event) =>{this.setState({email: event.target.value})}}
+                    onChange={(event) => { this.setState({ email: event.target.value }) }}
                   />
                 </GridItem>
               </GridContainer>
             </div>
-            <Alert stack={true}/>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} >
               Cancel
             </Button>
-            <Button  onClick={this.handleAssessor} color="rose">
+            <Button onClick={this.handleAssessor} color="rose">
               Submit
             </Button>
           </DialogActions>
         </Dialog>
+        <Alert stack={true} />
       </React.Fragment>
     )
   }
 }
 
 Assessor.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  toggleLoading: PropTypes.func.isRequired,
+  registerUser: PropTypes.func.isRequired,
 };
 
 export default compose(
-  connect(null,{registerUser})
+  connect(null, { registerUser, toggleLoading })
 )(Assessor);

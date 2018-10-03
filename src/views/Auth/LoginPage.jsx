@@ -15,8 +15,7 @@ import CardHeader from "components/Card/CardHeader";
 import CardBody from "components/Card/CardBody";
 import CardFooter from "components/Card/CardFooter";
 import loginPageStyle from "assets/jss/material-dashboard-pro-react/views/loginPageStyle";
-import { loginUser } from "actions/auth";
-import ReactLoader from 'views/ReactLoader';
+import { loginUser, toggleLoading } from "actions/auth";
 import VerificationPage from "./VerificationPage";
 import ResetPassword from './ResetPassword';
 import validateEmail from "../../utils/validateEmail";
@@ -31,7 +30,6 @@ class LoginPage extends React.Component {
       password: '',
       passwordState: '',
       openVerificationModal: false,
-      loading: false,
       disabled: false
     };
   }
@@ -48,13 +46,16 @@ class LoginPage extends React.Component {
 
   login = () => {
     if (this.state.emailState === 'success' && this.state.passwordState === 'success') {
-      this.setState({ loading: true, disabled: true }, () => {
-        this.props.loginUser(this.state, (response) => {
+      this.props.toggleLoading();
+      this.setState({ disabled: true }, () => {
+        this.props.loginUser({ email: this.state.email, password: this.state.password }, (response) => {
           if (response) {
+            this.props.toggleLoading();
+
             if (response.status === 200) {
               this.props.history.push('/dashboard');
             } else {
-              const newState = { loading: false, disabled: false };
+              const newState = { disabled: false };
 
               if (response.data.message === 'User is not confirmed.') {
                 newState.openVerificationModal = true;
@@ -114,7 +115,6 @@ class LoginPage extends React.Component {
     return (
       <div className={classes.content}>
         <div className={classes.container}>
-          {this.state.loading && <ReactLoader loading={this.state.loading} />}
           <GridContainer justify="center">
             <GridItem xs={12} sm={6} md={5}>
               <form>
@@ -186,5 +186,5 @@ LoginPage.propTypes = {
 
 export default compose(
   withStyles(loginPageStyle),
-  connect(null, { loginUser })
+  connect(null, { loginUser, toggleLoading })
 )(LoginPage);

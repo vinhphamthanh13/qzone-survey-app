@@ -1,19 +1,19 @@
-import React from "react";
-import Pace from 'react-pace-progress'
+import React from 'react';
+import Pace from 'react-pace-progress';
 
 class ReactLoader extends React.Component {
+  style = {
+    top: 0,
+    position: 'fixed',
+    width: '101%',
+    left: 0,
+    zIndex: 2000,
+  };
 
-  render(){
-    const style = {
-      top: '0',
-      position: 'absolute',
-      width: '101%',
-      left: '0'
-    }
-
-    return(
-      <div className='sweet-loading' style={style}>
-        <Pace color="#ffffff" height='3px' />
+  render() {
+    return (
+      <div className="sweet-loading" style={this.style}>
+        <Pace color="#2196f3" height={4} />
       </div>
     )
   }
