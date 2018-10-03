@@ -17,11 +17,11 @@ import { getUserFromSession } from 'utils/session';
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 import { UserType } from "../constants";
 
-const switchRoutes = (
+const switchRoutes = (sidebarRoutes) => (
   <Switch>
-    {[...adminRoutes, ...commonRoutes, ...participantRoutes, ...otherRoutes].map((route) => {
+    {sidebarRoutes.concat(otherRoutes).map((route) => {
       if (route.redirect) {
-        return <Redirect from={route.path} to={route.pathTo} key={route.path} />;
+        return <Route key={route.path} exact path={route.path} render={() => (<Redirect to={route.pathTo} />)} />;
       }
 
       if (route.collapse) {
@@ -98,8 +98,9 @@ class Dashboard extends React.Component {
         [classes.mainPanelSidebarMini]: miniActive,
         [classes.mainPanelWithPerfectScrollbar]: navigator.platform.includes('Win')
       })}`;
-    const sidebarRoutes = (user.userType === null) ||  !user.userType || user.userType === UserType.participant ?
-      commonRoutes.concat(participantRoutes) : commonRoutes.concat(adminRoutes);
+    const sidebarRoutes = user.userType === UserType.participant ?
+      participantRoutes.concat(commonRoutes) :
+      user.userType === UserType.admin ? adminRoutes.concat(commonRoutes) : commonRoutes;
 
     return (
       !isLoggedIn ?
@@ -132,7 +133,7 @@ class Dashboard extends React.Component {
               handleDrawerToggle={this.handleDrawerToggle}
             />
             <div className={classes.content}>
-              <div className={classes.container}>{switchRoutes}</div>
+              <div className={classes.container}>{switchRoutes(sidebarRoutes)}</div>
             </div>
           </div>
         </div>

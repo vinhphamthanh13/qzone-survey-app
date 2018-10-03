@@ -44,7 +44,7 @@ class HeaderLinks extends React.Component {
           color="transparent"
           simple
           aria-label="Dashboard"
-          href="/dashboard"
+          href="/admin/dashboard"
           justIcon
           className={classes.buttonLink}
           muiClasses={{

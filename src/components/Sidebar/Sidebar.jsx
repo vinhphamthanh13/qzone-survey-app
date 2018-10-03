@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import PerfectScrollbar from "perfect-scrollbar";
 import { NavLink } from "react-router-dom";
 import cx from "classnames";
-import { Drawer, List, ListItem, ListItemIcon, ListItemText,Hidden, Collapse } from "@material-ui/core";
+import { Drawer, List, ListItem, ListItemIcon, ListItemText, Hidden, Collapse } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
 import sidebarStyle from "assets/jss/material-dashboard-pro-react/components/sidebarStyle.jsx";
 
@@ -65,7 +65,7 @@ class Sidebar extends React.Component {
       routes,
       bgColor
     } = this.props;
-    
+
     var links = (
       <List className={classes.list}>
         {routes.map((prop, key) => {
@@ -94,9 +94,9 @@ class Sidebar extends React.Component {
                   this.props.miniActive && this.state.miniActive,
               });
             const itemIcon =
-              classes.itemIcon 
+              classes.itemIcon
             const caret =
-              classes.caret 
+              classes.caret
             return (
               <ListItem key={key} className={classes.item}>
                 <NavLink
@@ -135,7 +135,7 @@ class Sidebar extends React.Component {
                           [" " + classes[color]]: this.activeRoute(prop.path)
                         });
                       const collapseItemMini =
-                        classes.collapseItemMini 
+                        classes.collapseItemMini
                       return (
                         <ListItem key={key} className={classes.collapseItem}>
                           <NavLink to={prop.path} className={navLinkClasses}>
@@ -170,7 +170,7 @@ class Sidebar extends React.Component {
                 this.props.miniActive && this.state.miniActive,
             });
           const itemIcon =
-            classes.itemIcon 
+            classes.itemIcon
           return (
             <ListItem key={key} className={classes.item}>
               <NavLink to={prop.path} className={navLinkClasses}>
@@ -197,7 +197,7 @@ class Sidebar extends React.Component {
           this.props.miniActive && this.state.miniActive
       });
     const logoMini =
-      classes.logoMini 
+      classes.logoMini
     const logoClasses =
       classes.logo +
       " " +

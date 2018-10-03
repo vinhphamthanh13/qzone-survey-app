@@ -25,7 +25,7 @@ import { fullName } from 'variables/FullName';
 import { getUserFromSession, getTokenFromSession } from "../../utils/session";
 import { surveyStatus } from "../../constants";
 
-const rows = ["#", "Title", "Name", "Email", "", ""];
+const rows = ["#", "Title", "Pariticipant name", "Pariticipant email", "", ""];
 
 const overrideLoading = css`
     display: block !important;
@@ -57,13 +57,11 @@ class ParticipantList extends React.Component {
                     <TableRow>
                       {rows.map((row, index) => {
                         return (
-                          <TableCell
-                            key={index}
-                          >
+                          <TableCell key={index}>
                             {row}
                           </TableCell>
                         );
-                      }, this)}
+                      })}
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -72,20 +70,21 @@ class ParticipantList extends React.Component {
                         return (
                           <TableRow key={participant.id}>
                             <TableCell>{index + 1}</TableCell>
-                            <TableCell>{surveyAnswers[index].surveyDTO.title}</TableCell>
                             <TableCell>
-                              <Link to={`/survey/show/${surveyId}`}>
-                                {fullName(participant)}
+                              <Link to={status === surveyStatus.completed || status === surveyStatus.expired ?
+                                `/admin/survey/p_result/${surveyId}/${participant.id}` :
+                                `/survey/${surveyId}`
+                              }>
+                                {surveyAnswers[index].surveyDTO.title}
                               </Link>
                             </TableCell>
-                            <TableCell> {participant.email} </TableCell>
+                            <TableCell>{fullName(participant)}</TableCell>
+                            <TableCell>{participant.email}</TableCell>
                             <TableCell>
-                              <Link
-                                to={status === surveyStatus.completed ?
-                                  `/admin/survey/p_result/${surveyId}/${participant.id}` :
-                                  `/survey/show/${surveyId}`
-                                }
-                              >
+                              <Link to={status === surveyStatus.completed || status === surveyStatus.expired ?
+                                `/admin/survey/p_result/${surveyId}/${participant.id}` :
+                                `/survey/${surveyId}`
+                              }>
                                 <OpenInNew titleAccess="Open survey" />
                               </Link>
                             </TableCell>
