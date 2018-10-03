@@ -20,63 +20,35 @@ import { Poll } from "@material-ui/icons";
 import { Route } from 'react-router-dom';
 import { fullName } from 'variables/FullName.jsx';
 
-var surveyInfo= '';
-var sid= ''
-var pid= ''
+var surveyInfo = '';
+var sid = ''
+var pid = ''
 
-class ParticipantResponseResult extends React.Component{
-  constructor(props) {
-    super(props);
-    this.state = {
-      surveyData: {
-        title: '',
-        description: '',
-        logo: '',
-        privacy: false,
-        id: '',
-        survey: {},
-        user: ''
-      },
-      participantResponse: {
-        participantId: '',
-        surveyId: '',
-        questionAnswers: ''
-      },
-      token: ''
-    }
-  }
-
-  componentWillMount(){
-    console.log(this.props)
-    sid  = this.props.match.params.sid;
-    sessionService.loadUser().then(currentUser => {
-      pid = currentUser
+class ParticipantResponseResult extends React.Component {
+  componentWillMount() {
+    sid = this.props.match.params.sid;
+    pid = this.props.match.params.pid;
+    //sessionService.loadUser().then(currentUser => {
+    //  pid = currentUser.userId;
+    //});
+    sessionService.loadSession().then(currentSession => {
+      this.props.fetchSurvey(sid, currentSession.token);
+      this.props.fetchSurveyParticipantResponse(pid, sid, currentSession.token)
     })
-    sessionService.loadSession().then(currentSession =>{
-      this.setState({token: currentSession.token}, () => {
-        this.props.fetchSurvey(sid, this.state.token);
-        this.props.fetchSurveyParticipantResponse(pid,sid,this.state.token)
-      })
-    })
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({surveyData: nextProps.survey, participantResponse: nextProps.participantAnswer })
   }
 
   render() {
-    const { classes } = this.props;
-    const { surveyData,participantResponse } = this.state
-    if (participantResponse === undefined || participantResponse.questionAnswers === "" ||  !surveyData || surveyData.user === "" || participantResponse === "")
+    const { classes, survey: surveyDetail, participantAnswer } = this.props;
+    if (!participantAnswer || !participantAnswer.questionAnswers || !surveyDetail || !surveyDetail.user)
       return <div>Participant is not associated with this survey</div>;
-    else{
-      const {title, description, survey,user} = surveyData
+    else {
+      const { title, description, survey, user } = surveyDetail;
       surveyInfo = new Survey.Model(survey);
       surveyInfo.mode = 'display';
-      surveyInfo.data=JSON.parse(participantResponse.questionAnswers)
-      return(
+      surveyInfo.data = JSON.parse(participantAnswer.questionAnswers)
+      return (
         <div className={classes.content}>
-          <div className={classes.container} style={{width: '983px'}}>
+          <div className={classes.container} style={{ width: '983px' }}>
             <GridContainer>
               <GridItem xs={12}>
                 <Card>
@@ -84,7 +56,7 @@ class ParticipantResponseResult extends React.Component{
                     <CardIcon color="rose">
                       <Poll />
                     </CardIcon>
-                    <h3 className={classes.cardIconTitle}>Survey Result</h3>
+                    <h3 className={classes.cardIconTitle}>Assessments result</h3>
                   </CardHeader>
                   <CardBody>
                     <GridContainer>
@@ -100,8 +72,7 @@ class ParticipantResponseResult extends React.Component{
                         <h4>Logo:</h4>
                       </GridItem>
                       <GridItem xs={12} sm={7}>
-                        <img src={surveyData.logo
-                        }/>
+                        <img src={surveyDetail.logo} alt="survey logo" />
                       </GridItem>
                     </GridContainer>
                     <GridContainer>
@@ -124,7 +95,7 @@ class ParticipantResponseResult extends React.Component{
                         </h4>
                       </GridItem>
                     </GridContainer>
-                    <hr/>
+                    <hr />
                     <GridContainer>
                       <GridItem xs={12} sm={10}>
                         <Survey.Survey model={surveyInfo} />
@@ -132,21 +103,21 @@ class ParticipantResponseResult extends React.Component{
                     </GridContainer>
                   </CardBody>
                   <CardFooter className={classes.justifyContentCenter}>
-                  <Route render={({ history}) => (
-                    <Button
-                      color="rose"
-                      onClick={() => { history.push(`/admin/survey/participants/${sid}`) }}
-                    >
-                      Go To Participant List 
+                    <Route render={({ history }) => (
+                      <Button
+                        color="rose"
+                        onClick={() => {  window.location = `/participants/survey/survey-answers` }}
+                      >
+                        Go To Participant List
                     </Button>
-                  )}/>
+                    )} />
                   </CardFooter>
                 </Card>
               </GridItem>
             </GridContainer>
           </div>
         </div>
-      ) 
+      )
     }
   }
 }
@@ -156,11 +127,11 @@ ParticipantResponseResult.propTypes = {
 };
 
 function mapStateToProps(state) {
-  return{survey: state.surveys.data, participantAnswer: state.surveyParticipantAnswer.data}
+  return { survey: state.surveys.detail, participantAnswer: state.surveyParticipantAnswer.data }
 }
 
 export default compose(
   withStyles(listPageStyle),
-  connect(mapStateToProps, {fetchSurvey,fetchSurveyParticipantResponse}),
+  connect(mapStateToProps, { fetchSurvey, fetchSurveyParticipantResponse }),
 )(ParticipantResponseResult);
 

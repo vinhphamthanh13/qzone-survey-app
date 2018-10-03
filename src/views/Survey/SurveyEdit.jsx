@@ -4,20 +4,17 @@ import PropTypes from "prop-types";
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import withStyles from "@material-ui/core/styles/withStyles";
-import Button from "components/CustomButtons/Button.jsx";
 import CardIcon from "components/Card/CardIcon.jsx";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardBody from "components/Card/CardBody.jsx";
-import CardFooter from "components/Card/CardFooter.jsx";
 import validationFormStyle from "assets/jss/material-dashboard-pro-react/views/validationFormStyle.jsx";
 import SurveyForm from "views/Survey/SurveyForm"
-import { fetchSurvey, editSurvey } from "actions/survey.jsx";
+import { fetchSurvey, editSurvey, toggleLoading } from "actions/survey";
 import { Poll } from "@material-ui/icons";
-import _ from 'lodash';
+import { isEmpty } from 'lodash';
 import { sessionService } from 'redux-react-session';
 import { css } from 'react-emotion';
-// First way to import
 import { ClipLoader } from 'react-spinners';
 
 const override = css`
@@ -26,143 +23,123 @@ const override = css`
     border-color: red;
 `;
 
-
 var SID = ''
-class SurveyEdit extends React.Component{
-	constructor(props){
+class SurveyEdit extends React.Component {
+  constructor(props) {
     super(props);
     this.state = {
-      surveyInfo: {
-        title: '',
-        description: '',
-        logo: '',
-        privacy: false,
-        loading: true,
-        id: '',
-        survey: '',
-        userId: ''
-      },
+      surveyInfo: null,
       titleState: '',
-      isSavedSurvey: false,
       descriptionState: '',
       mode: 'edit',
       token: ''
     }
-    this.changeQuestions = this.changeQuestions.bind(this)
-    this.change = this.change.bind(this)
   }
 
-  componentWillMount(){
-    setTimeout(() => this.setState({ loading: false }), 2000); 
+  componentDidMount() {
     SID = this.props.match.params.id;
-    this.setState({edit: true});
-    sessionService.loadSession().then(currentSession =>{
-      this.setState({token: currentSession.token}, () => {
-        this.props.fetchSurvey(SID,this.state.token);
-        console.log(" >> componentWillMount");
+    this.setState({ edit: true });
+    sessionService.loadSession().then(currentSession => {
+      this.setState({ token: currentSession.token }, () => {
+        this.props.fetchSurvey(SID, this.state.token);
       })
     });
+    setTimeout(() => this.setState({ loading: false }), 2000);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { surveyInfo } = this.state;
-    for(var key in nextProps.survey) {
-      if(key === 'survey' && nextProps.survey.survey !== '')
-        surveyInfo[key]= JSON.parse(nextProps.survey.survey)
-      else if(key === 'user')
-        surveyInfo['userId'] = nextProps.survey.user.id
-      else
-        surveyInfo[key]= nextProps.survey[key]
-    };
-    this.setState({surveyInfo: surveyInfo})
-  }
-
-  change(event, stateName){
-    if (_.isEmpty(event.target.value))
-      this.setState({[stateName + "State"]: "error"})
-    else {
-      this.setState({ [stateName + "State"]: "success" });
-      console.log(" >> this page 2");
+    if (this.state.surveyInfo === null && nextProps.survey.survey) {
+      const surveyInfo = {};
+      for (let key in nextProps.survey) {
+        if (key === 'survey' && nextProps.survey.survey !== '') {
+          surveyInfo[key] = JSON.parse(nextProps.survey.survey)
+        } else if (key === 'user') {
+          surveyInfo['userId'] = nextProps.survey.user.id
+        } else {
+          surveyInfo[key] = nextProps.survey[key]
+        }
+      };
+      this.setState({ surveyInfo })
     }
-    const { surveyInfo } = this.state
-    surveyInfo[stateName]= (event.target.value || event.target.checked)
-    this.setState({surveyInfo: surveyInfo})
   }
 
-  changeQuestions(event)
-  {
-    this.setState({isSavedSurvey:true});
-    const { surveyInfo } = this.state
-    surveyInfo['survey']= JSON.stringify(event)
-    this.setState({surveyInfo: surveyInfo})
+  change = (event, stateName) => {
+    event.persist();
+    this.setState((oldState) => ({
+      [`${stateName}State`]: isEmpty(event.target.value) ? 'error' : 'success',
+      surveyInfo: {
+        ...oldState.surveyInfo,
+        [stateName]: event.target.value || event.target.checked,
+      }
+    }));
   }
 
+  changeQuestions = (newSurvey) => {
+    const { surveyInfo, token } = this.state;
+    const { title, description } = surveyInfo;
 
-  handleSurveyUpdate(option){
-    const {titleState, descriptionState, surveyInfo, isSavedSurvey} = this.state
-    const {title, description} = surveyInfo
-    if(typeof this.state.surveyInfo.survey !== "string") {
-     surveyInfo['survey']= JSON.stringify(this.state.surveyInfo.survey);
-    }
-    this.setState({surveyInfo: surveyInfo})
-    if (_.isEmpty(title))
-      this.setState({titleState: "error"})
-    if (_.isEmpty(description))
-      this.setState({descriptionState: "error"})
-    if (titleState !== "error" && descriptionState !== "error"){
-      console.log('this.state.surveyInfo ' + this.state.surveyInfo.survey);
-      this.props.editSurvey(this.state.surveyInfo,this.state.token, (response) => {
-        window.location = "/admin/survey/list"
+    if (!isEmpty(title) && !isEmpty(description)) {
+      this.props.toggleLoading();
+      this.props.editSurvey({
+        ...surveyInfo,
+        survey: JSON.stringify(newSurvey),
+      }, token, () => {
+        this.props.toggleLoading();
+        this.props.history.push('/admin/survey/list');
+      });
+    } else {
+      this.setState({
+        surveyInfo: { ...surveyInfo, survey: newSurvey },
+        titleState: isEmpty(title) ? 'error' : 'success',
+        descriptionState: isEmpty(description) ? 'error' : 'success',
       });
     }
   }
 
-	render() {
-    const { loading } = this.state;
+  render() {
+    const { loading, surveyInfo } = this.state;
     const { classes } = this.props;
-    if(!this.state.surveyInfo.id)
-      return null;
-		return(
+    return (
+      surveyInfo &&
       <Card>
-      <ClipLoader
-      className={override}
-      sizeUnit={"px"}
-      size={70}
-      color={'#123abc'}
-      loading={this.state.loading}
-    />
-         <CardHeader color="rose" text>
+        <ClipLoader
+          className={override}
+          sizeUnit={"px"}
+          size={70}
+          color={'#123abc'}
+          loading={loading}
+        />
+        <CardHeader color="rose" text>
           <CardIcon color="rose">
             <Poll />
           </CardIcon>
-          <h3 className={classes.cardIconTitle}>Edit Survey</h3>
-          <Link  to={`/admin/survey/show/${SID}`} className={classes.linkDisplay} > 
+          <h3 className={classes.cardIconTitle}>Edit Assessment</h3>
+          <Link to={`/survey/show/${SID}`} className={classes.linkDisplay} >
             <u>Back</u>
           </Link>
         </CardHeader>
         <CardBody>
-          <SurveyForm survey={this.state}  change={this.change} changeQuestions={this.changeQuestions} classes={this.props.classes}/>
+          <SurveyForm survey={this.state} change={this.change} changeQuestions={this.changeQuestions} classes={this.props.classes} />
         </CardBody>
-        <CardFooter className={classes.justifyContentCenter}>
-        	<Button disabled = {!this.state.isSavedSurvey} color="rose" onClick={this.handleSurveyUpdate.bind(this)}>
-            Update
-          </Button>
-        </CardFooter>
       </Card>
-		)
-	}
+    )
+  }
 }
 
 SurveyEdit.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  toggleLoading: PropTypes.func.isRequired,
+  fetchSurvey: PropTypes.func.isRequired,
+  editSurvey: PropTypes.func.isRequired,
+  survey: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
-  return{survey: state.surveys.data}
-} 
+  return { survey: state.surveys.detail }
+}
 
 export default compose(
   withStyles(validationFormStyle),
-  connect(mapStateToProps,{fetchSurvey,editSurvey})
+  connect(mapStateToProps, { fetchSurvey, editSurvey, toggleLoading })
 )(SurveyEdit);
 

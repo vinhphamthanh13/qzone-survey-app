@@ -1,22 +1,16 @@
 import DashboardIcon from "@material-ui/icons/Dashboard";
-import {  Person } from "@material-ui/icons";
-import SurveyQuestionnaire from "views/Survey/SurveyQuestionnaire.jsx";
-import SurveyList from "views/Survey/SurveyList.jsx";
-import SurveyCreate from "views/Survey/SurveyCreate.jsx";
-import Dashboard from "views/Dashboard/Dashboard.jsx";
-import Profile from "views/Profile/Profile.jsx";
-import SurveyEdit from "views/Survey/SurveyEdit.jsx";
-import ParticipantList from "views/Participant/ParticipantList.jsx";
-import ParticipantResponseResult from "views/Participant/ParticipantResponseResult.jsx";
-import ParticipantDetail from "views/Participant/ParticipantDetail.jsx";
+import { Person } from "@material-ui/icons";
+import SurveyQuestionnaire from "views/Survey/SurveyQuestionnaire";
+import SurveyList from "views/Survey/SurveyList";
+import SurveyCreate from "views/Survey/SurveyCreate";
+import Dashboard from "views/Dashboard/Dashboard";
+import Profile from "views/Profile/Profile";
+import SurveyEdit from "views/Survey/SurveyEdit";
+import ParticipantList from "views/Participant/ParticipantList";
+import ParticipantResponseResult from "views/Participant/ParticipantResponseResult";
+import ParticipantDetail from "views/Participant/ParticipantDetail";
 
-export const dashboardRoutes = [
-  {
-    path: "/dashboard",
-    name: "Dashboard",
-    icon: DashboardIcon,
-    component: Dashboard    
-  },
+export const commonRoutes = [
   {
     path: "/profile",
     name: "My Profile",
@@ -24,36 +18,48 @@ export const dashboardRoutes = [
     component: Profile
   },
   {
+    path: "/dashboard",
+    name: "Assessment Chart",
+    icon: DashboardIcon,
+    component: Dashboard
+  },  
+];
+
+export const participantRoutes = [
+  {
+    path: "/participants/survey/survey-answers",
+    name: "Assessments",
+    icon: Person,
+    component: ParticipantList
+  },
+];
+
+export const adminRoutes = [
+  {
     path: "/admin/survey/list",
-    name: "Survey List",
+    name: "Assessments",
     icon: Person,
     component: SurveyList
   },
-  
-  
 ];
-export const otherRoutes=[
+
+export const otherRoutes = [
   {
     path: "/admin/survey/create",
-    name: "Survey Create",
+    name: "Assessment Create",
     component: SurveyCreate
   },
   {
-    path: "/admin/survey/show/:id",
-    name: "Survey Questionnaire",
+    path: "/survey/show/:id",
+    name: "Assessments Details",
     component: SurveyQuestionnaire
   },
   {
     path: "/admin/survey/edit/:id",
-    name: "Survey Edit",
+    name: "Assessment Edit",
     component: SurveyEdit
   },
-  {
-    path: "/admin/survey/participants/:sid",
-    name: "Participant List",
-    component: ParticipantList
-  },
-  {
+   {
     path: "/admin/survey/p_result/:sid/:pid",
     name: "Participant Result",
     component: ParticipantResponseResult
@@ -63,5 +69,4 @@ export const otherRoutes=[
     name: "Participant Detail",
     component: ParticipantDetail
   }
-
-]
+];

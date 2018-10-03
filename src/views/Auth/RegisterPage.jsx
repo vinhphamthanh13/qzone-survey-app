@@ -24,6 +24,7 @@ import "assets/scss/material-dashboard-pro-react/views/mobileNumberStyle.css";
 import validatePassword from "../../utils/validatePassword";
 import validateEmail from "../../utils/validateEmail";
 import PasswordField from "./PasswordField";
+import { UserType } from "../../constants";
 
 class RegisterPage extends React.Component {
   constructor(props) {
@@ -42,7 +43,7 @@ class RegisterPage extends React.Component {
       confirmPwdState: '',
       registerCheckbox: false,
       registerCheckboxState: '',
-      userType: "PARTICIPANT",
+      userType: UserType.participant,
       openVerificationModal: false,
       code: '',
       loading: false

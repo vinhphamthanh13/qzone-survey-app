@@ -6,11 +6,9 @@ import {
 const customSelectStyle = {
   select: {
     padding: "12px 0 7px",
-    fontSize: ".75rem",
     fontWeight: "400",
     lineHeight: "1.42857",
     textDecoration: "none",
-    textTransform: "uppercase",
     color: "#3C4858",
     letterSpacing: "0",
     "&:focus": {

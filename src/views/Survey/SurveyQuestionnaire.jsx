@@ -18,7 +18,6 @@ import { compose } from 'redux';
 import { Poll } from "@material-ui/icons";
 import { sessionService } from 'redux-react-session';
 import { fullName } from 'variables/FullName.jsx';
-import { Route } from 'react-router-dom';
 import { css } from 'react-emotion';
 // First way to import
 import { ClipLoader } from 'react-spinners';
@@ -31,8 +30,8 @@ const override = css`
 
 Survey.Survey.cssType = "bootstrap";
 Survey.defaultBootstrapCss.navigationButton = "btn btn-green";
-var surveyInfo= ''
-class SurveyQuestionnaire extends React.Component{
+var surveyInfo = ''
+class SurveyQuestionnaire extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,60 +46,58 @@ class SurveyQuestionnaire extends React.Component{
         token: '',
         user: ''
       },
-      assessorName:''
+      assessorName: ''
     }
   }
 
-  componentWillMount(){
-    setTimeout(() => this.setState({ loading: false }), 1500); 
+  componentWillMount() {
+    setTimeout(() => this.setState({ loading: false }), 1500);
     const { id } = this.props.match.params
-    sessionService.loadSession().then(currentSession =>{
-      this.setState({token: currentSession.token}, () => {
-        this.props.fetchSurvey(id,this.state.token)
+    sessionService.loadSession().then(currentSession => {
+      this.setState({ token: currentSession.token }, () => {
+        this.props.fetchSurvey(id, this.state.token)
       })
     })
   }
 
   componentWillReceiveProps(nextProps) {
     const { surveyData } = this.state;
-    if(nextProps.survey){
-      for(var key in nextProps.survey) {
-        if(key === 'survey' && nextProps.survey.survey !== ''){
-          surveyData[key]= JSON.parse(nextProps.survey['survey'])
+    if (nextProps.survey) {
+      for (var key in nextProps.survey) {
+        if (key === 'survey' && nextProps.survey.survey !== '') {
+          surveyData[key] = JSON.parse(nextProps.survey['survey'])
         }
         else
-          surveyData[key]= nextProps.survey[key]
+          surveyData[key] = nextProps.survey[key]
       };
-      this.setState({surveyData: surveyData})
+      this.setState({ surveyData: surveyData })
     }
   }
 
   render() {
-    const { classes } = this.props;
-    const { title, description, survey, logo,user } = this.state.surveyData
+    const { classes, history } = this.props;
+    const { title, description, survey, logo, user } = this.state.surveyData;
     surveyInfo = new Survey.Model(survey);
     surveyInfo.mode = 'display';
     if (!this.state.surveyData.survey)
       return null
-    return(
+    return (
       <GridContainer>
-
-          <ClipLoader
+        <ClipLoader
           className={override}
           sizeUnit={"px"}
           size={70}
           color={'#123abc'}
           loading={this.state.loading}
         />
-        
         <GridItem xs={12}>
           <Card>
             <CardHeader color="primary" icon>
               <CardIcon color="rose">
                 <Poll />
               </CardIcon>
-              <h3 className={classes.cardIconTitle}>Survey</h3>
-              <Button size="md" href={`/admin/survey/edit/${this.props.match.params.id}`} className={classes.buttonDisplay}> 
+              <h3 className={classes.cardIconTitle}>Assessment</h3>
+              <Button size="md" onClick={() => { history.push(`/admin/survey/edit/${this.props.match.params.id}`) }} className={classes.buttonDisplay}>
                 Edit
               </Button>
             </CardHeader>
@@ -118,7 +115,7 @@ class SurveyQuestionnaire extends React.Component{
                   <h4>Logo:</h4>
                 </GridItem>
                 <GridItem xs={12} sm={7}>
-                  <img src={logo}/>
+                  <img src={logo} alt="survey logo" />
                 </GridItem>
               </GridContainer>
               <GridContainer>
@@ -141,7 +138,7 @@ class SurveyQuestionnaire extends React.Component{
                   </h4>
                 </GridItem>
               </GridContainer>
-              <hr/>
+              <hr />
               <GridContainer>
                 <GridItem xs={12} sm={10}>
                   <Survey.Survey model={surveyInfo} />
@@ -149,18 +146,16 @@ class SurveyQuestionnaire extends React.Component{
               </GridContainer>
             </CardBody>
             <CardFooter className={classes.justifyContentCenter}>
-            <Route render={({ history}) => (
               <Button
                 color="rose"
-                onClick={() => { history.push('/admin/survey/list') }}
+                onClick={history.goBack}
               >
-                Back 
+                Back
               </Button>
-            )}/>
             </CardFooter>
           </Card>
         </GridItem>
-       </GridContainer>
+      </GridContainer>
     )
   }
 }
@@ -170,12 +165,12 @@ SurveyQuestionnaire.propTypes = {
 };
 
 function mapStateToProps(state) {
-  return{survey: state.surveys.data, user: state.user.data}
-} 
+  return { survey: state.surveys.detail, user: state.user.detail }
+}
 
 export default compose(
   withStyles(listPageStyle),
-  connect(mapStateToProps, {fetchSurvey}),
+  connect(mapStateToProps, { fetchSurvey }),
 )(SurveyQuestionnaire);
 
 

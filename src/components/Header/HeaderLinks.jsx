@@ -85,7 +85,6 @@ class HeaderLinks extends React.Component {
                   classes.links
                 }
               />
-              <span className={classes.notifications}>5</span>
               <Hidden mdUp>
                 <span onClick={this.handleClick} className={classes.linkText}>
                   {"Notification"}
@@ -110,36 +109,6 @@ class HeaderLinks extends React.Component {
               >
                 <Paper className={classes.dropdown}>
                   <MenuList role="menu">
-                    <MenuItem
-                      onClick={this.handleClose}
-                      className={dropdownItem}
-                    >
-                      {"Mike John responded to your email"}
-                    </MenuItem>
-                    <MenuItem
-                      onClick={this.handleClose}
-                      className={dropdownItem}
-                    >
-                      {"You have 5 new tasks"}
-                    </MenuItem>
-                    <MenuItem
-                      onClick={this.handleClose}
-                      className={dropdownItem}
-                    >
-                      {"You're now friend with Andrew"}
-                    </MenuItem>
-                    <MenuItem
-                      onClick={this.handleClose}
-                      className={dropdownItem}
-                    >
-                      {"Another Notification"}
-                    </MenuItem>
-                    <MenuItem
-                      onClick={this.handleClose}
-                      className={dropdownItem}
-                    >
-                      {"Another One"}
-                    </MenuItem>
                   </MenuList>
                 </Paper>
               </Grow>

@@ -306,7 +306,8 @@ Sidebar.propTypes = {
   logo: PropTypes.string,
   logoText: PropTypes.string,
   image: PropTypes.string,
-  routes: PropTypes.arrayOf(PropTypes.object)
+  routes: PropTypes.arrayOf(PropTypes.object),
+  location: PropTypes.object.isRequired,
 };
 
 export default withStyles(sidebarStyle)(Sidebar);
