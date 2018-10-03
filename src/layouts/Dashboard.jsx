@@ -27,12 +27,12 @@ const switchRoutes = (sidebarRoutes) => (
       if (route.collapse) {
         return route.views.map((childRoute) => {
           return (
-            <Route path={childRoute.path} component={childRoute.component} key={childRoute.path} />
+            <Route exact path={childRoute.path} component={childRoute.component} key={childRoute.path} />
           );
         });
       }
 
-      return <Route path={route.path} component={route.component} key={route.path} />;
+      return <Route exact path={route.path} component={route.component} key={route.path} />;
     })}
   </Switch>
 );

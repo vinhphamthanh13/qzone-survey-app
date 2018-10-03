@@ -43,7 +43,6 @@ class SurveyQuestionnaire extends React.Component {
         loading: true,
         id: '',
         survey: '',
-        token: '',
         user: ''
       },
       assessorName: ''
@@ -52,12 +51,10 @@ class SurveyQuestionnaire extends React.Component {
 
   componentWillMount() {
     setTimeout(() => this.setState({ loading: false }), 1500);
-    const { id } = this.props.match.params
+    const { id } = this.props.match.params;
     sessionService.loadSession().then(currentSession => {
-      this.setState({ token: currentSession.token }, () => {
-        this.props.fetchSurvey(id, this.state.token)
-      })
-    })
+      this.props.fetchSurvey(id, currentSession.token);
+    });
   }
 
   componentWillReceiveProps(nextProps) {

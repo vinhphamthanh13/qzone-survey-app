@@ -15,7 +15,7 @@ export function fetchSurveys(token) {
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer '+token
+      'Authorization': 'Bearer ' + token
     }
   };
   const request = axios.get(ROOT_URL, axiosConfig)
@@ -25,30 +25,30 @@ export function fetchSurveys(token) {
   };
 }
 
-export function fetchSurvey(id,token, callback) {
+export function fetchSurvey(id, token, callback) {
   let axiosConfig = {
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer '+token
+      'Authorization': 'Bearer ' + token
     }
   };
-  const request = axios.get(`${ROOT_URL}/${id}`, axiosConfig)
+  const request = axios.get(`${ROOT_URL}/${id}`, axiosConfig);
   return {
     type: FETCH_SURVEY,
     payload: request
   };
 }
 
-export function deleteSurvey(id,token, callback) {
+export function deleteSurvey(id, token, callback) {
   let axiosConfig = {
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer '+token
+      'Authorization': 'Bearer ' + token
     }
   };
-  axios.delete(`${ROOT_URL}/${id}`,axiosConfig)
+  axios.delete(`${ROOT_URL}/${id}`, axiosConfig)
     .then(() => callback())
   return {
     type: DELETE_SURVEY
@@ -56,12 +56,12 @@ export function deleteSurvey(id,token, callback) {
 }
 
 
-export function deleteAllSurvey(id,token, callback) {
+export function deleteAllSurvey(id, token, callback) {
   let axiosConfig = {
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer '+token
+      'Authorization': 'Bearer ' + token
     }
   };
   axios.delete(ROOT_URL, axiosConfig)
@@ -80,30 +80,30 @@ export function deleteAllSurvey(id,token, callback) {
   };
 }
 
-export function createSurvey(values,token,callback) {
+export function createSurvey(values, token, callback) {
   let axiosConfig = {
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer '+token
+      'Authorization': 'Bearer ' + token
     }
   };
-  axios.post(ROOT_URL,values, axiosConfig)
+  axios.post(ROOT_URL, values, axiosConfig)
     .then((response) => callback(response));
   return {
     type: CREATE_SURVEY
   }
 }
 
-export function editSurvey(values,token,callback) {
+export function editSurvey(values, token, callback) {
   let axiosConfig = {
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer '+token
+      'Authorization': 'Bearer ' + token
     }
   };
-  axios.put(ROOT_URL,values, axiosConfig)
+  axios.put(ROOT_URL, values, axiosConfig)
     .then(() => callback());
   return {
     type: EDIT_SURVEY
