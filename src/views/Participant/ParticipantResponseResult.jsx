@@ -17,7 +17,6 @@ import CardIcon from "components/Card/CardIcon.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import { Poll } from "@material-ui/icons";
-import { Route } from 'react-router-dom';
 import { fullName } from 'variables/FullName.jsx';
 
 var surveyInfo = '';
@@ -38,7 +37,7 @@ class ParticipantResponseResult extends React.Component {
   }
 
   render() {
-    const { classes, survey: surveyDetail, participantAnswer } = this.props;
+    const { classes, survey: surveyDetail, participantAnswer, history } = this.props;
     if (!participantAnswer || !participantAnswer.questionAnswers || !surveyDetail || !surveyDetail.user)
       return <div>Participant is not associated with this survey</div>;
     else {
@@ -103,14 +102,12 @@ class ParticipantResponseResult extends React.Component {
                     </GridContainer>
                   </CardBody>
                   <CardFooter className={classes.justifyContentCenter}>
-                    <Route render={({ history }) => (
-                      <Button
-                        color="rose"
-                        onClick={() => {  window.location = `/participants/survey/survey-answers` }}
-                      >
-                        Go To Participant List
+                    <Button
+                      color="rose"
+                      onClick={() => { history.push(`/participants/survey/survey-answers`); }}
+                    >
+                      Go To Participant List
                     </Button>
-                    )} />
                   </CardFooter>
                 </Card>
               </GridItem>

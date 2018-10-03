@@ -9,6 +9,7 @@ import SurveyEdit from "views/Survey/SurveyEdit";
 import ParticipantList from "views/Participant/ParticipantList";
 import ParticipantResponseResult from "views/Participant/ParticipantResponseResult";
 import ParticipantDetail from "views/Participant/ParticipantDetail";
+import ParticipantResponseCreate from "views/Participant/ParticipantResponseCreate";
 
 export const commonRoutes = [
   {
@@ -17,15 +18,14 @@ export const commonRoutes = [
     icon: Person,
     component: Profile
   },
-  {
-    path: "/dashboard",
-    name: "Assessment Chart",
-    icon: DashboardIcon,
-    component: Dashboard
-  },  
 ];
 
 export const participantRoutes = [
+  {
+    redirect: true,
+    path: '/',
+    pathTo: '/participants/survey/survey-answers',
+  },
   {
     path: "/participants/survey/survey-answers",
     name: "Assessments",
@@ -36,6 +36,17 @@ export const participantRoutes = [
 
 export const adminRoutes = [
   {
+    redirect: true,
+    path: '/',
+    pathTo: '/admin/dashboard',
+  },
+  {
+    path: "/admin/dashboard",
+    name: "Assessment Chart",
+    icon: DashboardIcon,
+    component: Dashboard
+  },
+  {
     path: "/admin/survey/list",
     name: "Assessments",
     icon: Person,
@@ -44,6 +55,11 @@ export const adminRoutes = [
 ];
 
 export const otherRoutes = [
+  {
+    path: '/survey/:id',
+    name: 'Assessment Answer',
+    component: ParticipantResponseCreate,
+  },
   {
     path: "/admin/survey/create",
     name: "Assessment Create",
@@ -59,7 +75,7 @@ export const otherRoutes = [
     name: "Assessment Edit",
     component: SurveyEdit
   },
-   {
+  {
     path: "/admin/survey/p_result/:sid/:pid",
     name: "Participant Result",
     component: ParticipantResponseResult

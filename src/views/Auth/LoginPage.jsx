@@ -53,7 +53,7 @@ class LoginPage extends React.Component {
             this.props.toggleLoading();
 
             if (response.status === 200) {
-              this.props.history.push('/dashboard');
+              this.props.history.push('/');
             } else {
               const newState = { disabled: false };
 
