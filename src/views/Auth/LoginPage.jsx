@@ -60,10 +60,9 @@ class LoginPage extends React.Component {
             this.props.toggleLoading();
 
             if (response.status === 200) {
-                if(surveyId !== '') {
-                    this.props.history.push(`/surveys/${surveyId}`);
-              }
-              else {
+              if (surveyId) {
+                this.props.history.push(`/surveys/${surveyId}`);
+              } else {
                 this.props.history.push('/');
               }
             } else {

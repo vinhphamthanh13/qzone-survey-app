@@ -50,10 +50,6 @@ class Dashboard extends React.Component {
 
   ps = null;
 
-  getRoute() {
-    return this.props.location.pathname !== "/maps/full-screen-maps";
-  }
-
   componentDidMount() {
     this.props.checkAuth(async (session) => {
       if (session) {
@@ -102,11 +98,6 @@ class Dashboard extends React.Component {
         [classes.mainPanelSidebarMini]: miniActive,
         [classes.mainPanelWithPerfectScrollbar]: navigator.platform.includes('Win')
       })}`;
-      if( typeof (user.userType) === 'undefined') {
-        //user.userType = UserType.participant;
-        //window.location = "/login";
-        this.props.history.push('/login');
-      }
     const sidebarRoutes = user.userType === UserType.participant ?
       participantRoutes.concat(commonRoutes) :
       user.userType === UserType.admin ? adminRoutes.concat(commonRoutes) : commonRoutes;
