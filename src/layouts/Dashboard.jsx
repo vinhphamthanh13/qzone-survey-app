@@ -102,11 +102,7 @@ class Dashboard extends React.Component {
         [classes.mainPanelSidebarMini]: miniActive,
         [classes.mainPanelWithPerfectScrollbar]: navigator.platform.includes('Win')
       })}`;
-      if( typeof (user.userType) === 'undefined') {
-        //user.userType = UserType.participant;
-        //window.location = "/login";
-        this.props.history.push('/login');
-      }
+ 
     const sidebarRoutes = user.userType === UserType.participant ?
       participantRoutes.concat(commonRoutes) :
       user.userType === UserType.admin ? adminRoutes.concat(commonRoutes) : commonRoutes;
