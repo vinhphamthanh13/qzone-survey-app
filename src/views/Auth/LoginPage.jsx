@@ -19,7 +19,9 @@ import { loginUser, toggleLoading } from "actions/auth";
 import VerificationPage from "./VerificationPage";
 import ResetPassword from './ResetPassword';
 import validateEmail from "../../utils/validateEmail";
-
+import { Storage } from 'react-jhipster';
+const SURVEY_ID = "SurveyId";
+var surveyId = '';
 class LoginPage extends React.Component {
   constructor(props) {
     super(props);
@@ -35,6 +37,11 @@ class LoginPage extends React.Component {
   }
 
   componentDidMount() {
+
+    if (Storage.local.get(SURVEY_ID)) {
+      surveyId = Storage.local.get(SURVEY_ID);
+      Storage.local.remove(SURVEY_ID);
+    }
     setTimeout(() => {
       this.setState({ cardAnimaton: '' });
     }, 200);
@@ -53,7 +60,12 @@ class LoginPage extends React.Component {
             this.props.toggleLoading();
 
             if (response.status === 200) {
-              this.props.history.push('/');
+                if(surveyId !== '') {
+                    this.props.history.push(`/surveys/${surveyId}`);
+              }
+              else {
+                this.props.history.push('/');
+              }
             } else {
               const newState = { disabled: false };
 

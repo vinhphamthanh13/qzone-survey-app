@@ -12,7 +12,8 @@ import { compose } from 'redux';
 import * as Survey from 'survey-react';
 import { sessionService } from 'redux-react-session';
 import { createSurveyAnswer } from 'actions/surveyAnswer.jsx';
-
+import { Storage } from 'react-jhipster';
+const SURVEY_ID = "SurveyId";
 var surveyInfo= '';
 var id= ''
 
@@ -41,7 +42,11 @@ class ParticipantResponseCreate extends React.Component {
   }
 
   componentWillMount(){
+    console.log(">> componentWillMount");
     id  = this.props.match.params.id
+    if(id !== '' || id !==null) {
+      Storage.local.set(SURVEY_ID, id);
+    }
     sessionService.loadUser().then(currentUser => {
       this.setState({userId: currentUser.userId})})
     sessionService.loadSession().then(currentSession =>{
