@@ -104,7 +104,8 @@ class Dashboard extends React.Component {
       })}`;
       if( typeof (user.userType) === 'undefined') {
         //user.userType = UserType.participant;
-        window.location = "/login";
+        //window.location = "/login";
+        this.props.history.push('/login');
       }
     const sidebarRoutes = user.userType === UserType.participant ?
       participantRoutes.concat(commonRoutes) :
