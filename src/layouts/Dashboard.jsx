@@ -50,10 +50,6 @@ class Dashboard extends React.Component {
 
   ps = null;
 
-  getRoute() {
-    return this.props.location.pathname !== "/maps/full-screen-maps";
-  }
-
   componentDidMount() {
     this.props.checkAuth(async (session) => {
       if (session) {
@@ -102,7 +98,6 @@ class Dashboard extends React.Component {
         [classes.mainPanelSidebarMini]: miniActive,
         [classes.mainPanelWithPerfectScrollbar]: navigator.platform.includes('Win')
       })}`;
- 
     const sidebarRoutes = user.userType === UserType.participant ?
       participantRoutes.concat(commonRoutes) :
       user.userType === UserType.admin ? adminRoutes.concat(commonRoutes) : commonRoutes;
