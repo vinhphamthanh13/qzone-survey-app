@@ -16,7 +16,8 @@ import { checkAuth, fetchUserByUserId } from 'actions/auth';
 import { getUserFromSession } from 'utils/session';
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 import { UserType } from "../constants";
-
+import { Storage } from 'react-jhipster';
+const SURVEY_ID = "SurveyId";
 const switchRoutes = (sidebarRoutes) => (
   <Switch>
     {sidebarRoutes.concat(otherRoutes).map((route) => {
@@ -69,6 +70,9 @@ class Dashboard extends React.Component {
         suppressScrollY: false
       });
       document.body.style.overflow = "hidden";
+    }
+    if (Storage.local.get(SURVEY_ID)) {
+      Storage.local.remove(SURVEY_ID);
     }
   }
 
