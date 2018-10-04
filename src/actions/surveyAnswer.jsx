@@ -1,13 +1,11 @@
 import axios from 'axios';
+import { SURVEY_URL } from '../constants';
 
 export const CREATE_SURVEY_ANSWER = 'create_survey_answer';
 export const FETCH_SURVEY_PARTICIPANT_RESPONSE = 'fetch_survey_participant_response';
 export const FETCH_SURVEY_RESPONSE = 'fetch_survey_response';
 export const FETCH_SURVEY_PARTICIPANT_LIST = 'fetch_survey_participant_list';
 export const FETCH_SURVEY_ANSWER_BY_PARTICIPANT_ID = 'fetch_survey_answer_by_participant_id';
-
-const ROOT_URL = `http://45.117.170.211:8090/api`
-//const ROOT_URL = `http://localhost:8090/api`
 
 export function createSurveyAnswer(values, token, callback) {
   let axiosConfig = {
@@ -17,7 +15,7 @@ export function createSurveyAnswer(values, token, callback) {
       'Authorization': 'Bearer ' + token
     }
   };
-  axios.post(`${ROOT_URL}/survey-answers`, values, axiosConfig)
+  axios.post(`${SURVEY_URL}/survey-answers`, values, axiosConfig)
     .then(
       response => {
         callback(response);
@@ -40,7 +38,7 @@ export function fetchSurveyParticipantResponse(pid, sid, token, callback) {
       'Authorization': 'Bearer ' + token
     }
   };
-  const request = axios.get(`${ROOT_URL}/find-survey-answers/{surveyId}/{participantId}?surveyId=${sid}&participantId=${pid}`, axiosConfig)
+  const request = axios.get(`${SURVEY_URL}/find-survey-answers/{surveyId}/{participantId}?surveyId=${sid}&participantId=${pid}`, axiosConfig)
   return {
     type: FETCH_SURVEY_PARTICIPANT_RESPONSE,
     payload: request
@@ -48,7 +46,7 @@ export function fetchSurveyParticipantResponse(pid, sid, token, callback) {
 }
 
 export function fetchSurveyResponse(sid, callback) {
-  const request = axios.get(`${ROOT_URL}/find-survey-answers/{surveyId}?surveyId=${sid}`)
+  const request = axios.get(`${SURVEY_URL}/find-survey-answers/{surveyId}?surveyId=${sid}`)
   return {
     type: FETCH_SURVEY_RESPONSE,
     payload: request
@@ -63,7 +61,7 @@ export function fetchSurveyParticipantList(sid, token, callback) {
       'Authorization': 'Bearer ' + token
     }
   };
-  const request = axios.get(`${ROOT_URL}/listParticipantBySurveyId/${sid}`, axiosConfig)
+  const request = axios.get(`${SURVEY_URL}/listParticipantBySurveyId/${sid}`, axiosConfig)
   return {
     type: FETCH_SURVEY_PARTICIPANT_LIST,
     payload: request
@@ -78,7 +76,7 @@ export function fetchSurveyAnswerByParticipantId(pid, token) {
       'Authorization': 'Bearer ' + token
     }
   };
-  const request = axios.get(`${ROOT_URL}/listSurveyAnswerByParticipantId/${pid}`, axiosConfig)
+  const request = axios.get(`${SURVEY_URL}/listSurveyAnswerByParticipantId/${pid}`, axiosConfig)
   return {
     type: FETCH_SURVEY_ANSWER_BY_PARTICIPANT_ID,
     payload: request
