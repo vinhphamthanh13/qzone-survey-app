@@ -38,7 +38,7 @@ export function fetchSurveyParticipantResponse(pid, sid, token, callback) {
       'Authorization': 'Bearer ' + token
     }
   };
-  const request = axios.get(`${SURVEY_URL}/find-survey-answers/{surveyId}/{participantId}?surveyId=${sid}&participantId=${pid}`, axiosConfig)
+  const request = axios.get(`${SURVEY_URL}/find-survey-answers/${sid}/${pid}`, axiosConfig)
   return {
     type: FETCH_SURVEY_PARTICIPANT_RESPONSE,
     payload: request
@@ -46,7 +46,7 @@ export function fetchSurveyParticipantResponse(pid, sid, token, callback) {
 }
 
 export function fetchSurveyResponse(sid, callback) {
-  const request = axios.get(`${SURVEY_URL}/find-survey-answers/{surveyId}?surveyId=${sid}`)
+  const request = axios.get(`${SURVEY_URL}/find-survey-answers/${sid}`)
   return {
     type: FETCH_SURVEY_RESPONSE,
     payload: request

@@ -67,8 +67,13 @@ class ParticipantResponseCreate extends React.Component {
     }
     this.setState({participantResponse: {participantId: this.state.userId, status:'COMPLETED', surveyId: id, questionAnswers: resultAsString}},() =>{
       this.props.createSurveyAnswer(this.state.participantResponse,this.state.token, (response) => {
-        //window.location = "/surveys/result/"+id
-        window.location = "/admin/survey/p_result/" + id + "/" +  this.state.userId 
+        if(response.status === 201)  {
+          this.props.history.push(`/admin/survey/p_result/${id}/${this.state.userId}`);
+        }
+        else {
+          console.log("Failed  to create Survey Answer");
+          window.location = "/participants/survey/survey-answers";//redirect
+        }
       });
     })
   };

@@ -34,7 +34,6 @@ export default class Account extends PureComponent {
 
   render() {
     const {
-      classes,
       email,
       emailState,
       passwordState,
