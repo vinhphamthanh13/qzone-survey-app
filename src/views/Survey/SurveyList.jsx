@@ -130,7 +130,7 @@ class SurveyList extends React.Component {
     const { classes, surveyList } = this.props;
 
     return (
-      surveyList && surveyList.length > 0 &&
+      surveyList && surveyList.length >= 0 &&
       <GridContainer>
         <ClipLoader
           className={override}
