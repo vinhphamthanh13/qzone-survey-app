@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField, Dialog, DialogContent, DialogTitle, DialogActions, DialogContentText } from "@material-ui/core";
+import { TextField, Dialog, DialogContent, DialogTitle, DialogActions } from "@material-ui/core";
 import Button from "components/CustomButtons/Button.jsx";
 import Alert from 'react-s-alert';
 import PropTypes from "prop-types";
@@ -77,54 +77,48 @@ class Assessor extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Link to='#' style={{ fontFamily: 'sans-serif', fontWeight: 'bold' }} onClick={this.handleOpen} >Add Assessor</Link>
+        <Link to='#' style={{ fontWeight: 'bold' }} onClick={this.handleOpen} >Add Assessor</Link>
         <Dialog
+          fullWidth
           open={this.state.open}
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">{"Add Assessor"}</DialogTitle>
+          <DialogTitle id="form-dialog-title">Add Assessor</DialogTitle>
           <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              Please enter details of new Assessor
-            </DialogContentText>
-            <div>
-              <GridContainer>
-                <GridItem>
-                  <TextField
-                    margin="dense"
-                    id="firstName"
-                    label="Enter First Name"
-                    onChange={(event) => { this.setState({ firstname: event.target.value }) }}
-                  />
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem>
-                  <TextField
-                    margin="dense"
-                    id="lastName"
-                    label="Enter Last Name"
-                    onChange={(event) => { this.setState({ lastname: event.target.value }) }}
-                  />
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem>
-                  <TextField
-                    margin="dense"
-                    id="email"
-                    type="email"
-                    label="Enter Email"
-                    onChange={(event) => { this.setState({ email: event.target.value }) }}
-                  />
-                </GridItem>
-              </GridContainer>
-            </div>
+            <GridContainer style={{ marginBottom: 10 }}>
+              <GridItem md={6}>
+                <TextField
+                  fullWidth
+                  id="firstName"
+                  label="Enter first name"
+                  onChange={(event) => { this.setState({ firstname: event.target.value }) }}
+                />
+              </GridItem>
+              <GridItem md={6}>
+                <TextField
+                  fullWidth
+                  id="lastName"
+                  label="Enter last name"
+                  onChange={(event) => { this.setState({ lastname: event.target.value }) }}
+                />
+              </GridItem>
+            </GridContainer>
+            <GridContainer>
+              <GridItem md={12}>
+                <TextField
+                  fullWidth
+                  id="email"
+                  type="email"
+                  label="Enter email"
+                  onChange={(event) => { this.setState({ email: event.target.value }) }}
+                />
+              </GridItem>
+            </GridContainer>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} >
-              Cancel
+              Close
             </Button>
             <Button onClick={this.handleAssessor} color="rose">
               Submit

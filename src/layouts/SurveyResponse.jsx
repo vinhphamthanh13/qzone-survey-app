@@ -9,13 +9,22 @@ import ParticipantResponseResult from "views/Participant/ParticipantResponseResu
 import { checkAuth } from 'actions/auth';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-
+import { Storage } from 'react-jhipster';
+const SURVEY_ID = "SurveyId";
+var surveyId = '';
 class SurveyResponse extends React.Component {
   state = {
     isLoggedIn: true
   };
 
   componentWillMount() {
+    
+    console.log('>>componentWillMount');
+    if (Storage.local.get(SURVEY_ID)) {
+      surveyId = Storage.local.get(SURVEY_ID);
+      console.log('surveyId' + surveyId);
+    }
+    
     this.props.checkAuth(response => {
       if (response === false)
         this.setState({ isLoggedIn: false })
@@ -25,9 +34,10 @@ class SurveyResponse extends React.Component {
   render() {
     const { classes } = this.props;
     if (!this.state.isLoggedIn) {
+      console.log('redirect');
       return <Redirect
         to={{
-          pathname: "/register",
+          pathname: `/login/surveys/${surveyId}`,
           state: { from: this.props.location.pathname }
         }}
       />

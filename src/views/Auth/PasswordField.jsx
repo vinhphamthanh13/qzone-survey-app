@@ -11,32 +11,54 @@ class PasswordField extends PureComponent {
     passwordState: PropTypes.string.isRequired,
     confirmPwdState: PropTypes.string.isRequired,
     classes: PropTypes.object.isRequired,
+    useLabel: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    useLabel: true,
   }
 
   render() {
-    const { onChangePassword, onChangeConfirmPwd, passwordState, confirmPwdState, classes } = this.props;
+    const {
+      onChangePassword,
+      onChangeConfirmPwd,
+      passwordState,
+      confirmPwdState,
+      classes,
+      useLabel,
+    } = this.props;
+    const passwordProps = {
+      labelText: useLabel ? 'Password (required)' : undefined,
+      inputProps: {
+        onChange: onChangePassword,
+        type: 'password',
+        placeholder: !useLabel ? 'Password (required)' : undefined,
+      },
+    }
+
+    const confirmPwdProps = {
+      labelText: useLabel ? 'Confirm password (required)' : undefined,
+      inputProps: {
+        onChange: onChangeConfirmPwd,
+        type: 'password',
+        placeholder: !useLabel ? 'Confirm password (required)' : undefined,
+      },
+    }
+
     return (
       <React.Fragment>
         <div className={classes.inputWrapper}>
           <CustomInput
-            labelText="Password (required)"
             success={passwordState === "success"}
             error={passwordState === "error"}
             id="password"
-            inputProps={{
-              onChange: onChangePassword,
-              type: "password",
-            }}
+            {...passwordProps}
           />
           <CustomInput
-            labelText="Confirm password (required)"
             success={confirmPwdState === "success"}
             error={confirmPwdState === "error"}
             id="confirmPwd"
-            inputProps={{
-              onChange: onChangeConfirmPwd,
-              type: "password",
-            }}
+            {...confirmPwdProps}
           />
         </div>
         <small>

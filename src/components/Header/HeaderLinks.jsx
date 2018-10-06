@@ -9,6 +9,9 @@ import Button from "components/CustomButtons/Button.jsx";
 import { sessionService } from 'redux-react-session';
 import headerLinksStyle from "assets/jss/material-dashboard-pro-react/components/headerLinksStyle";
 
+import { Storage } from 'react-jhipster';
+const SURVEY_ID = "SurveyId";
+
 class HeaderLinks extends React.Component {
   state = {
     notificationOpen: false,
@@ -24,6 +27,9 @@ class HeaderLinks extends React.Component {
     this.setState({ notificationOpen: false, userOpen: false });
   };
   handleLogout = () => {
+    if (Storage.local.get(SURVEY_ID)) {
+      Storage.local.remove(SURVEY_ID);
+    }
     this.setState({ userOpen: false });
     sessionService.deleteSession();
     sessionService.deleteUser();
