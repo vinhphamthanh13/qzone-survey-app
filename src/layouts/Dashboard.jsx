@@ -16,7 +16,8 @@ import { checkAuth, fetchUserByUserId } from 'actions/auth';
 import { getUserFromSession } from 'utils/session';
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 import { UserType } from "../constants";
-
+import { Storage } from 'react-jhipster';
+const SURVEY_ID = "SurveyId";
 const switchRoutes = (sidebarRoutes) => (
   <Switch>
     {sidebarRoutes.concat(otherRoutes).map((route) => {
@@ -27,12 +28,12 @@ const switchRoutes = (sidebarRoutes) => (
       if (route.collapse) {
         return route.views.map((childRoute) => {
           return (
-            <Route path={childRoute.path} component={childRoute.component} key={childRoute.path} />
+            <Route exact path={childRoute.path} component={childRoute.component} key={childRoute.path} />
           );
         });
       }
 
-      return <Route path={route.path} component={route.component} key={route.path} />;
+      return <Route exact path={route.path} component={route.component} key={route.path} />;
     })}
   </Switch>
 );
@@ -48,10 +49,6 @@ class Dashboard extends React.Component {
   }
 
   ps = null;
-
-  getRoute() {
-    return this.props.location.pathname !== "/maps/full-screen-maps";
-  }
 
   componentDidMount() {
     this.props.checkAuth(async (session) => {
@@ -69,6 +66,9 @@ class Dashboard extends React.Component {
         suppressScrollY: false
       });
       document.body.style.overflow = "hidden";
+    }
+    if (Storage.local.get(SURVEY_ID)) {
+      Storage.local.remove(SURVEY_ID);
     }
   }
 

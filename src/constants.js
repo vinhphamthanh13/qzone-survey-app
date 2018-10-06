@@ -11,3 +11,8 @@ export const surveyStatus = {
   expired: 'EXPIRED',
 };
 export const SURVEY_APP_URL = 'testengage.quezone.com.au';
+//export const SURVEY_APP_URL = 'localhost:3000';
+export const REG_SERVICE_URL = `http://13.59.129.134:8091/api/user`;
+//export const REG_SERVICE_URL = `http://localhost:8091/api/user`;
+export const SURVEY_URL = `http://13.59.129.134:8090/api`;
+//export const SURVEY_URL = `http://localhost:8090/api`;
