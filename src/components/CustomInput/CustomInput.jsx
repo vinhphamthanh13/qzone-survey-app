@@ -47,18 +47,16 @@ function CustomInput({ ...props }) {
   } else {
     formControlClasses = classes.formControl;
   }
-  var feedbackClasses = classes.feedback;
-  var min_attr= ""
+
+  let feedbackClasses = classes.feedback;
+  let minAttr = '';
+
   if (inputProps !== undefined) {
     if (inputProps.endAdornment !== undefined) {
       feedbackClasses = feedbackClasses + " " + classes.feedbackRight;
     }
     if (inputProps.type === 'number') {
-      if (inputProps.min !== undefined)
-        min_attr = inputProps.min
-      else {
-        min_attr = ""
-      }
+      if (inputProps.min !== undefined) minAttr = inputProps.min
     }
   }
   return (
@@ -82,7 +80,7 @@ function CustomInput({ ...props }) {
         id={id}
         value={value}
         inputProps={{
-          min: min_attr
+          min: minAttr
         }}
         {...inputProps}
       />
@@ -107,9 +105,9 @@ CustomInput.propTypes = {
   success: PropTypes.bool,
   white: PropTypes.bool,
   value: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.number
-          ]),
+    PropTypes.string,
+    PropTypes.number
+  ]),
 };
 
 export default withStyles(customInputStyle)(CustomInput);
