@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { sessionService } from 'redux-react-session';
+import { REG_SERVICE_URL } from '../constants';
 
 export const REGISTER_USER = 'register_user';
 export const VERIFY_USER = 'verify_user';
@@ -11,8 +12,6 @@ export const VERIFY_RESEND_USER = 'verify_resend_user';
 export const FETCH_USERTYPE_LIST = 'fetch_usertype_list';
 export const FETCH_USER_BY_USERID = 'fetch_user_by_userid';
 export const TOGGLE_LOADING = 'auth_toggle_loading';
-
-const ROOT_URL = `http://45.117.170.211:8091/api/user`
 
 const headers = (token) => ({
     'Content-Type': 'application/json',
@@ -29,7 +28,7 @@ const handleErrorResponse = (callback) => {
 };
 
 export function registerUser(values, callback) {
-    axios.post(`${ROOT_URL}/register`, values)
+    axios.post(`${REG_SERVICE_URL}/register`, values)
         .then(handleSuccessResponse(callback))
         .catch(handleErrorResponse(callback));
 
@@ -37,7 +36,7 @@ export function registerUser(values, callback) {
 }
 
 export function verifyUser(values, callback) {
-    axios.post(`${ROOT_URL}/verify`, values)
+    axios.post(`${REG_SERVICE_URL}/verify`, values)
         .then(handleSuccessResponse(callback))
         .catch(handleErrorResponse(callback));
 
@@ -45,7 +44,7 @@ export function verifyUser(values, callback) {
 }
 
 export function verifyResendUser(values, callback) {
-    axios.post(`${ROOT_URL}/resendEmailConfirm`, values)
+    axios.post(`${REG_SERVICE_URL}/resendEmailConfirm`, values)
         .then(handleSuccessResponse(callback))
         .catch(handleErrorResponse(callback));
 
@@ -53,7 +52,7 @@ export function verifyResendUser(values, callback) {
 }
 
 export function loginUser(values, callback) {
-    axios.post(`${ROOT_URL}/login`, values)
+    axios.post(`${REG_SERVICE_URL}/login`, values)
         .then(response => {
             const { jwtToken, userId } = response.data;
             sessionService.saveSession({ token: jwtToken })
@@ -76,7 +75,7 @@ export function checkAuth(callback) {
 }
 
 export function resetPassword(value, callback) {
-    axios.post(`${ROOT_URL}/resetPassword`, value)
+    axios.post(`${REG_SERVICE_URL}/resetPassword`, value)
         .then(handleSuccessResponse(callback))
         .catch(handleErrorResponse(callback));
 
@@ -84,7 +83,7 @@ export function resetPassword(value, callback) {
 }
 
 export function changePassword(value, callback) {
-    axios.post(`${ROOT_URL}/changePassword`, value)
+    axios.post(`${REG_SERVICE_URL}/changePassword`, value)
         .then(handleSuccessResponse(callback))
         .catch(handleErrorResponse(callback));
 
@@ -94,7 +93,7 @@ export function changePassword(value, callback) {
 export function fetchUserTypeList(value, callback) {
     const token = value.token
     const axiosConfig = { headers: headers(token) }
-    const request = axios.post(`${ROOT_URL}/getListUsersByUserType`, value, axiosConfig)
+    const request = axios.post(`${REG_SERVICE_URL}/getListUsersByUserType`, value, axiosConfig)
     return {
         type: FETCH_USERTYPE_LIST,
         payload: request
@@ -103,7 +102,7 @@ export function fetchUserTypeList(value, callback) {
 
 export function fetchUserByUserId(id, token) {
     const axiosConfig = { headers: headers(token) };
-    const request = axios.get(`${ROOT_URL}/getUserByUserId/${id}`, axiosConfig);
+    const request = axios.get(`${REG_SERVICE_URL}/getUserByUserId/${id}`, axiosConfig);
     return {
         type: FETCH_USER_BY_USERID,
         payload: request

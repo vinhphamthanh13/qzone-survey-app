@@ -12,7 +12,8 @@ import { compose } from 'redux';
 import * as Survey from 'survey-react';
 import { sessionService } from 'redux-react-session';
 import { createSurveyAnswer } from 'actions/surveyAnswer.jsx';
-
+import { Storage } from 'react-jhipster';
+const SURVEY_ID = "SurveyId";
 var surveyInfo= '';
 var id= ''
 
@@ -41,7 +42,11 @@ class ParticipantResponseCreate extends React.Component {
   }
 
   componentWillMount(){
+    console.log(">> componentWillMount");
     id  = this.props.match.params.id
+    if(id !== '' || id !==null) {
+      Storage.local.set(SURVEY_ID, id);
+    }
     sessionService.loadUser().then(currentUser => {
       this.setState({userId: currentUser.userId})})
     sessionService.loadSession().then(currentSession =>{
@@ -62,8 +67,13 @@ class ParticipantResponseCreate extends React.Component {
     }
     this.setState({participantResponse: {participantId: this.state.userId, status:'COMPLETED', surveyId: id, questionAnswers: resultAsString}},() =>{
       this.props.createSurveyAnswer(this.state.participantResponse,this.state.token, (response) => {
-        //window.location = "/surveys/result/"+id
-        window.location = "/admin/survey/p_result/" + id + "/" +  this.state.userId 
+        if(response.status === 201)  {
+          this.props.history.push(`/admin/survey/p_result/${id}/${this.state.userId}`);
+        }
+        else {
+          console.log("Failed  to create Survey Answer");
+          window.location = "/participants/survey/survey-answers";//redirect
+        }
       });
     })
   };

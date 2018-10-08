@@ -56,6 +56,11 @@ export const adminRoutes = [
 
 export const otherRoutes = [
   {
+    path: "/survey/show/:id",
+    name: "Assessments Details",
+    component: SurveyQuestionnaire
+  },
+  {
     path: '/survey/:id',
     name: 'Assessment Answer',
     component: ParticipantResponseCreate,
@@ -64,11 +69,6 @@ export const otherRoutes = [
     path: "/admin/survey/create",
     name: "Assessment Create",
     component: SurveyCreate
-  },
-  {
-    path: "/survey/show/:id",
-    name: "Assessments Details",
-    component: SurveyQuestionnaire
   },
   {
     path: "/admin/survey/edit/:id",
