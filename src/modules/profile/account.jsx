@@ -1,12 +1,20 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary } from '@material-ui/core';
+import {
+  ExpansionPanel,
+  ExpansionPanelDetails,
+  ExpansionPanelSummary,
+  IconButton,
+} from '@material-ui/core';
+import EditIcon from "@material-ui/icons/Edit";
+import withStyles from "@material-ui/core/styles/withStyles";
 import CustomInput from 'components/CustomInput/CustomInput';
 import PasswordField from '../auth/password-field';
 import GridContainer from "components/Grid/GridContainer";
 import GridItem from "components/Grid/GridItem";
+import accountPageStyles from 'assets/jss/material-dashboard-pro-react/modules/accountPageStyles';
 
-export default class Account extends PureComponent {
+class Account extends PureComponent {
   static propTypes = {
     email: PropTypes.string,
     emailState: PropTypes.string.isRequired,
@@ -43,21 +51,22 @@ export default class Account extends PureComponent {
 
     return (
       <ExpansionPanel expanded>
-        <ExpansionPanelSummary>
+        <ExpansionPanelSummary classes={{ content: classes.summary }}>
           <h4>Account</h4>
+          <IconButton aria-label="Edit" onClick={this.changeEditMode}><EditIcon /></IconButton>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <GridContainer>
             <GridItem md={12}>
               <CustomInput
+                labelText="Email (required)"
                 success={emailState === 'success'}
                 error={emailState === 'error'}
                 id="email"
-                formControlProps={{ fullWidth: true }}
+                formControlProps={{ fullWidth: true, readOnly: true }}
                 inputProps={{
                   onChange: this.onChangeEmail,
                   type: 'email',
-                  placeholder: 'Email (required)'
                 }}
                 value={email}
               />
@@ -77,3 +86,5 @@ export default class Account extends PureComponent {
     )
   }
 };
+
+export default withStyles(accountPageStyles)(Account);

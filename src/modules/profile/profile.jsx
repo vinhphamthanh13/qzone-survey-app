@@ -1,32 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
-import validateEmail from '../../utils/validateEmail';
-import validatePassword from '../../utils/validatePassword';
-import profileStyle from '../../assets/jss/material-dashboard-pro-react/views/profileStyle';
+import validateEmail from 'utils/validateEmail';
+import validatePassword from 'utils/validatePassword';
 import Personal from './personal';
 import Account from './account';
 
 class Profile extends React.Component {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      firstname: undefined,
-      lastname: undefined,
-      email: undefined,
-      password: undefined,
+      firstname: props.user.firstname,
+      lastname: props.user.lastname,
+      email: props.user.email,
+      password: props.user.password,
+      companyName: props.user.companyName,
+      department: props.user.department,
+      phoneNumber: props.user.phoneNumber,
+      postCode: props.user.postCode,
       confirmPwd: undefined,
-      companyName: undefined,
-      department: undefined,
-      phoneNumber: undefined,
-      postCode: undefined,
       firstnameState: '',
       lastnameState: '',
       emailState: '',
@@ -46,7 +42,7 @@ class Profile extends React.Component {
         department: nextProps.user.department,
         phoneNumber: nextProps.user.phoneNumber,
         postCode: nextProps.user.postCode,
-      })
+      });
     }
   }
 
@@ -94,7 +90,6 @@ class Profile extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
     const {
       firstnameState,
       lastnameState,
@@ -104,26 +99,32 @@ class Profile extends React.Component {
       emailState,
       passwordState,
       confirmPwdState,
+      companyName,
+      department,
+      phoneNumber,
+      postCode,
     } = this.state;
 
     return (
       <React.Fragment>
-        <Personal
-          classes={classes}
+        {firstname !== undefined && <Personal
           firstname={firstname}
           firstnameState={firstnameState}
           lastname={lastname}
           lastnameState={lastnameState}
           inputChange={this.change}
-        />
-        <Account
+          companyName={companyName}
+          department={department}
+          phoneNumber={phoneNumber}
+          postCode={postCode}
+        />}
+        {email !== undefined && <Account
           email={email}
           emailState={emailState}
-          classes={classes}
           inputChange={this.change}
           passwordState={passwordState}
           confirmPwdState={confirmPwdState}
-        />
+        />}
       </React.Fragment>
     )
   }
@@ -133,7 +134,4 @@ const mapStateToProps = (state) => ({
   user: state.user.detail,
 });
 
-export default compose(
-  connect(mapStateToProps),
-  withStyles(profileStyle),
-)(Profile);
+export default connect(mapStateToProps)(Profile);
