@@ -8,9 +8,8 @@ import { Person, Notifications, Dashboard } from "@material-ui/icons";
 import Button from "components/CustomButtons/Button.jsx";
 import { sessionService } from 'redux-react-session';
 import headerLinksStyle from "assets/jss/material-dashboard-pro-react/components/headerLinksStyle";
-
+import {surveyLocalData} from "../../constants"
 import { Storage } from 'react-jhipster';
-const SURVEY_ID = "SurveyId";
 
 class HeaderLinks extends React.Component {
   state = {
@@ -27,9 +26,12 @@ class HeaderLinks extends React.Component {
     this.setState({ notificationOpen: false, userOpen: false });
   };
   handleLogout = () => {
-    if (Storage.local.get(SURVEY_ID)) {
-      Storage.local.remove(SURVEY_ID);
+    if (Storage.local.get(surveyLocalData.SURVEY_ID)) {
+      Storage.local.remove(surveyLocalData.SURVEY_ID);
     }
+    if (Storage.local.get(surveyLocalData.USER_TYPE)) {
+      Storage.local.remove(surveyLocalData.USER_TYPE);
+    }    
     this.setState({ userOpen: false });
     sessionService.deleteSession();
     sessionService.deleteUser();

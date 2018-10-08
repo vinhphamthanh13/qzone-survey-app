@@ -8,7 +8,7 @@ import AuthHeader from "components/Header/AuthHeader.jsx";
 import authRoutes from "routes/auth.jsx";
 import pagesStyle from "assets/jss/material-dashboard-pro-react/layouts/pagesStyle.jsx";
 import bgImage from "assets/img/register.jpeg";
-import ReactLoader from 'views/ReactLoader';
+import ReactLoader from 'modules/react-loader';
 
 class Auth extends React.Component {
   render() {
