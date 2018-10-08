@@ -19,7 +19,6 @@ import { eUserType } from "../constants";
 import { surveyLocalData } from "../constants";
 import { Storage } from 'react-jhipster';
 var userType = '';
-
 const switchRoutes = (sidebarRoutes) => (
   <Switch>
     {sidebarRoutes.concat(otherRoutes).map((route) => {
