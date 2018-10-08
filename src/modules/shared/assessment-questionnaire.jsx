@@ -19,9 +19,13 @@ import { Poll } from "@material-ui/icons";
 import { sessionService } from 'redux-react-session';
 import { fullName } from 'variables/FullName.jsx';
 import { css } from 'react-emotion';
-// First way to import
+import { eUserType } from "../../constants";
+import { surveyLocalData } from "../../constants";
+import { Storage } from 'react-jhipster';
+
 import { ClipLoader } from 'react-spinners';
 
+var userType = 'ADMIN';
 const override = css`
     display: block;
     margin: 0 auto;
@@ -50,9 +54,14 @@ class AssessmentQuestionnaire extends React.Component {
     }
   }
   goBack(){
-    // this.props.history.push('/admin/assessment/list');
-    window.location = '/admin/assessment/list';
-     console.log('admin go back');
+    if(userType === eUserType.admin) {
+       window.location = '/admin/assessment/list';
+       console.log('admin go back');
+    }
+    else {
+      window.location = '/assessor/assessment/list';
+      console.log('assessor go back');
+    }
  }
   componentWillMount() {
     setTimeout(() => this.setState({ loading: false }), 1500);
@@ -60,6 +69,10 @@ class AssessmentQuestionnaire extends React.Component {
     sessionService.loadSession().then(currentSession => {
       this.props.fetchSurvey(id, currentSession.token);
     });
+    //userType
+    if (Storage.local.get(surveyLocalData.USER_TYPE)) {
+      userType = Storage.local.get(surveyLocalData.USER_TYPE);
+    }    
   }
 
   componentWillReceiveProps(nextProps) {
