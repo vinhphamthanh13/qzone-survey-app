@@ -6,18 +6,20 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import PerfectScrollbar from "perfect-scrollbar";
 import withStyles from "@material-ui/core/styles/withStyles";
-import ReactLoader from 'views/ReactLoader';
-import { commonRoutes, adminRoutes, participantRoutes, otherRoutes } from "routes/dashboard.jsx";
+import ReactLoader from 'modules/react-loader';
+import { commonRoutes, adminRoutes, assessorRoutes, otherRoutes, participantRoutes } from "routes/dashboard.jsx";
 import Sidebar from "components/Sidebar/Sidebar.jsx";
 import Header from "components/Header/Header.jsx";
 import appStyle from "assets/jss/material-dashboard-pro-react/layouts/dashboardStyle.jsx";
 import logo from "assets/img/logo-white.svg";
-import { checkAuth, fetchUserByUserId } from 'actions/auth';
+import { checkAuth, fetchUserByUserId } from 'services/api/auth';
 import { getUserFromSession } from 'utils/session';
 import "perfect-scrollbar/css/perfect-scrollbar.css";
-import { UserType } from "../constants";
+import { eUserType } from "../constants";
+import { surveyLocalData } from "../constants";
 import { Storage } from 'react-jhipster';
-const SURVEY_ID = "SurveyId";
+var userType = '';
+
 const switchRoutes = (sidebarRoutes) => (
   <Switch>
     {sidebarRoutes.concat(otherRoutes).map((route) => {
@@ -67,9 +69,11 @@ class Dashboard extends React.Component {
       });
       document.body.style.overflow = "hidden";
     }
-    if (Storage.local.get(SURVEY_ID)) {
-      Storage.local.remove(SURVEY_ID);
+    //userType
+    if (Storage.local.get(surveyLocalData.USER_TYPE)) {
+      userType = Storage.local.get(surveyLocalData.USER_TYPE);
     }
+
   }
 
   componentWillUnmount() {
@@ -91,17 +95,23 @@ class Dashboard extends React.Component {
   }
 
   render() {
-    const { classes, location, user, surveyLoading } = this.props;
+    const { classes, location, surveyLoading } = this.props;
     const { isLoggedIn, miniActive, mobileOpen } = this.state;
     const mainPanel =
       `${classes.mainPanel} ${classnames({
         [classes.mainPanelSidebarMini]: miniActive,
         [classes.mainPanelWithPerfectScrollbar]: navigator.platform.includes('Win')
       })}`;
-    const sidebarRoutes = user.userType === UserType.participant ?
-      participantRoutes.concat(commonRoutes) :
-      user.userType === UserType.admin ? adminRoutes.concat(commonRoutes) : commonRoutes;
-
+    var sidebarRoutes = commonRoutes;
+    if (userType === eUserType.participant) {
+      sidebarRoutes = participantRoutes.concat(commonRoutes);
+    }
+    else if (userType === eUserType.assessor) {
+      sidebarRoutes = assessorRoutes.concat(commonRoutes);
+    }
+    else if (userType === eUserType.admin) {
+      sidebarRoutes = adminRoutes.concat(commonRoutes);
+    }
     return (
       !isLoggedIn ?
         <div className={mainPanel}>
