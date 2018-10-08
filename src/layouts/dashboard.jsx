@@ -15,8 +15,7 @@ import logo from "assets/img/logo-white.svg";
 import { checkAuth, fetchUserByUserId } from 'services/api/auth';
 import { getUserFromSession } from 'utils/session';
 import "perfect-scrollbar/css/perfect-scrollbar.css";
-import { eUserType } from "../constants";
-import { surveyLocalData } from "../constants";
+import { eUserType, surveyLocalData } from "../constants";
 import { Storage } from 'react-jhipster';
 var userType = '';
 
