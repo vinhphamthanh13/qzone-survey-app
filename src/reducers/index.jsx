@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { sessionReducer } from 'redux-react-session';
-import SurveyReducer from 'reducers/reducer_survey';
-import SurveyParticipantAnswer from 'reducers/reducer_survey_answers';
+import SurveyReducer from 'reducers/reducer_assessment';
+import SurveyParticipantAnswer from 'reducers/reducer_assessment_response';
 import UserReducer from 'reducers/reducer_auth.jsx'
 
 const rootReducer = combineReducers({
