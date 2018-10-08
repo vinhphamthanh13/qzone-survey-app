@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import chartsStyle from "assets/jss/material-dashboard-pro-react/views/chartsStyle.jsx";
+import chartsStyle from "assets/jss/material-dashboard-pro-react/modules/chartsStyle.jsx";
 import withStyles from "@material-ui/core/styles/withStyles";
 import ChartistGraph from "react-chartist";
 import Card from "components/Card/Card.jsx";

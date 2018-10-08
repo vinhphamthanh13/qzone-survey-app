@@ -19,7 +19,7 @@ import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardIcon from "components/Card/CardIcon.jsx";
-import listPageStyle from "assets/jss/material-dashboard-pro-react/views/listPageStyle.jsx";
+import listPageStyle from "assets/jss/material-dashboard-pro-react/modules/listPageStyle.jsx";
 import { fetchSurveys, deleteSurvey, deleteAllSurvey } from "services/api/assessment";
 import { checkAuth } from 'services/api/auth';
 import 'react-s-alert/dist/s-alert-default.css';

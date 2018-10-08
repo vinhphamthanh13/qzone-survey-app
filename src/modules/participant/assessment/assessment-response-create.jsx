@@ -5,7 +5,7 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
-import listPageStyle from "assets/jss/material-dashboard-pro-react/views/registerPageStyle";
+import listPageStyle from "assets/jss/material-dashboard-pro-react/modules/registerPageStyle";
 import { fetchSurvey } from "services/api/assessment.jsx";
 import { connect } from 'react-redux';
 import { compose } from 'redux';

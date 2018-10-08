@@ -8,7 +8,7 @@ import CardIcon from "components/Card/CardIcon.jsx";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardBody from "components/Card/CardBody.jsx";
-import validationFormStyle from "assets/jss/material-dashboard-pro-react/views/validationFormStyle.jsx";
+import validationFormStyle from "assets/jss/material-dashboard-pro-react/modules/validationFormStyle.jsx";
 import SurveyForm from "modules/shared/SurveyForm"
 import { fetchSurvey, editSurvey, toggleLoading } from "services/api/assessment";
 import { Poll } from "@material-ui/icons";

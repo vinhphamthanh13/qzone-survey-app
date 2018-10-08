@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import listPageStyle from "assets/jss/material-dashboard-pro-react/views/listPageStyle.jsx";
+import listPageStyle from "assets/jss/material-dashboard-pro-react/modules/listPageStyle.jsx";
 import { Table, TableBody, TableCell, TableHead, TableRow, SvgIcon } from "@material-ui/core";
 import {
   Poll,

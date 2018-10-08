@@ -16,7 +16,7 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
-import listPageStyle from "assets/jss/material-dashboard-pro-react/views/listPageStyle.jsx";
+import listPageStyle from "assets/jss/material-dashboard-pro-react/modules/listPageStyle.jsx";
 import { fetchSurveysByAssessorId, deleteSurvey, deleteAllSurvey } from "services/api/assessment";
 import { checkAuth } from 'services/api/auth';
 import 'react-s-alert/dist/s-alert-default.css';

@@ -10,7 +10,7 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import { changePassword } from "services/api/auth.jsx";
 import validatePassword from 'utils/validatePassword';
-import verificationPageStyle from 'assets/jss/material-dashboard-pro-react/views/verificationPageStyle';
+import verificationPageStyle from 'assets/jss/material-dashboard-pro-react/modules/verificationPageStyle';
 import PasswordField from './password-field';
 import ResendCodeButton from './resend-code-button';
 

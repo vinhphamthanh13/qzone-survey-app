@@ -9,7 +9,7 @@ import CardBody from "components/Card/CardBody.jsx";
 import CardIcon from "components/Card/CardIcon.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
-import listPageStyle from "assets/jss/material-dashboard-pro-react/views/listPageStyle.jsx";
+import listPageStyle from "assets/jss/material-dashboard-pro-react/modules/listPageStyle.jsx";
 import * as Survey from 'survey-react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { fetchSurvey } from "services/api/assessment.jsx";
