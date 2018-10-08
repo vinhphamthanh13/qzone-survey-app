@@ -9,9 +9,6 @@ import AssessmentResponseResult from "modules/participant/assessment/assessment-
 import { checkAuth } from 'services/api/auth';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { Storage } from 'react-jhipster';
-import { surveyLocalData } from "../constants"
-var surveyId = '';
 
 class AssessmentResponse extends React.Component {
   state = {
@@ -19,9 +16,6 @@ class AssessmentResponse extends React.Component {
   };
 
   componentWillMount() {
-    if (Storage.local.get(surveyLocalData.SURVEY_ID)) {
-      surveyId = Storage.local.get(surveyLocalData.SURVEY_ID);
-    }
 
     this.props.checkAuth(response => {
       if (response === false)
