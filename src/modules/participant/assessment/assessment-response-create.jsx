@@ -14,8 +14,8 @@ import { sessionService } from 'redux-react-session';
 import { createSurveyResponse } from 'services/api/assessment-response.jsx';
 import { Storage } from 'react-jhipster';
 const SURVEY_ID = "SurveyId";
-var surveyInfo= '';
-var id= ''
+var surveyInfo = '';
+var id = ''
 
 class AssessmentResponseCreate extends React.Component {
   constructor(props) {
@@ -33,47 +33,45 @@ class AssessmentResponseCreate extends React.Component {
         participantId: '',
         surveyId: '',
         questionAnswers: '',
-        status:'COMPLETED'
+        status: 'COMPLETED'
       },
-      userId:'',
+      userId: '',
       token: ''
     }
     this.sendDataToServer = this.sendDataToServer.bind(this)
   }
 
-  componentWillMount(){
-    console.log(">> AssessmentResponseCreate");
-    id  = this.props.match.params.id
-    if(id !== '' || id !==null) {
+  componentWillMount() {
+    id = this.props.match.params.id
+    if (id !== '' || id !== null) {
       Storage.local.set(SURVEY_ID, id);
     }
     sessionService.loadUser().then(currentUser => {
-      this.setState({userId: currentUser.userId})})
-    sessionService.loadSession().then(currentSession =>{
-      this.setState({token: currentSession.token}, () => {
-        this.props.fetchSurvey(id,this.state.token)
+      this.setState({ userId: currentUser.userId })
+    })
+    sessionService.loadSession().then(currentSession => {
+      this.setState({ token: currentSession.token }, () => {
+        this.props.fetchSurvey(id, this.state.token)
       })
     })
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({surveyData: nextProps.survey})
+    this.setState({ surveyData: nextProps.survey })
   }
 
   sendDataToServer(survey) {
     var resultAsString = survey.data;
-    if(typeof(resultAsString) !== "string") {
-       resultAsString = JSON.stringify(survey.data);
+    if (typeof (resultAsString) !== "string") {
+      resultAsString = JSON.stringify(survey.data);
     }
-    this.setState({participantResponse: {participantId: this.state.userId, status:'COMPLETED', surveyId: id, questionAnswers: resultAsString}},() =>{
-      this.props.createSurveyResponse(this.state.participantResponse,this.state.token, (response) => {
-        if(response.status === 201)  {
+    this.setState({ participantResponse: { participantId: this.state.userId, status: 'COMPLETED', surveyId: id, questionAnswers: resultAsString } }, () => {
+      this.props.createSurveyResponse(this.state.participantResponse, this.state.token, (response) => {
+        if (response.status === 201) {
           this.props.history.push(`/participant/assessment/result/${id}/${this.state.userId}`);
-        }
-        else {
-          console.log("Failed  to create Assessment Response");
-          window.location = "/participant/assessment/assessment-responses";//redirect
+        } else {
           //back to assessment response list
+          this.props.history.push('/participant/assessment/assessment-responses');
         }
       });
     })
@@ -81,10 +79,10 @@ class AssessmentResponseCreate extends React.Component {
 
   render() {
     const { classes } = this.props;
-    if(!this.state.surveyData)
+    if (!this.state.surveyData)
       return null
-    else{
-      const {title, description, survey} = this.state.surveyData
+    else {
+      const { title, description, survey } = this.state.surveyData
       surveyInfo = new Survey.Model(survey);
       return (
         <div className={classes.content}>
@@ -97,10 +95,10 @@ class AssessmentResponseCreate extends React.Component {
                     <div className={classes.center}>
                       {description}
                     </div>
-                    <hr/>
+                    <hr />
                     <GridContainer>
                       <GridItem xs={12} sm={10}>
-                        <Survey.Survey model={surveyInfo} className={classes.buttonDisplay} onComplete={this.sendDataToServer}/>
+                        <Survey.Survey model={surveyInfo} className={classes.buttonDisplay} onComplete={this.sendDataToServer} />
                       </GridItem>
                     </GridContainer>
                   </CardBody>
@@ -119,10 +117,10 @@ AssessmentResponseCreate.propTypes = {
 };
 
 function mapStateToProps(state) {
-  return{survey: state.surveys.detail}
+  return { survey: state.surveys.detail }
 }
 
 export default compose(
   withStyles(listPageStyle),
-  connect(mapStateToProps, {fetchSurvey, createSurveyResponse}),
+  connect(mapStateToProps, { fetchSurvey, createSurveyResponse }),
 )(AssessmentResponseCreate);

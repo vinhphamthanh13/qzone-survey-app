@@ -18,8 +18,8 @@ import "perfect-scrollbar/css/perfect-scrollbar.css";
 import { eUserType } from "../constants";
 import { surveyLocalData } from "../constants";
 import { Storage } from 'react-jhipster';
-//import { PrivateRoute } from '../routes/PrivateRoute'
 var userType = '';
+
 const switchRoutes = (sidebarRoutes) => (
   <Switch>
     {sidebarRoutes.concat(otherRoutes).map((route) => {
@@ -73,7 +73,6 @@ class Dashboard extends React.Component {
     //userType
     if (Storage.local.get(surveyLocalData.USER_TYPE)) {
       userType = Storage.local.get(surveyLocalData.USER_TYPE);
-      console.log('userType: ' + userType);
     }
 
   }

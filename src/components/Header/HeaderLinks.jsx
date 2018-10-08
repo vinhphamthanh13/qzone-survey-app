@@ -8,7 +8,7 @@ import { Person, Notifications, Dashboard } from "@material-ui/icons";
 import Button from "components/CustomButtons/Button.jsx";
 import { sessionService } from 'redux-react-session';
 import headerLinksStyle from "assets/jss/material-dashboard-pro-react/components/headerLinksStyle";
-import {surveyLocalData} from "../../constants"
+import { surveyLocalData } from "../../constants"
 import { Storage } from 'react-jhipster';
 
 class HeaderLinks extends React.Component {
@@ -31,7 +31,7 @@ class HeaderLinks extends React.Component {
     }
     if (Storage.local.get(surveyLocalData.USER_TYPE)) {
       Storage.local.remove(surveyLocalData.USER_TYPE);
-    }    
+    }
     this.setState({ userOpen: false });
     sessionService.deleteSession();
     sessionService.deleteUser();
@@ -39,10 +39,10 @@ class HeaderLinks extends React.Component {
   }
   render() {
     const { classes } = this.props;
-    const { notificationOpen , userOpen} = this.state;
+    const { notificationOpen, userOpen } = this.state;
     const dropdownItem =
       classes.dropdownItem +
-      " " 
+      " "
     const managerClasses = classNames({
       [classes.managerClasses]: true
     });
@@ -134,7 +134,7 @@ class HeaderLinks extends React.Component {
               onClick={this.handleUserClick}
               className={classes.buttonLink}
               muiClasses={{
-                label:  ""
+                label: ""
               }}
             >
               <Person

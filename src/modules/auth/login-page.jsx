@@ -20,7 +20,7 @@ import VerificationPage from "./verification-page";
 import ResetPassword from './reset-password';
 import validateEmail from "../../utils/validateEmail";
 import { Storage } from 'react-jhipster';
-import { surveyLocalData} from '../../constants'
+import { surveyLocalData } from '../../constants'
 
 var surveyId = '';
 class LoginPage extends React.Component {
@@ -38,10 +38,10 @@ class LoginPage extends React.Component {
   }
 
   componentDidMount() {
-    console.log('componentDidMount')
     if (Storage.local.get(surveyLocalData.SURVEY_ID)) {
       surveyId = Storage.local.get(surveyLocalData.SURVEY_ID);
     }
+
     setTimeout(() => {
       this.setState({ cardAnimaton: '' });
     }, 200);
@@ -63,7 +63,6 @@ class LoginPage extends React.Component {
             if (response.status === 200) {
               if (surveyId) {
                 this.props.history.push(`/surveys/${surveyId}`);
-                console.log('removed surveyId');
                 Storage.local.remove(surveyLocalData.SURVEY_ID);
               } else {
                 this.props.history.push('/');

@@ -10,21 +10,19 @@ import { checkAuth } from 'services/api/auth';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Storage } from 'react-jhipster';
-import {surveyLocalData} from "../constants"
+import { surveyLocalData } from "../constants"
 var surveyId = '';
+
 class AssessmentResponse extends React.Component {
   state = {
     isLoggedIn: true
   };
 
   componentWillMount() {
-    
-    console.log('>>AssessmentResponse');
     if (Storage.local.get(surveyLocalData.SURVEY_ID)) {
       surveyId = Storage.local.get(surveyLocalData.SURVEY_ID);
-      console.log('surveyId' + surveyId);
     }
-    
+
     this.props.checkAuth(response => {
       if (response === false)
         this.setState({ isLoggedIn: false })
@@ -37,7 +35,7 @@ class AssessmentResponse extends React.Component {
       console.log('redirect');
       return <Redirect
         to={{
-          pathname: `/login}`,
+          pathname: '/login',
           state: { from: this.props.location.pathname }
         }}
       />

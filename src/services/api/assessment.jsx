@@ -92,7 +92,6 @@ export function deleteAllSurvey(id, token, callback) {
 }
 
 export function createSurvey(values, token, callback) {
-  console.log('>>createSurvey');
   let axiosConfig = {
     headers: {
       'Content-Type': 'application/json',
