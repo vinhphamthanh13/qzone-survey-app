@@ -1,15 +1,14 @@
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import { Person } from "@material-ui/icons";
-import SurveyQuestionnaire from "views/Survey/SurveyQuestionnaire";
-import SurveyList from "views/Survey/SurveyList";
-import SurveyCreate from "views/Survey/SurveyCreate";
-import Dashboard from "views/Dashboard/Dashboard";
-import Profile from "views/Profile/Profile";
-import SurveyEdit from "views/Survey/SurveyEdit";
-import ParticipantList from "views/Participant/ParticipantList";
-import ParticipantResponseResult from "views/Participant/ParticipantResponseResult";
-import ParticipantDetail from "views/Participant/ParticipantDetail";
-import ParticipantResponseCreate from "views/Participant/ParticipantResponseCreate";
+import Dashboard from "modules/dashboard/dashboard";
+import Profile from "modules/profile/profile";
+import AssessmentResponseList from "modules/participant/assessment/assessment-response-list";
+import AdminAssessmentQuestionList from "modules/admin/assessment/assessment-question-list";
+import AssessorAssessmentQuestionList from "modules/assessor/assessment/assessment-question-list";
+import AssessmentResponseResult from "modules/participant/assessment/assessment-response-result";
+import SurveyQuestionnaire from "modules/shared/assessment-questionnaire";
+import AssessmentQuestionEdit from "modules/shared/assessment-question-edit";
+import AssessmentQuestionCreate from "modules/admin/assessment/assessment-question-create";
 
 export const commonRoutes = [
   {
@@ -24,15 +23,29 @@ export const participantRoutes = [
   {
     redirect: true,
     path: '/',
-    pathTo: '/participants/survey/survey-answers',
+    pathTo: '/participant/assessment/assessment-responses',
   },
   {
-    path: "/participants/survey/survey-answers",
+    path: "/participant/assessment/assessment-responses",
     name: "Assessments",
     icon: Person,
-    component: ParticipantList
+    component: AssessmentResponseList
   },
 ];
+
+export const assessorRoutes = [
+  {
+    redirect: true,
+    path: '/',
+    pathTo: '/assessor/assessment/list',
+  },
+  {
+    path: "/assessor/assessment/list",
+    name: "Assessment Questions",
+    icon: Person,
+    component: AssessorAssessmentQuestionList
+  },
+ ];
 
 export const adminRoutes = [
   {
@@ -47,42 +60,34 @@ export const adminRoutes = [
     component: Dashboard
   },
   {
-    path: "/admin/survey/list",
+    path: "/admin/assessment/list",
     name: "Assessments",
     icon: Person,
-    component: SurveyList
+    component: AdminAssessmentQuestionList
   },
+  
 ];
 
 export const otherRoutes = [
   {
-    path: "/survey/show/:id",
-    name: "Assessments Details",
+    path: "/participant/assessment/result/:sid/:pid",
+    name: "Assessment Resposne Result",
+    component: AssessmentResponseResult
+  },
+  {
+    path: "/assessment/show/:id",
+    name: "Assessments Question",
     component: SurveyQuestionnaire
   },
   {
-    path: '/survey/:id',
-    name: 'Assessment Answer',
-    component: ParticipantResponseCreate,
+    path: "/assessment/edit/:id",
+    name: "Assessment Question Edit",
+    component: AssessmentQuestionEdit
   },
   {
-    path: "/admin/survey/create",
+    path: "/admin/assessment/create",
     name: "Assessment Create",
-    component: SurveyCreate
+    icon: Person,
+    component: AssessmentQuestionCreate
   },
-  {
-    path: "/admin/survey/edit/:id",
-    name: "Assessment Edit",
-    component: SurveyEdit
-  },
-  {
-    path: "/admin/survey/p_result/:sid/:pid",
-    name: "Participant Result",
-    component: ParticipantResponseResult
-  },
-  {
-    path: "/admin/survey/p_detail/:sid/:pid",
-    name: "Participant Detail",
-    component: ParticipantDetail
-  }
-];
+ ];
