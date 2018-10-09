@@ -3,14 +3,14 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { FormLabel, Select, MenuItem, FormControl } from "@material-ui/core";
-import GridContainer from "components/Grid/GridContainer.jsx";
-import GridItem from "components/Grid/GridItem.jsx";
-import CustomInput from "components/CustomInput/CustomInput.jsx";
-import CustomCheckbox from "components/CustomCheckbox/CustomCheckbox.jsx";
-import validationFormStyle from "assets/jss/material-dashboard-pro-react/modules/validationFormStyle.jsx";
-import SurveyEditor from 'modules/shared/SurveyEditor.jsx';
-import { fetchUserTypeList } from 'services/api/auth.jsx';
-import Assessor from 'modules/assessor/assessor.jsx';
+import GridContainer from "components/Grid/GridContainer";
+import GridItem from "components/Grid/GridItem";
+import CustomInput from "components/CustomInput/CustomInput";
+import CustomCheckbox from "components/CustomCheckbox/CustomCheckbox";
+import validationFormStyle from "assets/jss/material-dashboard-pro-react/modules/validationFormStyle";
+import SurveyEditor from 'modules/shared/SurveyEditor';
+import { fetchUserTypeList } from 'services/api/auth';
+import Assessor from 'modules/assessor/assessor';
 import { sessionService } from 'redux-react-session';
 
 var editor = false

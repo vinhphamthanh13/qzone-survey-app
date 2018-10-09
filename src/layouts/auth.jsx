@@ -4,9 +4,9 @@ import { Switch, Route } from "react-router-dom";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import AuthHeader from "components/Header/AuthHeader.jsx";
-import authRoutes from "routes/auth.jsx";
-import pagesStyle from "assets/jss/material-dashboard-pro-react/layouts/pagesStyle.jsx";
+import AuthHeader from "components/Header/AuthHeader";
+import authRoutes from "routes/auth";
+import pagesStyle from "assets/jss/material-dashboard-pro-react/layouts/pagesStyle";
 import bgImage from "assets/img/register.jpeg";
 import ReactLoader from 'modules/react-loader';
 

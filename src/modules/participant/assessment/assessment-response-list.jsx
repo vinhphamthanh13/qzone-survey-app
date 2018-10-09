@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import listPageStyle from "assets/jss/material-dashboard-pro-react/modules/listPageStyle.jsx";
+import listPageStyle from "assets/jss/material-dashboard-pro-react/modules/listPageStyle";
 import { Table, TableBody, TableCell, TableHead, TableRow, SvgIcon } from "@material-ui/core";
 import {
   Poll,
@@ -14,12 +14,12 @@ import {
 } from "@material-ui/icons";
 import { ClipLoader } from 'react-spinners';
 import { css } from 'react-emotion';
-import GridContainer from "components/Grid/GridContainer.jsx";
-import GridItem from "components/Grid/GridItem.jsx";
-import Card from "components/Card/Card.jsx";
-import CardBody from "components/Card/CardBody.jsx";
-import CardIcon from "components/Card/CardIcon.jsx";
-import CardHeader from "components/Card/CardHeader.jsx";
+import GridContainer from "components/Grid/GridContainer";
+import GridItem from "components/Grid/GridItem";
+import Card from "components/Card/Card";
+import CardBody from "components/Card/CardBody";
+import CardIcon from "components/Card/CardIcon";
+import CardHeader from "components/Card/CardHeader";
 import { fetchSurveyAnswerByParticipantId } from "services/api/assessment-response";
 import { fullName } from 'variables/FullName';
 import { getUserFromSession, getTokenFromSession } from "../../../utils/session";

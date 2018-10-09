@@ -4,7 +4,7 @@ import {
   successColor,
   defaultFont,
   roseColor
-} from "assets/jss/material-dashboard-pro-react.jsx";
+} from "assets/jss/material-dashboard-pro-react";
 
 const customInputStyle = {
   disabled: {

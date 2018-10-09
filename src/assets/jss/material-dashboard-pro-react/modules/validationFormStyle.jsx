@@ -2,10 +2,10 @@
 // // // ValidationForms view styles
 // #############################
 
-import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
-import customSelectStyle from "assets/jss/material-dashboard-pro-react/customSelectStyle.jsx";
-import modalStyle from "assets/jss/material-dashboard-pro-react/modalStyle.jsx";
-import customCheckboxRadioSwitch from "assets/jss/material-dashboard-pro-react/customCheckboxRadioSwitch.jsx";
+import { cardTitle } from "assets/jss/material-dashboard-pro-react";
+import customSelectStyle from "assets/jss/material-dashboard-pro-react/customSelectStyle";
+import modalStyle from "assets/jss/material-dashboard-pro-react/modalStyle";
+import customCheckboxRadioSwitch from "assets/jss/material-dashboard-pro-react/customCheckboxRadioSwitch";
 
 const validationFormsStyle = theme => ({
   ...customCheckboxRadioSwitch,

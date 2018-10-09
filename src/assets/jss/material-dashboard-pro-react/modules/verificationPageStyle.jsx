@@ -1,4 +1,4 @@
-import customCheckboxRadioSwitch from 'assets/jss/material-dashboard-pro-react/customCheckboxRadioSwitch.jsx';
+import customCheckboxRadioSwitch from 'assets/jss/material-dashboard-pro-react/customCheckboxRadioSwitch';
 
 const verificationPageStyle = {
   ...customCheckboxRadioSwitch,

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Switch, Route, Redirect } from "react-router-dom";
 import withStyles from "@material-ui/core/styles/withStyles";
-import pagesStyle from "assets/jss/material-dashboard-pro-react/layouts/pagesStyle.jsx";
+import pagesStyle from "assets/jss/material-dashboard-pro-react/layouts/pagesStyle";
 import bgImage from "assets/img/register.jpeg";
 import AssessmentResponseCreate from "modules/participant/assessment/assessment-response-create";
 import AssessmentResponseResult from "modules/participant/assessment/assessment-response-result";

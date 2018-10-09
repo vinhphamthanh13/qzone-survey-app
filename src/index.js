@@ -7,7 +7,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import promise from 'redux-promise';
 import reducers from './reducers';
 import { sessionService } from 'redux-react-session';
-import indexRoutes from "routes/index.jsx";
+import indexRoutes from "routes/index";
 import "assets/scss/material-dashboard-pro-react.css?v=1.2.0";
 import "assets/scss/style.css";
 import 'react-s-alert/dist/s-alert-default.css';

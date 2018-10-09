@@ -1,11 +1,11 @@
 import React from 'react';
 import { TextField, Dialog, DialogContent, DialogTitle, DialogActions } from "@material-ui/core";
-import Button from "components/CustomButtons/Button.jsx";
+import Button from "components/CustomButtons/Button";
 import Alert from 'react-s-alert';
 import PropTypes from "prop-types";
 import { Link } from 'react-router-dom';
-import GridContainer from "components/Grid/GridContainer.jsx";
-import GridItem from "components/Grid/GridItem.jsx";
+import GridContainer from "components/Grid/GridContainer";
+import GridItem from "components/Grid/GridItem";
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
 import { registerUser } from "services/api/auth";

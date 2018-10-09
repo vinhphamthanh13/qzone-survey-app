@@ -2,10 +2,6 @@
 // // // Pages Layout styles
 // #############################
 
-// import {
-//
-// } from "assets/jss/material-dashboard-pro-react.jsx";
-
 const pagesStyle = {
   wrapper: {
     height: "auto",

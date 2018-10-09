@@ -15,7 +15,7 @@ import {
   warningColor,
   dangerColor,
   roseColor
-} from "assets/jss/material-dashboard-pro-react.jsx";
+} from "assets/jss/material-dashboard-pro-react";
 
 const sidebarStyle = theme => ({
   drawerPaperRTL: {
