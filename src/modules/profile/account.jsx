@@ -5,39 +5,73 @@ import {
   ExpansionPanelDetails,
   ExpansionPanelSummary,
   IconButton,
+  Button,
 } from '@material-ui/core';
 import EditIcon from "@material-ui/icons/Edit";
+import CancelIcon from "@material-ui/icons/CancelOutlined";
+import SaveIcon from '@material-ui/icons/CheckCircleOutlined';
 import withStyles from "@material-ui/core/styles/withStyles";
+import Alert from 'react-s-alert';
 import CustomInput from 'components/CustomInput/CustomInput';
-import PasswordField from '../auth/password-field';
 import GridContainer from "components/Grid/GridContainer";
 import GridItem from "components/Grid/GridItem";
 import accountPageStyles from 'assets/jss/material-dashboard-pro-react/modules/accountPageStyles';
+import ChangePassword from 'modules/auth/change-password';
 
 class Account extends PureComponent {
   static propTypes = {
-    email: PropTypes.string,
-    emailState: PropTypes.string.isRequired,
     classes: PropTypes.object.isRequired,
     inputChange: PropTypes.func.isRequired,
-    passwordState: PropTypes.string.isRequired,
-    confirmPwdState: PropTypes.string.isRequired,
+    email: PropTypes.string,
+    emailState: PropTypes.string.isRequired,
+    saveProfile: PropTypes.func.isRequired,
+    resetAccount: PropTypes.func.isRequired,
+    resetPassword: PropTypes.func.isRequired,
   }
 
-  static defaultProps = {
-    email: undefined,
+  constructor(props) {
+    super(props);
+    this.state = {
+      isEditMode: false,
+      openChangePassword: false,
+      email: props.email,
+      emailState: props.emailState,
+    };
   }
 
   onChangeEmail = (event) => {
     this.props.inputChange(event, 'email', 'email');
   }
 
-  onChangePassword = (event) => {
-    this.props.inputChange(event, 'password', 'password');
+  changeEditMode = () => {
+    this.setState({ isEditMode: true });
   }
 
-  onChangeConfirmPwd = (event) => {
-    this.props.inputChange(event, 'confirmPwd', 'confirmPwd');
+  cancelEdit = () => {
+    const { isEditMode, ...oldAccount } = this.state;
+    this.setState(
+      { isEditMode: false },
+      () => { this.props.resetAccount(oldAccount); }
+    );
+  }
+
+  saveEdit = () => {
+    this.setState({ isEditMode: false }, this.props.saveProfile);
+  }
+
+  onCloseChangePassword = () => {
+    this.setState({ openChangePassword: false });
+  }
+
+  onOpenChangePassword = () => {
+    this.props.resetPassword({ email: this.state.email }, (response) => {
+      if (response.status === 200) {
+        this.setState({ openChangePassword: true })
+        Alert.success("Code is successfully send to your email", { effect: 'bouncyflip' });
+      } else {
+        Alert.error(response.data.message, { effect: 'bouncyflip' });
+      }
+    });
   }
 
   render() {
@@ -45,15 +79,35 @@ class Account extends PureComponent {
       classes,
       email,
       emailState,
-      passwordState,
-      confirmPwdState,
     } = this.props;
+    const { isEditMode, openChangePassword } = this.state;
 
     return (
       <ExpansionPanel expanded>
         <ExpansionPanelSummary classes={{ content: classes.summary }}>
           <h4>Account</h4>
-          <IconButton aria-label="Edit" onClick={this.changeEditMode}><EditIcon /></IconButton>
+          <div>
+            <Button onClick={this.onOpenChangePassword}>Change password</Button>
+            {!isEditMode && <IconButton aria-label="Edit" onClick={this.changeEditMode}><EditIcon /></IconButton>}
+            {isEditMode &&
+              <IconButton
+                aria-label="Cancel"
+                color="secondary"
+                onClick={this.cancelEdit}
+              >
+                <CancelIcon />
+              </IconButton>
+            }
+            {isEditMode &&
+              <IconButton
+                aria-label="Save"
+                color="primary"
+                onClick={this.saveEdit}
+              >
+                <SaveIcon />
+              </IconButton>
+            }
+          </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <GridContainer>
@@ -63,7 +117,7 @@ class Account extends PureComponent {
                 success={emailState === 'success'}
                 error={emailState === 'error'}
                 id="email"
-                formControlProps={{ fullWidth: true, readOnly: true }}
+                formControlProps={{ fullWidth: true, disabled: !isEditMode }}
                 inputProps={{
                   onChange: this.onChangeEmail,
                   type: 'email',
@@ -71,16 +125,12 @@ class Account extends PureComponent {
                 value={email}
               />
             </GridItem>
-            <GridItem md={12}>
-              <PasswordField
-                onChangePassword={this.onChangePassword}
-                onChangeConfirmPwd={this.onChangeConfirmPwd}
-                passwordState={passwordState}
-                confirmPwdState={confirmPwdState}
-                useLabel={false}
-              />
-            </GridItem>
           </GridContainer>
+          <ChangePassword
+            openChangePassword={openChangePassword}
+            closeChangePassword={this.onCloseChangePassword}
+            email={email}
+          />
         </ExpansionPanelDetails>
       </ExpansionPanel>
     )

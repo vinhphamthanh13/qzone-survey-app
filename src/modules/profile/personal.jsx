@@ -8,6 +8,8 @@ import {
 } from '@material-ui/core';
 import withStyles from "@material-ui/core/styles/withStyles";
 import EditIcon from "@material-ui/icons/Edit";
+import CancelIcon from "@material-ui/icons/CancelOutlined";
+import SaveIcon from '@material-ui/icons/CheckCircleOutlined';
 import CustomInput from 'components/CustomInput/CustomInput';
 import GridContainer from "components/Grid/GridContainer";
 import GridItem from "components/Grid/GridItem";
@@ -20,11 +22,27 @@ class Personal extends PureComponent {
     firstnameState: PropTypes.string.isRequired,
     lastname: PropTypes.string,
     lastnameState: PropTypes.string.isRequired,
-    inputChange: PropTypes.func.isRequired,
     department: PropTypes.string.isRequired,
     companyName: PropTypes.string.isRequired,
     phoneNumber: PropTypes.string.isRequired,
     postCode: PropTypes.string.isRequired,
+    saveProfile: PropTypes.func.isRequired,
+    resetPersonalInfo: PropTypes.func.isRequired,
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isEditMode: false,
+      firstname: props.firstname,
+      firstnameState: props.firstnameState,
+      lastname: props.lastname,
+      lastnameState: props.lastnameState,
+      department: props.department,
+      companyName: props.companyName,
+      phoneNumber: props.phoneNumber,
+      postCode: props.postCode,
+    };
   }
 
   onChangeFirstname = (event) => {
@@ -51,6 +69,22 @@ class Personal extends PureComponent {
     this.props.inputChange(event, 'postCode', 'postCode');
   }
 
+  changeEditMode = () => {
+    this.setState({ isEditMode: true });
+  }
+
+  cancelEdit = () => {
+    const { isEditMode, ...oldPersonalInfo } = this.state;
+    this.setState(
+      { isEditMode: false },
+      () => { this.props.resetPersonalInfo(oldPersonalInfo); }
+    );
+  }
+
+  saveEdit = () => {
+    this.setState({ isEditMode: false }, this.props.saveProfile);
+  }
+
   render() {
     const {
       classes,
@@ -63,12 +97,33 @@ class Personal extends PureComponent {
       phoneNumber,
       postCode,
     } = this.props;
+    const { isEditMode } = this.state;
 
     return (
       <ExpansionPanel expanded>
         <ExpansionPanelSummary classes={{ content: classes.summary }}>
           <h4>Personal information</h4>
-          <IconButton aria-label="Edit" onClick={this.changeEditMode}><EditIcon /></IconButton>
+          <div>
+            {!isEditMode && <IconButton aria-label="Edit" onClick={this.changeEditMode}><EditIcon /></IconButton>}
+            {isEditMode &&
+              <IconButton
+                aria-label="Cancel"
+                color="secondary"
+                onClick={this.cancelEdit}
+              >
+                <CancelIcon />
+              </IconButton>
+            }
+            {isEditMode &&
+              <IconButton
+                aria-label="Save"
+                color="primary"
+                onClick={this.saveEdit}
+              >
+                <SaveIcon />
+              </IconButton>
+            }
+          </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <GridContainer>
@@ -81,7 +136,7 @@ class Personal extends PureComponent {
                 formControlProps={{ fullWidth: true }}
                 inputProps={{
                   onChange: this.onChangeFirstname,
-                  readOnly: true,
+                  disabled: !isEditMode,
                 }}
                 value={firstname}
               />
@@ -95,7 +150,7 @@ class Personal extends PureComponent {
                 formControlProps={{ fullWidth: true }}
                 inputProps={{
                   onChange: this.onChangeLastname,
-                  readOnly: true,
+                  disabled: !isEditMode,
                 }}
                 value={lastname}
               />
@@ -107,7 +162,7 @@ class Personal extends PureComponent {
                 formControlProps={{ fullWidth: true }}
                 inputProps={{
                   onChange: this.onChangeDepartment,
-                  readOnly: true,
+                  disabled: !isEditMode,
                 }}
                 value={department}
               />
@@ -119,7 +174,7 @@ class Personal extends PureComponent {
                 formControlProps={{ fullWidth: true }}
                 inputProps={{
                   onChange: this.onChangeCompanyName,
-                  readOnly: true,
+                  disabled: !isEditMode,
                 }}
                 value={companyName}
               />
@@ -131,7 +186,7 @@ class Personal extends PureComponent {
                 formControlProps={{ fullWidth: true }}
                 inputProps={{
                   onChange: this.onChangePhoneNumber,
-                  readOnly: true,
+                  disabled: !isEditMode,
                 }}
                 value={phoneNumber}
               />
@@ -143,7 +198,7 @@ class Personal extends PureComponent {
                 formControlProps={{ fullWidth: true }}
                 inputProps={{
                   onChange: this.onChangePostCode,
-                  readOnly: true,
+                  disabled: !isEditMode,
                 }}
                 value={postCode}
               />
