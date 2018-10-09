@@ -19,9 +19,13 @@ import { Poll } from "@material-ui/icons";
 import { sessionService } from 'redux-react-session';
 import { fullName } from 'variables/FullName.jsx';
 import { css } from 'react-emotion';
-// First way to import
+import { eUserType } from "../../constants";
+import { surveyLocalData } from "../../constants";
+import { Storage } from 'react-jhipster';
+
 import { ClipLoader } from 'react-spinners';
 
+var userType = 'ADMIN';
 const override = css`
     display: block;
     margin: 0 auto;
@@ -34,7 +38,7 @@ var surveyInfo = ''
 class AssessmentQuestionnaire extends React.Component {
   constructor(props) {
     super(props);
-    this.goBack = this.goBack.bind(this);
+    this.goBack = this.goBack.bind(this); 
     this.state = {
       surveyData: {
         title: '',
@@ -49,17 +53,26 @@ class AssessmentQuestionnaire extends React.Component {
       assessorName: ''
     }
   }
-
-  goBack = () => {
-    this.props.history.push('/admin/assessment/list');
-  }
-
+  goBack(){
+    if(userType === eUserType.admin) {
+       window.location = '/admin/assessment/list';
+       console.log('admin go back');
+    }
+    else {
+      window.location = '/assessor/assessment/list';
+      console.log('assessor go back');
+    }
+ }
   componentWillMount() {
     setTimeout(() => this.setState({ loading: false }), 1500);
     const { id } = this.props.match.params;
     sessionService.loadSession().then(currentSession => {
       this.props.fetchSurvey(id, currentSession.token);
     });
+    //userType
+    if (Storage.local.get(surveyLocalData.USER_TYPE)) {
+      userType = Storage.local.get(surveyLocalData.USER_TYPE);
+    }    
   }
 
   componentWillReceiveProps(nextProps) {
@@ -150,7 +163,7 @@ class AssessmentQuestionnaire extends React.Component {
             <CardFooter className={classes.justifyContentCenter}>
               <Button
                 color="rose"
-                onClick={this.goBack}
+                onClick={this.goBack} 
               >
                 Back
               </Button>
