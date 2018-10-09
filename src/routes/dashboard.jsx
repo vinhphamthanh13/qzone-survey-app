@@ -6,7 +6,7 @@ import AssessmentResponseList from "modules/participant/assessment/assessment-re
 import AdminAssessmentQuestionList from "modules/admin/assessment/assessment-question-list";
 import AssessorAssessmentQuestionList from "modules/assessor/assessment/assessment-question-list";
 import AssessmentResponseResult from "modules/participant/assessment/assessment-response-result";
-import SurveyQuestionnaire from "modules/shared/assessment-questionnaire";
+import AssessmentQuestionnaire from "modules/shared/assessment-questionnaire";
 import AssessmentQuestionEdit from "modules/shared/assessment-question-edit";
 import AssessmentQuestionCreate from "modules/admin/assessment/assessment-question-create";
 
@@ -77,7 +77,7 @@ export const otherRoutes = [
   {
     path: "/assessment/show/:id",
     name: "Assessments Question",
-    component: SurveyQuestionnaire
+    component: AssessmentQuestionnaire
   },
   {
     path: "/assessment/edit/:id",
