@@ -6,6 +6,7 @@ import Personal from './personal';
 import Account from './account';
 import { updateProfile } from 'services/api/profile';
 import { resetPassword } from 'services/api/auth';
+import { toggleLoading } from 'services/api/assessment';
 
 class Profile extends React.Component {
   static propTypes = {
@@ -90,6 +91,7 @@ class Profile extends React.Component {
       personal: { firstnameState, lastnameState, ...personalInfo }
     } = this.state;
     this.props.updateProfile({ id, ...accountInfo, ...personalInfo });
+    this.props.toggleLoading();
   }
 
   resetPersonalInfo = (oldPersonalInfo) => {
@@ -131,4 +133,4 @@ const mapStateToProps = (state) => ({
   user: state.user.detail,
 });
 
-export default connect(mapStateToProps, { updateProfile, resetPassword })(Profile);
+export default connect(mapStateToProps, { updateProfile, resetPassword, toggleLoading })(Profile);

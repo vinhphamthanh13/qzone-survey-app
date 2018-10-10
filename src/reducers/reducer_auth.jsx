@@ -12,10 +12,15 @@ export default function (state = initialState, action) {
     case FETCH_USERTYPE_LIST:
       return { ...state, userTypeList: action.payload.data };
     case FETCH_USER_BY_USERID:
-    case UPDATE_PROFILE:
       return { ...state, detail: action.payload.data };
     case TOGGLE_LOADING:
       return { ...state, loading: !state.loading };
+    case UPDATE_PROFILE: {
+      if (action.payload.status === 200) {
+        return { ...state, detail: { ...state.detail, ...JSON.parse(action.payload.config.data) } };
+      }
+      return { ...state };
+    }
     default:
       return state;
   }
