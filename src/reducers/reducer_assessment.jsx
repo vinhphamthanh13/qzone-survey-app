@@ -1,4 +1,5 @@
 import { FETCH_SURVEYS, FETCH_SURVEY, TOGGLE_LOADING } from 'services/api/assessment';
+import { UPDATE_PROFILE } from 'services/api/profile';
 
 const initialState = {
   list: [],
@@ -14,6 +15,8 @@ export default function (state = initialState, action) {
       return { ...state, detail: action.payload.data };
     case TOGGLE_LOADING:
       return { ...state, loading: !state.loading };
+    case UPDATE_PROFILE:
+      return { ...state, loading: false };
     default:
       return state;
   }

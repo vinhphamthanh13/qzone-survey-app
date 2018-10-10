@@ -1,6 +1,6 @@
-import Dashboard from "layouts/dashboard.jsx";
-import Auth from "layouts/auth.jsx";
-import AssessmentResponse from "layouts/assessment-response.jsx";
+import Dashboard from "layouts/dashboard";
+import Auth from "layouts/auth";
+import AssessmentResponse from "layouts/assessment-response";
 
 var indexRoutes = [
   { path: '/login', name: "Auth", component: Auth },

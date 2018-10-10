@@ -15,7 +15,7 @@ import {
   warningColor,
   dangerColor,
   roseColor
-} from "assets/jss/material-dashboard-pro-react.jsx";
+} from "assets/jss/material-dashboard-pro-react";
 
 const sidebarStyle = theme => ({
   drawerPaperRTL: {
@@ -29,17 +29,16 @@ const sidebarStyle = theme => ({
     }
   },
   drawerPaper: {
+    ...boxShadow,
     border: "none",
     position: "fixed",
     top: "0",
     bottom: "0",
     left: "0",
-    zIndex: "1032",
+    zIndex: "900",
     transitionProperty: "top, bottom, width",
     transitionDuration: ".2s, .2s, .35s",
     transitionTimingFunction: "linear, linear, ease",
-    // overflow: 'auto',
-    ...boxShadow,
     width: drawerWidth,
     [theme.breakpoints.up("md")]: {
       width: drawerWidth,
@@ -47,15 +46,16 @@ const sidebarStyle = theme => ({
       height: "100%"
     },
     [theme.breakpoints.down("sm")]: {
-      width: drawerWidth,
       ...boxShadow,
+      ...transition,
+      width: drawerWidth,
       position: "fixed",
       display: "block",
       top: "0",
       height: "100vh",
       right: "0",
       left: "auto",
-      zIndex: "1032",
+      zIndex: "900",
       visibility: "visible",
       overflowY: "visible",
       borderTop: "none",
@@ -63,7 +63,6 @@ const sidebarStyle = theme => ({
       paddingRight: "0px",
       paddingLeft: "0",
       transform: `translate3d(${drawerWidth}px, 0, 0)`,
-      ...transition
     },
     "&:before,&:after": {
       position: "absolute",

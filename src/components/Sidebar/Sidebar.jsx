@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import cx from "classnames";
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Hidden, Collapse } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
-import sidebarStyle from "assets/jss/material-dashboard-pro-react/components/sidebarStyle.jsx";
+import sidebarStyle from "assets/jss/material-dashboard-pro-react/components/sidebarStyle";
 
 var ps;
 

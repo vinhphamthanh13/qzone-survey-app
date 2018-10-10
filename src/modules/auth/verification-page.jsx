@@ -17,7 +17,7 @@ import PropTypes from "prop-types";
 import { connect } from 'react-redux';
 import Button from "components/CustomButtons/Button";
 import { verifyUser } from "services/api/auth";
-import verificationPageStyle from 'assets/jss/material-dashboard-pro-react/views/verificationPageStyle';
+import verificationPageStyle from 'assets/jss/material-dashboard-pro-react/modules/verificationPageStyle';
 import ResendCodeButton from './resend-code-button';
 
 class VerificationPage extends React.PureComponent {

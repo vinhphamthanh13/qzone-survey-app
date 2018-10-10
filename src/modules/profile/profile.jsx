@@ -1,52 +1,58 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
-import validateEmail from '../../utils/validateEmail';
-import validatePassword from '../../utils/validatePassword';
-import profileStyle from '../../assets/jss/material-dashboard-pro-react/views/profileStyle';
+import validateEmail from 'utils/validateEmail';
 import Personal from './personal';
 import Account from './account';
+import { updateProfile } from 'services/api/profile';
+import { resetPassword } from 'services/api/auth';
+import { toggleLoading } from 'services/api/assessment';
 
 class Profile extends React.Component {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
+    updateProfile: PropTypes.func.isRequired,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      firstname: undefined,
-      lastname: undefined,
-      email: undefined,
-      password: undefined,
-      confirmPwd: undefined,
-      companyName: undefined,
-      department: undefined,
-      phoneNumber: undefined,
-      postCode: undefined,
-      firstnameState: '',
-      lastnameState: '',
-      emailState: '',
-      passwordState: '',
-      confirmPwdState: '',
+      id: props.user.id,
+      personal: {
+        firstname: props.user.firstname,
+        lastname: props.user.lastname,
+        companyName: props.user.companyName,
+        department: props.user.department,
+        phoneNumber: props.user.phoneNumber,
+        postCode: props.user.postCode,
+        firstnameState: '',
+        lastnameState: '',
+      },
+      account: {
+        email: props.user.email,
+        emailState: '',
+      },
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.user.email && this.state.email === undefined) {
-      this.setState({
-        firstname: nextProps.user.firstname,
-        lastname: nextProps.user.lastname,
-        email: nextProps.user.email,
-        password: nextProps.user.password,
-        companyName: nextProps.user.companyName,
-        department: nextProps.user.department,
-        phoneNumber: nextProps.user.phoneNumber,
-        postCode: nextProps.user.postCode,
-      })
+    if (this.state.account.email === undefined && nextProps.user.email) {
+      this.setState((oldState) => ({
+        id: nextProps.user.id,
+        personal: {
+          ...oldState.personal,
+          firstname: nextProps.user.firstname,
+          lastname: nextProps.user.lastname,
+          companyName: nextProps.user.companyName,
+          department: nextProps.user.department,
+          phoneNumber: nextProps.user.phoneNumber,
+          postCode: nextProps.user.postCode,
+        },
+        account: {
+          ...oldState.account,
+          email: nextProps.user.email,
+        },
+      }));
     }
   }
 
@@ -55,75 +61,69 @@ class Profile extends React.Component {
 
     switch (type) {
       case 'name':
-        this.setState({
-          [`${stateName}State`]: value.length > 0 ? 'success' : 'error',
-          [stateName]: value,
-        });
+        this.setState((oldState) => ({
+          personal: {
+            ...oldState.personal,
+            [`${stateName}State`]: value.length > 0 ? 'success' : 'error',
+            [stateName]: value,
+          }
+        }));
         return;
       case 'email':
-        this.setState({
-          [`${stateName}State`]: validateEmail(value) ? 'success' : 'error',
-          [stateName]: value,
-        });
-        return;
-      case 'password': {
-        const newState = {
-          [`${stateName}State`]: value.length >= 8
-            && value.length <= 60
-            && validatePassword(value) ? 'success' : 'error',
-          [stateName]: value,
-        };
-
-        if (this.state.confirmPwd !== undefined) {
-          newState.confirmPwdState = value !== '' && value === this.state.confirmPwd ? 'success' : 'error';
-        }
-
-        this.setState(newState);
-        return;
-      }
-      case 'confirmPwd':
-        this.setState({
-          [`${stateName}State`]: value !== '' && value === this.state.password ? 'success' : 'error',
-          [stateName]: value,
-        });
+        this.setState((oldState) => ({
+          account: {
+            ...oldState.account,
+            [`${stateName}State`]: validateEmail(value) ? 'success' : 'error',
+            [stateName]: value,
+          }
+        }));
         return;
       default:
-        this.setState({ [stateName]: value })
+        this.setState((oldState) => ({ personal: { ...oldState.personal, [stateName]: value } }));
         return;
     }
   }
 
-  render() {
-    const { classes } = this.props;
+  saveProfile = () => {
     const {
-      firstnameState,
-      lastnameState,
-      firstname,
-      lastname,
-      email,
-      emailState,
-      passwordState,
-      confirmPwdState,
+      id,
+      account: { emailState, ...accountInfo },
+      personal: { firstnameState, lastnameState, ...personalInfo }
     } = this.state;
+    this.props.updateProfile({ id, ...accountInfo, ...personalInfo });
+    this.props.toggleLoading();
+  }
+
+  resetPersonalInfo = (oldPersonalInfo) => {
+    this.setState({ personal: oldPersonalInfo });
+  }
+
+  resetAccount = (oldAccount) => {
+    this.setState({ account: oldAccount });
+  }
+
+  render() {
+    const {
+      personal,
+      account
+    } = this.state;
+    const { resetPassword } = this.props;
 
     return (
       <React.Fragment>
-        <Personal
-          classes={classes}
-          firstname={firstname}
-          firstnameState={firstnameState}
-          lastname={lastname}
-          lastnameState={lastnameState}
+        {personal.firstname !== undefined && <Personal
+          {...personal}
           inputChange={this.change}
-        />
-        <Account
-          email={email}
-          emailState={emailState}
-          classes={classes}
+          saveProfile={this.saveProfile}
+          resetPersonalInfo={this.resetPersonalInfo}
+        />}
+        {account.email !== undefined && <Account
+          {...account}
           inputChange={this.change}
-          passwordState={passwordState}
-          confirmPwdState={confirmPwdState}
-        />
+          saveProfile={this.saveProfile}
+          resetAccount={this.resetAccount}
+          resetPassword={resetPassword}
+        />}
       </React.Fragment>
     )
   }
@@ -133,7 +133,4 @@ const mapStateToProps = (state) => ({
   user: state.user.detail,
 });
 
-export default compose(
-  connect(mapStateToProps),
-  withStyles(profileStyle),
-)(Profile);
+export default connect(mapStateToProps, { updateProfile, resetPassword, toggleLoading })(Profile);

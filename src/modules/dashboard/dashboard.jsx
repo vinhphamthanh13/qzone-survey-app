@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
 import React from "react";
-import chartsStyle from "assets/jss/material-dashboard-pro-react/views/chartsStyle.jsx";
+import chartsStyle from "assets/jss/material-dashboard-pro-react/modules/chartsStyle";
 import withStyles from "@material-ui/core/styles/withStyles";
 import ChartistGraph from "react-chartist";
-import Card from "components/Card/Card.jsx";
-import CardBody from "components/Card/CardBody.jsx";
-import CardIcon from "components/Card/CardIcon.jsx";
-import CardHeader from "components/Card/CardHeader.jsx";
+import Card from "components/Card/Card";
+import CardBody from "components/Card/CardBody";
+import CardIcon from "components/Card/CardIcon";
+import CardHeader from "components/Card/CardHeader";
 import Timeline from "@material-ui/icons/Timeline";
 
 // var delays = 80,

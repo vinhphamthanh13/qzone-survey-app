@@ -1,23 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
-import GridContainer from "components/Grid/GridContainer.jsx";
-import GridItem from "components/Grid/GridItem.jsx";
-import Card from "components/Card/Card.jsx";
-import CardBody from "components/Card/CardBody.jsx";
-import listPageStyle from "assets/jss/material-dashboard-pro-react/views/listPageStyle.jsx";
-import { fetchSurvey } from "services/api/assessment.jsx";
-import { fetchSurveyParticipantResponse } from "services/api/assessment-response.jsx"
+import GridContainer from "components/Grid/GridContainer";
+import GridItem from "components/Grid/GridItem";
+import Card from "components/Card/Card";
+import CardBody from "components/Card/CardBody";
+import listPageStyle from "assets/jss/material-dashboard-pro-react/modules/listPageStyle";
+import { fetchSurvey } from "services/api/assessment";
+import { fetchSurveyParticipantResponse } from "services/api/assessment-response"
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import * as Survey from 'survey-react';
 import { sessionService } from 'redux-react-session';
-import Button from "components/CustomButtons/Button.jsx";
-import CardIcon from "components/Card/CardIcon.jsx";
-import CardFooter from "components/Card/CardFooter.jsx";
-import CardHeader from "components/Card/CardHeader.jsx";
+import Button from "components/CustomButtons/Button";
+import CardIcon from "components/Card/CardIcon";
+import CardFooter from "components/Card/CardFooter";
+import CardHeader from "components/Card/CardHeader";
 import { Poll } from "@material-ui/icons";
-import { fullName } from 'variables/FullName.jsx';
+import { fullName } from 'variables/FullName';
 
 var surveyInfo = '';
 var sid = ''

@@ -15,14 +15,12 @@ import Card from "components/Card/Card";
 import CardHeader from "components/Card/CardHeader";
 import CardBody from "components/Card/CardBody";
 import CardFooter from "components/Card/CardFooter";
-import registerPageStyle from "assets/jss/material-dashboard-pro-react/views/registerPageStyle";
+import registerPageStyle from "assets/jss/material-dashboard-pro-react/modules/registerPageStyle";
 import { registerUser } from "services/api/auth";
 import VerificationPage from "modules/auth/verification-page";
 import ReactLoader from 'modules/react-loader';
-import 'react-phone-number-input/style.css';
-import "assets/scss/material-dashboard-pro-react/views/mobileNumberStyle.css";
-import validatePassword from "../../utils/validatePassword";
-import validateEmail from "../../utils/validateEmail";
+import validatePassword from "utils/validatePassword";
+import validateEmail from "utils/validateEmail";
 import PasswordField from "./password-field";
 import { eUserType, eRegisterPage } from "../../constants";
 
@@ -284,7 +282,6 @@ class RegisterPage extends React.Component {
             </GridItem>
           </GridContainer>
         </div>
-        <Alert stack={true} />
       </div>
     );
   }
