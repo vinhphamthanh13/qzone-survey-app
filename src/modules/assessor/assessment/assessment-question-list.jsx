@@ -189,7 +189,6 @@ class AssessorAssessmentQuestionList extends React.Component {
                 </TableBody>
               </Table>
               {this.state.sweetAlert}
-              <Alert stack={true} />
             </CardBody>
           </Card>
         </GridItem>

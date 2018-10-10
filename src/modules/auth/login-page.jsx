@@ -186,7 +186,6 @@ class LoginPage extends React.Component {
             </GridItem>
           </GridContainer>
         </div>
-        <Alert stack />
       </div>
     );
   }

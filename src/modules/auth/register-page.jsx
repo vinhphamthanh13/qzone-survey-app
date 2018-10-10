@@ -261,7 +261,6 @@ class RegisterPage extends React.Component {
             </GridItem>
           </GridContainer>
         </div>
-        <Alert stack={true} />
       </div>
     );
   }

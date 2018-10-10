@@ -22,8 +22,6 @@ import CardIcon from "components/Card/CardIcon";
 import listPageStyle from "assets/jss/material-dashboard-pro-react/modules/listPageStyle";
 import { fetchSurveys, deleteSurvey, deleteAllSurvey } from "services/api/assessment";
 import { checkAuth } from 'services/api/auth';
-import 'react-s-alert/dist/s-alert-default.css';
-import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
 import { SURVEY_APP_URL } from '../../../constants';
 
 const override = css`
@@ -197,7 +195,6 @@ class AminAssessmentQuestionList extends React.Component {
                 </TableBody>
               </Table>
               {this.state.sweetAlert}
-              <Alert stack={true} />
             </CardBody>
           </Card>
         </GridItem>

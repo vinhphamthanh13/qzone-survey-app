@@ -125,7 +125,6 @@ class Assessor extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
-        <Alert stack={true} />
       </React.Fragment>
     )
   }
