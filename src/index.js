@@ -5,9 +5,10 @@ import { Router, Route, Switch } from "react-router-dom";
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import promise from 'redux-promise';
-import reducers from './reducers';
 import { sessionService } from 'redux-react-session';
-import indexRoutes from "routes/index.jsx";
+import Alert from 'react-s-alert';
+import indexRoutes from 'routes/index';
+import reducers from './reducers';
 import "assets/scss/material-dashboard-pro-react.css?v=1.2.0";
 import "assets/scss/style.css";
 import 'react-s-alert/dist/s-alert-default.css';
@@ -22,14 +23,17 @@ const store = createStore(
 sessionService.initSessionService(store, { driver: 'LOCALSTORAGE' })
 
 ReactDOM.render(
-  <Provider store={store}>
-    <Router history={history}>
-      <Switch>
-        {indexRoutes.map((prop, key) => {
-          return <Route path={prop.path} component={prop.component} key={key} />;
-        })}
-      </Switch>
-    </Router>
-  </Provider>,
+  <React.Fragment>
+    <Provider store={store}>
+      <Router history={history}>
+        <Switch>
+          {indexRoutes.map((prop, key) => {
+            return <Route path={prop.path} component={prop.component} key={key} />;
+          })}
+        </Switch>
+      </Router>
+    </Provider>
+    <Alert stack />
+  </React.Fragment>,
   document.getElementById('root')
 );

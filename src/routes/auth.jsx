@@ -1,5 +1,5 @@
-import RegisterPage from "modules/auth/register-page.jsx";
-import LoginPage from "modules/auth/login-page.jsx";
+import RegisterPage from "modules/auth/register-page";
+import LoginPage from "modules/auth/login-page";
 
 import { PersonAdd,Fingerprint } from "@material-ui/icons";
 

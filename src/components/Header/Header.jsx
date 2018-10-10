@@ -5,8 +5,8 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import { AppBar, Toolbar, Hidden } from "@material-ui/core";
 import { Menu, MoreVert, ViewList } from "@material-ui/icons";
 import HeaderLinks from "components/Header/HeaderLinks";
-import Button from "components/CustomButtons/Button.jsx";
-import headerStyle from "assets/jss/material-dashboard-pro-react/components/headerStyle.jsx";
+import Button from "components/CustomButtons/Button";
+import headerStyle from "assets/jss/material-dashboard-pro-react/components/headerStyle";
 
 function Header({ ...props }) {
   // function makeBrand() {

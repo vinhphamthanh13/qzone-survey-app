@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import withStyles from "@material-ui/core/styles/withStyles";
 import CustomInput from "components/CustomInput/CustomInput";
-import registerPageStyle from "assets/jss/material-dashboard-pro-react/views/registerPageStyle";
+import registerPageStyle from "assets/jss/material-dashboard-pro-react/modules/registerPageStyle";
 
 class PasswordField extends PureComponent {
   static propTypes = {
