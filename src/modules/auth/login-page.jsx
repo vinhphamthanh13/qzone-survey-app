@@ -14,7 +14,7 @@ import Card from "components/Card/Card";
 import CardHeader from "components/Card/CardHeader";
 import CardBody from "components/Card/CardBody";
 import CardFooter from "components/Card/CardFooter";
-import loginPageStyle from "assets/jss/material-dashboard-pro-react/views/loginPageStyle";
+import loginPageStyle from "assets/jss/material-dashboard-pro-react/modules/loginPageStyle";
 import { loginUser, toggleLoading } from "services/api/auth";
 import VerificationPage from "./verification-page";
 import ResetPassword from './reset-password';
@@ -186,7 +186,6 @@ class LoginPage extends React.Component {
             </GridItem>
           </GridContainer>
         </div>
-        <Alert stack />
       </div>
     );
   }

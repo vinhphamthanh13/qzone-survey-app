@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { AppBar, Toolbar } from "@material-ui/core";
 import Button from "components/CustomButtons/Button";
-import authHeaderStyle from "assets/jss/material-dashboard-pro-react/components/authHeaderStyle.jsx";
+import authHeaderStyle from "assets/jss/material-dashboard-pro-react/components/authHeaderStyle";
 
 class AuthHeader extends React.Component {
   render() {

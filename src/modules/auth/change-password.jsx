@@ -5,12 +5,12 @@ import Alert from 'react-s-alert';
 import PropTypes from "prop-types";
 import { compose } from 'redux';
 import withStyles from "@material-ui/core/styles/withStyles";
-import Button from "components/CustomButtons/Button.jsx";
-import GridContainer from "components/Grid/GridContainer.jsx";
-import GridItem from "components/Grid/GridItem.jsx";
-import { changePassword } from "services/api/auth.jsx";
+import Button from "components/CustomButtons/Button";
+import GridContainer from "components/Grid/GridContainer";
+import GridItem from "components/Grid/GridItem";
+import { changePassword } from "services/api/auth";
 import validatePassword from 'utils/validatePassword';
-import verificationPageStyle from 'assets/jss/material-dashboard-pro-react/views/verificationPageStyle';
+import verificationPageStyle from 'assets/jss/material-dashboard-pro-react/modules/verificationPageStyle';
 import PasswordField from './password-field';
 import ResendCodeButton from './resend-code-button';
 

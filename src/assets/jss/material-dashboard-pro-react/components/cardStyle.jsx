@@ -1,7 +1,3 @@
-// import {
-//
-// } from "assets/jss/material-dashboard-pro-react.jsx";
-
 const cardStyle = {
   card: {
     border: "0",

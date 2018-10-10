@@ -1,5 +1,5 @@
-import { cardTitle, container } from "assets/jss/material-dashboard-pro-react.jsx";
-import buttonStyle from "assets/jss/material-dashboard-pro-react/components/buttonStyle.jsx";
+import { cardTitle, container } from "assets/jss/material-dashboard-pro-react";
+import buttonStyle from "assets/jss/material-dashboard-pro-react/components/buttonStyle";
 
 const listPageStyle = {
   cardIconTitle: {

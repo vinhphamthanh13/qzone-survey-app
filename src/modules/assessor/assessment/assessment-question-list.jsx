@@ -12,11 +12,11 @@ import { Delete, FileCopy } from "@material-ui/icons";
 import ReactTooltip from 'react-tooltip';
 import { css } from 'react-emotion';
 import { ClipLoader } from 'react-spinners';
-import GridContainer from "components/Grid/GridContainer.jsx";
-import GridItem from "components/Grid/GridItem.jsx";
-import Card from "components/Card/Card.jsx";
-import CardBody from "components/Card/CardBody.jsx";
-import listPageStyle from "assets/jss/material-dashboard-pro-react/views/listPageStyle.jsx";
+import GridContainer from "components/Grid/GridContainer";
+import GridItem from "components/Grid/GridItem";
+import Card from "components/Card/Card";
+import CardBody from "components/Card/CardBody";
+import listPageStyle from "assets/jss/material-dashboard-pro-react/modules/listPageStyle";
 import { fetchSurveysByAssessorId, deleteSurvey, deleteAllSurvey } from "services/api/assessment";
 import { checkAuth } from 'services/api/auth';
 import 'react-s-alert/dist/s-alert-default.css';
@@ -189,7 +189,6 @@ class AssessorAssessmentQuestionList extends React.Component {
                 </TableBody>
               </Table>
               {this.state.sweetAlert}
-              <Alert stack={true} />
             </CardBody>
           </Card>
         </GridItem>
