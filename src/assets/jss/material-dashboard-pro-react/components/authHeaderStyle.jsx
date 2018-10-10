@@ -144,14 +144,14 @@ const pagesHeaderStyle = theme => ({
     backgroundColor: "rgba(255, 255, 255, 0.1)"
   },
   drawerPaper: {
+    ...transition,
+    ...boxShadow,
     border: "none",
     bottom: "0",
     transitionProperty: "top, bottom, width",
     transitionDuration: ".2s, .2s, .35s",
     transitionTimingFunction: "linear, linear, ease",
-    ...boxShadow,
     width: drawerWidth,
-    ...boxShadow,
     position: "fixed",
     display: "block",
     top: "0",
@@ -164,7 +164,6 @@ const pagesHeaderStyle = theme => ({
     textAlign: "left",
     paddingRight: "0px",
     paddingLeft: "0",
-    ...transition,
     "&:before,&:after": {
       position: "absolute",
       zIndex: "3",
