@@ -22,7 +22,7 @@ import ReactLoader from 'modules/react-loader';
 import validatePassword from "utils/validatePassword";
 import validateEmail from "utils/validateEmail";
 import PasswordField from "./password-field";
-import { eUserType } from "../../constants";
+import { eUserType, eRegisterPage } from "../../constants";
 
 class RegisterPage extends React.Component {
   constructor(props) {
@@ -39,8 +39,10 @@ class RegisterPage extends React.Component {
       emailState: '',
       passwordState: '',
       confirmPwdState: '',
-      registerCheckbox: false,
-      registerCheckboxState: '',
+      registerTermAndCondition: false,
+      eReceivedInfo: 'NO',
+      eReceivedInfoState: null,
+      registerTermAndConditionState: null,
       userType: eUserType.participant,
       openVerificationModal: false,
       code: '',
@@ -61,7 +63,7 @@ class RegisterPage extends React.Component {
   register = () => {
     if (this.state.firstnameState === 'success' && this.state.lastnameState === 'success'
       && this.state.emailState === 'success' && this.state.passwordState === 'success'
-      && this.state.confirmPwdState === 'success' && this.state.registerCheckboxState === 'success') {
+      && this.state.confirmPwdState === 'success' && this.state.registerTermAndConditionState === 'success') {
       this.setState({ loading: true }, () => {
         this.props.registerUser(this.state, (response) => {
           const newState = { loading: false };
@@ -79,7 +81,7 @@ class RegisterPage extends React.Component {
         });
       });
     }
-  }
+  };
 
   registerClick = () => {
     const newState = {};
@@ -99,15 +101,15 @@ class RegisterPage extends React.Component {
     if (!this.state.confirmPwd) {
       newState.confirmPwdState = 'error';
     }
-    if (!this.state.registerCheckbox) {
-      newState.registerCheckboxState = 'error';
+    if (!this.state.registerTermAndCondition) {
+      newState.registerTermAndConditionState = 'error';
     }
 
     this.setState(newState, this.register);
-  }
+  };
 
   change = (event, stateName, type) => {
-    const { value, checked } = event.target;
+    const { value, checked, name } = event.target;
 
     switch (type) {
       case 'name':
@@ -138,9 +140,12 @@ class RegisterPage extends React.Component {
         return;
       }
       case 'checkbox':
+        let boxState = name && name === eRegisterPage.eReceivedInfo ?
+            checked ? 'YES' : 'NO' :
+            checked;
         this.setState({
           [`${stateName}State`]: checked ? 'success' : 'error',
-          [stateName]: checked,
+          [stateName]: boxState,
         });
         return;
       case 'confirmPwd':
@@ -150,14 +155,14 @@ class RegisterPage extends React.Component {
         });
         return;
       default:
-        this.setState({ [stateName]: value })
+        this.setState({ [stateName]: value });
         return;
     }
-  }
+  };
 
   goToLogin = () => {
     this.props.history.push('/login');
-  }
+  };
 
   render() {
     const { classes, history } = this.props;
@@ -217,22 +222,38 @@ class RegisterPage extends React.Component {
                       className={classes.registerTermsWrapper}
                       control={
                         <Checkbox
-                          onClick={event => this.change(event, "registerCheckbox", "checkbox")}
+                          onClick={event => this.change(event, eRegisterPage.registerTermAndCondition, "checkbox")}
                           checkedIcon={<Check className={classes.checkedIcon} />}
                           icon={<Check className={classes.uncheckedIcon} />}
                           classes={{ checked: classes.checked }}
                         />
                       }
                       classes={{
-                        label: `${classes.label} ${this.state.registerCheckboxState === 'error' ? classes.labelError : ''}`
+                        label: `${classes.label} ${this.state.registerTermAndConditionState === 'error' ? classes.labelError : ''}`
                       }}
                       label={
                         <span>
                           I agree to the&nbsp;
-                          <Link to="#" className={this.state.registerCheckboxState === 'error' ? classes.labelError : ''}>Terms</Link>
+                          <Link to="#" className={this.state.registerTermAndConditionState === 'error' ? classes.labelError : ''}>Terms</Link>
                           &nbsp;and&nbsp;
-                          <Link to="#" className={this.state.registerCheckboxState === 'error' ? classes.labelError : ''}>Conditions</Link>
+                          <Link to="#" className={this.state.registerTermAndConditionState === 'error' ? classes.labelError : ''}>Conditions</Link>
                         </span>
+                      }
+                    />
+                    <FormControlLabel
+                      className={classes.registerTermsWrapper}
+                      control={
+                        <Checkbox
+                          onClick={event => this.change(event, eRegisterPage.eReceivedInfo, "checkbox")}
+                          checkedIcon={<Check className={classes.checkedIcon} />}
+                          icon={<Check className={classes.uncheckedIcon} />}
+                          classes={{ checked: classes.checked }}
+                          name={eRegisterPage.eReceivedInfo}
+                        />
+                      }
+                      classes={{ label: `${classes.label}` }}
+                      label={
+                        <span>Agree to Receive Information About Private Health Insurance</span>
                       }
                     />
                     <VerificationPage

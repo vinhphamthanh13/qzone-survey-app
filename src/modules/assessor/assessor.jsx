@@ -23,7 +23,7 @@ class Assessor extends React.Component {
       lastname: '',
       userType: eUserType.assessor,
       open: false,
-      password: "Survey@2018"
+      password: "Test@2018"
     }
   }
 

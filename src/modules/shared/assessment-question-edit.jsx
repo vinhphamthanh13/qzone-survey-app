@@ -125,7 +125,7 @@ class AssessmentQuestionEdit extends React.Component {
             <Poll />
           </CardIcon>
           <h3 className={classes.cardIconTitle}>Edit Assessment</h3>
-          <Link to={`/survey/show/${SID}`} className={classes.linkDisplay} >
+          <Link to={`/assessment/show/${SID}`} className={classes.linkDisplay} >
             <u>Back</u>
           </Link>
         </CardHeader>
