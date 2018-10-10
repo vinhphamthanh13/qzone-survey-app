@@ -80,7 +80,16 @@ class Account extends PureComponent {
       email,
       emailState,
     } = this.props;
-    const { isEditMode, openChangePassword } = this.state;
+    const { isEditMode, openChangePassword, ...oldAccount } = this.state;
+    let isAccountModified = false;
+    for (const key in oldAccount) {
+      if (oldAccount.hasOwnProperty(key) && !key.includes('State')) {
+        if (oldAccount[key] !== this.props[key]) {
+          isAccountModified = true;
+          break;
+        }
+      }
+    }
 
     return (
       <ExpansionPanel expanded>
@@ -103,6 +112,7 @@ class Account extends PureComponent {
                 aria-label="Save"
                 color="primary"
                 onClick={this.saveEdit}
+                disabled={emailState === 'error' || !isAccountModified}
               >
                 <SaveIcon />
               </IconButton>

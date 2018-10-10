@@ -101,7 +101,16 @@ class Personal extends PureComponent {
       phoneNumber,
       postCode,
     } = this.props;
-    const { isEditMode } = this.state;
+    const { isEditMode, ...oldPersonalInfo } = this.state;
+    let isPersonalModified = false;
+    for (const key in oldPersonalInfo) {
+      if (oldPersonalInfo.hasOwnProperty(key) && !key.includes('State')) {
+        if (oldPersonalInfo[key] !== this.props[key]) {
+          isPersonalModified = true;
+          break;
+        }
+      }
+    }
 
     return (
       <ExpansionPanel expanded>
@@ -123,6 +132,11 @@ class Personal extends PureComponent {
                 aria-label="Save"
                 color="primary"
                 onClick={this.saveEdit}
+                disabled={
+                  firstnameState === 'error'
+                  || lastnameState === 'error'
+                  || !isPersonalModified
+                }
               >
                 <SaveIcon />
               </IconButton>
