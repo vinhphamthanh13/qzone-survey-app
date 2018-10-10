@@ -2,7 +2,7 @@ export const eUserType = {
   participant: 'PARTICIPANT',
   assessor:'ASSESSOR',
   provider:'PROVIDER',
-  provider:'SPONSOR',
+  sponsor:'SPONSOR',
   admin:'ADMIN',
 };
 export const eSurveyStatus = {
