@@ -96,7 +96,7 @@ const registerPageStyle = {
   },
   registerTermsWrapper: {
     marginBottom: 0,
-    marginTop: 12,
+    marginTop: 0,
   },
   headerWrapper: {
     display: 'flex',
