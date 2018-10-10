@@ -10,10 +10,12 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import EditIcon from "@material-ui/icons/Edit";
 import CancelIcon from "@material-ui/icons/CancelOutlined";
 import SaveIcon from '@material-ui/icons/CheckCircleOutlined';
+import PhoneInput from 'react-phone-number-input';
 import CustomInput from 'components/CustomInput/CustomInput';
 import GridContainer from "components/Grid/GridContainer";
 import GridItem from "components/Grid/GridItem";
 import personalPageStyles from 'assets/jss/material-dashboard-pro-react/modules/personalPageStyles';
+import 'react-phone-number-input/style.css';
 
 class Personal extends PureComponent {
   static propTypes = {
@@ -61,8 +63,10 @@ class Personal extends PureComponent {
     this.props.inputChange(event, 'companyName', 'companyName');
   }
 
-  onChangePhoneNumber = (event) => {
-    this.props.inputChange(event, 'phoneNumber', 'phoneNumber');
+  onChangePhoneNumber = (phoneNumber) => {
+    if (phoneNumber) {
+      this.props.inputChange({ target: { value: phoneNumber } }, 'phoneNumber', 'phoneNumber');
+    }
   }
 
   onChangePostCode = (event) => {
@@ -180,20 +184,17 @@ class Personal extends PureComponent {
               />
             </GridItem>
             <GridItem md={6}>
-              <CustomInput
-                labelText="Your phone number"
-                id="phoneNumber"
-                formControlProps={{ fullWidth: true }}
-                inputProps={{
-                  onChange: this.onChangePhoneNumber,
-                  disabled: !isEditMode,
-                }}
+              <PhoneInput
+                placeholder="Your phone number"
+                className={classes.phoneNumber}
+                disabled={!isEditMode}
                 value={phoneNumber}
+                onChange={this.onChangePhoneNumber}
               />
             </GridItem>
             <GridItem md={6}>
               <CustomInput
-                labelText="Your postcode"
+                labelText="Your post code"
                 id="postCode"
                 formControlProps={{ fullWidth: true }}
                 inputProps={{
