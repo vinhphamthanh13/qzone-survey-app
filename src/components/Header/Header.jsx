@@ -58,10 +58,8 @@ function Header({ ...props }) {
                 </Button>
               )}
           </div>
+          <div className={classes.flex} />
         </Hidden>
-        <div className={classes.flex}>
-
-        </div>
         <Hidden smDown implementation="css">
           <HeaderLinks />
         </Hidden>

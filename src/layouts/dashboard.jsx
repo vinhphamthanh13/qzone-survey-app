@@ -93,6 +93,10 @@ class Dashboard extends React.Component {
     this.setState(oldState => ({ miniActive: !oldState.miniActive }));
   }
 
+  handleDrawerToggle = () => {
+    this.setState((oldState) => ({ mobileOpen: !oldState.mobileOpen }));
+  }
+
   render() {
     const { classes, location, surveyLoading } = this.props;
     const { isLoggedIn, miniActive, mobileOpen } = this.state;

@@ -3,9 +3,7 @@
 // #############################
 
 import {
-  drawerWidth,
   drawerMiniWidth,
-  transition,
   boxShadow,
   defaultFont,
   primaryColor,
@@ -18,51 +16,12 @@ import {
 } from "assets/jss/material-dashboard-pro-react";
 
 const sidebarStyle = theme => ({
-  drawerPaperRTL: {
-    [theme.breakpoints.up("md")]: {
-      left: "auto !important",
-      right: "0 !important"
-    },
-    [theme.breakpoints.down("sm")]: {
-      left: "0  !important",
-      right: "auto !important"
-    }
-  },
   drawerPaper: {
     ...boxShadow,
     border: "none",
-    position: "fixed",
-    top: "0",
-    bottom: "0",
-    left: "0",
-    zIndex: "900",
-    transitionProperty: "top, bottom, width",
-    transitionDuration: ".2s, .2s, .35s",
-    transitionTimingFunction: "linear, linear, ease",
-    width: drawerWidth,
-    [theme.breakpoints.up("md")]: {
-      width: drawerWidth,
-      position: "fixed",
-      height: "100%"
-    },
+    zIndex: 1030,
     [theme.breakpoints.down("sm")]: {
-      ...boxShadow,
-      ...transition,
-      width: drawerWidth,
-      position: "fixed",
-      display: "block",
-      top: "0",
-      height: "100vh",
-      right: "0",
-      left: "auto",
-      zIndex: "900",
-      visibility: "visible",
       overflowY: "visible",
-      borderTop: "none",
-      textAlign: "left",
-      paddingRight: "0px",
-      paddingLeft: "0",
-      transform: `translate3d(${drawerWidth}px, 0, 0)`,
     },
     "&:before,&:after": {
       position: "absolute",
