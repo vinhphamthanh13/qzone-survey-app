@@ -17,6 +17,7 @@
 // ##############################
 // // // Variables - Styles that are used on more than one component
 // #############################
+import theme from 'assets/jss/material-dashboard-pro-react/layouts/theme';
 
 const drawerWidth = 260;
 
@@ -263,14 +264,22 @@ const alertWrapper = {
 };
 
 const alertLink = {
-  color: '#533f03',
+  color: theme.indigoTheme.palette.primary.dark,
   fontWeight: 'bold',
+  textTransform: 'capitalize',
   '&:hover, &:focus': {
-    color: '#533f03',
+    color: theme.indigoTheme.palette.primary.light,
   },
   '&:hover': {
     textDecoration: 'underline',
   }
+};
+
+const noMarginTop = {
+  marginTop: 0,
+};
+const noMarginBottom = {
+  marginBottom: 0,
 };
 
 export {
@@ -319,5 +328,7 @@ export {
   cardLink,
   // alert
   alertWrapper,
-  alertLink
+  alertLink,
+  noMarginTop,
+  noMarginBottom,
 };

@@ -35,7 +35,7 @@ const pagesStyle = {
     left: "0",
     backgroundSize: "cover",
     backgroundPosition: "center center"
-  }
+  },
 };
 
 export default pagesStyle;

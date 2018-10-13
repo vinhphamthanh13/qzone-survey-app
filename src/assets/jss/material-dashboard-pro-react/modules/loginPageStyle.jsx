@@ -7,48 +7,64 @@ import {
   cardTitle,
   alertWrapper,
   alertLink,
+  noMarginTop,
+  dangerColor,
 } from 'assets/jss/material-dashboard-pro-react';
 import customCheckboxRadioSwitch from 'assets/jss/material-dashboard-pro-react/customCheckboxRadioSwitch';
-
+import theme from 'assets/jss/material-dashboard-pro-react/layouts/theme';
 
 const loginPageStyle = {
   container,
   alertWrapper,
   alertLink,
+  noMarginTop,
   ...customCheckboxRadioSwitch,
   cardTitle: {
     ...cardTitle,
   },
+  iconsBar: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '2.8em',
+    color: theme.indigoTheme.palette.primary.contrastText,
+  },
+  socialIcon: {
+    margin: '0 15px',
+    width: 'auto',
+  },
   textCenter: {
-    textAlign: 'center'
+    textAlign: 'center',
+  },
+  textEnd: {
+    textAlign: 'end',
   },
   content: {
     minHeight: '100vh',
     position: 'relative',
-    zIndex: '4'
+    zIndex: '4',
   },
   justifyContentCenter: {
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   customButtonClass: {
     '&,&:focus,&:hover': {
-      color: '#FFFFFF'
+      color: '#FFFFFF',
     },
     marginLeft: '5px',
-    marginRight: '5px'
+    marginRight: '5px',
   },
   inputAdornment: {
-    marginRight: '18px'
+    marginRight: '18px',
   },
   inputAdornmentIcon: {
-    color: '#555'
+    color: '#555',
   },
   cardHidden: {
     opacity: '0',
-    transform: 'translate3d(0, -60px, 0)'
+    transform: 'translate3d(0, -60px, 0)',
   },
   cardHeader: {
-    marginBottom: '20px'
+    marginBottom: '20px',
   },
   socialLine: {
     padding: '0.9375rem 0',
@@ -102,19 +118,41 @@ const loginPageStyle = {
     }
   },
   submitWrapper: {
-    display: 'flex',
+    display: 'block',
     paddingTop: '0.9375rem',
     justifyContent: 'space-between',
   },
   footerWrapper: {
-    justifyContent: 'flex-end',
-    borderTop: '1px solid #d2d2d26e',
+    justifyContent: 'center',
   },
   headerWrapper: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderBottom: '1px solid #d2d2d26e',
+  },
+  headerPanel: {
+    width: '100vw',
+    height: '28vh',
+    borderRadius: 8,
+    marginTop: '-2.2em',
+    background: theme.indigoTheme.palette.primary.main,
+  },
+  inputIcon: {
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    color: theme.indigoTheme.palette.primary.dark,
+  },
+  inputIconError: {
+    color: dangerColor,
+  },
+  loginPanel: {
+    margin: '2em auto',
+  },
+  contrastText: {
+    color: theme.indigoTheme.palette.primary.contrastText,
+  },
+  loginButtonLabel: {
+    fontSize: 'medium',
   }
 };
 

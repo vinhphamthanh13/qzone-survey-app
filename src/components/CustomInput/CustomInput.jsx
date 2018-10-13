@@ -2,6 +2,7 @@ import React from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { FormControl, InputLabel, Input } from "@material-ui/core";
 import { Check, Clear } from "@material-ui/icons";
+import Icon from '@material-ui/core/Icon';
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import customInputStyle from "assets/jss/material-dashboard-pro-react/components/customInputStyle";
@@ -18,7 +19,8 @@ function CustomInput({ ...props }) {
     white,
     inputRootCustomClasses,
     success,
-    value
+    value,
+    iconFaName,
   } = props;
 
   const labelClasses = classNames({
@@ -38,7 +40,7 @@ function CustomInput({ ...props }) {
     [classes.input]: true,
     [classes.whiteInput]: white
   });
-  var formControlClasses;
+  let formControlClasses;
   if (formControlProps !== undefined) {
     formControlClasses = classNames(
       formControlProps.className,
@@ -59,6 +61,14 @@ function CustomInput({ ...props }) {
       if (inputProps.min !== undefined) minAttr = inputProps.min
     }
   }
+  const appendIcon = (icon, error, success) => {
+    if (icon) {
+      return (error ? <Icon className={classNames(iconFaName, classes.labelRootError)} /> :
+        success ? <Icon className={classNames(iconFaName, classes.labelRootSuccess)} /> : <Icon className={iconFaName} />);
+    }
+    return (error ? <Clear className={feedbackClasses + " " + classes.labelRootError} /> :
+      success ? <Check className={feedbackClasses + " " + classes.labelRootSuccess} /> : null);
+  };
   return (
     <FormControl {...formControlProps} className={formControlClasses}>
       {labelText !== undefined ? (
@@ -84,11 +94,7 @@ function CustomInput({ ...props }) {
         }}
         {...inputProps}
       />
-      {error ? (
-        <Clear className={feedbackClasses + " " + classes.labelRootError} />
-      ) : success ? (
-        <Check className={feedbackClasses + " " + classes.labelRootSuccess} />
-      ) : null}
+      {appendIcon(iconFaName, error, success)}
     </FormControl>
   );
 }
@@ -108,6 +114,7 @@ CustomInput.propTypes = {
     PropTypes.string,
     PropTypes.number
   ]),
+  iconFaName: PropTypes.string,
 };
 
 export default withStyles(customInputStyle)(CustomInput);

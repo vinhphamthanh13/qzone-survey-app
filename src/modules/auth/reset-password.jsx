@@ -4,6 +4,7 @@ import Alert from 'react-s-alert';
 import PropTypes from "prop-types";
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
 import Button from "components/CustomButtons/Button";
 import { resetPassword } from "services/api/auth";
 import ChangePassword from 'modules/auth/change-password'
@@ -54,8 +55,10 @@ class ResetPassword extends React.Component {
     const { open, emailState, openChangePassword } = this.state;
     return (
       <React.Fragment>
-        <div className={classes.alertWrapper}>
-          <Link to="#" className={classes.alertLink} onClick={this.handleOpen}>Did you forget your password?</Link>
+        <div className={classes.textEnd}>
+          <Link to="#" onClick={this.handleOpen}>
+            <h5 className={classNames(classes.alertLink, classes.noMarginTop)}>forgot password?</h5>
+          </Link>
         </div>
         <Dialog
           open={open}

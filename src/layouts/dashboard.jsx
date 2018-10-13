@@ -91,7 +91,7 @@ class Dashboard extends React.Component {
 
   sidebarMinimize = () => {
     this.setState(oldState => ({ miniActive: !oldState.miniActive }));
-  }
+  };
 
   handleDrawerToggle = () => {
     this.setState((oldState) => ({ mobileOpen: !oldState.mobileOpen }));
