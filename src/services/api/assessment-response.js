@@ -61,7 +61,7 @@ export function fetchSurveyParticipantList(sid, token) {
       Authorization: `Bearer ${token}`,
     },
   };
-  const request = axios.get(`${SURVEY_URL}/listParticipantBySurveyId/${sid}`, axiosConfig);
+  const request = axios.get(`${SURVEY_URL}/list-participant-by-survey-id/${sid}`, axiosConfig);
   return {
     type: FETCH_SURVEY_PARTICIPANT_LIST,
     payload: request,
@@ -76,7 +76,7 @@ export function fetchSurveyAnswerByParticipantId(pid, token) {
       Authorization: `Bearer ${token}`,
     },
   };
-  const request = axios.get(`${SURVEY_URL}/listSurveyAnswerByParticipantId/${pid}`, axiosConfig);
+  const request = axios.get(`${SURVEY_URL}/list-survey-answer-from-participant-id/${pid}`, axiosConfig);
   return {
     type: FETCH_SURVEY_RESPONSE_BY_PARTICIPANT_ID,
     payload: request,
