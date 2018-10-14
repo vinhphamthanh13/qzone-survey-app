@@ -24,12 +24,12 @@ class AssessmentResponse extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, location } = this.props;
     if (!this.state.isLoggedIn) {
       return <Redirect
         to={{
           pathname: '/login',
-          state: { from: this.props.location.pathname }
+          state: { from: location.pathname }
         }}
       />
     }
@@ -39,14 +39,18 @@ class AssessmentResponse extends React.Component {
           <div className={classes.fullPage}>
             <Switch>
               <Route
+                exact
+                strict
                 path="/participant/assessment/result/:sid/:pid"
                 component={AssessmentResponseResult}
-                key={'AssessmentResponseResult'}
+                key="AssessmentResponseResult"
               />
               <Route
+                exact
+                strict
                 path="/surveys/:id"
                 component={AssessmentResponseCreate}
-                key={'AssessmentResponseCreate'}
+                key="AssessmentResponseCreate"
               />
             </Switch>
             <div

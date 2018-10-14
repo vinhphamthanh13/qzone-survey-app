@@ -41,7 +41,7 @@ export default class SidebarItems extends PureComponent {
             })}`;
           return (
             <ListItem key={key} className={classes.item}>
-              <NavLink to={route.path} className={navLinkClasses}>
+              <NavLink exact strict to={route.path} className={navLinkClasses}>
                 <ListItemIcon className={classes.itemIcon}>
                   <route.icon />
                 </ListItemIcon>

@@ -23,6 +23,8 @@ class Auth extends React.Component {
               {authRoutes.map((route) => {
                 return (
                   <Route
+                    exact
+                    strict
                     path={route.path}
                     component={route.component}
                     key={route.path}

@@ -17,25 +17,15 @@ import { getUserFromSession } from 'utils/session';
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 import { eUserType, surveyLocalData } from "../constants";
 import { Storage } from 'react-jhipster';
-var userType = '';
+import NotFound from "modules/not-found/not-found";
 
 const switchRoutes = (sidebarRoutes) => (
   <Switch>
-    {sidebarRoutes.concat(otherRoutes).map((route) => {
-      if (route.redirect) {
-        return <Route key={route.path} exact path={route.path} render={() => (<Redirect to={route.pathTo} />)} />;
-      }
-
-      if (route.collapse) {
-        return route.views.map((childRoute) => {
-          return (
-            <Route exact path={childRoute.path} component={childRoute.component} key={childRoute.path} />
-          );
-        });
-      }
-
-      return <Route exact path={route.path} component={route.component} key={route.path} />;
+    {sidebarRoutes.concat(otherRoutes).map(({ redirect, icon, ...routeProp }) => {
+      if (redirect) return <Redirect exact strict key={routeProp.to} {...routeProp} />;
+      return <Route exact strict key={routeProp.path} {...routeProp} />;
     })}
+    <Route component={NotFound} />
   </Switch>
 );
 
@@ -50,6 +40,7 @@ class Dashboard extends React.Component {
   }
 
   ps = null;
+  userType = '';
 
   componentDidMount() {
     this.props.checkAuth(async (session) => {
@@ -68,9 +59,8 @@ class Dashboard extends React.Component {
       });
       document.body.style.overflow = "hidden";
     }
-    //userType
     if (Storage.local.get(surveyLocalData.USER_TYPE)) {
-      userType = Storage.local.get(surveyLocalData.USER_TYPE);
+      this.userType = Storage.local.get(surveyLocalData.USER_TYPE);
     }
 
   }
@@ -106,13 +96,13 @@ class Dashboard extends React.Component {
         [classes.mainPanelWithPerfectScrollbar]: navigator.platform.includes('Win')
       })}`;
     var sidebarRoutes = commonRoutes;
-    if (userType === eUserType.participant) {
+    if (this.userType === eUserType.participant) {
       sidebarRoutes = participantRoutes.concat(commonRoutes);
     }
-    else if (userType === eUserType.assessor) {
+    else if (this.userType === eUserType.assessor) {
       sidebarRoutes = assessorRoutes.concat(commonRoutes);
     }
-    else if (userType === eUserType.admin) {
+    else if (this.userType === eUserType.admin) {
       sidebarRoutes = adminRoutes.concat(commonRoutes);
     }
     return (
