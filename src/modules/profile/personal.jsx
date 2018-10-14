@@ -6,20 +6,20 @@ import {
   ExpansionPanelSummary,
   IconButton,
 } from '@material-ui/core';
-import withStyles from "@material-ui/core/styles/withStyles";
-import EditIcon from "@material-ui/icons/Edit";
-import CancelIcon from "@material-ui/icons/CancelOutlined";
+import withStyles from '@material-ui/core/styles/withStyles';
+import EditIcon from '@material-ui/icons/Edit';
+import CancelIcon from '@material-ui/icons/CancelOutlined';
 import SaveIcon from '@material-ui/icons/CheckCircleOutlined';
 import PhoneInput from 'react-phone-number-input';
 import CustomInput from 'components/CustomInput/CustomInput';
-import GridContainer from "components/Grid/GridContainer";
-import GridItem from "components/Grid/GridItem";
+import GridContainer from 'components/Grid/GridContainer';
+import GridItem from 'components/Grid/GridItem';
 import personalPageStyles from 'assets/jss/material-dashboard-pro-react/modules/personalPageStyles';
 import 'react-phone-number-input/style.css';
 
 class Personal extends PureComponent {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
+    classes: PropTypes.objectOf(PropTypes.string).isRequired,
     firstname: PropTypes.string,
     firstnameState: PropTypes.string.isRequired,
     lastname: PropTypes.string,
@@ -30,6 +30,12 @@ class Personal extends PureComponent {
     postCode: PropTypes.string.isRequired,
     saveProfile: PropTypes.func.isRequired,
     resetPersonalInfo: PropTypes.func.isRequired,
+    inputChange: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    firstname: undefined,
+    lastname: undefined,
   }
 
   constructor(props) {
@@ -48,29 +54,35 @@ class Personal extends PureComponent {
   }
 
   onChangeFirstname = (event) => {
-    this.props.inputChange(event, 'firstname', 'name');
+    const { inputChange: inputChangeAction } = this.props;
+    inputChangeAction(event, 'firstname', 'name');
   }
 
   onChangeLastname = (event) => {
-    this.props.inputChange(event, 'lastname', 'name');
+    const { inputChange: inputChangeAction } = this.props;
+    inputChangeAction(event, 'lastname', 'name');
   }
 
   onChangeDepartment = (event) => {
-    this.props.inputChange(event, 'department', 'department');
+    const { inputChange: inputChangeAction } = this.props;
+    inputChangeAction(event, 'department', 'department');
   }
 
   onChangeCompanyName = (event) => {
-    this.props.inputChange(event, 'companyName', 'companyName');
+    const { inputChange: inputChangeAction } = this.props;
+    inputChangeAction(event, 'companyName', 'companyName');
   }
 
   onChangePhoneNumber = (phoneNumber) => {
     if (phoneNumber) {
-      this.props.inputChange({ target: { value: phoneNumber } }, 'phoneNumber', 'phoneNumber');
+      const { inputChange: inputChangeAction } = this.props;
+      inputChangeAction({ target: { value: phoneNumber } }, 'phoneNumber', 'phoneNumber');
     }
   }
 
   onChangePostCode = (event) => {
-    this.props.inputChange(event, 'postCode', 'postCode');
+    const { inputChange: inputChangeAction } = this.props;
+    inputChangeAction(event, 'postCode', 'postCode');
   }
 
   changeEditMode = () => {
@@ -79,14 +91,16 @@ class Personal extends PureComponent {
 
   cancelEdit = () => {
     const { isEditMode, ...oldPersonalInfo } = this.state;
+    const { resetPersonalInfo: resetPersonalInfoAction } = this.props;
     this.setState(
       { isEditMode: false },
-      () => { this.props.resetPersonalInfo(oldPersonalInfo); }
+      () => { resetPersonalInfoAction(oldPersonalInfo); },
     );
   }
 
   saveEdit = () => {
-    this.setState({ isEditMode: false }, this.props.saveProfile);
+    const { saveProfile: saveProfileAction } = this.props;
+    this.setState({ isEditMode: false }, saveProfileAction);
   }
 
   render() {
@@ -103,14 +117,14 @@ class Personal extends PureComponent {
     } = this.props;
     const { isEditMode, ...oldPersonalInfo } = this.state;
     let isPersonalModified = false;
-    for (const key in oldPersonalInfo) {
-      if (oldPersonalInfo.hasOwnProperty(key) && !key.includes('State')) {
+    Object.keys(oldPersonalInfo).forEach((key) => {
+      if (!key.includes('State')) {
+        // eslint-disable-next-line react/destructuring-assignment
         if (oldPersonalInfo[key] !== this.props[key]) {
           isPersonalModified = true;
-          break;
         }
       }
-    }
+    });
 
     return (
       <ExpansionPanel expanded>
@@ -118,28 +132,32 @@ class Personal extends PureComponent {
           <h4>Personal information</h4>
           <div>
             {!isEditMode && <IconButton aria-label="Edit" onClick={this.changeEditMode}><EditIcon /></IconButton>}
-            {isEditMode &&
-              <IconButton
-                aria-label="Cancel"
-                color="secondary"
-                onClick={this.cancelEdit}
-              >
-                <CancelIcon />
-              </IconButton>
+            {isEditMode
+              && (
+                <IconButton
+                  aria-label="Cancel"
+                  color="secondary"
+                  onClick={this.cancelEdit}
+                >
+                  <CancelIcon />
+                </IconButton>
+              )
             }
-            {isEditMode &&
-              <IconButton
-                aria-label="Save"
-                color="primary"
-                onClick={this.saveEdit}
-                disabled={
-                  firstnameState === 'error'
-                  || lastnameState === 'error'
-                  || !isPersonalModified
-                }
-              >
-                <SaveIcon />
-              </IconButton>
+            {isEditMode
+              && (
+                <IconButton
+                  aria-label="Save"
+                  color="primary"
+                  onClick={this.saveEdit}
+                  disabled={
+                    firstnameState === 'error'
+                    || lastnameState === 'error'
+                    || !isPersonalModified
+                  }
+                >
+                  <SaveIcon />
+                </IconButton>
+              )
             }
           </div>
         </ExpansionPanelSummary>
@@ -221,8 +239,8 @@ class Personal extends PureComponent {
           </GridContainer>
         </ExpansionPanelDetails>
       </ExpansionPanel>
-    )
+    );
   }
-};
+}
 
 export default withStyles(personalPageStyles)(Personal);

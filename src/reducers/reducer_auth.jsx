@@ -5,7 +5,7 @@ const initialState = {
   userTypeList: [],
   detail: {},
   loading: false,
-}
+};
 
 export default function (state = initialState, action) {
   switch (action.type) {

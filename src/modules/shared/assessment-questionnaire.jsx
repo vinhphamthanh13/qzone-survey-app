@@ -1,44 +1,50 @@
-import React from "react";
-import PropTypes from "prop-types";
-import withStyles from "@material-ui/core/styles/withStyles";
-import GridContainer from "components/Grid/GridContainer.jsx";
-import Button from "components/CustomButtons/Button.jsx";
-import GridItem from "components/Grid/GridItem.jsx";
-import Card from "components/Card/Card.jsx";
-import CardBody from "components/Card/CardBody.jsx";
-import CardIcon from "components/Card/CardIcon.jsx";
-import CardFooter from "components/Card/CardFooter.jsx";
-import CardHeader from "components/Card/CardHeader.jsx";
-import listPageStyle from "assets/jss/material-dashboard-pro-react/modules/listPageStyle.jsx";
+import React from 'react';
+import PropTypes from 'prop-types';
+import withStyles from '@material-ui/core/styles/withStyles';
+import GridContainer from 'components/Grid/GridContainer';
+import Button from 'components/CustomButtons/Button';
+import GridItem from 'components/Grid/GridItem';
+import Card from 'components/Card/Card';
+import CardBody from 'components/Card/CardBody';
+import CardIcon from 'components/Card/CardIcon';
+import CardFooter from 'components/Card/CardFooter';
+import CardHeader from 'components/Card/CardHeader';
+import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/listPageStyle';
 import * as Survey from 'survey-react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { fetchSurvey } from "services/api/assessment.js";
+import { fetchSurvey } from 'services/api/assessment';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Poll } from "@material-ui/icons";
+import { Poll } from '@material-ui/icons';
 import { sessionService } from 'redux-react-session';
-import { fullName } from 'variables/FullName.jsx';
+import fullName from 'utils/fullName';
 import { css } from 'react-emotion';
-import { eUserType } from "../../constants";
-import { surveyLocalData } from "../../constants";
 import { Storage } from 'react-jhipster';
-
 import { ClipLoader } from 'react-spinners';
+import { eUserType, surveyLocalData } from '../../constants';
 
-var userType = 'ADMIN';
+
+let userType = 'ADMIN';
 const override = css`
     display: block;
     margin: 0 auto;
     border-color: red;
 `;
 
-Survey.Survey.cssType = "bootstrap";
-Survey.defaultBootstrapCss.navigationButton = "btn btn-green";
-var surveyInfo = ''
+Survey.Survey.cssType = 'bootstrap';
+Survey.defaultBootstrapCss.navigationButton = 'btn btn-green';
+let surveyInfo = '';
 class AssessmentQuestionnaire extends React.Component {
+  static propTypes = {
+    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+    match: PropTypes.objectOf(PropTypes.object).isRequired,
+    fetchSurvey: PropTypes.func.isRequired,
+    survey: PropTypes.objectOf(PropTypes.object).isRequired,
+    history: PropTypes.objectOf(PropTypes.object).isRequired,
+  }
+
   constructor(props) {
     super(props);
-    this.goBack = this.goBack.bind(this); 
     this.state = {
       surveyData: {
         title: '',
@@ -48,62 +54,63 @@ class AssessmentQuestionnaire extends React.Component {
         loading: true,
         id: '',
         survey: '',
-        user: ''
+        user: '',
       },
-      assessorName: ''
-    }
+    };
   }
-  goBack(){
-    if(userType === eUserType.admin) {
-       window.location = '/admin/assessment/list';
-       console.log('admin go back');
-    }
-    else {
-      window.location = '/assessor/assessment/list';
-      console.log('assessor go back');
-    }
- }
-  componentWillMount() {
+
+  componentDidMount() {
     setTimeout(() => this.setState({ loading: false }), 1500);
-    const { id } = this.props.match.params;
-    sessionService.loadSession().then(currentSession => {
-      this.props.fetchSurvey(id, currentSession.token);
+    const { match: { params: { id } }, fetchSurvey: fetchSurveyAction } = this.props;
+    sessionService.loadSession().then((currentSession) => {
+      fetchSurveyAction(id, currentSession.token);
     });
-    //userType
+    // userType
     if (Storage.local.get(surveyLocalData.USER_TYPE)) {
       userType = Storage.local.get(surveyLocalData.USER_TYPE);
-    }    
+    }
   }
 
   componentWillReceiveProps(nextProps) {
     const { surveyData } = this.state;
     if (nextProps.survey) {
-      for (var key in nextProps.survey) {
+      Object.keys(nextProps.survey).forEach((key) => {
         if (key === 'survey' && nextProps.survey.survey !== '') {
-          surveyData[key] = JSON.parse(nextProps.survey['survey'])
+          surveyData[key] = JSON.parse(nextProps.survey.survey);
         }
-        else
-          surveyData[key] = nextProps.survey[key]
-      };
-      this.setState({ surveyData: surveyData })
+      });
+      this.setState({ surveyData });
+    }
+  }
+
+  goBack = () => {
+    const { history } = this.props;
+    if (userType === eUserType.admin) {
+      history.push('/admin/assessment/list');
+    } else {
+      history.push('/assessor/assessment/list');
     }
   }
 
   render() {
-    const { classes, history } = this.props;
-    const { title, description, survey, logo, user } = this.state.surveyData;
+    const { classes, history, match } = this.props;
+    const {
+      surveyData: {
+        title, description, survey, logo, user,
+      },
+      loading,
+    } = this.state;
     surveyInfo = new Survey.Model(survey);
     surveyInfo.mode = 'display';
-    if (!this.state.surveyData.survey)
-      return null
+    if (!survey) { return null; }
     return (
       <GridContainer>
         <ClipLoader
           className={override}
-          sizeUnit={"px"}
+          sizeUnit="px"
           size={70}
-          color={'#123abc'}
-          loading={this.state.loading}
+          color="#123abc"
+          loading={loading}
         />
         <GridItem xs={12}>
           <Card>
@@ -112,7 +119,7 @@ class AssessmentQuestionnaire extends React.Component {
                 <Poll />
               </CardIcon>
               <h3 className={classes.cardIconTitle}>Assessment</h3>
-              <Button size="md" onClick={() => { history.push(`/assessment/edit/${this.props.match.params.id}`) }} className={classes.buttonDisplay}>
+              <Button size="md" onClick={() => { history.push(`/assessment/edit/${match.params.id}`); }} className={classes.buttonDisplay}>
                 Edit
               </Button>
             </CardHeader>
@@ -163,7 +170,7 @@ class AssessmentQuestionnaire extends React.Component {
             <CardFooter className={classes.justifyContentCenter}>
               <Button
                 color="rose"
-                onClick={this.goBack} 
+                onClick={this.goBack}
               >
                 Back
               </Button>
@@ -171,22 +178,15 @@ class AssessmentQuestionnaire extends React.Component {
           </Card>
         </GridItem>
       </GridContainer>
-    )
+    );
   }
 }
 
-AssessmentQuestionnaire.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
 function mapStateToProps(state) {
-  return { survey: state.surveys.detail, user: state.user.detail }
+  return { survey: state.surveys.detail, user: state.user.detail };
 }
 
 export default compose(
   withStyles(listPageStyle),
   connect(mapStateToProps, { fetchSurvey }),
 )(AssessmentQuestionnaire);
-
-
-

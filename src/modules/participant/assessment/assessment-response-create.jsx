@@ -1,23 +1,32 @@
-import React from "react";
-import PropTypes from "prop-types";
-import withStyles from "@material-ui/core/styles/withStyles";
-import GridContainer from "components/Grid/GridContainer";
-import GridItem from "components/Grid/GridItem";
-import Card from "components/Card/Card";
-import CardBody from "components/Card/CardBody";
-import listPageStyle from "assets/jss/material-dashboard-pro-react/modules/registerPageStyle";
-import { fetchSurvey } from "services/api/assessment";
+import React from 'react';
+import PropTypes from 'prop-types';
+import withStyles from '@material-ui/core/styles/withStyles';
+import GridContainer from 'components/Grid/GridContainer';
+import GridItem from 'components/Grid/GridItem';
+import Card from 'components/Card/Card';
+import CardBody from 'components/Card/CardBody';
+import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/registerPageStyle';
+import { fetchSurvey } from 'services/api/assessment';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import * as Survey from 'survey-react';
 import { sessionService } from 'redux-react-session';
 import { createSurveyResponse } from 'services/api/assessment-response';
 import { Storage } from 'react-jhipster';
-const SURVEY_ID = "SurveyId";
-var surveyInfo = '';
-var id = ''
+
+const SURVEY_ID = 'SurveyId';
+let surveyInfo = '';
 
 class AssessmentResponseCreate extends React.Component {
+  static propTypes = {
+    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+    match: PropTypes.objectOf(PropTypes.object).isRequired,
+    survey: PropTypes.objectOf(PropTypes.object).isRequired,
+    history: PropTypes.objectOf(PropTypes.object).isRequired,
+    fetchSurvey: PropTypes.func.isRequired,
+    createSurveyResponse: PropTypes.func.isRequired,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -27,97 +36,105 @@ class AssessmentResponseCreate extends React.Component {
         logo: '',
         privacy: false,
         id: '',
-        survey: {}
+        survey: {},
       },
       participantResponse: {
         participantId: '',
         surveyId: '',
         questionAnswers: '',
-        status: 'COMPLETED'
+        status: 'COMPLETED',
       },
       userId: '',
-      token: ''
-    }
-    this.sendDataToServer = this.sendDataToServer.bind(this)
+      token: '',
+    };
   }
 
-  componentWillMount() {
-    id = this.props.match.params.id
+  componentDidMount() {
+    const { match: { params: { id } }, fetchSurvey: fetchSurveyAction } = this.props;
     if (id !== '' || id !== null) {
       Storage.local.set(SURVEY_ID, id);
     }
-    sessionService.loadUser().then(currentUser => {
-      this.setState({ userId: currentUser.userId })
-    })
-    sessionService.loadSession().then(currentSession => {
+    sessionService.loadUser().then((currentUser) => {
+      this.setState({ userId: currentUser.userId });
+    });
+    sessionService.loadSession().then((currentSession) => {
       this.setState({ token: currentSession.token }, () => {
-        this.props.fetchSurvey(id, this.state.token)
-      })
-    })
+        fetchSurveyAction(id, currentSession.token);
+      });
+    });
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ surveyData: nextProps.survey })
+    this.setState({ surveyData: nextProps.survey });
   }
 
-  sendDataToServer(survey) {
-    var resultAsString = survey.data;
-    if (typeof (resultAsString) !== "string") {
+  sendDataToServer = (survey) => {
+    let resultAsString = survey.data;
+    if (typeof (resultAsString) !== 'string') {
       resultAsString = JSON.stringify(survey.data);
     }
-    this.setState({ participantResponse: { participantId: this.state.userId, status: 'COMPLETED', surveyId: id, questionAnswers: resultAsString } }, () => {
-      this.props.createSurveyResponse(this.state.participantResponse, this.state.token, (response) => {
+
+    const {
+      match: { params: { id } },
+      createSurveyResponse: createSurveyResponseAction, history,
+    } = this.props;
+    this.setState(oldState => ({
+      participantResponse: {
+        participantId: oldState.userId, status: 'COMPLETED', surveyId: id, questionAnswers: resultAsString,
+      },
+    }), () => {
+      const { participantResponse, token, userId } = this.state;
+      createSurveyResponseAction(participantResponse, token, (response) => {
         if (response.status === 201) {
-          this.props.history.push(`/participant/assessment/result/${id}/${this.state.userId}`);
+          history.push(`/participant/assessment/result/${id}/${userId}`);
         } else {
-          //back to assessment response list
-          this.props.history.push('/participant/assessment/assessment-responses');
+          // back to assessment response list
+          history.push('/participant/assessment/assessment-responses');
         }
       });
-    })
-  };
+    });
+  }
 
   render() {
     const { classes } = this.props;
-    if (!this.state.surveyData)
-      return null
-    else {
-      const { title, description, survey } = this.state.surveyData
-      surveyInfo = new Survey.Model(survey);
-      return (
-        <div className={classes.content}>
-          <div className={classes.container}>
-            <GridContainer justify="center">
-              <GridItem xs={12} sm={12} md={10}>
-                <Card className={classes.cardSignup}>
-                  <h2 className={classes.cardTitle}>{title}</h2>
-                  <CardBody>
-                    <div className={classes.center}>
-                      {description}
-                    </div>
-                    <hr />
-                    <GridContainer>
-                      <GridItem xs={12} sm={10}>
-                        <Survey.Survey model={surveyInfo} className={classes.buttonDisplay} onComplete={this.sendDataToServer} />
-                      </GridItem>
-                    </GridContainer>
-                  </CardBody>
-                </Card>
-              </GridItem>
-            </GridContainer>
-          </div>
+    const { surveyData } = this.state;
+    if (!surveyData) { return null; }
+    const { title, description, survey } = surveyData;
+    surveyInfo = new Survey.Model(survey);
+
+    return (
+      <div className={classes.content}>
+        <div className={classes.container}>
+          <GridContainer justify="center">
+            <GridItem xs={12} sm={12} md={10}>
+              <Card className={classes.cardSignup}>
+                <h2 className={classes.cardTitle}>{title}</h2>
+                <CardBody>
+                  <div className={classes.center}>
+                    {description}
+                  </div>
+                  <hr />
+                  <GridContainer>
+                    <GridItem xs={12} sm={10}>
+                      <Survey.Survey
+                        model={surveyInfo}
+                        className={classes.buttonDisplay}
+                        onComplete={this.sendDataToServer}
+                      />
+                    </GridItem>
+                  </GridContainer>
+                </CardBody>
+              </Card>
+            </GridItem>
+          </GridContainer>
         </div>
-      );
-    }
+      </div>
+    );
   }
 }
 
-AssessmentResponseCreate.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
 function mapStateToProps(state) {
-  return { survey: state.surveys.detail }
+  return { survey: state.surveys.detail };
 }
 
 export default compose(

@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { Storage } from 'react-jhipster';
 import { sessionService } from 'redux-react-session';
-import { REG_SERVICE_URL } from '../../constants';
-import { surveyLocalData } from '../../constants';
+import { REG_SERVICE_URL, surveyLocalData } from '../../constants';
 
 export const REGISTER_USER = 'register_user';
 export const VERIFY_USER = 'verify_user';
@@ -15,19 +14,15 @@ export const FETCH_USERTYPE_LIST = 'fetch_usertype_list';
 export const FETCH_USER_BY_USERID = 'fetch_user_by_userid';
 export const TOGGLE_LOADING = 'auth_toggle_loading';
 
-const headers = (token) => ({
+const headers = token => ({
   'Content-Type': 'application/json',
-  'Accept': 'application/json',
-  'Authorization': 'Bearer ' + token
+  Accept: 'application/json',
+  Authorization: `Bearer ${token}`,
 });
 
-const handleSuccessResponse = (callback) => {
-  return response => { callback(response); }
-};
+const handleSuccessResponse = callback => (response) => { callback(response); };
 
-const handleErrorResponse = (callback) => {
-  return error => { callback(error.response); }
-};
+const handleErrorResponse = callback => (error) => { callback(error.response); };
 
 export function registerUser(values, callback) {
   axios.post(`${REG_SERVICE_URL}/register`, values)
@@ -55,7 +50,7 @@ export function verifyResendUser(values, callback) {
 
 export function loginUser(values, callback) {
   axios.post(`${REG_SERVICE_URL}/login`, values)
-    .then(response => {
+    .then((response) => {
       const { jwtToken, userId, userType } = response.data;
       Storage.local.set(surveyLocalData.USER_TYPE, userType);
       sessionService.saveSession({ token: jwtToken })
@@ -72,7 +67,7 @@ export function loginUser(values, callback) {
 export function checkAuth(callback) {
   sessionService.loadSession()
     .then(handleSuccessResponse(callback))
-    .catch(error => { callback(false); });
+    .catch(() => { callback(false); });
 
   return { type: CHECK_AUTH };
 }
@@ -93,14 +88,13 @@ export function changePassword(value, callback) {
   return { type: CHANGE_PASSWORD };
 }
 
-export function fetchUserTypeList(value, callback) {
-  const token = value.token
-  const axiosConfig = { headers: headers(token) }
-  const request = axios.post(`${REG_SERVICE_URL}/getListUsersByUserType`, value, axiosConfig)
+export function fetchUserTypeList(value) {
+  const axiosConfig = { headers: headers(value.token) };
+  const request = axios.post(`${REG_SERVICE_URL}/getListUsersByUserType`, value, axiosConfig);
   return {
     type: FETCH_USERTYPE_LIST,
-    payload: request
-  }
+    payload: request,
+  };
 }
 
 export function fetchUserByUserId(id, token) {
@@ -108,7 +102,7 @@ export function fetchUserByUserId(id, token) {
   const request = axios.get(`${REG_SERVICE_URL}/getUserByUserId/${id}`, axiosConfig);
   return {
     type: FETCH_USER_BY_USERID,
-    payload: request
+    payload: request,
   };
 }
 

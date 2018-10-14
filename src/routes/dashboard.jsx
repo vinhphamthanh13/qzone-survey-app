@@ -15,7 +15,7 @@ export const commonRoutes = [
     path: '/profile',
     name: 'My Profile',
     icon: Person,
-    component: Profile
+    component: Profile,
   },
 ];
 
@@ -29,7 +29,7 @@ export const participantRoutes = [
     path: '/participant/assessment/assessment-responses',
     name: 'Assessments',
     icon: Person,
-    component: AssessmentResponseList
+    component: AssessmentResponseList,
   },
 ];
 
@@ -43,9 +43,9 @@ export const assessorRoutes = [
     path: '/assessor/assessment/list',
     name: 'Assessment Questions',
     icon: Person,
-    component: AssessorAssessmentQuestionList
+    component: AssessorAssessmentQuestionList,
   },
- ];
+];
 
 export const adminRoutes = [
   {
@@ -57,36 +57,36 @@ export const adminRoutes = [
     path: '/admin/dashboard',
     name: 'Assessment Chart',
     icon: DashboardIcon,
-    component: Dashboard
+    component: Dashboard,
   },
   {
     path: '/admin/assessment/list',
     name: 'Assessments',
     icon: Person,
-    component: AdminAssessmentQuestionList
+    component: AdminAssessmentQuestionList,
   },
-  
+
 ];
 
 export const otherRoutes = [
   {
     path: '/participant/assessment/result/:sid/:pid',
     name: 'Assessment Resposne Result',
-    component: AssessmentResponseResult
+    component: AssessmentResponseResult,
   },
   {
     path: '/assessment/show/:id',
     name: 'Assessments Question',
-    component: AssessmentQuestionnaire
+    component: AssessmentQuestionnaire,
   },
   {
     path: '/assessment/edit/:id',
     name: 'Assessment Question Edit',
-    component: AssessmentQuestionEdit
+    component: AssessmentQuestionEdit,
   },
   {
     path: '/admin/assessment/create',
     name: 'Assessment Create',
-    component: AssessmentQuestionCreate
+    component: AssessmentQuestionCreate,
   },
- ];
+];

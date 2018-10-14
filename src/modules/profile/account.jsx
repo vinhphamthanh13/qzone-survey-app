@@ -7,26 +7,30 @@ import {
   IconButton,
   Button,
 } from '@material-ui/core';
-import EditIcon from "@material-ui/icons/Edit";
-import CancelIcon from "@material-ui/icons/CancelOutlined";
+import EditIcon from '@material-ui/icons/Edit';
+import CancelIcon from '@material-ui/icons/CancelOutlined';
 import SaveIcon from '@material-ui/icons/CheckCircleOutlined';
-import withStyles from "@material-ui/core/styles/withStyles";
+import withStyles from '@material-ui/core/styles/withStyles';
 import Alert from 'react-s-alert';
 import CustomInput from 'components/CustomInput/CustomInput';
-import GridContainer from "components/Grid/GridContainer";
-import GridItem from "components/Grid/GridItem";
+import GridContainer from 'components/Grid/GridContainer';
+import GridItem from 'components/Grid/GridItem';
 import accountPageStyles from 'assets/jss/material-dashboard-pro-react/modules/accountPageStyles';
 import ChangePassword from 'modules/auth/change-password';
 
 class Account extends PureComponent {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
+    classes: PropTypes.objectOf(PropTypes.string).isRequired,
     inputChange: PropTypes.func.isRequired,
     email: PropTypes.string,
     emailState: PropTypes.string.isRequired,
     saveProfile: PropTypes.func.isRequired,
     resetAccount: PropTypes.func.isRequired,
     resetPassword: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    email: undefined,
   }
 
   constructor(props) {
@@ -40,7 +44,8 @@ class Account extends PureComponent {
   }
 
   onChangeEmail = (event) => {
-    this.props.inputChange(event, 'email', 'email');
+    const { inputChange: inputChangeAction } = this.props;
+    inputChangeAction(event, 'email', 'email');
   }
 
   changeEditMode = () => {
@@ -49,14 +54,16 @@ class Account extends PureComponent {
 
   cancelEdit = () => {
     const { isEditMode, ...oldAccount } = this.state;
+    const { resetAccount: resetAccountAction } = this.props;
     this.setState(
       { isEditMode: false },
-      () => { this.props.resetAccount(oldAccount); }
+      () => { resetAccountAction(oldAccount); },
     );
   }
 
   saveEdit = () => {
-    this.setState({ isEditMode: false }, this.props.saveProfile);
+    const { saveProfile: saveProfileAction } = this.props;
+    this.setState({ isEditMode: false }, saveProfileAction);
   }
 
   onCloseChangePassword = () => {
@@ -64,10 +71,12 @@ class Account extends PureComponent {
   }
 
   onOpenChangePassword = () => {
-    this.props.resetPassword({ email: this.state.email }, (response) => {
+    const { resetPassword: resetPasswordAction } = this.props;
+    const { email } = this.state;
+    resetPasswordAction({ email }, (response) => {
       if (response.status === 200) {
-        this.setState({ openChangePassword: true })
-        Alert.success("Code is successfully send to your email", { effect: 'bouncyflip' });
+        this.setState({ openChangePassword: true });
+        Alert.success('Code is successfully send to your email', { effect: 'bouncyflip' });
       } else {
         Alert.error(response.data.message, { effect: 'bouncyflip' });
       }
@@ -82,14 +91,14 @@ class Account extends PureComponent {
     } = this.props;
     const { isEditMode, openChangePassword, ...oldAccount } = this.state;
     let isAccountModified = false;
-    for (const key in oldAccount) {
-      if (oldAccount.hasOwnProperty(key) && !key.includes('State')) {
+    Object.keys(oldAccount).forEach((key) => {
+      if (!key.includes('State')) {
+        // eslint-disable-next-line react/destructuring-assignment
         if (oldAccount[key] !== this.props[key]) {
           isAccountModified = true;
-          break;
         }
       }
-    }
+    });
 
     return (
       <ExpansionPanel expanded>
@@ -98,24 +107,28 @@ class Account extends PureComponent {
           <div>
             <Button onClick={this.onOpenChangePassword}>Change password</Button>
             {!isEditMode && <IconButton aria-label="Edit" onClick={this.changeEditMode}><EditIcon /></IconButton>}
-            {isEditMode &&
-              <IconButton
-                aria-label="Cancel"
-                color="secondary"
-                onClick={this.cancelEdit}
-              >
-                <CancelIcon />
-              </IconButton>
+            {isEditMode
+              && (
+                <IconButton
+                  aria-label="Cancel"
+                  color="secondary"
+                  onClick={this.cancelEdit}
+                >
+                  <CancelIcon />
+                </IconButton>
+              )
             }
-            {isEditMode &&
-              <IconButton
-                aria-label="Save"
-                color="primary"
-                onClick={this.saveEdit}
-                disabled={emailState === 'error' || !isAccountModified}
-              >
-                <SaveIcon />
-              </IconButton>
+            {isEditMode
+              && (
+                <IconButton
+                  aria-label="Save"
+                  color="primary"
+                  onClick={this.saveEdit}
+                  disabled={emailState === 'error' || !isAccountModified}
+                >
+                  <SaveIcon />
+                </IconButton>
+              )
             }
           </div>
         </ExpansionPanelSummary>
@@ -143,8 +156,8 @@ class Account extends PureComponent {
           />
         </ExpansionPanelDetails>
       </ExpansionPanel>
-    )
+    );
   }
-};
+}
 
 export default withStyles(accountPageStyles)(Account);

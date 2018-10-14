@@ -5,7 +5,7 @@ const initialState = {
   list: [],
   detail: {},
   loading: false,
-}
+};
 
 export default function (state = initialState, action) {
   switch (action.type) {

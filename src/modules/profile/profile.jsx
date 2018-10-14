@@ -2,15 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import validateEmail from 'utils/validateEmail';
-import Personal from './personal';
-import Account from './account';
 import { updateProfile } from 'services/api/profile';
 import { resetPassword } from 'services/api/auth';
 import { toggleLoading } from 'services/api/assessment';
+import Account from './account';
+import Personal from './personal';
 
 class Profile extends React.Component {
   static propTypes = {
-    user: PropTypes.object.isRequired,
+    user: PropTypes.objectOf(PropTypes.object).isRequired,
     updateProfile: PropTypes.func.isRequired,
   }
 
@@ -32,12 +32,13 @@ class Profile extends React.Component {
         email: props.user.email,
         emailState: '',
       },
-    }
+    };
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.state.account.email === undefined && nextProps.user.email) {
-      this.setState((oldState) => ({
+    const { account: { email } } = this.state;
+    if (email === undefined && nextProps.user.email) {
+      this.setState(oldState => ({
         id: nextProps.user.id,
         personal: {
           ...oldState.personal,
@@ -61,26 +62,25 @@ class Profile extends React.Component {
 
     switch (type) {
       case 'name':
-        this.setState((oldState) => ({
+        this.setState(oldState => ({
           personal: {
             ...oldState.personal,
             [`${stateName}State`]: value.length > 0 ? 'success' : 'error',
             [stateName]: value,
-          }
+          },
         }));
         return;
       case 'email':
-        this.setState((oldState) => ({
+        this.setState(oldState => ({
           account: {
             ...oldState.account,
             [`${stateName}State`]: validateEmail(value) ? 'success' : 'error',
             [stateName]: value,
-          }
+          },
         }));
         return;
       default:
-        this.setState((oldState) => ({ personal: { ...oldState.personal, [stateName]: value } }));
-        return;
+        this.setState(oldState => ({ personal: { ...oldState.personal, [stateName]: value } }));
     }
   }
 
@@ -88,10 +88,11 @@ class Profile extends React.Component {
     const {
       id,
       account: { emailState, ...accountInfo },
-      personal: { firstnameState, lastnameState, ...personalInfo }
+      personal: { firstnameState, lastnameState, ...personalInfo },
     } = this.state;
-    this.props.updateProfile({ id, ...accountInfo, ...personalInfo });
-    this.props.toggleLoading();
+    const { updateProfile: updateProfileAction, toggleLoading: toggleLoadingAction } = this.props;
+    updateProfileAction({ id, ...accountInfo, ...personalInfo });
+    toggleLoadingAction();
   }
 
   resetPersonalInfo = (oldPersonalInfo) => {
@@ -105,31 +106,35 @@ class Profile extends React.Component {
   render() {
     const {
       personal,
-      account
+      account,
     } = this.state;
-    const { resetPassword } = this.props;
+    const { resetPassword: resetPasswordAction } = this.props;
 
     return (
       <React.Fragment>
-        {personal.firstname !== undefined && <Personal
-          {...personal}
-          inputChange={this.change}
-          saveProfile={this.saveProfile}
-          resetPersonalInfo={this.resetPersonalInfo}
-        />}
-        {account.email !== undefined && <Account
-          {...account}
-          inputChange={this.change}
-          saveProfile={this.saveProfile}
-          resetAccount={this.resetAccount}
-          resetPassword={resetPassword}
-        />}
+        {personal.firstname !== undefined && (
+          <Personal
+            {...personal}
+            inputChange={this.change}
+            saveProfile={this.saveProfile}
+            resetPersonalInfo={this.resetPersonalInfo}
+          />
+        )}
+        {account.email !== undefined && (
+          <Account
+            {...account}
+            inputChange={this.change}
+            saveProfile={this.saveProfile}
+            resetAccount={this.resetAccount}
+            resetPassword={resetPasswordAction}
+          />
+        )}
       </React.Fragment>
-    )
+    );
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   user: state.user.detail,
 });
 

@@ -1,34 +1,45 @@
-import React, { Component } from "react";
-import * as SurveyJSEditor from "surveyjs-editor";
-import "surveyjs-editor/surveyeditor.css";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import * as SurveyJSEditor from 'surveyjs-editor';
+import 'surveyjs-editor/surveyeditor.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 class SurveyEditor extends Component {
-  constructor(props){
-    super(props);
-    this.state={}
-    SurveyJSEditor.StylesManager.applyTheme("orange");
+  static propTypes = {
+    data: PropTypes.objectOf(PropTypes.object).isRequired,
+    change: PropTypes.func.isRequired,
   }
-  editor;
- 
-  componentDidMount(){
+
+  editor = null;
+
+  constructor(props) {
+    super(props);
+    this.state = {};
+    SurveyJSEditor.StylesManager.applyTheme('orange');
+  }
+
+  componentDidMount() {
     this.editor = new SurveyJSEditor.SurveyEditor(
-      "surveyEditorContainer"
+      'surveyEditorContainer',
     );
     this.editor.saveSurveyFunc = this.saveMySurvey;
-    if(this.props.data){
-      this.editor.text = JSON.stringify(this.props.data)
+
+    const { data } = this.props;
+    if (data) {
+      this.editor.text = JSON.stringify(data);
     }
   }
-  render() {
-    return( 
-      <div id="surveyEditorContainer" />
-    )
-  }
+
   saveMySurvey = () => {
-    // alert("This json will be stored to backend:\n\n" + this.editor.text)
-    this.props.change(JSON.parse(this.editor.text))
-  };
+    const { change } = this.props;
+    change(JSON.parse(this.editor.text));
+  }
+
+  render() {
+    return (
+      <div id="surveyEditorContainer" />
+    );
+  }
 }
 
 export default SurveyEditor;

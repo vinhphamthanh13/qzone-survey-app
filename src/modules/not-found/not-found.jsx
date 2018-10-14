@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-export default class NotFound extends PureComponent {
+class NotFound extends PureComponent {
   static propTypes = {
 
   }
@@ -11,6 +11,8 @@ export default class NotFound extends PureComponent {
       <div>
         Not found
       </div>
-    )
+    );
   }
 }
+
+export default NotFound;

@@ -8,78 +8,77 @@ export const FETCH_SURVEY_PARTICIPANT_LIST = 'fetch_survey_participant_list';
 export const FETCH_SURVEY_RESPONSE_BY_PARTICIPANT_ID = 'fetch_survey_answer_by_participant_id';
 
 export function createSurveyResponse(values, token, callback) {
-  let axiosConfig = {
+  const axiosConfig = {
     headers: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ' + token
-    }
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
   };
   axios.post(`${SURVEY_URL}/survey-answers`, values, axiosConfig)
     .then(
-      response => {
+      (response) => {
         callback(response);
       },
-      error => {
-        callback(error.response)
+      (error) => {
+        callback(error.response);
         return error.response;
-      }
-    )
+      },
+    );
   return {
-    type: CREATE_SURVEY_ANSWER
-  }
+    type: CREATE_SURVEY_ANSWER,
+  };
 }
 
-export function fetchSurveyParticipantResponse(pid, sid, token, callback) {
-  let axiosConfig = {
+export function fetchSurveyParticipantResponse(pid, sid, token) {
+  const axiosConfig = {
     headers: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ' + token
-    }
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
   };
-  const request = axios.get(`${SURVEY_URL}/find-survey-answers/${sid}/${pid}`, axiosConfig)
+  const request = axios.get(`${SURVEY_URL}/find-survey-answers/${sid}/${pid}`, axiosConfig);
   return {
     type: FETCH_SURVEY_PARTICIPANT_RESPONSE,
-    payload: request
-  }
+    payload: request,
+  };
 }
 
-export function fetchSurveyResponse(sid, callback) {
-  const request = axios.get(`${SURVEY_URL}/find-survey-answers/${sid}`)
+export function fetchSurveyResponse(sid) {
+  const request = axios.get(`${SURVEY_URL}/find-survey-answers/${sid}`);
   return {
     type: FETCH_SURVEY_RESPONSE,
-    payload: request
-  }
+    payload: request,
+  };
 }
 
-export function fetchSurveyParticipantList(sid, token, callback) {
-  let axiosConfig = {
+export function fetchSurveyParticipantList(sid, token) {
+  const axiosConfig = {
     headers: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ' + token
-    }
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
   };
-  const request = axios.get(`${SURVEY_URL}/listParticipantBySurveyId/${sid}`, axiosConfig)
+  const request = axios.get(`${SURVEY_URL}/listParticipantBySurveyId/${sid}`, axiosConfig);
   return {
     type: FETCH_SURVEY_PARTICIPANT_LIST,
-    payload: request
-  }
+    payload: request,
+  };
 }
 
 export function fetchSurveyAnswerByParticipantId(pid, token) {
-  let axiosConfig = {
+  const axiosConfig = {
     headers: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ' + token
-    }
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
   };
-  const request = axios.get(`${SURVEY_URL}/listSurveyAnswerByParticipantId/${pid}`, axiosConfig)
+  const request = axios.get(`${SURVEY_URL}/listSurveyAnswerByParticipantId/${pid}`, axiosConfig);
   return {
     type: FETCH_SURVEY_RESPONSE_BY_PARTICIPANT_ID,
-    payload: request
-  }
+    payload: request,
+  };
 }
-

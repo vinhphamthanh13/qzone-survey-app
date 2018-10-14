@@ -15,8 +15,8 @@ class ReactLoader extends React.Component {
       <div className="sweet-loading" style={this.style}>
         <Pace color="#2196f3" height={4} />
       </div>
-    )
+    );
   }
 }
 
-export default ReactLoader
+export default ReactLoader;

@@ -1,52 +1,69 @@
 import React from 'react';
-import withStyles from "@material-ui/core/styles/withStyles";
+import PropTypes from 'prop-types';
+import withStyles from '@material-ui/core/styles/withStyles';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { FormLabel, Select, MenuItem, FormControl } from "@material-ui/core";
-import GridContainer from "components/Grid/GridContainer";
-import GridItem from "components/Grid/GridItem";
-import CustomInput from "components/CustomInput/CustomInput";
-import CustomCheckbox from "components/CustomCheckbox/CustomCheckbox";
-import validationFormStyle from "assets/jss/material-dashboard-pro-react/modules/validationFormStyle";
+import {
+  FormLabel, Select, MenuItem, FormControl,
+} from '@material-ui/core';
+import GridContainer from 'components/Grid/GridContainer';
+import GridItem from 'components/Grid/GridItem';
+import CustomInput from 'components/CustomInput/CustomInput';
+import CustomCheckbox from 'components/CustomCheckbox/CustomCheckbox';
+import validationFormStyle from 'assets/jss/material-dashboard-pro-react/modules/validationFormStyle';
 import SurveyEditor from 'modules/shared/SurveyEditor';
 import { fetchUserTypeList } from 'services/api/auth';
 import Assessor from 'modules/assessor/assessor';
 import { sessionService } from 'redux-react-session';
 
-var editor = false
+let editor = false;
 class SurveyForm extends React.Component {
+  static propTypes = {
+    fetchUserTypeList: PropTypes.func.isRequired,
+    AssessorList: PropTypes.arrayOf(PropTypes.object).isRequired,
+    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+    survey: PropTypes.objectOf(PropTypes.object).isRequired,
+    change: PropTypes.func.isRequired,
+    changeQuestions: PropTypes.func.isRequired,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       userType: 'ASSESSOR',
       token: '',
-      assessorList: ''
-    }
+      assessorList: '',
+    };
   }
 
   componentWillMount() {
-    sessionService.loadSession().then(currentSession => {
+    sessionService.loadSession().then((currentSession) => {
       this.setState({ token: currentSession.token }, () => {
-        this.props.fetchUserTypeList(this.state)
-      })
-    })
+        const { fetchUserTypeList: fetchUserTypeListAction } = this.props;
+        fetchUserTypeListAction(this.state);
+      });
+    });
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ assessorList: nextProps.AssessorList })
+    this.setState({ assessorList: nextProps.AssessorList });
   }
 
   reloadAssessorList = () => {
-    this.props.fetchUserTypeList(this.state)
+    const { fetchUserTypeList: fetchUserTypeListAction } = this.props;
+    fetchUserTypeListAction(this.state);
   }
 
   render() {
-    const { classes, survey } = this.props;
-    const { surveyInfo, titleState, descriptionState, mode } = survey
-    if (mode === 'create' || surveyInfo.survey)
-      editor = true
-    if (!this.state.assessorList)
-      return <div></div>
+    const {
+      classes, survey, change, changeQuestions,
+    } = this.props;
+    const { assessorList } = this.state;
+    const {
+      surveyInfo, titleState, descriptionState, mode,
+    } = survey;
+    if (mode === 'create' || surveyInfo.survey) { editor = true; }
+    if (!assessorList) { return <div />; }
     return (
       <form>
         <GridContainer>
@@ -58,17 +75,16 @@ class SurveyForm extends React.Component {
           <GridItem xs={12} sm={7}>
             <CustomInput
               labelText="Title"
-              success={titleState === "success"}
+              success={titleState === 'success'}
               value={surveyInfo.title || ''}
-              error={titleState === "error"}
+              error={titleState === 'error'}
               id="title"
               formControlProps={{
-                fullWidth: true
+                fullWidth: true,
               }}
               inputProps={{
-                onChange: event =>
-                  this.props.change(event, "title", "title"),
-                type: "text"
+                onChange: event => change(event, 'title', 'title'),
+                type: 'text',
               }}
             />
           </GridItem>
@@ -83,16 +99,15 @@ class SurveyForm extends React.Component {
             <CustomInput
               labelText="Description"
               id="description"
-              success={descriptionState === "success"}
-              error={descriptionState === "error"}
+              success={descriptionState === 'success'}
+              error={descriptionState === 'error'}
               value={surveyInfo.description || ''}
               formControlProps={{
-                fullWidth: true
+                fullWidth: true,
               }}
               inputProps={{
-                onChange: event =>
-                  this.props.change(event, "description"),
-                type: "text"
+                onChange: event => change(event, 'description'),
+                type: 'text',
               }}
             />
           </GridItem>
@@ -110,12 +125,11 @@ class SurveyForm extends React.Component {
             >
               <Select
                 value={surveyInfo.userId || ''}
-                onChange={event =>
-                  this.props.change(event, "userId")}
+                onChange={event => change(event, 'userId')}
                 classes={{ select: classes.select }}
                 style={{ paddingTop: '20px' }}
               >
-                {(this.state.assessorList).map(assessor => (
+                {(assessorList).map(assessor => (
                   <MenuItem
                     key={assessor.id}
                     value={assessor.id}
@@ -140,12 +154,11 @@ class SurveyForm extends React.Component {
             <CustomInput
               id="logo"
               formControlProps={{
-                fullWidth: true
+                fullWidth: true,
               }}
               inputProps={{
-                onChange: event =>
-                  this.props.change(event, "logo"),
-                type: "file"
+                onChange: event => change(event, 'logo'),
+                type: 'file',
               }}
               style={{ paddingTop: '20px' }}
 
@@ -156,9 +169,9 @@ class SurveyForm extends React.Component {
           <GridItem xs={12} sm={3}>
             <FormLabel
               className={
-                classes.labelHorizontal +
-                " " +
-                classes.labelHorizontalRadioCheckbox
+                `${classes.labelHorizontal
+                } ${
+                  classes.labelHorizontalRadioCheckbox}`
               }
             >
               Privacy
@@ -169,7 +182,7 @@ class SurveyForm extends React.Component {
               value=""
               checked={surveyInfo.privacy || false}
               label=""
-              onClick={event => this.props.change(event, "privacy")}
+              onClick={event => change(event, 'privacy')}
               classes={classes}
             />
           </GridItem>
@@ -177,18 +190,18 @@ class SurveyForm extends React.Component {
 
         <hr />
         <GridContainer>
-          {editor && <SurveyEditor change={this.props.changeQuestions} data={surveyInfo.survey} />}
+          {editor && <SurveyEditor change={changeQuestions} data={surveyInfo.survey} />}
         </GridContainer>
       </form>
-    )
+    );
   }
 }
 
 function mapStateToProps(state) {
-  return { AssessorList: state.user.userTypeList }
+  return { AssessorList: state.user.userTypeList };
 }
 
 export default compose(
   withStyles(validationFormStyle),
-  connect(mapStateToProps, { fetchUserTypeList })
+  connect(mapStateToProps, { fetchUserTypeList }),
 )(SurveyForm);
