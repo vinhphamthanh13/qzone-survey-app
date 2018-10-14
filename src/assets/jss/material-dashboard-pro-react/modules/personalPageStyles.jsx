@@ -3,7 +3,7 @@ const personalPageStyles = {
     justifyContent: 'space-between',
     '& > :last-child': {
       padding: 0,
-    }
+    },
   },
   phoneNumber: {
     marginBottom: 17,
@@ -12,16 +12,16 @@ const personalPageStyles = {
       border: 'none',
       '& > img': {
         verticalAlign: 'top',
-      },  
+      },
     },
     '& input': {
       background: 'none',
       '&:focus': {
         borderColor: '#303f9f',
         borderWidth: 2,
-      }
-    }
-  }
+      },
+    },
+  },
 };
 
 export default personalPageStyles;

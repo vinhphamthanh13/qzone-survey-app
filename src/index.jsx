@@ -10,18 +10,19 @@ import Alert from 'react-s-alert';
 import indexRoutes from 'routes/index';
 import NotFound from 'modules/not-found/not-found';
 import reducers from './reducers';
-import 'assets/scss/material-dashboard-pro-react.css?v=1.2.0';
+import 'assets/scss/material-dashboard-pro-react.css';
 import 'assets/scss/style.css';
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
 
 const history = createBrowserHistory();
+// eslint-disable-next-line no-underscore-dangle
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
   reducers,
   composeEnhancers(applyMiddleware(promise)),
 );
-sessionService.initSessionService(store, { driver: 'LOCALSTORAGE' })
+sessionService.initSessionService(store, { driver: 'LOCALSTORAGE' });
 
 ReactDOM.render(
   <React.Fragment>
@@ -35,5 +36,5 @@ ReactDOM.render(
     </Provider>
     <Alert stack />
   </React.Fragment>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );

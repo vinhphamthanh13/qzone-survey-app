@@ -5,7 +5,7 @@ const indigoPalette = {
   secondary: { main: '#9FA8DA' },
   typography: {
     useNextVariants: true,
-  }
+  },
 };
 
 const indigoName = 'Quezone Indigo';

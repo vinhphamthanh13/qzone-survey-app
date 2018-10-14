@@ -19,8 +19,8 @@ const verificationPageStyle = {
       '&:hover, &:focus': {
         textDecoration: 'none',
       },
-    }
-  }
-}
+    },
+  },
+};
 
 export default verificationPageStyle;

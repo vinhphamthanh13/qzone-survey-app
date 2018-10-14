@@ -74,8 +74,8 @@ const loginPageStyle = {
     flex: '1 1 auto',
     borderRadius: 5,
     '&:hover': {
-      opacity: .7,
-    }
+      opacity: 0.7,
+    },
   },
   fbButton: {
     backgroundColor: '#4267b2',
@@ -83,19 +83,19 @@ const loginPageStyle = {
     marginLeft: 10,
     '&:focus, &:hover': {
       backgroundColor: '#4267b2',
-    }
+    },
   },
   googleButton: {
     backgroundColor: '#d93025',
     '&:focus, &:hover': {
       backgroundColor: '#d93025',
-    }
+    },
   },
   twitterButton: {
     backgroundColor: '#1da1f2',
     '&:focus, &:hover': {
       backgroundColor: '#1da1f2',
-    }
+    },
   },
   breakLine: {
     textAlign: 'center',
@@ -115,7 +115,7 @@ const loginPageStyle = {
     },
     '&::after': {
       right: 0,
-    }
+    },
   },
   submitWrapper: {
     display: 'block',
@@ -153,7 +153,7 @@ const loginPageStyle = {
   },
   loginButtonLabel: {
     fontSize: 'medium',
-  }
+  },
 };
 
 export default loginPageStyle;
