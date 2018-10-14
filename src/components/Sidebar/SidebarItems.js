@@ -8,7 +8,7 @@ import { NavLink } from 'react-router-dom';
 
 export default class SidebarItems extends PureComponent {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
+    classes: PropTypes.objectOf(PropTypes.string).isRequired,
     routes: PropTypes.arrayOf(PropTypes.object),
     location: PropTypes.object.isRequired,
     initMiniActive: PropTypes.bool.isRequired,

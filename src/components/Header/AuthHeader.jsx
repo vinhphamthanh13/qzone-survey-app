@@ -25,7 +25,7 @@ class AuthHeader extends React.Component {
 }
 
 AuthHeader.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
   color: PropTypes.oneOf(["primary", "info", "success", "warning", "danger"])
 };
 

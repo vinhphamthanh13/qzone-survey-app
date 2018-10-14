@@ -40,7 +40,7 @@ class SidebarWrapper extends React.Component {
 
 class Sidebar extends React.Component {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
+    classes: PropTypes.objectOf(PropTypes.string).isRequired,
     bgColor: PropTypes.oneOf(['white', 'black', 'blue']),
     color: PropTypes.oneOf([
       'white',

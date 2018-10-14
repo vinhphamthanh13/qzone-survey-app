@@ -1,14 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { TextField, Dialog, DialogContent, DialogTitle, DialogActions, DialogContentText } from "@material-ui/core";
+import {
+  TextField, Dialog, DialogContent, DialogTitle, DialogActions, DialogContentText,
+} from '@material-ui/core';
 import Alert from 'react-s-alert';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import { compose } from 'redux';
-import withStyles from "@material-ui/core/styles/withStyles";
-import Button from "components/CustomButtons/Button";
-import GridContainer from "components/Grid/GridContainer";
-import GridItem from "components/Grid/GridItem";
-import { changePassword } from "services/api/auth";
+import withStyles from '@material-ui/core/styles/withStyles';
+import Button from 'components/CustomButtons/Button';
+import GridContainer from 'components/Grid/GridContainer';
+import GridItem from 'components/Grid/GridItem';
+import { changePassword } from 'services/api/auth';
 import validatePassword from 'utils/validatePassword';
 import verificationPageStyle from 'assets/jss/material-dashboard-pro-react/modules/verificationPageStyle';
 import PasswordField from './password-field';
@@ -16,15 +18,11 @@ import ResendCodeButton from './resend-code-button';
 
 class ChangePassword extends React.Component {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
+    classes: PropTypes.objectOf(PropTypes.string).isRequired,
     email: PropTypes.string.isRequired,
     openChangePassword: PropTypes.bool.isRequired,
     closeChangePassword: PropTypes.func.isRequired,
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = { ...this.defaultState };
+    changePassword: PropTypes.func.isRequired,
   }
 
   defaultState = {
@@ -38,12 +36,14 @@ class ChangePassword extends React.Component {
 
   countDownResendCodeId = null;
 
-  componentWillUnmount() {
-    this.stopCountDown();
+  constructor(props) {
+    super(props);
+    this.state = { ...this.defaultState };
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.openChangePassword !== nextProps.openChangePassword) {
+    const { openChangePassword } = this.props;
+    if (openChangePassword !== nextProps.openChangePassword) {
       if (nextProps.openChangePassword) {
         this.startCountDown();
       } else {
@@ -53,15 +53,20 @@ class ChangePassword extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.stopCountDown();
+  }
+
   startCountDown = () => {
     this.countDownResendCodeId = setInterval(() => {
       this.setState(
-        (oldState) => ({ countDownResendCode: oldState.countDownResendCode - 1 }),
+        oldState => ({ countDownResendCode: oldState.countDownResendCode - 1 }),
         () => {
-          if (this.state.countDownResendCode === 0) {
+          const { countDownResendCode } = this.state;
+          if (countDownResendCode === 0) {
             this.stopCountDown();
           }
-        }
+        },
       );
     }, 1000);
   }
@@ -77,18 +82,17 @@ class ChangePassword extends React.Component {
   }
 
   handleChangePassword = () => {
-    this.props.changePassword({
-      code: this.state.code,
-      newPassword: this.state.newPassword,
-      email: this.props.email,
-    }, (response) => {
+    const { changePassword: changePasswordAction } = this.props;
+    const { code, newPassword, email } = this.state;
+    changePasswordAction({ code, newPassword, email }, (response) => {
       if (response.status === 200) {
-        this.props.closeChangePassword();
-        Alert.success("Password is successfully updated", { effect: 'bouncyflip' });
+        const { closeChangePassword } = this.props;
+        closeChangePassword();
+        Alert.success('Password is successfully updated', { effect: 'bouncyflip' });
       } else {
         Alert.error(response.data.message, { effect: 'bouncyflip' });
       }
-    })
+    });
   }
 
   onChangePassword = ({ target: { value } }) => {
@@ -98,28 +102,30 @@ class ChangePassword extends React.Component {
         && validatePassword(value) ? 'success' : 'error',
       newPassword: value,
     };
+    const { confirmPwd } = this.state;
 
-    if (this.state.confirmPwd !== undefined) {
-      newState.confirmPwdState = value !== '' && value === this.state.confirmPwd ? 'success' : 'error';
+    if (confirmPwd !== undefined) {
+      newState.confirmPwdState = value !== '' && value === confirmPwd ? 'success' : 'error';
     }
 
     this.setState(newState);
   }
 
   onChangeConfirmPwd = ({ target: { value } }) => {
-    this.setState({
-      confirmPwdState: value !== '' && value === this.state.newPassword ? 'success' : 'error',
+    this.setState(oldState => ({
+      confirmPwdState: value !== '' && value === oldState.newPassword ? 'success' : 'error',
       confirmPwd: value,
-    });
+    }));
   }
 
   onDialogClose = () => {
-    this.setState(this.defaultState, this.props.closeChangePassword);
+    const { closeChangePassword } = this.props;
+    this.setState(this.defaultState, closeChangePassword);
   }
 
   render() {
     const { classes, openChangePassword, email } = this.props;
-    const { countDownResendCode } = this.state;
+    const { countDownResendCode, newPasswordState, confirmPwdState } = this.state;
     return (
       <React.Fragment>
         <Dialog
@@ -138,8 +144,8 @@ class ChangePassword extends React.Component {
                   <PasswordField
                     onChangePassword={this.onChangePassword}
                     onChangeConfirmPwd={this.onChangeConfirmPwd}
-                    passwordState={this.state.newPasswordState}
-                    confirmPwdState={this.state.confirmPwdState}
+                    passwordState={newPasswordState}
+                    confirmPwdState={confirmPwdState}
                   />
                 </GridItem>
                 <GridItem md={12}>
@@ -147,7 +153,7 @@ class ChangePassword extends React.Component {
                     fullWidth
                     id="code"
                     label="Enter code"
-                    onChange={(event) => { this.setState({ code: event.target.value }) }}
+                    onChange={(event) => { this.setState({ code: event.target.value }); }}
                   />
                 </GridItem>
               </GridContainer>
@@ -161,7 +167,7 @@ class ChangePassword extends React.Component {
               countDownResendCode={countDownResendCode}
             />
             <div>
-              <Button onClick={this.onDialogClose} >
+              <Button onClick={this.onDialogClose}>
                 Close
               </Button>
               <Button onClick={this.handleChangePassword} color="rose">
@@ -171,7 +177,7 @@ class ChangePassword extends React.Component {
           </DialogActions>
         </Dialog>
       </React.Fragment>
-    )
+    );
   }
 }
 

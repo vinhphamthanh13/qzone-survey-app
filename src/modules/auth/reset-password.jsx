@@ -1,20 +1,22 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogTitle, DialogActions, DialogContentText } from "@material-ui/core";
+import {
+  Dialog, DialogContent, DialogTitle, DialogActions, DialogContentText,
+} from '@material-ui/core';
 import Alert from 'react-s-alert';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import Button from "components/CustomButtons/Button";
-import { resetPassword } from "services/api/auth";
-import ChangePassword from 'modules/auth/change-password'
-import CustomInput from "components/CustomInput/CustomInput";
+import Button from 'components/CustomButtons/Button';
+import { resetPassword } from 'services/api/auth';
+import ChangePassword from 'modules/auth/change-password';
+import CustomInput from 'components/CustomInput/CustomInput';
 import validateEmail from '../../utils/validateEmail';
 
 class ResetPassword extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { ...this.defaultState };
+  static propTypes = {
+    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+    resetPassword: PropTypes.func.isRequired,
   }
 
   defaultState = {
@@ -22,17 +24,23 @@ class ResetPassword extends React.Component {
     emailState: false,
     open: false,
     openChangePassword: false,
-  };
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = { ...this.defaultState };
+  }
 
   handleResetPassword = () => {
-    this.props.resetPassword(this.state, (response) => {
+    const { resetPassword: resetPasswordAction } = this.props;
+    resetPasswordAction(this.state, (response) => {
       if (response.status === 200) {
-        this.setState({ open: false, openChangePassword: true })
-        Alert.success("Code is successfully send to your email", { effect: 'bouncyflip' });
+        this.setState({ open: false, openChangePassword: true });
+        Alert.success('Code is successfully send to your email', { effect: 'bouncyflip' });
       } else {
         Alert.error(response.data.message, { effect: 'bouncyflip' });
       }
-    })
+    });
   }
 
   handleClose = () => {
@@ -52,10 +60,14 @@ class ResetPassword extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { open, emailState, openChangePassword } = this.state;
+    const {
+      open, emailState, openChangePassword, email,
+    } = this.state;
+
     return (
       <React.Fragment>
         <div className={classes.textEnd}>
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
           <Link to="#" onClick={this.handleOpen}>
             <h5 className={classNames(classes.alertLink, classes.noMarginTop)}>forgot password?</h5>
           </Link>
@@ -73,19 +85,19 @@ class ResetPassword extends React.Component {
             <div>
               <CustomInput
                 labelText="Enter email"
-                success={emailState === "success"}
-                error={emailState === "error"}
+                success={emailState === 'success'}
+                error={emailState === 'error'}
                 id="email"
                 formControlProps={{ fullWidth: true }}
                 inputProps={{
                   onChange: this.onChangeEmail,
-                  type: "email"
+                  type: 'email',
                 }}
               />
             </div>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} >
+            <Button onClick={this.handleClose}>
               Close
             </Button>
             <Button onClick={this.handleResetPassword} color="rose">
@@ -96,15 +108,11 @@ class ResetPassword extends React.Component {
         <ChangePassword
           openChangePassword={openChangePassword}
           closeChangePassword={this.handleClose}
-          email={this.state.email}
+          email={email}
         />
       </React.Fragment>
-    )
+    );
   }
 }
-
-ResetPassword.propTypes = {
-  classes: PropTypes.object.isRequired
-};
 
 export default connect(null, { resetPassword })(ResetPassword);

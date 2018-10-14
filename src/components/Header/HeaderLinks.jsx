@@ -192,7 +192,7 @@ class HeaderLinks extends React.Component {
 }
 
 HeaderLinks.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.objectOf(PropTypes.string).isRequired
 };
 
 export default withStyles(headerLinksStyle)(HeaderLinks);

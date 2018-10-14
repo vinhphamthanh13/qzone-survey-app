@@ -1,20 +1,28 @@
 import React from 'react';
-import { TextField, Dialog, DialogContent, DialogTitle, DialogActions } from "@material-ui/core";
-import Button from "components/CustomButtons/Button";
+import {
+  TextField, Dialog, DialogContent, DialogTitle, DialogActions,
+} from '@material-ui/core';
+import Button from 'components/CustomButtons/Button';
 import Alert from 'react-s-alert';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import GridContainer from "components/Grid/GridContainer";
-import GridItem from "components/Grid/GridItem";
+import GridContainer from 'components/Grid/GridContainer';
+import GridItem from 'components/Grid/GridItem';
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
-import { registerUser } from "services/api/auth";
-import { toggleLoading } from "services/api/assessment";
+import { registerUser } from 'services/api/auth';
+import { toggleLoading } from 'services/api/assessment';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { eUserType } from '../../constants';
 
 class Assessor extends React.Component {
+  static propTypes = {
+    toggleLoading: PropTypes.func.isRequired,
+    registerUser: PropTypes.func.isRequired,
+    reloadAssessorList: PropTypes.func.isRequired,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -23,8 +31,8 @@ class Assessor extends React.Component {
       lastname: '',
       userType: eUserType.assessor,
       open: false,
-      password: "Test@2018"
-    }
+      password: 'Test@2018',
+    };
   }
 
   // componentWillMount(){
@@ -44,43 +52,48 @@ class Assessor extends React.Component {
   // }
 
   handleAssessor = () => {
-    this.props.toggleLoading();
-    this.props.registerUser(this.state, (response) => {
+    const {
+      toggleLoading: toggleLoadingAction, registerUser: registerUserAction,
+      reloadAssessorList,
+    } = this.props;
+    toggleLoadingAction();
+    registerUserAction(this.state, (response) => {
       if (response) {
-        this.props.toggleLoading();
+        toggleLoadingAction();
         if (response.status !== 201) {
           Alert.error(response.data.message, {
             position: 'bottom-right',
             effect: 'bouncyflip',
           });
-        }
-        else {
-          Alert.success("Assessor Added successfully", {
+        } else {
+          Alert.success('Assessor Added successfully', {
             position: 'bottom-right',
             effect: 'bouncyflip',
           });
-          this.setState({ open: false }, this.props.reloadAssessorList);
+          this.setState({ open: false }, reloadAssessorList);
         }
       }
     });
   }
 
   handleClose = () => {
-    this.setState({ open: false })
+    this.setState({ open: false });
   }
 
   handleOpen = () => {
-    this.setState({ open: true })
+    this.setState({ open: true });
   }
 
 
   render() {
+    const { open } = this.state;
     return (
       <React.Fragment>
-        <Link to='#' style={{ fontWeight: 'bold' }} onClick={this.handleOpen} >Add Assessor</Link>
+        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+        <Link to="#" style={{ fontWeight: 'bold' }} onClick={this.handleOpen}>Add Assessor</Link>
         <Dialog
           fullWidth
-          open={this.state.open}
+          open={open}
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
         >
@@ -92,7 +105,7 @@ class Assessor extends React.Component {
                   fullWidth
                   id="firstName"
                   label="Enter first name"
-                  onChange={(event) => { this.setState({ firstname: event.target.value }) }}
+                  onChange={(event) => { this.setState({ firstname: event.target.value }); }}
                 />
               </GridItem>
               <GridItem md={6}>
@@ -100,7 +113,7 @@ class Assessor extends React.Component {
                   fullWidth
                   id="lastName"
                   label="Enter last name"
-                  onChange={(event) => { this.setState({ lastname: event.target.value }) }}
+                  onChange={(event) => { this.setState({ lastname: event.target.value }); }}
                 />
               </GridItem>
             </GridContainer>
@@ -111,13 +124,13 @@ class Assessor extends React.Component {
                   id="email"
                   type="email"
                   label="Enter email"
-                  onChange={(event) => { this.setState({ email: event.target.value }) }}
+                  onChange={(event) => { this.setState({ email: event.target.value }); }}
                 />
               </GridItem>
             </GridContainer>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} >
+            <Button onClick={this.handleClose}>
               Close
             </Button>
             <Button onClick={this.handleAssessor} color="rose">
@@ -126,16 +139,10 @@ class Assessor extends React.Component {
           </DialogActions>
         </Dialog>
       </React.Fragment>
-    )
+    );
   }
 }
 
-Assessor.propTypes = {
-  classes: PropTypes.object.isRequired,
-  toggleLoading: PropTypes.func.isRequired,
-  registerUser: PropTypes.func.isRequired,
-};
-
 export default compose(
-  connect(null, { registerUser, toggleLoading })
+  connect(null, { registerUser, toggleLoading }),
 )(Assessor);

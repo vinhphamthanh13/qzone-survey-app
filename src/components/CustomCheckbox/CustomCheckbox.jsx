@@ -45,7 +45,7 @@ export default function CustomCheckbox({...props}) {
 }
 
 CustomCheckbox.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
   label: PropTypes.node,
   value: PropTypes.string,
   onClick: PropTypes.func,

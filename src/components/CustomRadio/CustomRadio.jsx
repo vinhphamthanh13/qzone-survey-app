@@ -53,7 +53,7 @@ export default function CustomRadio({...props}) {
 }
 
 CustomRadio.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
   label: PropTypes.node,
   value: PropTypes.string,
   checkedValue: PropTypes.string,

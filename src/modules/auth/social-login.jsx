@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import Button from "components/CustomButtons/Button";
+import Button from 'components/CustomButtons/Button';
 
 class SocialLogin extends PureComponent {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
+    classes: PropTypes.objectOf(PropTypes.string).isRequired,
   }
 
   render() {
@@ -37,7 +37,7 @@ class SocialLogin extends PureComponent {
           <i className="fab fa-google" />
         </Button>
       </div>
-    )
+    );
   }
 }
 

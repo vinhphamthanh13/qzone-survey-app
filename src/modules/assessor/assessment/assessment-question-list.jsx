@@ -1,28 +1,30 @@
-import React from "react";
+import React from 'react';
 import { Link } from 'react-router-dom';
-import withStyles from "@material-ui/core/styles/withStyles";
-import PropTypes from "prop-types";
+import withStyles from '@material-ui/core/styles/withStyles';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Table, TableBody, TableCell, TableHead, TableRow, Checkbox } from "@material-ui/core";
-import SweetAlert from "react-bootstrap-sweetalert";
+import {
+  Table, TableBody, TableCell, TableHead, TableRow, Checkbox,
+} from '@material-ui/core';
+import SweetAlert from 'react-bootstrap-sweetalert';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Alert from 'react-s-alert';
-import { Delete, FileCopy } from "@material-ui/icons";
+import { Delete, FileCopy } from '@material-ui/icons';
 import ReactTooltip from 'react-tooltip';
 import { css } from 'react-emotion';
 import { ClipLoader } from 'react-spinners';
-import GridContainer from "components/Grid/GridContainer";
-import GridItem from "components/Grid/GridItem";
-import Card from "components/Card/Card";
-import CardBody from "components/Card/CardBody";
-import listPageStyle from "assets/jss/material-dashboard-pro-react/modules/listPageStyle";
-import { fetchSurveysByAssessorId, deleteSurvey, deleteAllSurvey } from "services/api/assessment";
+import GridContainer from 'components/Grid/GridContainer';
+import GridItem from 'components/Grid/GridItem';
+import Card from 'components/Card/Card';
+import CardBody from 'components/Card/CardBody';
+import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/listPageStyle';
+import { fetchSurveysByAssessorId, deleteSurvey, deleteAllSurvey } from 'services/api/assessment';
 import { checkAuth } from 'services/api/auth';
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
-import { SURVEY_APP_URL } from '../../../constants';
 import { sessionService } from 'redux-react-session';
+import { SURVEY_APP_URL } from '../../../constants';
 
 const override = css`
     display: block;
@@ -31,10 +33,20 @@ const override = css`
 `;
 
 const iconStyle = {
-  marginRight: 30
+  marginRight: 30,
 };
 
 class AssessorAssessmentQuestionList extends React.Component {
+  static propTypes = {
+    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+    surveyList: PropTypes.arrayOf(PropTypes.object).isRequired,
+    checkAuth: PropTypes.func.isRequired,
+    fetchSurveysByAssessorId: PropTypes.func.isRequired,
+    fetchSurveys: PropTypes.func.isRequired,
+    deleteSurvey: PropTypes.func.isRequired,
+    deleteAllSurvey: PropTypes.func.isRequired,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -42,41 +54,38 @@ class AssessorAssessmentQuestionList extends React.Component {
       deleteAll: false,
       loading: true,
       token: '',
-      userId:'',
-    }
+    };
   }
 
   componentDidMount() {
-    this.props.checkAuth(async (session) => {
+    const {
+      checkAuth: checkAuthAction,
+      fetchSurveysByAssessorId: fetchSurveysByAssessorIdAction,
+    } = this.props;
+    checkAuthAction(async (session) => {
       if (session) {
         this.setState({ token: session.token });
-        sessionService.loadUser().then(currentUser => {
-          this.props.fetchSurveysByAssessorId(currentUser.userId, session.token);
-        })
+        sessionService.loadUser().then((currentUser) => {
+          fetchSurveysByAssessorIdAction(currentUser.userId, session.token);
+        });
       }
     });
     setTimeout(() => this.setState({ loading: false }), 1500);
   }
 
-  warningWithConfirmMessage(id) {
-    var SID = ""
-    if (id) {
-      SID = id
-    }
+  warningWithConfirmMessage = (SID = '') => {
+    const { classes } = this.props;
+
     this.setState({
       sweetAlert: (
         <SweetAlert
           warning
-          style={{ display: "block", marginTop: "-100px" }}
+          style={{ display: 'block', marginTop: '-100px' }}
           title="Are you sure?"
           onConfirm={() => this.successDelete(SID)}
           onCancel={() => this.setState({ sweetAlert: '' })}
-          confirmBtnCssClass={
-            this.props.classes.button + " " + this.props.classes.success
-          }
-          cancelBtnCssClass={
-            this.props.classes.button + " " + this.props.classes.danger
-          }
+          confirmBtnCssClass={`${classes.button} ${classes.success}`}
+          cancelBtnCssClass={`${classes.button} ${classes.danger}`}
           confirmBtnText="Yes, delete it!"
           cancelBtnText="Cancel"
           showCancel
@@ -84,123 +93,119 @@ class AssessorAssessmentQuestionList extends React.Component {
           You will not be able to recover the Assessment!
         </SweetAlert>
       ),
-      deleteAll: false
+      deleteAll: false,
     });
   }
 
   successDelete = (SID) => {
-    var api = ""
+    const {
+      deleteSurvey: deleteSurveyAction, deleteAllSurvey: deleteAllSurveyAction,
+      fetchSurveys, classes,
+    } = this.props;
+    const { token } = this.state;
+    let api = deleteAllSurveyAction;
+
     if (SID) {
-      api = this.props.deleteSurvey
+      api = deleteSurveyAction;
     }
-    else
-      api = this.props.deleteAllSurvey
-    api(SID, this.state.token, (response) => {
+
+    api(SID, token, () => {
       this.setState({
         sweetAlert: (
           <SweetAlert
             success
-            style={{ display: "block", marginTop: "-100px" }}
+            style={{ display: 'block', marginTop: '-100px' }}
             title="Deleted!"
-            onConfirm={() =>
-              this.setState({ sweetAlert: '' }
-              )}
+            onConfirm={() => this.setState({ sweetAlert: '' })}
             onCancel={() => this.setState({ sweetAlert: '' })}
-            confirmBtnCssClass={
-              this.props.classes.success
-            }
+            confirmBtnCssClass={classes.success}
           >
             Assessment has been deleted.
           </SweetAlert>
-        )
+        ),
       });
-      this.props.fetchSurveys(this.state.token)
-    })
+      fetchSurveys(token);
+    });
   }
 
-  handleClick(e) {
+  handleClick = (e) => {
     e.preventDefault();
-    Alert.closeAll()
+    Alert.closeAll();
     Alert.success('Copied', {
       position: 'bottom-right',
-      effect: 'bouncyflip'
+      effect: 'bouncyflip',
     });
   }
 
   render() {
     const { classes, surveyList } = this.props;
+    const { loading, deleteAll, sweetAlert } = this.state;
 
     return (
-      surveyList && surveyList.length >= 0 &&
-      <GridContainer>
-        <ClipLoader
-          className={override}
-          sizeUnit={"px"}
-          size={70}
-          color={'#123abc'}
-          loading={this.state.loading}
-        />
-        <GridItem xs={12}>
-          <Card>
-            <CardBody>
-              <Table className={classes.table} aria-labelledby="tableTitle">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>
-                      <Checkbox
-                        checked={this.state.deleteAll || false}
-                        onChange={(event) => this.setState({ deleteAll: !this.state.deleteAll })}
-                      />
-                    </TableCell>
-                    <TableCell
-                      key={'title'}
-                    >
-                      Title
-                    </TableCell>
-                    <TableCell />
-                    <TableCell>
-                      {this.state.deleteAll && <Link to="#" data-tip='Delete' onClick={() => this.warningWithConfirmMessage("")}><Delete /></Link>}
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {(surveyList)
-                    .map((n, index) => {
-                      return (
-                        <TableRow
-                          hover
-                          key={index}
-                        >
+      surveyList && surveyList.length >= 0
+      && (
+        <GridContainer>
+          <ClipLoader
+            className={override}
+            sizeUnit="px"
+            size={70}
+            color="#123abc"
+            loading={loading}
+          />
+          <GridItem xs={12}>
+            <Card>
+              <CardBody>
+                <Table className={classes.table} aria-labelledby="tableTitle">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>
+                        <Checkbox
+                          checked={deleteAll || false}
+                          onChange={() => this.setState(oldState => ({
+                            deleteAll: !oldState.deleteAll,
+                          }))}
+                        />
+                      </TableCell>
+                      <TableCell key="title">
+                        Title
+                      </TableCell>
+                      <TableCell />
+                      <TableCell>
+                        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                        {deleteAll && <Link to="#" data-tip="Delete" onClick={() => this.warningWithConfirmMessage('')}><Delete /></Link>}
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {(surveyList)
+                      .map((surveyItem, index) => (
+                        <TableRow hover key={surveyItem.id}>
                           <TableCell>{index + 1}</TableCell>
-                          <TableCell><Link data-tip='Show' to={`/assessment/show/${n.id}`}>{n.title}</Link></TableCell>
+                          <TableCell><Link data-tip="Show" to={`/assessment/show/${surveyItem.id}`}>{surveyItem.title}</Link></TableCell>
                           <TableCell>
-                            <Link style={iconStyle} data-tip='Delete' to="#" onClick={() => this.warningWithConfirmMessage(n.id)}><Delete /></Link>
-                            <CopyToClipboard text={`${SURVEY_APP_URL}/surveys/${n.id}`}
-                            >
-                              <Link data-tip='Copy Link' to="#" onClick={this.handleClick}><FileCopy /></Link>
+                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                            <Link style={iconStyle} data-tip="Delete" to="#" onClick={() => this.warningWithConfirmMessage(surveyItem.id)}><Delete /></Link>
+                            <CopyToClipboard text={`${SURVEY_APP_URL}/surveys/${surveyItem.id}`}>
+                              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                              <Link data-tip="Copy Link" to="#" onClick={this.handleClick}><FileCopy /></Link>
                             </CopyToClipboard>
                           </TableCell>
                           <TableCell>
                             <ReactTooltip />
                           </TableCell>
                         </TableRow>
-                      )
-                    })}
-                </TableBody>
-              </Table>
-              {this.state.sweetAlert}
-            </CardBody>
-          </Card>
-        </GridItem>
-      </GridContainer>
+                      ))}
+                  </TableBody>
+                </Table>
+                {sweetAlert}
+              </CardBody>
+            </Card>
+          </GridItem>
+        </GridContainer>
+      )
     );
   }
 }
-
-AssessorAssessmentQuestionList.propTypes = {
-  classes: PropTypes.object.isRequired,
-  surveyList: PropTypes.array.isRequired,
-};
 
 function mapStateToProps(state) {
   return { surveyList: state.surveys.list };
@@ -208,5 +213,7 @@ function mapStateToProps(state) {
 
 export default compose(
   withStyles(listPageStyle),
-  connect(mapStateToProps, { fetchSurveysByAssessorId, deleteSurvey, deleteAllSurvey, checkAuth }),
+  connect(mapStateToProps, {
+    fetchSurveysByAssessorId, deleteSurvey, deleteAllSurvey, checkAuth,
+  }),
 )(AssessorAssessmentQuestionList);

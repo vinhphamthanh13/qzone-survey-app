@@ -9,31 +9,43 @@ import {
   FormHelperText,
   Input,
   InputLabel,
-} from "@material-ui/core";
+} from '@material-ui/core';
 import { compose } from 'redux';
-import withStyles from "@material-ui/core/styles/withStyles";
+import withStyles from '@material-ui/core/styles/withStyles';
 import Alert from 'react-s-alert';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Button from "components/CustomButtons/Button";
-import { verifyUser } from "services/api/auth";
+import Button from 'components/CustomButtons/Button';
+import { verifyUser } from 'services/api/auth';
 import verificationPageStyle from 'assets/jss/material-dashboard-pro-react/modules/verificationPageStyle';
 import ResendCodeButton from './resend-code-button';
 
 class VerificationPage extends React.PureComponent {
+  static propTypes = {
+    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+    history: PropTypes.objectOf(PropTypes.object).isRequired,
+    email: PropTypes.string,
+    open: PropTypes.bool.isRequired,
+    page: PropTypes.string.isRequired,
+    actionAfterSubmit: PropTypes.func,
+    verifyUser: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    email: undefined,
+    actionAfterSubmit: undefined,
+  }
+
+  countDownResendCodeId = null;
+
   constructor(props) {
     super(props);
     this.state = { code: '', errorCode: false, countDownResendCode: 30 };
   }
 
-  countDownResendCodeId = null;
-
-  componentWillUnmount() {
-    this.stopCountDown();
-  }
-
   componentWillReceiveProps(nextProps) {
-    if (this.props.open !== nextProps.open) {
+    const { open } = this.props;
+    if (open !== nextProps.open) {
       if (nextProps.open) {
         this.startCountDown();
       } else {
@@ -43,15 +55,20 @@ class VerificationPage extends React.PureComponent {
     }
   }
 
+  componentWillUnmount() {
+    this.stopCountDown();
+  }
+
   startCountDown = () => {
     this.countDownResendCodeId = setInterval(() => {
       this.setState(
-        (oldState) => ({ countDownResendCode: oldState.countDownResendCode - 1 }),
+        oldState => ({ countDownResendCode: oldState.countDownResendCode - 1 }),
         () => {
-          if (this.state.countDownResendCode === 0) {
+          const { countDownResendCode } = this.state;
+          if (countDownResendCode === 0) {
             this.stopCountDown();
           }
-        }
+        },
       );
     }, 1000);
   }
@@ -64,14 +81,17 @@ class VerificationPage extends React.PureComponent {
 
   handleVerificationCode = () => {
     const { code } = this.state;
-    const { email, page, actionAfterSubmit } = this.props;
+    const {
+      email, page, actionAfterSubmit,
+      verifyUser: verifyUserAction, history,
+    } = this.props;
 
-    this.props.verifyUser({ email, code }, (response) => {
+    verifyUserAction({ email, code }, (response) => {
       if (response.status === 200) {
         if (page === 'login') {
           actionAfterSubmit();
         } else {
-          this.props.history.push('/login');
+          history.push('/login');
           Alert.success('Register successfully! Please login with your new account', { effect: 'bouncyflip' });
         }
       } else {
@@ -98,7 +118,11 @@ class VerificationPage extends React.PureComponent {
           <DialogTitle id="form-dialog-title">Verification code</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Please check your email <b><u>{email}</u></b> and enter verification code.
+              Please check your email
+              {' '}
+              <b><u>{email}</u></b>
+              {' '}
+              and enter verification code.
             </DialogContentText>
             <FormControl
               fullWidth
@@ -109,7 +133,7 @@ class VerificationPage extends React.PureComponent {
               <Input
                 fullWidth
                 id="code-input"
-                onChange={(event) => { this.setState({ code: event.target.value }) }}
+                onChange={(event) => { this.setState({ code: event.target.value }); }}
               />
               {errorCode && <FormHelperText id="code-input-wrapper">Please enter correct code!</FormHelperText>}
             </FormControl>
@@ -129,22 +153,8 @@ class VerificationPage extends React.PureComponent {
           </DialogActions>
         </Dialog>
       </React.Fragment>
-    )
+    );
   }
-}
-
-VerificationPage.propTypes = {
-  classes: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
-  email: PropTypes.string,
-  open: PropTypes.bool.isRequired,
-  page: PropTypes.string.isRequired,
-  actionAfterSubmit: PropTypes.func,
-};
-
-VerificationPage.defaultProps = {
-  email: undefined,
-  actionAfterSubmit: undefined,
 }
 
 export default compose(

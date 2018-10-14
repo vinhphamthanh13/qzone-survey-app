@@ -19,14 +19,21 @@ import CardFooter from 'components/Card/CardFooter';
 import loginPageStyle from 'assets/jss/material-dashboard-pro-react/modules/loginPageStyle';
 import fontAwesomeIcon from 'assets/jss/material-dashboard-pro-react/layouts/font-awesome-icon';
 import { loginUser, toggleLoading } from 'services/api/auth';
+import { Storage } from 'react-jhipster';
 import VerificationPage from './verification-page';
 import ResetPassword from './reset-password';
 import validateEmail from '../../utils/validateEmail';
-import { Storage } from 'react-jhipster';
-import { surveyLocalData } from '../../constants'
+import { surveyLocalData } from '../../constants';
 
-var surveyId = '';
+let surveyId = '';
 class LoginPage extends React.Component {
+  static propTypes = {
+    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+    toggleLoading: PropTypes.func.isRequired,
+    loginUser: PropTypes.func.isRequired,
+    history: PropTypes.objectOf(PropTypes.object).isRequired,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -36,7 +43,7 @@ class LoginPage extends React.Component {
       password: '',
       passwordState: '',
       openVerificationModal: false,
-      disabled: false
+      disabled: false,
     };
   }
 
@@ -50,24 +57,27 @@ class LoginPage extends React.Component {
     }, 200);
   }
 
-  verifyLength(value, length) {
-    return value.length >= length;
-  }
-
   login = () => {
-    if (this.state.emailState === 'success' && this.state.passwordState === 'success') {
-      this.props.toggleLoading();
+    const { emailState, passwordState } = this.state;
+
+    if (emailState === 'success' && passwordState === 'success') {
+      const {
+        toggleLoading: toggleLoadingAction, loginUser: loginUserAction,
+        history,
+      } = this.props;
+      toggleLoadingAction();
       this.setState({ disabled: true }, () => {
-        this.props.loginUser({ email: this.state.email, password: this.state.password }, (response) => {
+        const { email, password } = this.state;
+        loginUserAction({ email, password }, (response) => {
           if (response) {
-            this.props.toggleLoading();
+            toggleLoadingAction();
 
             if (response.status === 200) {
               if (surveyId) {
-                this.props.history.push(`/surveys/${surveyId}`);
+                history.push(`/surveys/${surveyId}`);
                 Storage.local.remove(surveyLocalData.SURVEY_ID);
               } else {
-                this.props.history.push('/');
+                history.push('/');
               }
             } else {
               const newState = { disabled: false };
@@ -92,19 +102,22 @@ class LoginPage extends React.Component {
 
   loginClick = () => {
     const newState = {};
+    const { emailState, passwordState } = this.state;
 
-    if (this.state.emailState === '') {
+    if (emailState === '') {
       newState.emailState = 'error';
     }
 
-    if (this.state.passwordState === '') {
+    if (passwordState === '') {
       newState.passwordState = 'error';
     }
 
     this.setState(newState, this.login);
   }
 
-  change(event, stateName) {
+  verifyLength = (value, length) => value.length >= length
+
+  change = (event, stateName) => {
     const { value } = event.target;
     switch (stateName) {
       case 'email':
@@ -118,86 +131,100 @@ class LoginPage extends React.Component {
           [stateName]: value,
           [`${stateName}State`]: _.isEmpty(value) ? 'error' : 'success',
         });
-        return;
-      default:
-        return;
+        break;
+      default: {
+        break;
+      }
     }
   }
 
   render() {
     const { classes, history } = this.props;
+    const {
+      cardAnimation, emailState, email, openVerificationModal,
+      disabled, passwordState,
+    } = this.state;
 
     return (
       <div className={classes.content}>
         <div className={classes.container}>
-          <GridContainer justify={'center'} className={classes.loginPanel}>
+          <GridContainer justify="center" className={classes.loginPanel}>
             <GridItem xs={12} sm={6} md={5}>
               <form>
-                <Card login className={classes[this.state.cardAnimation]}>
+                <Card login className={classes[cardAnimation]}>
                   <CardHeader className={classes.headerWrapper}>
                     <div className={classNames(classes.textCenter, classes.headerPanel)}>
                       <h3 className={classes.contrastText}>Log in</h3>
                       <div className={classes.iconsBar}>
                         <div>
-                          <Icon className={classNames(fontAwesomeIcon.twitter, classes.socialIcon)} />
+                          <Icon
+                            className={classNames(fontAwesomeIcon.twitter, classes.socialIcon)}
+                          />
                         </div>
                         <div>
-                          <Icon className={classNames(fontAwesomeIcon.facebook, classes.socialIcon)} />
+                          <Icon
+                            className={classNames(fontAwesomeIcon.facebook, classes.socialIcon)}
+                          />
                         </div>
                         <div>
-                          <Icon className={classNames(fontAwesomeIcon.googlep, classes.socialIcon)} />
+                          <Icon
+                            className={classNames(fontAwesomeIcon.googlep, classes.socialIcon)}
+                          />
                         </div>
                       </div>
                     </div>
                   </CardHeader>
                   <CardBody>
                     <CustomInput
-                      labelText='Email'
-                      success={this.state.emailState === 'success'}
-                      error={this.state.emailState === 'error'}
-                      id='email'
+                      labelText="Email"
+                      success={emailState === 'success'}
+                      error={emailState === 'error'}
+                      id="email"
                       formControlProps={{ fullWidth: true }}
                       inputProps={{
                         onChange: event => this.change(event, 'email'),
-                        type: 'email'
+                        type: 'email',
                       }}
                       iconFaName={classNames(fontAwesomeIcon.email, classes.inputIcon)}
                     />
                     <CustomInput
-                      labelText='Password'
-                      success={this.state.passwordState === 'success'}
-                      error={this.state.passwordState === 'error'}
-                      id='password'
+                      labelText="Password"
+                      success={passwordState === 'success'}
+                      error={passwordState === 'error'}
+                      id="password"
                       formControlProps={{ fullWidth: true }}
                       inputProps={{
                         onChange: event => this.change(event, 'password'),
-                        type: 'password'
+                        type: 'password',
                       }}
                       iconFaName={classNames(fontAwesomeIcon.password, classes.inputIcon)}
                     />
                     <ResetPassword classes={classes} />
                     <VerificationPage
-                      open={this.state.openVerificationModal}
-                      email={this.state.email}
+                      open={openVerificationModal}
+                      email={email}
                       history={history}
-                      page='login'
+                      page="login"
                       actionAfterSubmit={this.login}
                     />
                   </CardBody>
                   <CardFooter className={classes.footerWrapper}>
                     <Button
                       fullWidth
-                      color='rose'
-                      disabled={this.state.disabled}
+                      color="rose"
+                      disabled={disabled}
                       onClick={this.loginClick}
                       className={classes.loginButtonLabel}
                     >
-                      let's go
+                      let&#39;s go
                     </Button>
                   </CardFooter>
                   <div>
-                    <Link to='/register' className={classes.alertLink}>
-                      <h5 className={classNames(classes.noMarginTop, classes.textCenter)}>Register</h5></Link>
+                    <Link to="/register" className={classes.alertLink}>
+                      <h5 className={classNames(classes.noMarginTop, classes.textCenter)}>
+                        Register
+                      </h5>
+                    </Link>
                   </div>
                 </Card>
               </form>
@@ -209,11 +236,7 @@ class LoginPage extends React.Component {
   }
 }
 
-LoginPage.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
 export default compose(
   withStyles(loginPageStyle),
-  connect(null, { loginUser, toggleLoading })
+  connect(null, { loginUser, toggleLoading }),
 )(LoginPage);

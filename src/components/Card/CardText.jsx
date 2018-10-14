@@ -19,7 +19,7 @@ function CardText({ ...props }) {
 }
 
 CardText.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
   className: PropTypes.string,
   color: PropTypes.oneOf([
     "warning",
