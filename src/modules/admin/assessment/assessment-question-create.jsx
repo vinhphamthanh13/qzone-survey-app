@@ -123,7 +123,6 @@ class AssessmentQuestionCreate extends React.Component {
             changeQuestions={this.changeQuestions}
           />
         </CardBody>
-
       </Card>
     );
   }

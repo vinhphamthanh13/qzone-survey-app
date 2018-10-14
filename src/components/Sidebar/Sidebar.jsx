@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PerfectScrollbar from 'perfect-scrollbar';
 import cx from 'classnames';
 import {
   Hidden, SwipeableDrawer, Drawer,
@@ -9,34 +8,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { Link } from 'react-router-dom';
 import sidebarStyle from 'assets/jss/material-dashboard-pro-react/components/sidebarStyle';
 import SidebarItems from './SidebarItems';
-
-let ps;
-
-class SidebarWrapper extends React.Component {
-  componentDidMount() {
-    if (navigator.platform.indexOf("Win") > -1) {
-      ps = new PerfectScrollbar(this.refs.sidebarWrapper, {
-        suppressScrollX: true,
-        suppressScrollY: false
-      });
-    }
-  }
-
-  componentWillUnmount() {
-    if (navigator.platform.indexOf("Win") > -1) {
-      ps.destroy();
-    }
-  }
-
-  render() {
-    const { className, links } = this.props;
-    return (
-      <div className={className} ref="sidebarWrapper">
-        {links}
-      </div>
-    );
-  }
-}
+import SidebarWrapper from './SidebarWrapper';
 
 class Sidebar extends React.Component {
   static propTypes = {
@@ -49,20 +21,25 @@ class Sidebar extends React.Component {
       'green',
       'blue',
       'purple',
-      'rose'
+      'rose',
     ]),
     logo: PropTypes.string,
     logoText: PropTypes.string,
     image: PropTypes.string,
     routes: PropTypes.arrayOf(PropTypes.object),
-    location: PropTypes.object.isRequired,
+    location: PropTypes.objectOf(PropTypes.object).isRequired,
     miniActive: PropTypes.bool.isRequired,
     handleDrawerToggle: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
   }
 
   static defaultProps = {
-    bgColor: 'blue'
+    bgColor: 'blue',
+    color: undefined,
+    logo: undefined,
+    logoText: undefined,
+    image: undefined,
+    routes: [],
   }
 
   constructor(props) {
@@ -76,21 +53,19 @@ class Sidebar extends React.Component {
       logoText, routes, bgColor, miniActive, location,
       open, handleDrawerToggle,
     } = this.props;
+    const { miniActive: currentMiniActive } = this.state;
 
-    const logoNormal =
-      `${classes.logoNormal} ${cx({
-        [classes.logoNormalSidebarMini]: miniActive && this.state.miniActive
-      })}`;
+    const logoNormal = `${classes.logoNormal} ${cx({
+      [classes.logoNormalSidebarMini]: miniActive && currentMiniActive,
+    })}`;
     const logoClasses = `${classes.logo} ${cx({ [classes.whiteAfter]: bgColor === 'white' })}`;
-    const drawerPaper =
-      `${classes.drawerPaper} ${classes[`${bgColor}Background`]} ${cx({
-        [classes.drawerPaperMini]: miniActive && this.state.miniActive
-      })}`;
-    const sidebarWrapper =
-      `${classes.sidebarWrapper} ${cx({
-        [classes.drawerPaperMini]: miniActive && this.state.miniActive,
-        [classes.sidebarWrapperWithPerfectScrollbar]: navigator.platform.includes('Win')
-      })}`;
+    const drawerPaper = `${classes.drawerPaper} ${classes[`${bgColor}Background`]} ${cx({
+      [classes.drawerPaperMini]: miniActive && currentMiniActive,
+    })}`;
+    const sidebarWrapper = `${classes.sidebarWrapper} ${cx({
+      [classes.drawerPaperMini]: miniActive && currentMiniActive,
+      [classes.sidebarWrapperWithPerfectScrollbar]: navigator.platform.includes('Win'),
+    })}`;
     const drawerChildren = (
       <React.Fragment>
         <div className={logoClasses}>
@@ -101,19 +76,19 @@ class Sidebar extends React.Component {
         </div>
         <SidebarWrapper
           className={sidebarWrapper}
-          links={
+          links={(
             <SidebarItems
               classes={classes}
               routes={routes}
               location={location}
               initMiniActive={miniActive}
-              currentMiniActive={this.state.miniActive}
+              currentMiniActive={currentMiniActive}
               color={color}
             />
-          }
+          )}
         />
-        {image !== undefined &&
-          <div className={classes.background} style={{ backgroundImage: `url(${image})` }} />}
+        {image !== undefined
+          && <div className={classes.background} style={{ backgroundImage: `url(${image})` }} />}
       </React.Fragment>
     );
 
@@ -136,7 +111,9 @@ class Sidebar extends React.Component {
             anchor="left"
             variant="permanent"
             onMouseOver={() => this.setState({ miniActive: false })}
+            onFocus={() => this.setState({ miniActive: false })}
             onMouseOut={() => this.setState({ miniActive: true })}
+            onBlur={() => this.setState({ miniActive: true })}
             classes={{ paper: drawerPaper }}
           >
             {drawerChildren}

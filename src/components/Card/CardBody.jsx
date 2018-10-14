@@ -1,8 +1,8 @@
-import React from "react";
-import classNames from "classnames";
-import PropTypes from "prop-types";
-import withStyles from "@material-ui/core/styles/withStyles";
-import cardBodyStyle from "assets/jss/material-dashboard-pro-react/components/cardBodyStyle";
+import React from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import withStyles from '@material-ui/core/styles/withStyles';
+import cardBodyStyle from 'assets/jss/material-dashboard-pro-react/components/cardBodyStyle';
 
 function CardBody({ ...props }) {
   const {
@@ -29,7 +29,7 @@ function CardBody({ ...props }) {
     [classes.cardBodyColor]: color,
     [classes.cardBodyProfile]: profile,
     [classes.cardBodyCalendar]: calendar,
-    [className]: className !== undefined
+    [className]: className !== undefined,
   });
   return (
     <div className={cardBodyClasses} {...rest}>
@@ -48,7 +48,19 @@ CardBody.propTypes = {
   signup: PropTypes.bool,
   color: PropTypes.bool,
   profile: PropTypes.bool,
-  calendar: PropTypes.bool
+  calendar: PropTypes.bool,
+};
+
+CardBody.defaultProps = {
+  className: undefined,
+  background: false,
+  plain: false,
+  formHorizontal: false,
+  pricing: false,
+  signup: false,
+  color: false,
+  profile: false,
+  calendar: false,
 };
 
 export default withStyles(cardBodyStyle)(CardBody);

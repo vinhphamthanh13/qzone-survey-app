@@ -1,8 +1,8 @@
-import React from "react";
-import classNames from "classnames";
-import PropTypes from "prop-types";
-import withStyles from "@material-ui/core/styles/withStyles";
-import cardHeaderStyle from "assets/jss/material-dashboard-pro-react/components/cardHeaderStyle";
+import React from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import withStyles from '@material-ui/core/styles/withStyles';
+import cardHeaderStyle from 'assets/jss/material-dashboard-pro-react/components/cardHeaderStyle';
 
 function CardHeader({ ...props }) {
   const {
@@ -21,7 +21,7 @@ function CardHeader({ ...props }) {
   } = props;
   const cardHeaderClasses = classNames({
     [classes.cardHeader]: true,
-    [classes[color + "CardHeader"]]: color,
+    [classes[`${color}CardHeader`]]: color,
     [classes.cardHeaderPlain]: plain,
     [classes.cardHeaderImage]: image,
     [classes.cardHeaderContact]: contact,
@@ -29,7 +29,7 @@ function CardHeader({ ...props }) {
     [classes.cardHeaderStats]: stats,
     [classes.cardHeaderIcon]: icon,
     [classes.cardHeaderText]: text,
-    [className]: className !== undefined
+    [className]: className !== undefined,
   });
   return (
     <div className={cardHeaderClasses} {...rest}>
@@ -42,12 +42,12 @@ CardHeader.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
   className: PropTypes.string,
   color: PropTypes.oneOf([
-    "warning",
-    "success",
-    "danger",
-    "info",
-    "primary",
-    "rose"
+    'warning',
+    'success',
+    'danger',
+    'info',
+    'primary',
+    'rose',
   ]),
   plain: PropTypes.bool,
   image: PropTypes.bool,
@@ -55,7 +55,19 @@ CardHeader.propTypes = {
   signup: PropTypes.bool,
   stats: PropTypes.bool,
   icon: PropTypes.bool,
-  text: PropTypes.bool
+  text: PropTypes.bool,
+};
+
+CardHeader.defaultProps = {
+  className: undefined,
+  color: undefined,
+  plain: false,
+  image: false,
+  contact: false,
+  signup: false,
+  stats: false,
+  icon: false,
+  text: false,
 };
 
 export default withStyles(cardHeaderStyle)(CardHeader);

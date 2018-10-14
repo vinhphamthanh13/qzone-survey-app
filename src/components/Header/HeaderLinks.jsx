@@ -1,30 +1,36 @@
-import React from "react";
-import classNames from "classnames";
-import PropTypes from "prop-types";
-import { Manager, Target, Popper } from "react-popper";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { MenuItem, MenuList, ClickAwayListener, Paper, Grow, Hidden } from "@material-ui/core";
-import { Person, Notifications, Dashboard } from "@material-ui/icons";
-import Button from "components/CustomButtons/Button";
+import React from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import { Manager, Target, Popper } from 'react-popper';
+import withStyles from '@material-ui/core/styles/withStyles';
+import {
+  MenuItem, MenuList, ClickAwayListener, Paper, Grow, Hidden,
+} from '@material-ui/core';
+import { Person, Notifications, Dashboard } from '@material-ui/icons';
+import Button from 'components/CustomButtons/Button';
 import { sessionService } from 'redux-react-session';
-import headerLinksStyle from "assets/jss/material-dashboard-pro-react/components/headerLinksStyle";
-import { surveyLocalData } from "../../constants"
+import headerLinksStyle from 'assets/jss/material-dashboard-pro-react/components/headerLinksStyle';
 import { Storage } from 'react-jhipster';
+import { surveyLocalData } from '../../constants';
 
 class HeaderLinks extends React.Component {
   state = {
     notificationOpen: false,
-    userOpen: false
+    userOpen: false,
   };
+
   handleClick = () => {
-    this.setState({ notificationOpen: !this.state.notificationOpen });
+    this.setState(oldState => ({ notificationOpen: !oldState.notificationOpen }));
   };
+
   handleUserClick = () => {
-    this.setState({ userOpen: !this.state.userOpen });
+    this.setState(oldState => ({ userOpen: !oldState.userOpen }));
   };
+
   handleClose = () => {
     this.setState({ notificationOpen: false, userOpen: false });
   };
+
   handleLogout = () => {
     if (Storage.local.get(surveyLocalData.SURVEY_ID)) {
       Storage.local.remove(surveyLocalData.SURVEY_ID);
@@ -35,16 +41,16 @@ class HeaderLinks extends React.Component {
     this.setState({ userOpen: false });
     sessionService.deleteSession();
     sessionService.deleteUser();
-    window.location = "/login";
+    window.location = '/login';
   }
+
   render() {
     const { classes } = this.props;
     const { notificationOpen, userOpen } = this.state;
-    const dropdownItem =
-      classes.dropdownItem +
-      " "
+    const dropdownItem = `${classes.dropdownItem
+    } `;
     const managerClasses = classNames({
-      [classes.managerClasses]: true
+      [classes.managerClasses]: true,
     });
     return (
       <div>
@@ -56,19 +62,19 @@ class HeaderLinks extends React.Component {
           justIcon
           className={classes.buttonLink}
           muiClasses={{
-            label: ""
+            label: '',
           }}
         >
           <Dashboard
             className={
-              classes.headerLinksSvg +
-              " " +
-              classes.links
+              `${classes.headerLinksSvg
+              } ${
+                classes.links}`
             }
           />
           <Hidden mdUp>
             <span className={classes.linkText}>
-              {"Dashboard"}
+              {'Dashboard'}
             </span>
           </Hidden>
         </Button>
@@ -78,24 +84,23 @@ class HeaderLinks extends React.Component {
               color="transparent"
               justIcon
               aria-label="Notifications"
-              aria-owns={notificationOpen ? "menu-list" : null}
+              aria-owns={notificationOpen ? 'menu-list' : null}
               aria-haspopup="true"
               onClick={this.handleClick}
               className={classes.buttonLink}
               muiClasses={{
-                label: ""
+                label: '',
               }}
             >
               <Notifications
                 className={
-                  classes.headerLinksSvg +
-                  " " +
-                  classes.links
+                  `${classes.headerLinksSvg} ${classes.links}`
                 }
               />
               <Hidden mdUp>
-                <span onClick={this.handleClick} className={classes.linkText}>
-                  {"Notification"}
+                {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
+                <span role="button" tabIndex="0" onClick={this.handleClick} className={classes.linkText}>
+                  Notification
                 </span>
               </Hidden>
             </Button>
@@ -104,20 +109,17 @@ class HeaderLinks extends React.Component {
             placement="bottom-start"
             eventsEnabled={notificationOpen}
             className={
-              classNames({ [classes.popperClose]: !notificationOpen }) +
-              " " +
-              classes.pooperResponsive
+              `${classNames({ [classes.popperClose]: !notificationOpen })} ${classes.pooperResponsive}`
             }
           >
             <ClickAwayListener onClickAway={this.handleClose}>
               <Grow
                 in={notificationOpen}
                 id="menu-list"
-                style={{ transformOrigin: "0 0 0" }}
+                style={{ transformOrigin: '0 0 0' }}
               >
                 <Paper className={classes.dropdown}>
-                  <MenuList role="menu">
-                  </MenuList>
+                  <MenuList role="menu" />
                 </Paper>
               </Grow>
             </ClickAwayListener>
@@ -129,24 +131,20 @@ class HeaderLinks extends React.Component {
               color="transparent"
               justIcon
               aria-label="Person"
-              aria-owns={userOpen ? "menu-list1" : null}
+              aria-owns={userOpen ? 'menu-list1' : null}
               aria-haspopup="true"
               onClick={this.handleUserClick}
               className={classes.buttonLink}
-              muiClasses={{
-                label: ""
-              }}
+              muiClasses={{ label: '' }}
             >
               <Person
                 className={
-                  classes.headerLinksSvg +
-                  " " +
-                  classes.links
+                  `${classes.headerLinksSvg} ${classes.links}`
                 }
               />
               <Hidden mdUp>
                 <span className={classes.linkText}>
-                  {"Profile"}
+                  Profile
                 </span>
               </Hidden>
             </Button>
@@ -155,16 +153,14 @@ class HeaderLinks extends React.Component {
             placement="bottom-start"
             eventsEnabled={userOpen}
             className={
-              classNames({ [classes.popperClose]: !userOpen }) +
-              " " +
-              classes.pooperResponsive
+              `${classNames({ [classes.popperClose]: !userOpen })} ${classes.pooperResponsive}`
             }
           >
             <ClickAwayListener onClickAway={this.handleClose}>
               <Grow
                 in={userOpen}
                 id="menu-list1"
-                style={{ transformOrigin: "0 0 0" }}
+                style={{ transformOrigin: '0 0 0' }}
               >
                 <Paper className={classes.dropdown}>
                   <MenuList role="menu">
@@ -172,13 +168,13 @@ class HeaderLinks extends React.Component {
                       onClick={this.handleClose}
                       className={dropdownItem}
                     >
-                      {"Profile"}
+                      Profile
                     </MenuItem>
                     <MenuItem
                       onClick={this.handleLogout}
                       className={dropdownItem}
                     >
-                      {"Logout"}
+                      Logout
                     </MenuItem>
                   </MenuList>
                 </Paper>
@@ -192,7 +188,7 @@ class HeaderLinks extends React.Component {
 }
 
 HeaderLinks.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export default withStyles(headerLinksStyle)(HeaderLinks);

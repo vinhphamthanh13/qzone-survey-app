@@ -1,9 +1,10 @@
-import React from "react";
-import classNames from "classnames";
-import PropTypes from "prop-types";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Button from "@material-ui/core/Button";
-import buttonStyle from "assets/jss/material-dashboard-pro-react/components/buttonStyle";
+import React from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Button from '@material-ui/core/Button';
+import buttonStyle from 'assets/jss/material-dashboard-pro-react/components/buttonStyle';
+
 function RegularButton({ ...props }) {
   const {
     classes,
@@ -32,7 +33,7 @@ function RegularButton({ ...props }) {
     [classes.block]: block,
     [classes.link]: link,
     [classes.justIcon]: justIcon,
-    [className]: className
+    [className]: className,
   });
   return (
     <Button {...rest} classes={muiClasses} className={btnClasses}>
@@ -44,27 +45,27 @@ function RegularButton({ ...props }) {
 RegularButton.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
   color: PropTypes.oneOf([
-    "primary",
-    "info",
-    "success",
-    "warning",
-    "danger",
-    "rose",
-    "white",
-    "twitter",
-    "facebook",
-    "google",
-    "linkedin",
-    "pinterest",
-    "youtube",
-    "tumblr",
-    "github",
-    "behance",
-    "dribbble",
-    "reddit",
-    "transparent"
+    'primary',
+    'info',
+    'success',
+    'warning',
+    'danger',
+    'rose',
+    'white',
+    'twitter',
+    'facebook',
+    'google',
+    'linkedin',
+    'pinterest',
+    'youtube',
+    'tumblr',
+    'github',
+    'behance',
+    'dribbble',
+    'reddit',
+    'transparent',
   ]),
-  size: PropTypes.oneOf(["sm","md", "lg"]),
+  size: PropTypes.oneOf(['sm', 'md', 'lg']),
   simple: PropTypes.bool,
   round: PropTypes.bool,
   fullWidth: PropTypes.bool,
@@ -73,7 +74,21 @@ RegularButton.propTypes = {
   link: PropTypes.bool,
   justIcon: PropTypes.bool,
   className: PropTypes.string,
-  muiClasses: PropTypes.object
+  muiClasses: PropTypes.objectOf(PropTypes.string),
+};
+
+RegularButton.defaultProps = {
+  color: undefined,
+  size: undefined,
+  simple: false,
+  round: false,
+  fullWidth: false,
+  disabled: false,
+  block: false,
+  link: false,
+  justIcon: false,
+  className: undefined,
+  muiClasses: {},
 };
 
 export default withStyles(buttonStyle)(RegularButton);
