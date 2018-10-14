@@ -7,6 +7,7 @@ import AdminAssessmentQuestionList from 'modules/admin/assessment/assessment-que
 import AssessorAssessmentQuestionList from 'modules/assessor/assessment/assessment-question-list';
 import AssessmentResponseResult from 'modules/participant/assessment/assessment-response-result';
 import AssessmentQuestionnaire from 'modules/shared/assessment-questionnaire';
+import AssessmentQuestionCopy from 'modules/shared/assessment-question-copy';
 import AssessmentQuestionEdit from 'modules/shared/assessment-question-edit';
 import AssessmentQuestionCreate from 'modules/admin/assessment/assessment-question-create';
 
@@ -88,5 +89,11 @@ export const otherRoutes = [
     path: '/admin/assessment/create',
     name: 'Assessment Create',
     component: AssessmentQuestionCreate,
+
+  },
+  {
+    path: '/admin/assessment/copy/:id',
+    name: 'Copy Survey',
+    component: AssessmentQuestionCopy,
   },
 ];

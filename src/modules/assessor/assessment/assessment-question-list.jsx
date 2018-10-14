@@ -10,7 +10,8 @@ import {
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Alert from 'react-s-alert';
-import { Delete, FileCopy } from '@material-ui/icons';
+import { Delete } from '@material-ui/icons';
+import LinkIcon from '@material-ui/icons/Link';
 import ReactTooltip from 'react-tooltip';
 import { css } from 'react-emotion';
 import { ClipLoader } from 'react-spinners';
@@ -182,13 +183,13 @@ class AssessorAssessmentQuestionList extends React.Component {
                       .map((surveyItem, index) => (
                         <TableRow hover key={surveyItem.id}>
                           <TableCell>{index + 1}</TableCell>
-                          <TableCell><Link data-tip="Show" to={`/assessment/show/${surveyItem.id}`}>{surveyItem.title}</Link></TableCell>
+                          <TableCell><Link data-tip="Show Survey" to={`/assessment/show/${surveyItem.id}`}>{surveyItem.title}</Link></TableCell>
                           <TableCell>
                             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                            <Link style={iconStyle} data-tip="Delete" to="#" onClick={() => this.warningWithConfirmMessage(surveyItem.id)}><Delete /></Link>
+                            <Link style={iconStyle} data-tip="Delete Survey" to="#" onClick={() => this.warningWithConfirmMessage(surveyItem.id)}><Delete /></Link>
                             <CopyToClipboard text={`${SURVEY_APP_URL}/surveys/${surveyItem.id}`}>
                               {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                              <Link data-tip="Copy Link" to="#" onClick={this.handleClick}><FileCopy /></Link>
+                              <Link data-tip="Copy Link" to="#" onClick={this.handleClick}><LinkIcon /></Link>
                             </CopyToClipboard>
                           </TableCell>
                           <TableCell>

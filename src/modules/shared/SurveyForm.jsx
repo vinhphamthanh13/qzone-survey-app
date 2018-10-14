@@ -26,7 +26,7 @@ class SurveyForm extends React.Component {
     survey: PropTypes.objectOf(PropTypes.object).isRequired,
     change: PropTypes.func.isRequired,
     changeQuestions: PropTypes.func.isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -53,7 +53,7 @@ class SurveyForm extends React.Component {
   reloadAssessorList = () => {
     const { fetchUserTypeList: fetchUserTypeListAction } = this.props;
     fetchUserTypeListAction(this.state);
-  }
+  };
 
   render() {
     const {

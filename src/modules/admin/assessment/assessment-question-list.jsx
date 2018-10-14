@@ -11,6 +11,7 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Alert from 'react-s-alert';
 import { Delete, FileCopy, Poll } from '@material-ui/icons';
+import LinkIcon from '@material-ui/icons/Link';
 import ReactTooltip from 'react-tooltip';
 import { css } from 'react-emotion';
 import { ClipLoader } from 'react-spinners';
@@ -22,7 +23,9 @@ import CardBody from 'components/Card/CardBody';
 import CardHeader from 'components/Card/CardHeader';
 import CardIcon from 'components/Card/CardIcon';
 import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/listPageStyle';
-import { fetchSurveys, deleteSurvey, deleteAllSurvey } from 'services/api/assessment';
+import {
+  fetchSurveys, deleteSurvey, deleteAllSurvey,
+} from 'services/api/assessment';
 import { checkAuth } from 'services/api/auth';
 import { classesType, historyType } from 'types/global';
 import { SURVEY_APP_URL } from '../../../constants';
@@ -37,7 +40,7 @@ const iconStyle = {
   marginRight: 30,
 };
 
-class AminAssessmentQuestionList extends React.Component {
+class AdminAssessmentQuestionList extends React.Component {
   static propTypes = {
     classes: classesType.isRequired,
     surveyList: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -46,15 +49,16 @@ class AminAssessmentQuestionList extends React.Component {
     deleteSurvey: PropTypes.func.isRequired,
     deleteAllSurvey: PropTypes.func.isRequired,
     history: historyType.isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);
     this.state = {
       sweetAlert: '',
       deleteAll: false,
-      loading: true,
+      loading: false,
       token: '',
+      // copyId: null,
     };
   }
 
@@ -91,7 +95,7 @@ class AminAssessmentQuestionList extends React.Component {
       ),
       deleteAll: false,
     });
-  }
+  };
 
   successDelete = (SID) => {
     const {
@@ -122,7 +126,7 @@ class AminAssessmentQuestionList extends React.Component {
       });
       fetchSurveysAction(token);
     });
-  }
+  };
 
   handleClick = (e) => {
     e.preventDefault();
@@ -131,7 +135,12 @@ class AminAssessmentQuestionList extends React.Component {
       position: 'bottom-right',
       effect: 'bouncyflip',
     });
-  }
+  };
+
+  copySurvey = (id) => {
+    const { history } = this.props;
+    history.push(`/admin/assessment/copy/${id}`);
+  };
 
   render() {
     const { classes, surveyList, history } = this.props;
@@ -188,14 +197,16 @@ class AminAssessmentQuestionList extends React.Component {
                       .map((surveyItem, index) => (
                         <TableRow hover key={surveyItem.id}>
                           <TableCell>{index + 1}</TableCell>
-                          <TableCell><Link data-tip="Show" to={`/assessment/show/${surveyItem.id}`}>{surveyItem.title}</Link></TableCell>
+                          <TableCell><Link data-tip="Show Survey" to={`/assessment/show/${surveyItem.id}`}>{surveyItem.title}</Link></TableCell>
                           <TableCell>
                             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                            <Link style={iconStyle} data-tip="Delete" to="#" onClick={() => this.warningWithConfirmMessage(surveyItem.id)}><Delete /></Link>
+                            <Link style={iconStyle} data-tip="Delete Survey" to="#" onClick={() => this.warningWithConfirmMessage(surveyItem.id)}><Delete /></Link>
                             <CopyToClipboard text={`${SURVEY_APP_URL}/surveys/${surveyItem.id}`}>
                               {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                              <Link data-tip="Copy Link" to="#" onClick={this.handleClick}><FileCopy /></Link>
+                              <Link style={iconStyle} data-tip="Copy Link" to="#" onClick={this.handleClick}><LinkIcon /></Link>
                             </CopyToClipboard>
+                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                            <Link data-tip="Clone Survey" to="#" onClick={() => this.copySurvey(surveyItem.id)}><FileCopy /></Link>
                           </TableCell>
                           <TableCell>
                             <ReactTooltip />
@@ -216,7 +227,7 @@ class AminAssessmentQuestionList extends React.Component {
 
 
 function mapStateToProps(state) {
-  return { surveyList: state.surveys.list };
+  return { surveyList: state.surveys.list, survey: state.surveys.detail };
 }
 
 export default compose(
@@ -224,4 +235,4 @@ export default compose(
   connect(mapStateToProps, {
     fetchSurveys, deleteSurvey, deleteAllSurvey, checkAuth,
   }),
-)(AminAssessmentQuestionList);
+)(AdminAssessmentQuestionList);

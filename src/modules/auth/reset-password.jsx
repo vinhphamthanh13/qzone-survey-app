@@ -67,11 +67,15 @@ class ResetPassword extends React.Component {
 
     return (
       <React.Fragment>
-        <div className={classes.textEnd}>
-          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-          <Link to="#" onClick={this.handleOpen}>
-            <h5 className={classNames(classes.alertLink, classes.noMarginTop)}>forgot password?</h5>
-          </Link>
+        <div className={classes.justifyContentEnd}>
+          <div>
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+            <Link to="#" onClick={this.handleOpen}>
+              <h5 className={classNames(classes.alertLink, classes.noMarginTop)}>
+                forgot password?
+              </h5>
+            </Link>
+          </div>
         </div>
         <Dialog
           open={open}

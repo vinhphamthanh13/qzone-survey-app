@@ -35,8 +35,9 @@ const loginPageStyle = {
   textCenter: {
     textAlign: 'center',
   },
-  textEnd: {
-    textAlign: 'end',
+  justifyContentEnd: {
+    display: 'flex',
+    justifyContent: 'flex-end',
   },
   content: {
     minHeight: '100vh',

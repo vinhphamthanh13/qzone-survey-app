@@ -43,7 +43,7 @@ class AssessmentQuestionnaire extends React.Component {
     survey: PropTypes.objectOf(PropTypes.object).isRequired,
     user: PropTypes.objectOf(PropTypes.object).isRequired,
     history: historyType.isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -95,7 +95,7 @@ class AssessmentQuestionnaire extends React.Component {
     } else {
       history.push('/assessor/assessment/list');
     }
-  }
+  };
 
   render() {
     const { classes, history, match } = this.props;

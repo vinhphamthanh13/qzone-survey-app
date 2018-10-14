@@ -8,7 +8,7 @@ class SurveyEditor extends Component {
   static propTypes = {
     data: PropTypes.objectOf(PropTypes.object).isRequired,
     change: PropTypes.func.isRequired,
-  }
+  };
 
   editor = null;
 
@@ -19,21 +19,16 @@ class SurveyEditor extends Component {
   }
 
   componentDidMount() {
-    this.editor = new SurveyJSEditor.SurveyEditor(
-      'surveyEditorContainer',
-    );
-    this.editor.saveSurveyFunc = this.saveMySurvey;
-
     const { data } = this.props;
-    if (data) {
-      this.editor.text = JSON.stringify(data);
-    }
+    this.editor = new SurveyJSEditor.SurveyEditor('surveyEditorContainer');
+    this.editor.saveSurveyFunc = this.saveMySurvey;
+    this.editor.text = data ? JSON.stringify(data) : this.editor.text;
   }
 
   saveMySurvey = () => {
     const { change } = this.props;
     change(JSON.parse(this.editor.text));
-  }
+  };
 
   render() {
     return (

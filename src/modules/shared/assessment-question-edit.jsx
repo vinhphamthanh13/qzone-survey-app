@@ -136,7 +136,6 @@ class AssessmentQuestionEdit extends React.Component {
       edit,
     };
     const { classes, match: { params: { id } } } = this.props;
-
     return (
       surveyInfo
       && (
