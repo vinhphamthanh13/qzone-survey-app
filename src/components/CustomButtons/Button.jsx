@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
 import buttonStyle from 'assets/jss/material-dashboard-pro-react/components/buttonStyle';
+import { classesType } from 'types/global';
 
 function RegularButton({ ...props }) {
   const {
@@ -43,7 +44,7 @@ function RegularButton({ ...props }) {
 }
 
 RegularButton.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  classes: classesType.isRequired,
   color: PropTypes.oneOf([
     'primary',
     'info',

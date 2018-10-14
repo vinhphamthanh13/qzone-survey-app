@@ -17,10 +17,11 @@ import GridContainer from 'components/Grid/GridContainer';
 import GridItem from 'components/Grid/GridItem';
 import accountPageStyles from 'assets/jss/material-dashboard-pro-react/modules/accountPageStyles';
 import ChangePassword from 'modules/auth/change-password';
+import { classesType } from 'types/global';
 
 class Account extends PureComponent {
   static propTypes = {
-    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+    classes: classesType.isRequired,
     inputChange: PropTypes.func.isRequired,
     email: PropTypes.string,
     emailState: PropTypes.string.isRequired,

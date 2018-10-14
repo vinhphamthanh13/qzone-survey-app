@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import cardBodyStyle from 'assets/jss/material-dashboard-pro-react/components/cardBodyStyle';
+import { classesType } from 'types/global';
 
 function CardBody({ ...props }) {
   const {
@@ -39,7 +40,7 @@ function CardBody({ ...props }) {
 }
 
 CardBody.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  classes: classesType.isRequired,
   className: PropTypes.string,
   background: PropTypes.bool,
   plain: PropTypes.bool,

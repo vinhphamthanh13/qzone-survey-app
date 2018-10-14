@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CustomInput from 'components/CustomInput/CustomInput';
 import registerPageStyle from 'assets/jss/material-dashboard-pro-react/modules/registerPageStyle';
+import { classesType } from 'types/global';
 
 class PasswordField extends PureComponent {
   static propTypes = {
@@ -10,7 +11,7 @@ class PasswordField extends PureComponent {
     onChangeConfirmPwd: PropTypes.func.isRequired,
     passwordState: PropTypes.string.isRequired,
     confirmPwdState: PropTypes.string.isRequired,
-    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+    classes: classesType.isRequired,
     useLabel: PropTypes.bool,
   }
 

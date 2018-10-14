@@ -17,6 +17,7 @@ import { sessionService } from 'redux-react-session';
 import { css } from 'react-emotion';
 import { ClipLoader } from 'react-spinners';
 import { Storage } from 'react-jhipster';
+import { classesType, matchType, historyType } from 'types/global';
 import { surveyLocalData, eUserType } from '../../constants';
 
 const override = css`
@@ -28,13 +29,13 @@ const override = css`
 let userType;
 class AssessmentQuestionEdit extends React.Component {
   static propTypes = {
-    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+    classes: classesType.isRequired,
     toggleLoading: PropTypes.func.isRequired,
     fetchSurvey: PropTypes.func.isRequired,
     editSurvey: PropTypes.func.isRequired,
     survey: PropTypes.objectOf(PropTypes.object).isRequired,
-    match: PropTypes.objectOf(PropTypes.object).isRequired,
-    history: PropTypes.objectOf(PropTypes.object).isRequired,
+    match: matchType.isRequired,
+    history: historyType.isRequired,
   }
 
   constructor(props) {

@@ -16,6 +16,7 @@ import { isEmpty } from 'lodash';
 import { sessionService } from 'redux-react-session';
 import { css } from 'react-emotion';
 import { ClipLoader } from 'react-spinners';
+import { classesType, historyType } from 'types/global';
 
 const override = css`
     display: block;
@@ -25,9 +26,9 @@ const override = css`
 
 class AssessmentQuestionCreate extends React.Component {
   static propTypes = {
-    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+    classes: classesType.isRequired,
     createSurvey: PropTypes.func.isRequired,
-    history: PropTypes.objectOf(PropTypes.object).isRequired,
+    history: historyType.isRequired,
   }
 
   constructor(props) {

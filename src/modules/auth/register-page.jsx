@@ -21,13 +21,14 @@ import VerificationPage from 'modules/auth/verification-page';
 import ReactLoader from 'modules/react-loader';
 import validatePassword from 'utils/validatePassword';
 import validateEmail from 'utils/validateEmail';
+import { classesType, historyType } from 'types/global';
 import PasswordField from './password-field';
 import { eUserType, eRegisterPage } from '../../constants';
 
 class RegisterPage extends React.Component {
   static propTypes = {
-    classes: PropTypes.objectOf(PropTypes.string).isRequired,
-    history: PropTypes.objectOf(PropTypes.object).isRequired,
+    classes: classesType.isRequired,
+    history: historyType.isRequired,
     registerUser: PropTypes.func.isRequired,
   }
 

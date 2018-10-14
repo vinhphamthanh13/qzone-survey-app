@@ -18,12 +18,13 @@ import { connect } from 'react-redux';
 import Button from 'components/CustomButtons/Button';
 import { verifyUser } from 'services/api/auth';
 import verificationPageStyle from 'assets/jss/material-dashboard-pro-react/modules/verificationPageStyle';
+import { classesType, historyType } from 'types/global';
 import ResendCodeButton from './resend-code-button';
 
 class VerificationPage extends React.PureComponent {
   static propTypes = {
-    classes: PropTypes.objectOf(PropTypes.string).isRequired,
-    history: PropTypes.objectOf(PropTypes.object).isRequired,
+    classes: classesType.isRequired,
+    history: historyType.isRequired,
     email: PropTypes.string,
     open: PropTypes.bool.isRequired,
     page: PropTypes.string.isRequired,

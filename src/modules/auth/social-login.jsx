@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import Button from 'components/CustomButtons/Button';
+import { classesType } from 'types/global';
 
 class SocialLogin extends PureComponent {
   static propTypes = {
-    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+    classes: classesType.isRequired,
   }
 
   render() {

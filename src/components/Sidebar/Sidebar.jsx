@@ -6,14 +6,15 @@ import {
 } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Link } from 'react-router-dom';
+import { classesType, locationType } from 'types/global';
 import sidebarStyle from 'assets/jss/material-dashboard-pro-react/components/sidebarStyle';
 import SidebarItems from './SidebarItems';
 import SidebarWrapper from './SidebarWrapper';
 
 class Sidebar extends React.Component {
   static propTypes = {
-    classes: PropTypes.objectOf(PropTypes.string).isRequired,
-    bgColor: PropTypes.oneOf(['white', 'black', 'blue']),
+    classes: classesType.isRequired,
+    bgColor: PropTypes.oneOf(['white', 'black', 'blue']).isRequired,
     color: PropTypes.oneOf([
       'white',
       'red',
@@ -22,24 +23,19 @@ class Sidebar extends React.Component {
       'blue',
       'purple',
       'rose',
-    ]),
-    logo: PropTypes.string,
-    logoText: PropTypes.string,
+    ]).isRequired,
+    logo: PropTypes.string.isRequired,
+    logoText: PropTypes.string.isRequired,
     image: PropTypes.string,
-    routes: PropTypes.arrayOf(PropTypes.object),
-    location: PropTypes.objectOf(PropTypes.object).isRequired,
+    routes: PropTypes.arrayOf(PropTypes.object).isRequired,
+    location: locationType.isRequired,
     miniActive: PropTypes.bool.isRequired,
     handleDrawerToggle: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
   }
 
   static defaultProps = {
-    bgColor: 'blue',
-    color: undefined,
-    logo: undefined,
-    logoText: undefined,
     image: undefined,
-    routes: [],
   }
 
   constructor(props) {

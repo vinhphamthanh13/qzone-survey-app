@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import chartsStyle from 'assets/jss/material-dashboard-pro-react/modules/chartsStyle';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -8,6 +7,7 @@ import CardBody from 'components/Card/CardBody';
 import CardIcon from 'components/Card/CardIcon';
 import CardHeader from 'components/Card/CardHeader';
 import Timeline from '@material-ui/icons/Timeline';
+import { classesType } from 'types/global';
 
 const delays2 = 80;
 const durations2 = 500;
@@ -103,7 +103,7 @@ const Dashboard = ({ classes }) => (
 );
 
 Dashboard.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  classes: classesType.isRequired,
 };
 
 export default withStyles(chartsStyle)(Dashboard);

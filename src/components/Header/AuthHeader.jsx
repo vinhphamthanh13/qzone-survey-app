@@ -5,6 +5,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { AppBar, Toolbar } from '@material-ui/core';
 import Button from 'components/CustomButtons/Button';
 import authHeaderStyle from 'assets/jss/material-dashboard-pro-react/components/authHeaderStyle';
+import { classesType } from 'types/global';
 
 const AuthHeader = ({ classes, color }) => {
   const appBarClasses = classnames(classes.appBar, {
@@ -22,7 +23,7 @@ const AuthHeader = ({ classes, color }) => {
 };
 
 AuthHeader.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  classes: classesType.isRequired,
   color: PropTypes.oneOf(['primary', 'info', 'success', 'warning', 'danger']),
 };
 

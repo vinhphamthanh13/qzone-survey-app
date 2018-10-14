@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import { Manager, Target, Popper } from 'react-popper';
 import withStyles from '@material-ui/core/styles/withStyles';
 import {
@@ -11,9 +10,14 @@ import Button from 'components/CustomButtons/Button';
 import { sessionService } from 'redux-react-session';
 import headerLinksStyle from 'assets/jss/material-dashboard-pro-react/components/headerLinksStyle';
 import { Storage } from 'react-jhipster';
+import { classesType } from 'types/global';
 import { surveyLocalData } from '../../constants';
 
 class HeaderLinks extends React.Component {
+  static propTypes = {
+    classes: classesType.isRequired,
+  }
+
   state = {
     notificationOpen: false,
     userOpen: false,
@@ -47,8 +51,7 @@ class HeaderLinks extends React.Component {
   render() {
     const { classes } = this.props;
     const { notificationOpen, userOpen } = this.state;
-    const dropdownItem = `${classes.dropdownItem
-    } `;
+    const dropdownItem = `${classes.dropdownItem} `;
     const managerClasses = classNames({
       [classes.managerClasses]: true,
     });
@@ -67,9 +70,7 @@ class HeaderLinks extends React.Component {
         >
           <Dashboard
             className={
-              `${classes.headerLinksSvg
-              } ${
-                classes.links}`
+              `${classes.headerLinksSvg} ${classes.links}`
             }
           />
           <Hidden mdUp>
@@ -186,9 +187,5 @@ class HeaderLinks extends React.Component {
     );
   }
 }
-
-HeaderLinks.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
-};
 
 export default withStyles(headerLinksStyle)(HeaderLinks);

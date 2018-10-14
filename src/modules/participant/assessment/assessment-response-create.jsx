@@ -13,16 +13,17 @@ import * as Survey from 'survey-react';
 import { sessionService } from 'redux-react-session';
 import { createSurveyResponse } from 'services/api/assessment-response';
 import { Storage } from 'react-jhipster';
+import { classesType, historyType, matchType } from 'types/global';
 
 const SURVEY_ID = 'SurveyId';
 let surveyInfo = '';
 
 class AssessmentResponseCreate extends React.Component {
   static propTypes = {
-    classes: PropTypes.objectOf(PropTypes.string).isRequired,
-    match: PropTypes.objectOf(PropTypes.object).isRequired,
+    classes: classesType.isRequired,
+    match: matchType.isRequired,
     survey: PropTypes.objectOf(PropTypes.object).isRequired,
-    history: PropTypes.objectOf(PropTypes.object).isRequired,
+    history: historyType.isRequired,
     fetchSurvey: PropTypes.func.isRequired,
     createSurveyResponse: PropTypes.func.isRequired,
   }

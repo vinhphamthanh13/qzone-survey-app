@@ -15,13 +15,14 @@ import SurveyEditor from 'modules/shared/SurveyEditor';
 import { fetchUserTypeList } from 'services/api/auth';
 import Assessor from 'modules/assessor/assessor';
 import { sessionService } from 'redux-react-session';
+import { classesType } from 'types/global';
 
 let editor = false;
 class SurveyForm extends React.Component {
   static propTypes = {
     fetchUserTypeList: PropTypes.func.isRequired,
     AssessorList: PropTypes.arrayOf(PropTypes.object).isRequired,
-    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+    classes: classesType.isRequired,
     survey: PropTypes.objectOf(PropTypes.object).isRequired,
     change: PropTypes.func.isRequired,
     changeQuestions: PropTypes.func.isRequired,

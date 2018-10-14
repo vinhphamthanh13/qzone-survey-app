@@ -15,11 +15,12 @@ import CustomInput from 'components/CustomInput/CustomInput';
 import GridContainer from 'components/Grid/GridContainer';
 import GridItem from 'components/Grid/GridItem';
 import personalPageStyles from 'assets/jss/material-dashboard-pro-react/modules/personalPageStyles';
+import { classesType } from 'types/global';
 import 'react-phone-number-input/style.css';
 
 class Personal extends PureComponent {
   static propTypes = {
-    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+    classes: classesType.isRequired,
     firstname: PropTypes.string,
     firstnameState: PropTypes.string.isRequired,
     lastname: PropTypes.string,

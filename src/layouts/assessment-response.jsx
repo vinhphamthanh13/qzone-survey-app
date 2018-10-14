@@ -9,12 +9,13 @@ import AssessmentResponseResult from 'modules/participant/assessment/assessment-
 import { checkAuth } from 'services/api/auth';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { classesType, locationType } from 'types/global';
 
 class AssessmentResponse extends React.Component {
   propTypes = {
-    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+    classes: classesType.isRequired,
     checkAuth: PropTypes.func.isRequired,
-    location: PropTypes.objectOf(PropTypes.object).isRequired,
+    location: locationType.isRequired,
   }
 
   state = {

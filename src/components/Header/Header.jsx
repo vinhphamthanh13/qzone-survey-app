@@ -7,6 +7,7 @@ import { Menu, MoreVert, ViewList } from '@material-ui/icons';
 import HeaderLinks from 'components/Header/HeaderLinks';
 import Button from 'components/CustomButtons/Button';
 import headerStyle from 'assets/jss/material-dashboard-pro-react/components/headerStyle';
+import { classesType } from 'types/global';
 
 function Header({ ...props }) {
   const {
@@ -62,7 +63,7 @@ function Header({ ...props }) {
 }
 
 Header.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  classes: classesType.isRequired,
   color: PropTypes.oneOf(['primary', 'info', 'success', 'warning', 'danger']),
   handleDrawerToggle: PropTypes.func.isRequired,
   sidebarMinimize: PropTypes.func.isRequired,

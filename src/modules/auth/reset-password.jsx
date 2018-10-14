@@ -11,11 +11,12 @@ import Button from 'components/CustomButtons/Button';
 import { resetPassword } from 'services/api/auth';
 import ChangePassword from 'modules/auth/change-password';
 import CustomInput from 'components/CustomInput/CustomInput';
+import { classesType } from 'types/global';
 import validateEmail from '../../utils/validateEmail';
 
 class ResetPassword extends React.Component {
   static propTypes = {
-    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+    classes: classesType.isRequired,
     resetPassword: PropTypes.func.isRequired,
   }
 

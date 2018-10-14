@@ -20,6 +20,7 @@ import loginPageStyle from 'assets/jss/material-dashboard-pro-react/modules/logi
 import fontAwesomeIcon from 'assets/jss/material-dashboard-pro-react/layouts/font-awesome-icon';
 import { loginUser, toggleLoading } from 'services/api/auth';
 import { Storage } from 'react-jhipster';
+import { classesType, historyType } from 'types/global';
 import VerificationPage from './verification-page';
 import ResetPassword from './reset-password';
 import validateEmail from '../../utils/validateEmail';
@@ -28,10 +29,10 @@ import { surveyLocalData } from '../../constants';
 let surveyId = '';
 class LoginPage extends React.Component {
   static propTypes = {
-    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+    classes: classesType.isRequired,
     toggleLoading: PropTypes.func.isRequired,
     loginUser: PropTypes.func.isRequired,
-    history: PropTypes.objectOf(PropTypes.object).isRequired,
+    history: historyType.isRequired,
   }
 
   constructor(props) {

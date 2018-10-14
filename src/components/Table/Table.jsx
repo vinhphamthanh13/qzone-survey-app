@@ -8,6 +8,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import tableStyle from 'assets/jss/material-dashboard-pro-react/components/tableStyle';
+import { classesType } from 'types/global';
 
 function CustomTable({ ...props }) {
   const {
@@ -148,7 +149,7 @@ CustomTable.defaultProps = {
 };
 
 CustomTable.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  classes: classesType.isRequired,
   tableHeaderColor: PropTypes.oneOf([
     'warning',
     'primary',
@@ -158,7 +159,7 @@ CustomTable.propTypes = {
     'rose',
     'gray',
   ]),
-  tableHead: PropTypes.arrayOf(PropTypes.oneOf([PropTypes.string, PropTypes.node])),
+  tableHead: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.node])),
   tableData: PropTypes.arrayOf(PropTypes.node),
   hover: PropTypes.bool,
   coloredColls: PropTypes.arrayOf(PropTypes.number),

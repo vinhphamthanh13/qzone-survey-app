@@ -13,12 +13,13 @@ import GridItem from 'components/Grid/GridItem';
 import { changePassword } from 'services/api/auth';
 import validatePassword from 'utils/validatePassword';
 import verificationPageStyle from 'assets/jss/material-dashboard-pro-react/modules/verificationPageStyle';
+import { classesType } from 'types/global';
 import PasswordField from './password-field';
 import ResendCodeButton from './resend-code-button';
 
 class ChangePassword extends React.Component {
   static propTypes = {
-    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+    classes: classesType.isRequired,
     email: PropTypes.string.isRequired,
     openChangePassword: PropTypes.bool.isRequired,
     closeChangePassword: PropTypes.func.isRequired,

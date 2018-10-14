@@ -24,6 +24,7 @@ import CardIcon from 'components/Card/CardIcon';
 import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/listPageStyle';
 import { fetchSurveys, deleteSurvey, deleteAllSurvey } from 'services/api/assessment';
 import { checkAuth } from 'services/api/auth';
+import { classesType, historyType } from 'types/global';
 import { SURVEY_APP_URL } from '../../../constants';
 
 const override = css`
@@ -38,13 +39,13 @@ const iconStyle = {
 
 class AminAssessmentQuestionList extends React.Component {
   static propTypes = {
-    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+    classes: classesType.isRequired,
     surveyList: PropTypes.arrayOf(PropTypes.object).isRequired,
     checkAuth: PropTypes.func.isRequired,
     fetchSurveys: PropTypes.func.isRequired,
     deleteSurvey: PropTypes.func.isRequired,
     deleteAllSurvey: PropTypes.func.isRequired,
-    history: PropTypes.objectOf(PropTypes.object).isRequired,
+    history: historyType.isRequired,
   }
 
   constructor(props) {

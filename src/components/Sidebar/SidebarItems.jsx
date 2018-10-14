@@ -5,24 +5,21 @@ import {
 } from '@material-ui/core';
 import classnames from 'classnames';
 import { NavLink } from 'react-router-dom';
+import { classesType, locationType, routesType } from 'types/global';
 
 export default class SidebarItems extends PureComponent {
   static propTypes = {
-    classes: PropTypes.objectOf(PropTypes.string).isRequired,
-    routes: PropTypes.arrayOf(PropTypes.object),
-    location: PropTypes.objectOf(PropTypes.object).isRequired,
+    classes: classesType.isRequired,
+    routes: routesType.isRequired,
+    location: locationType.isRequired,
     initMiniActive: PropTypes.bool.isRequired,
     currentMiniActive: PropTypes.bool.isRequired,
     color: PropTypes.string.isRequired,
   }
 
-  static defaultProps = {
-    routes: [],
-  }
-
   activeRoute = (routeName) => {
     const { location } = this.props;
-    location.pathname.includes(routeName);
+    return location.pathname.includes(routeName);
   }
 
   render() {

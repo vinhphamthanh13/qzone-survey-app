@@ -18,13 +18,14 @@ import CardFooter from 'components/Card/CardFooter';
 import CardHeader from 'components/Card/CardHeader';
 import { Poll } from '@material-ui/icons';
 import fullName from 'utils/fullName';
+import { classesType, matchType, historyType } from 'types/global';
 
 let surveyInfo = '';
 class AssessmentResponseResult extends React.Component {
   static propTypes = {
-    classes: PropTypes.objectOf(PropTypes.string).isRequired,
-    match: PropTypes.objectOf(PropTypes.object).isRequired,
-    history: PropTypes.objectOf(PropTypes.object).isRequired,
+    classes: classesType.isRequired,
+    match: matchType.isRequired,
+    history: historyType.isRequired,
     fetchSurvey: PropTypes.func.isRequired,
     fetchSurveyParticipantResponse: PropTypes.func.isRequired,
     survey: PropTypes.objectOf(PropTypes.object).isRequired,

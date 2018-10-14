@@ -24,6 +24,7 @@ import CardIcon from 'components/Card/CardIcon';
 import CardHeader from 'components/Card/CardHeader';
 import { fetchSurveyAnswerByParticipantId } from 'services/api/assessment-response';
 import fullName from 'utils/fullName';
+import { classesType } from 'types/global';
 import { getUserFromSession, getTokenFromSession } from '../../../utils/session';
 import { eSurveyStatus } from '../../../constants';
 
@@ -36,7 +37,7 @@ const overrideLoading = css`
 
 class AssessmentResponseList extends React.Component {
   static propTypes = {
-    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+    classes: classesType.isRequired,
     fetchSurveyAnswerByParticipantId: PropTypes.func.isRequired,
     surveyAnswers: PropTypes.arrayOf(PropTypes.object).isRequired,
   }

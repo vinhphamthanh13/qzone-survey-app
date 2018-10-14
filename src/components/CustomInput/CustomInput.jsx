@@ -6,6 +6,7 @@ import Icon from '@material-ui/core/Icon';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import customInputStyle from 'assets/jss/material-dashboard-pro-react/components/customInputStyle';
+import { classesType } from 'types/global';
 
 function CustomInput({ ...props }) {
   const {
@@ -109,20 +110,19 @@ function CustomInput({ ...props }) {
 }
 
 CustomInput.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  classes: classesType.isRequired,
   labelText: PropTypes.node,
   labelProps: PropTypes.objectOf(PropTypes.object),
   id: PropTypes.string.isRequired,
-  inputProps: PropTypes.objectOf(PropTypes.object),
-  formControlProps: PropTypes.objectOf(PropTypes.object),
+  inputProps: PropTypes.objectOf(PropTypes.oneOfType([
+    PropTypes.object, PropTypes.func,
+  ])),
+  formControlProps: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.object, PropTypes.bool])),
   inputRootCustomClasses: PropTypes.string,
   error: PropTypes.bool,
   success: PropTypes.bool,
   white: PropTypes.bool,
-  value: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   iconFaName: PropTypes.string,
 };
 

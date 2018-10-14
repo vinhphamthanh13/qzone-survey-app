@@ -4,13 +4,14 @@ import Alert from 'react-s-alert';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { verifyResendUser } from 'services/api/auth';
+import { classesType } from 'types/global';
 
 class ResendCodeButton extends PureComponent {
     static propTypes = {
       email: PropTypes.string.isRequired,
       cbAfterResend: PropTypes.func.isRequired,
       countDownResendCode: PropTypes.number.isRequired,
-      classes: PropTypes.objectOf(PropTypes.string).isRequired,
+      classes: classesType.isRequired,
       verifyResendUser: PropTypes.func.isRequired,
     }
 

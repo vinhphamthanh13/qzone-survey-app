@@ -3,6 +3,7 @@ import FiberManualRecord from '@material-ui/icons/FiberManualRecord';
 import Radio from '@material-ui/core/Radio';
 import { FormControlLabel } from '@material-ui/core';
 import PropTypes from 'prop-types';
+import { classesType } from 'types/global';
 
 export default function CustomRadio({ ...props }) {
   const {
@@ -47,7 +48,7 @@ export default function CustomRadio({ ...props }) {
 }
 
 CustomRadio.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  classes: classesType.isRequired,
   label: PropTypes.node,
   value: PropTypes.string,
   checkedValue: PropTypes.string,

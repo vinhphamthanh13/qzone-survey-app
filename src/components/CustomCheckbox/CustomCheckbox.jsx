@@ -2,6 +2,7 @@ import React from 'react';
 import { FormControlLabel, Checkbox } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import Check from '@material-ui/icons/Check';
+import { classesType } from 'types/global';
 
 export default function CustomCheckbox({ ...props }) {
   const {
@@ -41,8 +42,8 @@ export default function CustomCheckbox({ ...props }) {
 }
 
 CustomCheckbox.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
-  label: PropTypes.oneOf(PropTypes.node, PropTypes.string).isRequired,
+  classes: classesType.isRequired,
+  label: PropTypes.oneOfType([PropTypes.node, PropTypes.string]).isRequired,
   value: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   checked: PropTypes.bool.isRequired,

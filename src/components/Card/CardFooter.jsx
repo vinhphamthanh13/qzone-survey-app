@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import cardFooterStyle from 'assets/jss/material-dashboard-pro-react/components/cardFooterStyle';
+import { classesType } from 'types/global';
 
 function CardFooter({ ...props }) {
   const {
@@ -36,7 +37,7 @@ function CardFooter({ ...props }) {
 }
 
 CardFooter.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  classes: classesType.isRequired,
   className: PropTypes.string,
   plain: PropTypes.bool,
   profile: PropTypes.bool,

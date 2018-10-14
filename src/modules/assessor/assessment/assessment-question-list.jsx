@@ -24,6 +24,7 @@ import { checkAuth } from 'services/api/auth';
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
 import { sessionService } from 'redux-react-session';
+import { classesType } from 'types/global';
 import { SURVEY_APP_URL } from '../../../constants';
 
 const override = css`
@@ -38,7 +39,7 @@ const iconStyle = {
 
 class AssessorAssessmentQuestionList extends React.Component {
   static propTypes = {
-    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+    classes: classesType.isRequired,
     surveyList: PropTypes.arrayOf(PropTypes.object).isRequired,
     checkAuth: PropTypes.func.isRequired,
     fetchSurveysByAssessorId: PropTypes.func.isRequired,

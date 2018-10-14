@@ -19,6 +19,7 @@ import { getUserFromSession } from 'utils/session';
 import 'perfect-scrollbar/css/perfect-scrollbar.css';
 import { Storage } from 'react-jhipster';
 import NotFound from 'modules/not-found/not-found';
+import { historyType, locationType, classesType } from 'types/global';
 import { eUserType, surveyLocalData } from '../constants';
 
 const switchRoutes = sidebarRoutes => (
@@ -36,13 +37,13 @@ class Dashboard extends React.Component {
 
   userType = '';
 
-  propTypes = {
-    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  static propTypes = {
+    classes: classesType.isRequired,
     surveyLoading: PropTypes.bool.isRequired,
     checkAuth: PropTypes.func.isRequired,
     fetchUserByUserId: PropTypes.func.isRequired,
-    history: PropTypes.objectOf(PropTypes.object).isRequired,
-    location: PropTypes.objectOf(PropTypes.object).isRequired,
+    history: historyType.isRequired,
+    location: locationType.isRequired,
   }
 
   constructor(props) {
@@ -67,7 +68,7 @@ class Dashboard extends React.Component {
     });
 
     if (navigator.platform.includes('Win')) {
-      this.ps = new PerfectScrollbar(this.mainPanelRef, {
+      this.ps = new PerfectScrollbar(this.mainPanelRef.current, {
         suppressScrollX: true,
         suppressScrollY: false,
       });

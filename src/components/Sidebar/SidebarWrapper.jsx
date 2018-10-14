@@ -5,7 +5,7 @@ import PerfectScrollbar from 'perfect-scrollbar';
 class SidebarWrapper extends React.Component {
   static propTypes = {
     className: PropTypes.string,
-    links: PropTypes.arrayOf(PropTypes.node).isRequired,
+    links: PropTypes.node.isRequired,
   }
 
   static defaultProps = {
@@ -21,7 +21,7 @@ class SidebarWrapper extends React.Component {
 
   componentDidMount() {
     if (navigator.platform.indexOf('Win') > -1) {
-      this.ps = new PerfectScrollbar(this.sidebarWrapperRef, {
+      this.ps = new PerfectScrollbar(this.sidebarWrapperRef.current, {
         suppressScrollX: true,
         suppressScrollY: false,
       });

@@ -21,6 +21,7 @@ import fullName from 'utils/fullName';
 import { css } from 'react-emotion';
 import { Storage } from 'react-jhipster';
 import { ClipLoader } from 'react-spinners';
+import { classesType, matchType, historyType } from 'types/global';
 import { eUserType, surveyLocalData } from '../../constants';
 
 
@@ -36,11 +37,11 @@ Survey.defaultBootstrapCss.navigationButton = 'btn btn-green';
 let surveyInfo = '';
 class AssessmentQuestionnaire extends React.Component {
   static propTypes = {
-    classes: PropTypes.objectOf(PropTypes.string).isRequired,
-    match: PropTypes.objectOf(PropTypes.object).isRequired,
+    classes: classesType.isRequired,
+    match: matchType.isRequired,
     fetchSurvey: PropTypes.func.isRequired,
     survey: PropTypes.objectOf(PropTypes.object).isRequired,
-    history: PropTypes.objectOf(PropTypes.object).isRequired,
+    history: historyType.isRequired,
   }
 
   constructor(props) {
