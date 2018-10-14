@@ -30,7 +30,7 @@ export function fetchSurveysByAssessorId(userId, token, callback) {
       'Authorization': 'Bearer ' + token
     }
   };
-  const request = axios.get(`${SURVEY_URL}/findSurveyByAessessorId/${userId}`, axiosConfig);
+  const request = axios.get(`${SURVEY_URL}/find-survey-by-assessor-id/${userId}`, axiosConfig);
   return {
     type: FETCH_SURVEYS,
     payload: request
