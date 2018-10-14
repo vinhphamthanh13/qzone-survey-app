@@ -115,7 +115,7 @@ CustomInput.propTypes = {
   labelProps: PropTypes.objectOf(PropTypes.object),
   id: PropTypes.string.isRequired,
   inputProps: PropTypes.objectOf(PropTypes.oneOfType([
-    PropTypes.object, PropTypes.func,
+    PropTypes.object, PropTypes.func, PropTypes.string, PropTypes.bool,
   ])),
   formControlProps: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.object, PropTypes.bool])),
   inputRootCustomClasses: PropTypes.string,

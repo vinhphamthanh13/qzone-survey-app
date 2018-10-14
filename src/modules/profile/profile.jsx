@@ -10,7 +10,9 @@ import Personal from './personal';
 
 class Profile extends React.Component {
   static propTypes = {
-    user: PropTypes.objectOf(PropTypes.object).isRequired,
+    user: PropTypes.objectOf(PropTypes.oneOfType([
+      PropTypes.object, PropTypes.string,
+    ])).isRequired,
     updateProfile: PropTypes.func.isRequired,
   }
 

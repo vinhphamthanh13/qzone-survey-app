@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 export const historyType = PropTypes.objectOf(PropTypes.oneOfType([
-  PropTypes.object, PropTypes.number,
+  PropTypes.object, PropTypes.number, PropTypes.string, PropTypes.func,
 ]));
 
 export const locationType = PropTypes.objectOf(PropTypes.oneOfType([
