@@ -8,7 +8,6 @@ import promise from 'redux-promise';
 import { sessionService } from 'redux-react-session';
 import Alert from 'react-s-alert';
 import indexRoutes from 'routes/index';
-import NotFound from 'modules/not-found/not-found';
 import reducers from './reducers';
 import 'assets/scss/material-dashboard-pro-react.css';
 import 'assets/scss/style.css';
@@ -30,7 +29,6 @@ ReactDOM.render(
       <Router history={history}>
         <Switch>
           {indexRoutes.map(route => (<Route key={route.path} {...route} />))}
-          <Route component={NotFound} />
         </Switch>
       </Router>
     </Provider>
