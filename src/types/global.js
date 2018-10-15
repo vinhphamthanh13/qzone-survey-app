@@ -12,4 +12,6 @@ export const classesType = PropTypes.objectOf(PropTypes.string);
 
 export const routesType = PropTypes.arrayOf(PropTypes.object);
 
-export const matchType = PropTypes.objectOf(PropTypes.object);
+export const matchType = PropTypes.objectOf(PropTypes.oneOfType([
+  PropTypes.object, PropTypes.string, PropTypes.bool,
+]));

@@ -2,11 +2,6 @@
   display: none;
 }
 
-h1,
-p {
-  font-family: Lato;
-}
-
 .btn-green {
   background-color: #303f9f;
   color: #fff;
