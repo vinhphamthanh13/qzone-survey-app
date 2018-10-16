@@ -41,6 +41,7 @@ class AssessmentQuestionnaire extends React.Component {
     match: matchType.isRequired,
     fetchSurvey: PropTypes.func.isRequired,
     survey: PropTypes.objectOf(PropTypes.object).isRequired,
+    user: PropTypes.objectOf(PropTypes.object).isRequired,
     history: historyType.isRequired,
   }
 
@@ -78,6 +79,9 @@ class AssessmentQuestionnaire extends React.Component {
       Object.keys(nextProps.survey).forEach((key) => {
         if (key === 'survey' && nextProps.survey.survey !== '') {
           surveyData[key] = JSON.parse(nextProps.survey.survey);
+          surveyData.title = nextProps.survey.title;
+          surveyData.description = nextProps.survey.description;
+          surveyData.user = nextProps.user;
         }
       });
       this.setState({ surveyData });
@@ -184,7 +188,7 @@ class AssessmentQuestionnaire extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return { survey: state.surveys.detail, user: state.user.detail };
+  return { survey: state.surveys.detail, user: state.surveys.detail.user };
 }
 
 export default compose(
