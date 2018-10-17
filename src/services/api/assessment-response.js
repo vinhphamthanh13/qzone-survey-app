@@ -57,7 +57,7 @@ export function fetchSurveyParticipantList(sid, token) {
 }
 
 export function fetchSurveyAnswerByParticipantId(pid, token) {
-  const request = axios.get(`${SURVEY_URL}/list-survey-answer-from-participant-id/${pid}`, axiosConfig(token));
+  const request = axios.get(`${SURVEY_URL}/list-survey-answer-by-participant-id/${pid}`, axiosConfig(token));
   return {
     type: FETCH_SURVEY_RESPONSE_BY_PARTICIPANT_ID,
     payload: request,
