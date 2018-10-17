@@ -6,7 +6,7 @@ import {
 } from 'services/api/assessment-response';
 
 const initialState = {
-  sResponseByParticipant: null,
+  sResponseByParticipant: [],
 };
 
 export default function (state = initialState, action) {

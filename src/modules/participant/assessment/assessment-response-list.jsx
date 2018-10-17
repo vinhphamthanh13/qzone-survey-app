@@ -28,7 +28,7 @@ import { classesType } from 'types/global';
 import { getUserFromSession, getTokenFromSession } from '../../../utils/session';
 import { eSurveyStatus } from '../../../constants';
 
-const rows = ['#', 'Title', 'Pariticipant name', 'Pariticipant email', '', ''];
+const rows = ['#', 'Title', 'Pariticipant name', 'Pariticipant email', 'Action', 'Status'];
 
 const overrideLoading = css`
     display: block !important;
