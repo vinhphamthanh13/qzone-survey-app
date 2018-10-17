@@ -5,8 +5,6 @@
   "compilerOptions": {
     "target": "es6",
     "baseUrl": "./src/",
-    "module": "es6",
-    "jsx": "react",
-    "allowSyntheticDefaultImports": true,
+    "jsx": "react"
   }
 }
