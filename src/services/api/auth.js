@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Storage } from 'react-jhipster';
 import { sessionService } from 'redux-react-session';
+import makeHeaders from '../helper/makeHeaders';
 import { REG_SERVICE_URL, surveyLocalData } from '../../constants';
 
 export const REGISTER_USER = 'register_user';
@@ -13,12 +14,6 @@ export const VERIFY_RESEND_USER = 'verify_resend_user';
 export const FETCH_USERTYPE_LIST = 'fetch_usertype_list';
 export const FETCH_USER_BY_USERID = 'fetch_user_by_userid';
 export const TOGGLE_LOADING = 'auth_toggle_loading';
-
-const headers = token => ({
-  'Content-Type': 'application/json',
-  Accept: 'application/json',
-  Authorization: `Bearer ${token}`,
-});
 
 const handleSuccessResponse = callback => (response) => { callback(response); };
 
@@ -88,8 +83,8 @@ export function changePassword(value, callback) {
   return { type: CHANGE_PASSWORD };
 }
 
-export function fetchUserTypeList(value) {
-  const axiosConfig = { headers: headers(value.token) };
+export async function fetchUserTypeList(value) {
+  const axiosConfig = { headers: await makeHeaders() };
   const request = axios.post(`${REG_SERVICE_URL}/getListUsersByUserType`, value, axiosConfig);
   return {
     type: FETCH_USERTYPE_LIST,
@@ -97,8 +92,8 @@ export function fetchUserTypeList(value) {
   };
 }
 
-export function fetchUserByUserId(id, token) {
-  const axiosConfig = { headers: headers(token) };
+export async function fetchUserByUserId(id) {
+  const axiosConfig = { headers: await makeHeaders() };
   const request = axios.get(`${REG_SERVICE_URL}/getUserByUserId/${id}`, axiosConfig);
   return {
     type: FETCH_USER_BY_USERID,
