@@ -8,7 +8,7 @@ import AuthHeader from 'components/Header/AuthHeader';
 import authRoutes from 'routes/auth';
 import pagesStyle from 'assets/jss/material-dashboard-pro-react/layouts/pagesStyle';
 import bgImage from 'assets/img/register.jpeg';
-import ReactLoader from 'modules/react-loader';
+import ReactLoader from 'components/Loader/react-loader';
 import { classesType } from 'types/global';
 
 const Auth = ({ classes, userLoading, ...rest }) => (

@@ -18,7 +18,7 @@ import CardFooter from 'components/Card/CardFooter';
 import registerPageStyle from 'assets/jss/material-dashboard-pro-react/modules/registerPageStyle';
 import { registerUser } from 'services/api/auth';
 import VerificationPage from 'modules/auth/verification-page';
-import ReactLoader from 'modules/react-loader';
+import ReactLoader from 'components/Loader/react-loader';
 import validatePassword from 'utils/validatePassword';
 import validateEmail from 'utils/validateEmail';
 import { classesType, historyType } from 'types/global';

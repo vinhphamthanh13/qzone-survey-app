@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import PerfectScrollbar from 'perfect-scrollbar';
 import withStyles from '@material-ui/core/styles/withStyles';
-import ReactLoader from 'modules/react-loader';
+import ReactLoader from 'components/Loader/react-loader';
 import {
   commonRoutes, adminRoutes, assessorRoutes, otherRoutes, participantRoutes,
 } from 'routes/dashboard';

@@ -80,13 +80,7 @@ class AssessmentResponseList extends React.Component {
                           <TableRow key={participant.id}>
                             <TableCell>{index + 1}</TableCell>
                             <TableCell>
-                              {/* <Link to={status === eSurveyStatus.completed
-                              || status === eSurveyStatus.expired ?
-                                `/participant/assessment/result/${surveyId}/${participant.id}` :
-                                `/participant/assessment/${surveyId}`
-                              }> */}
                               {surveyAnswers[index].surveyDTO.title}
-                              {/* } </Link> */}
                             </TableCell>
                             <TableCell>{fullName(participant)}</TableCell>
                             <TableCell>{participant.email}</TableCell>
