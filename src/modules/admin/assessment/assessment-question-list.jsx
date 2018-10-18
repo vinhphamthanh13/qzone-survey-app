@@ -26,7 +26,7 @@ import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/listP
 import {
   fetchSurveys, deleteSurvey, deleteAllSurvey,
 } from 'services/api/assessment';
-import { checkAuth } from 'services/api/auth';
+import { checkAuth } from 'services/api/user';
 import { classesType, historyType } from 'types/global';
 import { SURVEY_APP_URL } from '../../../constants';
 

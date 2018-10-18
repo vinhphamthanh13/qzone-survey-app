@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import Button from 'components/CustomButtons/Button';
-import { resetPassword } from 'services/api/auth';
+import { resetPassword } from 'services/api/user';
 import ChangePassword from 'modules/auth/change-password';
 import CustomInput from 'components/CustomInput/CustomInput';
 import { classesType } from 'types/global';

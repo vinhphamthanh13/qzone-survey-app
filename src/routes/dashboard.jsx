@@ -10,6 +10,7 @@ import AssessmentQuestionnaire from 'modules/shared/assessment-questionnaire';
 import AssessmentQuestionCopy from 'modules/shared/assessment-question-copy';
 import AssessmentQuestionEdit from 'modules/shared/assessment-question-edit';
 import AssessmentQuestionCreate from 'modules/admin/assessment/assessment-question-create';
+import ParticipantList from 'modules/sponsor/participant-list';
 
 export const commonRoutes = [
   {
@@ -22,11 +23,6 @@ export const commonRoutes = [
 
 export const participantRoutes = [
   {
-    redirect: true,
-    from: '/',
-    to: '/participant/assessment/assessment-responses',
-  },
-  {
     path: '/participant/assessment/assessment-responses',
     name: 'Assessments',
     icon: Person,
@@ -36,11 +32,6 @@ export const participantRoutes = [
 
 export const assessorRoutes = [
   {
-    redirect: true,
-    from: '/',
-    to: '/assessor/assessment/list',
-  },
-  {
     path: '/assessor/assessment/list',
     name: 'Assessment Questions',
     icon: Person,
@@ -49,11 +40,6 @@ export const assessorRoutes = [
 ];
 
 export const adminRoutes = [
-  {
-    redirect: true,
-    from: '/',
-    to: '/admin/dashboard',
-  },
   {
     path: '/admin/dashboard',
     name: 'Assessment Chart',
@@ -69,9 +55,18 @@ export const adminRoutes = [
 
 ];
 
+export const sponsorRoutes = [
+  {
+    path: '/sponsor/assessment/list',
+    name: 'Participants',
+    icon: Person,
+    component: ParticipantList,
+  },
+];
+
 export const otherRoutes = [
   {
-    path: '/participant/assessment/result/:sid/:pid',
+    path: '/assessment/result/:sid/:pid',
     name: 'Assessment Resposne Result',
     component: AssessmentResponseResult,
   },

@@ -6,7 +6,7 @@ import pagesStyle from 'assets/jss/material-dashboard-pro-react/layouts/pagesSty
 import bgImage from 'assets/img/register.jpeg';
 import AssessmentResponseCreate from 'modules/participant/assessment/assessment-response-create';
 import AssessmentResponseResult from 'modules/participant/assessment/assessment-response-result';
-import { checkAuth } from 'services/api/auth';
+import { checkAuth } from 'services/api/user';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { classesType, locationType } from 'types/global';
@@ -51,7 +51,7 @@ class AssessmentResponse extends React.Component {
               <Route
                 exact
                 strict
-                path="/participant/assessment/result/:sid/:pid"
+                path="/assessment/result/:sid/:pid"
                 component={AssessmentResponseResult}
                 key="AssessmentResponseResult"
               />

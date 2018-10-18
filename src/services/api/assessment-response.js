@@ -4,7 +4,7 @@ import { SURVEY_URL } from '../../constants';
 
 export const CREATE_SURVEY_ANSWER = 'create_survey_answer';
 export const FETCH_SURVEY_PARTICIPANT_RESPONSE = 'fetch_survey_participant_response';
-export const FETCH_SURVEY_RESPONSE = 'fetch_survey_response';
+export const FETCH_ALL_SURVEY_ANSWERS = 'fetch_all_survey_answers';
 export const FETCH_SURVEY_PARTICIPANT_LIST = 'fetch_survey_participant_list';
 export const FETCH_SURVEY_RESPONSE_BY_PARTICIPANT_ID = 'fetch_survey_answer_by_participant_id';
 
@@ -34,10 +34,11 @@ export async function fetchSurveyParticipantResponse(pid, sid) {
   };
 }
 
-export function fetchSurveyResponse(sid) {
-  const request = axios.get(`${SURVEY_URL}/find-survey-answers/${sid}`);
+export async function fetchAllSurveyAnswers() {
+  const axiosConfig = { headers: await makeHeaders() };
+  const request = axios.get(`${SURVEY_URL}/survey-answers`, axiosConfig);
   return {
-    type: FETCH_SURVEY_RESPONSE,
+    type: FETCH_ALL_SURVEY_ANSWERS,
     payload: request,
   };
 }

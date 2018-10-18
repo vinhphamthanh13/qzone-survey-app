@@ -10,7 +10,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Button from 'components/CustomButtons/Button';
 import GridContainer from 'components/Grid/GridContainer';
 import GridItem from 'components/Grid/GridItem';
-import { changePassword } from 'services/api/auth';
+import { changePassword } from 'services/api/user';
 import validatePassword from 'utils/validatePassword';
 import verificationPageStyle from 'assets/jss/material-dashboard-pro-react/modules/verificationPageStyle';
 import { classesType } from 'types/global';

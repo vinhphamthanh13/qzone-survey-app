@@ -8,13 +8,13 @@ import PerfectScrollbar from 'perfect-scrollbar';
 import withStyles from '@material-ui/core/styles/withStyles';
 import ReactLoader from 'components/Loader/react-loader';
 import {
-  commonRoutes, adminRoutes, assessorRoutes, otherRoutes, participantRoutes,
+  commonRoutes, adminRoutes, assessorRoutes, otherRoutes, participantRoutes, sponsorRoutes,
 } from 'routes/dashboard';
 import Sidebar from 'components/Sidebar/Sidebar';
 import Header from 'components/Header/Header';
 import appStyle from 'assets/jss/material-dashboard-pro-react/layouts/dashboardStyle';
 import logo from 'assets/img/logo-white.svg';
-import { checkAuth, fetchUserByUserId } from 'services/api/auth';
+import { checkAuth, fetchUserByUserId } from 'services/api/user';
 import { getUserFromSession } from 'utils/session';
 import 'perfect-scrollbar/css/perfect-scrollbar.css';
 import { Storage } from 'react-jhipster';
@@ -24,10 +24,17 @@ import { eUserType, surveyLocalData } from '../constants';
 
 const switchRoutes = sidebarRoutes => (
   <Switch>
-    {sidebarRoutes.concat(otherRoutes).map(({ redirect, icon, ...routeProp }) => {
-      if (redirect) return <Redirect exact strict key={routeProp.to} {...routeProp} />;
-      return <Route exact strict key={routeProp.path} {...routeProp} />;
-    })}
+    <Redirect exact strict from="/" to={sidebarRoutes[0].path} />
+    {sidebarRoutes.concat(otherRoutes).map(
+      ({ redirect, icon, ...routeProp }) => (
+        <Route
+          exact
+          strict
+          key={routeProp.path}
+          {...routeProp}
+        />
+      ),
+    )}
     <Route component={NotFound} />
   </Switch>
 );
@@ -116,7 +123,10 @@ class Dashboard extends React.Component {
       sidebarRoutes = assessorRoutes.concat(commonRoutes);
     } else if (this.userType === eUserType.admin) {
       sidebarRoutes = adminRoutes.concat(commonRoutes);
+    } else if (this.userType === eUserType.sponsor) {
+      sidebarRoutes = sponsorRoutes.concat(commonRoutes);
     }
+
     return (
       !isLoggedIn
         ? (

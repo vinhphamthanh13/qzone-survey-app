@@ -87,7 +87,7 @@ class AssessmentResponseCreate extends React.Component {
       const { participantResponse, token, userId } = this.state;
       createSurveyResponseAction(participantResponse, token, (response) => {
         if (response.status === 201) {
-          history.push(`/participant/assessment/result/${id}/${userId}`);
+          history.push(`/assessment/result/${id}/${userId}`);
         } else {
           // back to assessment response list
           history.push('/participant/assessment/assessment-responses');

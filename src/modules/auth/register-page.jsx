@@ -16,7 +16,7 @@ import CardHeader from 'components/Card/CardHeader';
 import CardBody from 'components/Card/CardBody';
 import CardFooter from 'components/Card/CardFooter';
 import registerPageStyle from 'assets/jss/material-dashboard-pro-react/modules/registerPageStyle';
-import { registerUser } from 'services/api/auth';
+import { registerUser } from 'services/api/user';
 import VerificationPage from 'modules/auth/verification-page';
 import ReactLoader from 'components/Loader/react-loader';
 import validatePassword from 'utils/validatePassword';

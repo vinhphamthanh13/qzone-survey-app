@@ -10,7 +10,7 @@ import GridContainer from 'components/Grid/GridContainer';
 import GridItem from 'components/Grid/GridItem';
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
-import { registerUser } from 'services/api/auth';
+import { registerUser } from 'services/api/user';
 import { toggleLoading } from 'services/api/assessment';
 import { connect } from 'react-redux';
 import { compose } from 'redux';

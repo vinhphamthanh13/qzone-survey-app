@@ -16,7 +16,7 @@ import Alert from 'react-s-alert';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Button from 'components/CustomButtons/Button';
-import { verifyUser } from 'services/api/auth';
+import { verifyUser } from 'services/api/user';
 import verificationPageStyle from 'assets/jss/material-dashboard-pro-react/modules/verificationPageStyle';
 import { classesType, historyType } from 'types/global';
 import ResendCodeButton from './resend-code-button';

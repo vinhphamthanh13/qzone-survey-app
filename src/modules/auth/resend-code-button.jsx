@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Alert from 'react-s-alert';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { verifyResendUser } from 'services/api/auth';
+import { verifyResendUser } from 'services/api/user';
 import { classesType } from 'types/global';
 
 class ResendCodeButton extends PureComponent {

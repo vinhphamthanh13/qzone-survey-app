@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import validateEmail from 'utils/validateEmail';
 import { updateProfile } from 'services/api/profile';
-import { resetPassword } from 'services/api/auth';
+import { resetPassword } from 'services/api/user';
 import { toggleLoading } from 'services/api/assessment';
 import Account from './account';
 import Personal from './personal';

@@ -18,7 +18,7 @@ import CardBody from 'components/Card/CardBody';
 import CardFooter from 'components/Card/CardFooter';
 import loginPageStyle from 'assets/jss/material-dashboard-pro-react/modules/loginPageStyle';
 import fontAwesomeIcon from 'assets/jss/material-dashboard-pro-react/layouts/font-awesome-icon';
-import { loginUser, toggleLoading } from 'services/api/auth';
+import { loginUser, toggleLoading } from 'services/api/user';
 import { Storage } from 'react-jhipster';
 import { classesType, historyType } from 'types/global';
 import VerificationPage from './verification-page';

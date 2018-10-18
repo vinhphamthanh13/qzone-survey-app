@@ -1,4 +1,4 @@
-import { FETCH_USERTYPE_LIST, FETCH_USER_BY_USERID, TOGGLE_LOADING } from 'services/api/auth';
+import { FETCH_USERTYPE_LIST, FETCH_USER_BY_USERID, TOGGLE_LOADING } from 'services/api/user';
 import { UPDATE_PROFILE } from 'services/api/profile';
 
 const initialState = {

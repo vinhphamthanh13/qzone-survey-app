@@ -87,7 +87,7 @@ class AssessmentResponseList extends React.Component {
                             <TableCell>
                               <Link to={status === eSurveyStatus.completed
                                 || status === eSurveyStatus.expired
-                                ? `/participant/assessment/result/${surveyId}/${participant.id}`
+                                ? `/assessment/result/${surveyId}/${participant.id}`
                                 : `/participant/assessment/${surveyId}`
                               }
                               >

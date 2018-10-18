@@ -21,7 +21,7 @@ import Card from 'components/Card/Card';
 import CardBody from 'components/Card/CardBody';
 import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/listPageStyle';
 import { fetchSurveysByAssessorId, deleteSurvey, deleteAllSurvey } from 'services/api/assessment';
-import { checkAuth } from 'services/api/auth';
+import { checkAuth } from 'services/api/user';
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
 import { sessionService } from 'redux-react-session';

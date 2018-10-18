@@ -12,60 +12,42 @@ import CustomInput from 'components/CustomInput/CustomInput';
 import CustomCheckbox from 'components/CustomCheckbox/CustomCheckbox';
 import validationFormStyle from 'assets/jss/material-dashboard-pro-react/modules/validationFormStyle';
 import SurveyEditor from 'modules/shared/SurveyEditor';
-import { fetchUserTypeList } from 'services/api/auth';
+import { fetchUserTypeList } from 'services/api/user';
 import Assessor from 'modules/assessor/assessor';
-import { sessionService } from 'redux-react-session';
 import { classesType } from 'types/global';
+import { eUserType } from '../../constants';
 
 let editor = false;
 class SurveyForm extends React.Component {
   static propTypes = {
     fetchUserTypeList: PropTypes.func.isRequired,
-    AssessorList: PropTypes.arrayOf(PropTypes.object).isRequired,
+    assessorList: PropTypes.arrayOf(PropTypes.object).isRequired,
     classes: classesType.isRequired,
     survey: PropTypes.objectOf(PropTypes.object).isRequired,
     change: PropTypes.func.isRequired,
     changeQuestions: PropTypes.func.isRequired,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      userType: 'ASSESSOR',
-      token: '',
-      assessorList: '',
-    };
-  }
-
-  componentWillMount() {
-    sessionService.loadSession().then((currentSession) => {
-      this.setState({ token: currentSession.token }, () => {
-        const { fetchUserTypeList: fetchUserTypeListAction } = this.props;
-        fetchUserTypeListAction(this.state);
-      });
-    });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({ assessorList: nextProps.AssessorList });
+  componentDidMount() {
+    const { fetchUserTypeList: fetchUserTypeListAction } = this.props;
+    fetchUserTypeListAction({ userType: eUserType.assessor });
   }
 
   reloadAssessorList = () => {
     const { fetchUserTypeList: fetchUserTypeListAction } = this.props;
-    fetchUserTypeListAction(this.state);
+    fetchUserTypeListAction({ userType: eUserType.assessor });
   };
 
   render() {
     const {
-      classes, survey, change, changeQuestions,
+      classes, survey, change, changeQuestions, assessorList,
     } = this.props;
-    const { assessorList } = this.state;
     const {
       surveyInfo, titleState, descriptionState, mode,
     } = survey;
     if (mode === 'create' || surveyInfo.survey) { editor = true; }
-    if (!assessorList) { return <div />; }
-    return (
+
+    return assessorList && (
       <form>
         <GridContainer>
           <GridItem xs={12} sm={3}>
@@ -170,9 +152,7 @@ class SurveyForm extends React.Component {
           <GridItem xs={12} sm={3}>
             <FormLabel
               className={
-                `${classes.labelHorizontal
-                } ${
-                  classes.labelHorizontalRadioCheckbox}`
+                `${classes.labelHorizontal} ${classes.labelHorizontalRadioCheckbox}`
               }
             >
               Privacy
@@ -199,7 +179,7 @@ class SurveyForm extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return { AssessorList: state.user.userTypeList };
+  return { assessorList: state.user.userTypeList };
 }
 
 export default compose(
