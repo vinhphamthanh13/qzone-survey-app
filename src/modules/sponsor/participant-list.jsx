@@ -6,14 +6,10 @@ import { compose } from 'redux';
 import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/listPageStyle';
 import {
   Table, TableBody, TableCell,
-  TableHead, TableRow, Checkbox, Button,
+  TableHead, TableRow, Checkbox,
 } from '@material-ui/core';
-import { Poll, CloudDownloadOutlined } from '@material-ui/icons';
+import { Poll } from '@material-ui/icons';
 import { formatPhoneNumber } from 'react-phone-number-input';
-import {
-  PDFDownloadLink, Document,
-  Page, Text, View,
-} from '@react-pdf/renderer';
 import GridContainer from 'components/Grid/GridContainer';
 import GridItem from 'components/Grid/GridItem';
 import Card from 'components/Card/Card';
@@ -22,11 +18,11 @@ import CardIcon from 'components/Card/CardIcon';
 import CardHeader from 'components/Card/CardHeader';
 import { fetchUserTypeList } from 'services/api/user';
 import { classesType } from 'types/global';
-import participantListStyle, { docStyles } from './participant-list.style';
+import participantListStyle from './participant-list.style';
+import ParticipantListExcel from './participant-list-excel';
 import { eUserType, userStatus } from '../../constants';
 
 const rows = ['#', 'First name', 'Last name', 'Phone number'];
-const mapRowToUser = ['', 'firstname', 'lastname', 'phoneNumber'];
 
 class ParticipantList extends React.Component {
   static propTypes = {
@@ -64,39 +60,6 @@ class ParticipantList extends React.Component {
     }));
   }
 
-  generateDoc = () => {
-    const { participantList } = this.props;
-    const { checkList } = this.state;
-    console.log('object');
-    return (
-      <Document>
-        <Page style={docStyles.docPage}>
-          <View
-            style={docStyles.docRow}
-            render={() => (
-              <React.Fragment>
-                {rows.map(row => (
-                  <Text key={`doc-${row}`}>
-                    {row}
-                  </Text>
-                ))}
-                {checkList.length > 0 && mapRowToUser.map((row, index) => {
-                  const user = participantList.find(u => u.id === checkList[0]);
-                  return (
-                    <Text key={`doc-${checkList[0]}-${row}`}>
-                      {row ? user[row] : index + 1}
-                    </Text>
-                  );
-                })}
-              </React.Fragment>
-            )}
-          />
-        </Page>
-      </Document>
-    );
-  }
-
-
   render() {
     const { classes, participantList } = this.props;
     const { checkList } = this.state;
@@ -109,25 +72,13 @@ class ParticipantList extends React.Component {
             <Card>
               <CardHeader color="primary" icon>
                 <CardIcon color="rose"><Poll /></CardIcon>
-                <div className={classes.header}>
+                <div className={`${classes.header} ${checkList.length === 0 ? classes.disabledDownload : ''}`}>
                   <h3 className={classes.cardIconTitle}>Participants</h3>
-                  <PDFDownloadLink
-                    className={`${checkList.length === 0 ? classes.disabledDownload : ''}`}
-                    document={this.generateDoc()}
-                    fileName="participants.pdf"
-                  >
-                    {({ loading }) => (
-                      !loading && (
-                        <Button
-                          disabled={checkList.length === 0}
-                          className={classes.downloadBtn}
-                        >
-                          <CloudDownloadOutlined className={classes.downloadIcon} />
-                          Download participants
-                        </Button>
-                      )
-                    )}
-                  </PDFDownloadLink>
+                  <ParticipantListExcel
+                    checkList={checkList}
+                    classes={classes}
+                    participantList={participantList}
+                  />
                 </div>
               </CardHeader>
               <CardBody>

@@ -23,7 +23,7 @@ export const commonRoutes = [
 
 export const participantRoutes = [
   {
-    path: '/participant/assessment/assessment-responses',
+    path: '/participant/assessment/answers',
     name: 'Assessments',
     icon: Person,
     component: AssessmentResponseList,
@@ -57,7 +57,7 @@ export const adminRoutes = [
 
 export const sponsorRoutes = [
   {
-    path: '/sponsor/assessment/list',
+    path: '/sponsor/participant/list',
     name: 'Participants',
     icon: Person,
     component: ParticipantList,

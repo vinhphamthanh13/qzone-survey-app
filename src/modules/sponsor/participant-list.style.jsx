@@ -1,9 +1,11 @@
-import { StyleSheet } from '@react-pdf/renderer';
-
 const participantListStyle = {
+  disabledDownload: {},
   header: {
     display: 'flex',
     justifyContent: 'space-between',
+    '&$disabledDownload > span': {
+      pointerEvents: 'none',
+    },
   },
   downloadIcon: {},
   downloadBtn: {
@@ -13,20 +15,6 @@ const participantListStyle = {
       marginRight: 10,
     },
   },
-  disabledDownload: {
-    pointerEvents: 'none',
-  },
 };
-
-export const docStyles = StyleSheet.create({
-  docPage: {
-    padding: 40,
-  },
-  docRow: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-  },
-});
 
 export default participantListStyle;
