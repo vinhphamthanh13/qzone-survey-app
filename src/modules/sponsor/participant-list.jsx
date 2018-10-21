@@ -22,7 +22,7 @@ import participantListStyle from './participant-list.style';
 import ParticipantListExcel from './participant-list-excel';
 import { eUserType, userStatus } from '../../constants';
 
-const rows = ['#', 'First name', 'Last name', 'Phone number'];
+const rows = ['#', 'First name', 'Last name', 'Email', 'Phone number'];
 
 class ParticipantList extends React.Component {
   static propTypes = {
@@ -103,7 +103,7 @@ class ParticipantList extends React.Component {
                   <TableBody>
                     {
                       participantList.map(({
-                        id, firstname, lastname, phoneNumber,
+                        id, firstname, lastname, email, phoneNumber,
                       }, index) => (
                         <TableRow key={id}>
                           <TableCell>
@@ -117,6 +117,7 @@ class ParticipantList extends React.Component {
                             {firstname}
                           </TableCell>
                           <TableCell>{lastname}</TableCell>
+                          <TableCell>{email}</TableCell>
                           <TableCell>{formatPhoneNumber(phoneNumber, 'International')}</TableCell>
                         </TableRow>
                       ))

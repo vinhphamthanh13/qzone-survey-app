@@ -21,6 +21,7 @@ const ParticipantListExcel = ({ participantList, checkList, classes }) => {
       <Workbook.Sheet data={data} name="Participant list">
         <Workbook.Column label="First name" value="firstname" />
         <Workbook.Column label="Last name" value="lastname" />
+        <Workbook.Column label="Email" value="email" />
         <Workbook.Column label="Phone number" value="phoneNumber" />
       </Workbook.Sheet>
     </Workbook>
