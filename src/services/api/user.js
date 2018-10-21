@@ -104,3 +104,12 @@ export async function fetchUserByUserId(id) {
 export function toggleLoading() {
   return { type: TOGGLE_LOADING };
 }
+
+export async function completeNewPasswordChallenge(values, token) {
+  const axiosConfig = { headers: await makeHeaders() };
+  axios.post(`${REG_SERVICE_URL}/completeNewPasswordChallenge`, value, axiosConfig);
+  return {
+    type: COMPLETE_NEW_PW_CHALLENGE,
+    payload: request
+  }
+}
