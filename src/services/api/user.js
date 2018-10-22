@@ -14,6 +14,7 @@ export const VERIFY_RESEND_USER = 'verify_resend_user';
 export const FETCH_USERTYPE_LIST = 'fetch_usertype_list';
 export const FETCH_USER_BY_USERID = 'fetch_user_by_userid';
 export const TOGGLE_LOADING = 'auth_toggle_loading';
+export const FETCH_MULTIPLE_USER_TYPE = 'fetch_multiple_user_type';
 
 const handleSuccessResponse = callback => (response) => { callback(response); };
 
@@ -89,6 +90,13 @@ export async function fetchUserTypeList(value) {
   return {
     type: FETCH_USERTYPE_LIST,
     payload: request,
+  };
+}
+
+export function fetchMultipleUserType(userTypes) {
+  return {
+    type: FETCH_MULTIPLE_USER_TYPE,
+    payload: Promise.all(userTypes.map(async type => (await fetchUserTypeList(type)).payload)),
   };
 }
 

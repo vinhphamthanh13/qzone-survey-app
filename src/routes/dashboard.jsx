@@ -11,6 +11,7 @@ import AssessmentQuestionCopy from 'modules/shared/assessment-question-copy';
 import AssessmentQuestionEdit from 'modules/shared/assessment-question-edit';
 import AssessmentQuestionCreate from 'modules/admin/assessment/assessment-question-create';
 import ParticipantList from 'modules/sponsor/participant-list';
+import CreateUser from 'modules/admin/create-user';
 
 export const commonRoutes = [
   {
@@ -52,7 +53,12 @@ export const adminRoutes = [
     icon: Person,
     component: AdminAssessmentQuestionList,
   },
-
+  {
+    path: '/admin/user/list',
+    name: 'Users',
+    icon: Person,
+    component: CreateUser,
+  },
 ];
 
 export const sponsorRoutes = [

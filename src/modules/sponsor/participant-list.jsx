@@ -82,7 +82,7 @@ class ParticipantList extends React.Component {
                 </div>
               </CardHeader>
               <CardBody>
-                <Table className={classes.table} aria-labelledby="tableTitle">
+                <Table aria-labelledby="tableTitle">
                   <TableHead>
                     <TableRow>
                       <TableCell>
