@@ -3,18 +3,27 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import validateEmail from 'utils/validateEmail';
 import { updateProfile } from 'services/api/profile';
-import { resetPassword } from 'services/api/user';
+import { resetPassword, forceResetPasswordStatus } from 'services/api/user';
 import { toggleLoading } from 'services/api/assessment';
+import ForceChangePassword from 'modules/auth/force-change-password';
+import { userStatus as eUserStatus } from '../../constants';
 import Account from './account';
 import Personal from './personal';
 
 class Profile extends React.Component {
+  static defaultProps = {
+    forceResetPasswordStatus: null,
+    isDefaultPwdChanged: true,
+  };
+
   static propTypes = {
     user: PropTypes.objectOf(PropTypes.oneOfType([
       PropTypes.object, PropTypes.string,
     ])).isRequired,
     updateProfile: PropTypes.func.isRequired,
-  }
+    forceResetPasswordStatus: PropTypes.func,
+    isDefaultPwdChanged: PropTypes.bool,
+  };
 
   constructor(props) {
     super(props);
@@ -38,9 +47,12 @@ class Profile extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    const { isDefaultPwdChanged, user: { userStatus } } = nextProps;
     const { account: { email } } = this.state;
+
     if (email === undefined && nextProps.user.email) {
       this.setState(oldState => ({
+        openResetPasswordStatus: isDefaultPwdChanged && userStatus === eUserStatus.temporary,
         id: nextProps.user.id,
         personal: {
           ...oldState.personal,
@@ -56,6 +68,10 @@ class Profile extends React.Component {
           email: nextProps.user.email,
         },
       }));
+    } else {
+      this.setState({
+        openResetPasswordStatus: isDefaultPwdChanged && userStatus === eUserStatus.temporary,
+      });
     }
   }
 
@@ -84,7 +100,7 @@ class Profile extends React.Component {
       default:
         this.setState(oldState => ({ personal: { ...oldState.personal, [stateName]: value } }));
     }
-  }
+  };
 
   saveProfile = () => {
     const {
@@ -95,23 +111,29 @@ class Profile extends React.Component {
     const { updateProfile: updateProfileAction, toggleLoading: toggleLoadingAction } = this.props;
     updateProfileAction({ id, ...accountInfo, ...personalInfo });
     toggleLoadingAction();
-  }
+  };
 
   resetPersonalInfo = (oldPersonalInfo) => {
     this.setState({ personal: oldPersonalInfo });
-  }
+  };
 
   resetAccount = (oldAccount) => {
     this.setState({ account: oldAccount });
-  }
+  };
+
+  handleClose = () => {
+    const { forceResetPasswordStatus: forceResetAction } = this.props;
+    forceResetAction(false);
+  };
 
   render() {
     const {
       personal,
       account,
+      account: { email },
+      openResetPasswordStatus,
     } = this.state;
     const { resetPassword: resetPasswordAction } = this.props;
-
     return (
       <React.Fragment>
         {personal.firstname !== undefined && (
@@ -122,13 +144,20 @@ class Profile extends React.Component {
             resetPersonalInfo={this.resetPersonalInfo}
           />
         )}
-        {account.email !== undefined && (
+        {email !== undefined && (
           <Account
             {...account}
             inputChange={this.change}
             saveProfile={this.saveProfile}
             resetAccount={this.resetAccount}
             resetPassword={resetPasswordAction}
+          />
+        )}
+        {email !== undefined && (
+          <ForceChangePassword
+            openChangePassword={openResetPasswordStatus}
+            closeChangePassword={this.handleClose}
+            email={email}
           />
         )}
       </React.Fragment>
@@ -138,6 +167,9 @@ class Profile extends React.Component {
 
 const mapStateToProps = state => ({
   user: state.user.detail,
+  isDefaultPwdChanged: state.user.isDefaultPwdChanged,
 });
 
-export default connect(mapStateToProps, { updateProfile, resetPassword, toggleLoading })(Profile);
+export default connect(mapStateToProps, {
+  updateProfile, resetPassword, toggleLoading, forceResetPasswordStatus,
+})(Profile);

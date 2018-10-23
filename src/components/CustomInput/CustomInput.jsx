@@ -22,6 +22,7 @@ function CustomInput({ ...props }) {
     success,
     value,
     iconFaName,
+    customClass,
   } = props;
 
   const labelClasses = classNames({
@@ -79,8 +80,10 @@ function CustomInput({ ...props }) {
     return (isSuccess ? <Check className={`${feedbackClasses} ${classes.labelRootSuccess}`} /> : null);
   };
 
+  const customClasses = customClass ? classNames(formControlClasses, customClass)
+    : formControlClasses;
   return (
-    <FormControl {...formControlProps} className={formControlClasses}>
+    <FormControl {...formControlProps} className={customClasses}>
       {labelText !== undefined ? (
         <InputLabel
           className={`${classes.labelRoot} ${labelClasses}`}
@@ -124,6 +127,7 @@ CustomInput.propTypes = {
   white: PropTypes.bool,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   iconFaName: PropTypes.string,
+  customClass: PropTypes.string,
 };
 
 CustomInput.defaultProps = {
@@ -137,6 +141,7 @@ CustomInput.defaultProps = {
   white: false,
   value: undefined,
   iconFaName: undefined,
+  customClass: '',
 };
 
 export default withStyles(customInputStyle)(CustomInput);
