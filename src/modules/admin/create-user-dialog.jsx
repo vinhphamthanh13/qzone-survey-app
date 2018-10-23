@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import {
-  Dialog, DialogContent, DialogTitle, DialogActions,
+  Dialog, DialogContent, DialogTitle, DialogActions, Select, MenuItem, FormControl, InputLabel,
 } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PhoneInput from 'react-phone-number-input';
@@ -13,6 +13,7 @@ import CustomInput from 'components/CustomInput/CustomInput';
 import { classesType } from 'types/global';
 import personalPageStyles from 'assets/jss/material-dashboard-pro-react/modules/personalPageStyles';
 import validateEmail from 'utils/validateEmail';
+import { eUserType } from '../../constants';
 
 class CreateUserDialog extends PureComponent {
   static propTypes = {
@@ -31,8 +32,10 @@ class CreateUserDialog extends PureComponent {
     lastnameState: '',
     department: undefined,
     companyName: undefined,
-    phoneNumber: undefined,
+    phoneNumber: '',
     postCode: undefined,
+    userType: eUserType.assessor,
+    password: 'Test@2018',
   }
 
   constructor(props) {
@@ -81,6 +84,7 @@ class CreateUserDialog extends PureComponent {
       emailState,
       firstnameState,
       lastnameState,
+      userType,
     } = this.state;
     return (
       <Dialog
@@ -92,6 +96,30 @@ class CreateUserDialog extends PureComponent {
         <DialogTitle id="form-dialog-title">Create user</DialogTitle>
         <DialogContent>
           <GridContainer>
+            <GridItem md={12}>
+              <FormControl fullWidth>
+                <InputLabel htmlFor="user-type">User type (required)</InputLabel>
+                <Select
+                  value={userType}
+                  onChange={event => this.change(event, 'userType')}
+                  inputProps={{
+                    name: 'user-type',
+                    id: 'user-type',
+                  }}
+                >
+                  <MenuItem
+                    value={eUserType.assessor}
+                  >
+                    {eUserType.assessor}
+                  </MenuItem>
+                  <MenuItem
+                    value={eUserType.sponsor}
+                  >
+                    {eUserType.sponsor}
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </GridItem>
             <GridItem md={12}>
               <CustomInput
                 labelText="Email (required)"
@@ -145,7 +173,7 @@ class CreateUserDialog extends PureComponent {
               <PhoneInput
                 placeholder="Your phone number"
                 className={classes.phoneNumber}
-                onChange={value => this.change({ target: { value } }, 'phoneNumber')}
+                onChange={value => this.change({ target: { value: value || '' } }, 'phoneNumber')}
               />
             </GridItem>
             <GridItem md={6}>

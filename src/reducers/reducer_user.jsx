@@ -12,7 +12,7 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case FETCH_USERTYPE_LIST:
-      return { ...state, userTypeList: state.userTypeList.concat(action.payload.data) };
+      return { ...state, userTypeList: action.payload.data.concat(state.userTypeList) };
     case FETCH_USER_BY_USERID:
       return { ...state, detail: action.payload.data };
     case TOGGLE_LOADING:

@@ -84,13 +84,15 @@ export function changePassword(value, callback) {
   return { type: CHANGE_PASSWORD };
 }
 
+export const fetchUserTypeListActionCreator = payload => ({
+  type: FETCH_USERTYPE_LIST,
+  payload,
+});
+
 export async function fetchUserTypeList(value) {
   const axiosConfig = { headers: await makeHeaders() };
   const request = axios.post(`${REG_SERVICE_URL}/getListUsersByUserType`, value, axiosConfig);
-  return {
-    type: FETCH_USERTYPE_LIST,
-    payload: request,
-  };
+  return fetchUserTypeListActionCreator(request);
 }
 
 export function fetchMultipleUserType(userTypes) {
