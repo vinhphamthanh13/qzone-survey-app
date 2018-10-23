@@ -80,9 +80,9 @@ class RegisterPage extends React.Component {
           if (response) {
             if (response.status === 201) {
               newState.openVerificationModal = true;
-              Alert.success('Thank you for registering!', { effect: 'bouncyflip' });
+              Alert.success('Thank you for registering!');
             } else {
-              Alert.error(response.data.message, { effect: 'bouncyflip' });
+              Alert.error(response.data.message);
             }
           }
 

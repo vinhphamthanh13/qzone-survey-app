@@ -89,9 +89,9 @@ class ChangePassword extends React.Component {
       if (response.status === 200) {
         const { closeChangePassword } = this.props;
         closeChangePassword();
-        Alert.success('Password is successfully updated', { effect: 'bouncyflip' });
+        Alert.success('Password is successfully updated');
       } else {
-        Alert.error(response.data.message, { effect: 'bouncyflip' });
+        Alert.error(response.data.message);
       }
     });
   }

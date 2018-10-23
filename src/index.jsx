@@ -32,7 +32,7 @@ ReactDOM.render(
         </Switch>
       </Router>
     </Provider>
-    <Alert stack />
+    <Alert stack effect="bouncyflip" position="top-right" />
   </React.Fragment>,
   document.getElementById('root'),
 );

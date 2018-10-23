@@ -131,10 +131,7 @@ class AdminAssessmentQuestionList extends React.Component {
   handleClick = (e) => {
     e.preventDefault();
     Alert.closeAll();
-    Alert.success('Copied', {
-      position: 'bottom-right',
-      effect: 'bouncyflip',
-    });
+    Alert.success('Copied');
   };
 
   copySurvey = (id) => {

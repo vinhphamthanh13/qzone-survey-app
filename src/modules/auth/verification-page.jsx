@@ -93,7 +93,7 @@ class VerificationPage extends React.PureComponent {
           actionAfterSubmit();
         } else {
           history.push('/login');
-          Alert.success('Register successfully! Please login with your new account', { effect: 'bouncyflip' });
+          Alert.success('Register successfully! Please login with your new account');
         }
       } else {
         this.setState({ errorCode: true });
