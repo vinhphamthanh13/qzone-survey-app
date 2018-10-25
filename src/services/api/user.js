@@ -96,6 +96,13 @@ export async function fetchUserTypeList(value) {
   return fetchUserTypeListActionCreator(request);
 }
 
+export function fetchMultipleUserType(userTypes) {
+  return {
+    type: FETCH_MULTIPLE_USER_TYPE,
+    payload: Promise.all(userTypes.map(async type => (await fetchUserTypeList(type)).payload)),
+  };
+}
+
 export async function fetchUserByUserId(id) {
   const axiosConfig = { headers: await makeHeaders() };
   const request = axios.get(`${REG_SERVICE_URL}/getUserByUserId/${id}`, axiosConfig);

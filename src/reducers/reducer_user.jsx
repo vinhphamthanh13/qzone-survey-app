@@ -1,7 +1,12 @@
 import {
-  FETCH_USERTYPE_LIST, FETCH_USER_BY_USERID, TOGGLE_LOADING, FETCH_MULTIPLE_USER_TYPE,
+  FETCH_USERTYPE_LIST,
+  FETCH_USER_BY_USERID,
+  TOGGLE_LOADING,
+  FETCH_MULTIPLE_USER_TYPE,
+  FORCE_RESET_PASSWORD,
 } from 'services/api/user';
 import { UPDATE_PROFILE } from 'services/api/profile';
+import { eUserType } from '../constants';
 
 const initialState = {
   userTypeList: [],
@@ -22,6 +27,14 @@ export default function (state = initialState, action) {
         return { ...state, detail: { ...state.detail, ...JSON.parse(action.payload.config.data) } };
       }
       return state;
+    }
+    case FORCE_RESET_PASSWORD:
+      return { ...state, isDefaultPwdChanged: action.payload };
+    case eUserType.temporary: {
+      if (action.payload && action.payload.status === 200) {
+        return { ...state, forceChangePasswordSuccess: true };
+      }
+      return { ...state };
     }
     case FETCH_MULTIPLE_USER_TYPE: {
       const userTypeList = [];
