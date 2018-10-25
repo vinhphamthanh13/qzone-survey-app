@@ -37,9 +37,9 @@ class ResetPassword extends React.Component {
     resetPasswordAction(this.state, (response) => {
       if (response.status === 200) {
         this.setState({ open: false, openChangePassword: true });
-        Alert.success('Code is successfully send to your email', { effect: 'bouncyflip' });
+        Alert.success('Code is successfully send to your email');
       } else {
-        Alert.error(response.data.message, { effect: 'bouncyflip' });
+        Alert.error(response.data.message);
       }
     });
   };

@@ -8,6 +8,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { formatPhoneNumber } from 'react-phone-number-input';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import Alert from 'react-s-alert';
 import { classesType } from 'types/global';
 import Card from 'components/Card/Card';
 import CardBody from 'components/Card/CardBody';
@@ -15,7 +16,7 @@ import CardIcon from 'components/Card/CardIcon';
 import CardHeader from 'components/Card/CardHeader';
 import Button from 'components/CustomButtons/Button';
 import { toggleLoading } from 'services/api/assessment';
-import { fetchMultipleUserType } from 'services/api/user';
+import { fetchMultipleUserType, registerUser, fetchUserTypeListActionCreator } from 'services/api/user';
 import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/listPageStyle';
 import createUserStyle from './create-user.style';
 import { eUserType } from '../../constants';
@@ -25,11 +26,13 @@ class CreateUser extends PureComponent {
   static propTypes = {
     classes: classesType.isRequired,
     userList: PropTypes.arrayOf(PropTypes.object).isRequired,
-    toggleLoading: PropTypes.func.isRequired,
-    fetchMultipleUserType: PropTypes.func.isRequired,
+    toggleLoadingAction: PropTypes.func.isRequired,
+    fetchMultipleUserTypeAction: PropTypes.func.isRequired,
+    registerUserAction: PropTypes.func.isRequired,
+    fetchUserTypeListAction: PropTypes.func.isRequired,
   }
 
-  rowNames = ['#', 'User type', 'First name', 'Last name', 'Email', 'Phone number'];
+  rowNames = ['User type', 'First name', 'Last name', 'Email', 'Phone number'];
 
   constructor(props) {
     super(props);
@@ -38,8 +41,8 @@ class CreateUser extends PureComponent {
 
   componentDidMount = () => {
     const {
-      toggleLoading: toggleLoadingAction,
-      fetchMultipleUserType: fetchMultipleUserTypeAction,
+      toggleLoadingAction,
+      fetchMultipleUserTypeAction,
       userList,
     } = this.props;
     if (userList.length === 0) toggleLoadingAction();
@@ -50,7 +53,7 @@ class CreateUser extends PureComponent {
   }
 
   componentWillReceiveProps = (nextProps) => {
-    const { userList, toggleLoading: toggleLoadingAction } = this.props;
+    const { userList, toggleLoadingAction } = this.props;
     if (userList.length === 0 && userList.length !== nextProps.userList.length) {
       toggleLoadingAction();
     }
@@ -65,7 +68,20 @@ class CreateUser extends PureComponent {
   }
 
   onCreateUser = (newUser) => {
-    console.log(newUser);
+    const { toggleLoadingAction, registerUserAction, fetchUserTypeListAction } = this.props;
+    toggleLoadingAction();
+    registerUserAction(newUser, (response) => {
+      toggleLoadingAction();
+
+      if (response) {
+        if (response.status !== 201) {
+          Alert.error(response.data.message);
+        } else {
+          Alert.success('User was created successfully');
+          fetchUserTypeListAction({ data: [newUser] });
+        }
+      }
+    });
   }
 
   render() {
@@ -89,7 +105,7 @@ class CreateUser extends PureComponent {
                 className={classes.createBtn}
                 onClick={this.openDialog}
               >
-                Create user
+                New user
               </Button>
             </div>
           </CardHeader>
@@ -108,9 +124,8 @@ class CreateUser extends PureComponent {
                 {
                   userList.map(({
                     id, userType, firstname, lastname, email, phoneNumber,
-                  }, index) => (
+                  }) => (
                     <TableRow key={id}>
-                      <TableCell>{index + 1}</TableCell>
                       <TableCell className={classes.userTypeCol}>{userType}</TableCell>
                       <TableCell>{firstname}</TableCell>
                       <TableCell>{lastname}</TableCell>
@@ -136,5 +151,10 @@ const mapStateToProps = state => ({
 
 export default compose(
   withStyles({ cardIconTitle: listPageStyle.cardIconTitle, ...createUserStyle }),
-  connect(mapStateToProps, { toggleLoading, fetchMultipleUserType }),
+  connect(mapStateToProps, {
+    toggleLoadingAction: toggleLoading,
+    fetchMultipleUserTypeAction: fetchMultipleUserType,
+    registerUserAction: registerUser,
+    fetchUserTypeListAction: fetchUserTypeListActionCreator,
+  }),
 )(CreateUser);

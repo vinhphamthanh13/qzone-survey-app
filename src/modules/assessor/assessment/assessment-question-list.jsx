@@ -22,8 +22,6 @@ import CardBody from 'components/Card/CardBody';
 import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/listPageStyle';
 import { fetchSurveysByAssessorId, deleteSurvey, deleteAllSurvey } from 'services/api/assessment';
 import { checkAuth } from 'services/api/user';
-import 'react-s-alert/dist/s-alert-default.css';
-import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
 import { sessionService } from 'redux-react-session';
 import { classesType } from 'types/global';
 import { SURVEY_APP_URL } from '../../../constants';
@@ -133,10 +131,7 @@ class AssessorAssessmentQuestionList extends React.Component {
   handleClick = (e) => {
     e.preventDefault();
     Alert.closeAll();
-    Alert.success('Copied', {
-      position: 'bottom-right',
-      effect: 'bouncyflip',
-    });
+    Alert.success('Copied');
   }
 
   render() {

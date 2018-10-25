@@ -8,8 +8,6 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import GridContainer from 'components/Grid/GridContainer';
 import GridItem from 'components/Grid/GridItem';
-import 'react-s-alert/dist/s-alert-default.css';
-import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css';
 import { registerUser } from 'services/api/user';
 import { toggleLoading } from 'services/api/assessment';
 import { connect } from 'react-redux';
@@ -35,22 +33,6 @@ class Assessor extends React.Component {
     };
   }
 
-  // componentWillMount(){
-  //   var password = this.randomPassword(8);
-  //   console.log(password)
-  //   this.setState({password})
-  // }
-
-  // randomPassword(length) {
-  //   var chars = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
-  //   var pass = "";
-  //   for (var x = 0; x < length; x++) {
-  //       var i = Math.floor(Math.random() * chars.length);
-  //       pass += chars.charAt(i);
-  //   }
-  //   return pass;
-  // }
-
   handleAssessor = () => {
     const {
       toggleLoading: toggleLoadingAction, registerUser: registerUserAction,
@@ -58,18 +40,13 @@ class Assessor extends React.Component {
     } = this.props;
     toggleLoadingAction();
     registerUserAction(this.state, (response) => {
+      toggleLoadingAction();
+
       if (response) {
-        toggleLoadingAction();
         if (response.status !== 201) {
-          Alert.error(response.data.message, {
-            position: 'bottom-right',
-            effect: 'bouncyflip',
-          });
+          Alert.error(response.data.message);
         } else {
-          Alert.success('Assessor Added successfully', {
-            position: 'bottom-right',
-            effect: 'bouncyflip',
-          });
+          Alert.success('Assessor was created successfully');
           this.setState({ open: false }, reloadAssessorList);
         }
       }

@@ -23,7 +23,7 @@ class ResendCodeButton extends PureComponent {
         const { email, cbAfterResend, verifyResendUser: verifyResendUserAction } = this.props;
         verifyResendUserAction({ email }, (response) => {
           if (response.status !== 200) {
-            Alert.error(response.data.message, { effect: 'bouncyflip' });
+            Alert.error(response.data.message);
           }
           cbAfterResend();
         });

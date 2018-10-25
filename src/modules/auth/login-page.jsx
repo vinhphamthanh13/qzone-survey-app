@@ -98,7 +98,6 @@ class LoginPage extends React.Component {
               Alert.error(
                 ['User is not confirmed.', 'User does not exist.', 'Incorrect username or password.']
                   .includes(response.data.message) ? response.data.message : 'Cannot connect to server',
-                { effect: 'bouncyflip' },
               );
 
               this.setState(newState);
