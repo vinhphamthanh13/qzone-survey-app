@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Storage } from 'react-jhipster';
 import { sessionService } from 'redux-react-session';
 import makeHeaders from '../helper/makeHeaders';
-import { REG_SERVICE_URL, surveyLocalData } from '../../constants';
+import { REG_SERVICE_URL, surveyLocalData, eUserType } from '../../constants';
 
 export const REGISTER_USER = 'register_user';
 export const VERIFY_USER = 'verify_user';
@@ -14,7 +14,7 @@ export const VERIFY_RESEND_USER = 'verify_resend_user';
 export const FETCH_USERTYPE_LIST = 'fetch_usertype_list';
 export const FETCH_USER_BY_USERID = 'fetch_user_by_userid';
 export const TOGGLE_LOADING = 'auth_toggle_loading';
-export const FETCH_MULTIPLE_USER_TYPE = 'fetch_multiple_user_type';
+export const FORCE_RESET_PASSWORD = 'force_reset_password';
 
 const handleSuccessResponse = callback => (response) => { callback(response); };
 
@@ -84,21 +84,12 @@ export function changePassword(value, callback) {
   return { type: CHANGE_PASSWORD };
 }
 
-export const fetchUserTypeListActionCreator = payload => ({
-  type: FETCH_USERTYPE_LIST,
-  payload,
-});
-
 export async function fetchUserTypeList(value) {
   const axiosConfig = { headers: await makeHeaders() };
   const request = axios.post(`${REG_SERVICE_URL}/getListUsersByUserType`, value, axiosConfig);
-  return fetchUserTypeListActionCreator(request);
-}
-
-export function fetchMultipleUserType(userTypes) {
   return {
-    type: FETCH_MULTIPLE_USER_TYPE,
-    payload: Promise.all(userTypes.map(async type => (await fetchUserTypeList(type)).payload)),
+    type: FETCH_USERTYPE_LIST,
+    payload: request,
   };
 }
 
@@ -113,4 +104,17 @@ export async function fetchUserByUserId(id) {
 
 export function toggleLoading() {
   return { type: TOGGLE_LOADING };
+}
+
+export function forceResetPasswordStatus(value) {
+  return { type: FORCE_RESET_PASSWORD, payload: value };
+}
+
+export async function completeNewPasswordChallenge(values, callback) {
+  const axiosConfig = { headers: await makeHeaders() };
+  axios.post(`${REG_SERVICE_URL}/completeNewPasswordChallenge`, values, axiosConfig)
+    .then(handleSuccessResponse(callback))
+    .catch(handleErrorResponse(callback));
+
+  return { type: eUserType.temporary };
 }

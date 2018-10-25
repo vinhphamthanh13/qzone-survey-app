@@ -18,13 +18,13 @@ import CardBody from 'components/Card/CardBody';
 import CardFooter from 'components/Card/CardFooter';
 import loginPageStyle from 'assets/jss/material-dashboard-pro-react/modules/loginPageStyle';
 import fontAwesomeIcon from 'assets/jss/material-dashboard-pro-react/layouts/font-awesome-icon';
-import { loginUser, toggleLoading } from 'services/api/user';
+import { loginUser, toggleLoading, forceResetPasswordStatus } from 'services/api/user';
 import { Storage } from 'react-jhipster';
 import { classesType, historyType } from 'types/global';
 import VerificationPage from './verification-page';
 import ResetPassword from './reset-password';
 import validateEmail from '../../utils/validateEmail';
-import { surveyLocalData } from '../../constants';
+import { surveyLocalData, eUserType } from '../../constants';
 
 let surveyId = '';
 class LoginPage extends React.Component {
@@ -33,7 +33,8 @@ class LoginPage extends React.Component {
     toggleLoading: PropTypes.func.isRequired,
     loginUser: PropTypes.func.isRequired,
     history: historyType.isRequired,
-  }
+    forceResetPasswordStatus: PropTypes.func.isRequired,
+  };
 
   constructor(props) {
     super(props);
@@ -44,6 +45,7 @@ class LoginPage extends React.Component {
       password: '',
       passwordState: '',
       openVerificationModal: false,
+      // openForceChangePassword: false,
       disabled: false,
     };
   }
@@ -64,14 +66,21 @@ class LoginPage extends React.Component {
     if (emailState === 'success' && passwordState === 'success') {
       const {
         toggleLoading: toggleLoadingAction, loginUser: loginUserAction,
-        history,
+        history, forceResetPasswordStatus: forceResetPasswordStatusAction,
       } = this.props;
       toggleLoadingAction();
       this.setState({ disabled: true }, () => {
         const { email, password } = this.state;
         loginUserAction({ email, password }, (response) => {
           if (response) {
+            const { data: { challengeNameType, userType } } = response;
             toggleLoadingAction();
+            if (challengeNameType && challengeNameType === eUserType.temporary
+              && userType === eUserType.assessor) {
+              forceResetPasswordStatusAction(true);
+            } else {
+              forceResetPasswordStatusAction(false);
+            }
 
             if (response.status === 200) {
               if (surveyId) {
@@ -82,7 +91,6 @@ class LoginPage extends React.Component {
               }
             } else {
               const newState = { disabled: false };
-
               if (response.data.message === 'User is not confirmed.') {
                 newState.openVerificationModal = true;
               }
@@ -98,7 +106,7 @@ class LoginPage extends React.Component {
         });
       });
     }
-  }
+  };
 
   loginClick = () => {
     const newState = {};
@@ -107,15 +115,11 @@ class LoginPage extends React.Component {
     if (emailState === '') {
       newState.emailState = 'error';
     }
-
     if (passwordState === '') {
       newState.passwordState = 'error';
     }
-
     this.setState(newState, this.login);
-  }
-
-  verifyLength = (value, length) => value.length >= length
+  };
 
   change = (event, stateName) => {
     const { value } = event.target;
@@ -136,7 +140,7 @@ class LoginPage extends React.Component {
         break;
       }
     }
-  }
+  };
 
   render() {
     const { classes, history } = this.props;
@@ -238,5 +242,5 @@ class LoginPage extends React.Component {
 
 export default compose(
   withStyles(loginPageStyle),
-  connect(null, { loginUser, toggleLoading }),
+  connect(null, { loginUser, toggleLoading, forceResetPasswordStatus }),
 )(LoginPage);

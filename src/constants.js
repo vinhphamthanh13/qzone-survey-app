@@ -4,6 +4,7 @@ export const eUserType = {
   provider: 'PROVIDER',
   sponsor: 'SPONSOR',
   admin: 'ADMIN',
+  temporary: 'NEW_PASSWORD_REQUIRED',
 };
 
 export const eSurveyStatus = {
@@ -26,6 +27,7 @@ export const eRegisterPage = {
 export const userStatus = {
   unconfirmed: 'UNCONFIRMED',
   confirmed: 'CONFIRMED',
+  temporary: 'FORCE_CHANGE_PASSWORD',
 };
 
 export const SURVEY_APP_URL = 'testengage.quezone.com.au';
