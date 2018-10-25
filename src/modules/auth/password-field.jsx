@@ -7,27 +7,43 @@ import { classesType } from 'types/global';
 
 class PasswordField extends PureComponent {
   static propTypes = {
+    onChangeDefaultPwd: PropTypes.func,
     onChangePassword: PropTypes.func.isRequired,
     onChangeConfirmPwd: PropTypes.func.isRequired,
+    defaultPwdState: PropTypes.string,
     passwordState: PropTypes.string.isRequired,
     confirmPwdState: PropTypes.string.isRequired,
     classes: classesType.isRequired,
     useLabel: PropTypes.bool,
-  }
+  };
 
   static defaultProps = {
     useLabel: true,
-  }
+    onChangeDefaultPwd: null,
+    defaultPwdState: 'null',
+  };
 
   render() {
     const {
+      onChangeDefaultPwd,
       onChangePassword,
       onChangeConfirmPwd,
+      defaultPwdState,
       passwordState,
       confirmPwdState,
       classes,
       useLabel,
     } = this.props;
+
+    const defaultPwdProps = {
+      labelText: useLabel ? 'Default Password (required)' : undefined,
+      inputProps: {
+        onChange: onChangeDefaultPwd,
+        type: 'password',
+        placeholder: !useLabel ? 'Default Password (required)' : undefined,
+      },
+    };
+
     const passwordProps = {
       labelText: useLabel ? 'Password (required)' : undefined,
       inputProps: {
@@ -46,8 +62,23 @@ class PasswordField extends PureComponent {
       },
     };
 
+    const defaultPwdInput = defaultPwdState !== 'null'
+      ? (
+        <div className={classes.inputWrapper}>
+          <CustomInput
+            success={defaultPwdState === 'success'}
+            error={defaultPwdState === 'error'}
+            id="default"
+            {...defaultPwdProps}
+          />
+          <CustomInput id="hiddenPwd" customClass={classes.hiddenInput} />
+          <div />
+        </div>
+      )
+      : null;
     return (
       <React.Fragment>
+        { defaultPwdInput }
         <div className={classes.inputWrapper}>
           <CustomInput
             success={passwordState === 'success'}

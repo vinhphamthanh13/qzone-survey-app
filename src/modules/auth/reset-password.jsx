@@ -18,14 +18,14 @@ class ResetPassword extends React.Component {
   static propTypes = {
     classes: classesType.isRequired,
     resetPassword: PropTypes.func.isRequired,
-  }
+  };
 
   defaultState = {
     email: '',
     emailState: false,
     open: false,
     openChangePassword: false,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -42,22 +42,22 @@ class ResetPassword extends React.Component {
         Alert.error(response.data.message, { effect: 'bouncyflip' });
       }
     });
-  }
+  };
 
   handleClose = () => {
     this.setState(this.defaultState);
-  }
+  };
 
   handleOpen = () => {
     this.setState({ open: true });
-  }
+  };
 
   onChangeEmail = (event) => {
     this.setState({
       email: event.target.value,
       emailState: validateEmail(event.target.value) ? 'success' : 'error',
     });
-  }
+  };
 
   render() {
     const { classes } = this.props;
