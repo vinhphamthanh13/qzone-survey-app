@@ -104,6 +104,9 @@ const registerPageStyle = {
     alignItems: 'center',
     borderBottom: '1px solid #d2d2d26e',
   },
+  hiddenInput: {
+    visibility: 'hidden',
+  },
 };
 
 export default registerPageStyle;
