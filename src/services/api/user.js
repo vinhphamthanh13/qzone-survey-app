@@ -15,6 +15,7 @@ export const FETCH_USERTYPE_LIST = 'fetch_usertype_list';
 export const FETCH_USER_BY_USERID = 'fetch_user_by_userid';
 export const TOGGLE_LOADING = 'auth_toggle_loading';
 export const FORCE_RESET_PASSWORD = 'force_reset_password';
+export const FETCH_MULTIPLE_USER_TYPE = 'fetch_multiple_user_type';
 
 const handleSuccessResponse = callback => (response) => { callback(response); };
 

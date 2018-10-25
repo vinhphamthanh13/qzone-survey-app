@@ -88,7 +88,6 @@ class CreateUserDialog extends PureComponent {
     } = this.state;
     return (
       <Dialog
-        fullWidth
         open={open}
         onClose={this.handleClose}
         aria-labelledby="form-dialog-title"
