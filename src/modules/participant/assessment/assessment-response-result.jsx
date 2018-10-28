@@ -45,7 +45,7 @@ class AssessmentResponseResult extends React.Component {
 
   goBack = () => {
     const { history } = this.props;
-    history.push('/participant/assessment/assessment-responses');
+    history.push('/participant/assessment/answers');
   }
 
   render() {

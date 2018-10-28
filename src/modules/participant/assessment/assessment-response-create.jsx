@@ -90,7 +90,7 @@ class AssessmentResponseCreate extends React.Component {
           history.push(`/assessment/result/${id}/${userId}`);
         } else {
           // back to assessment response list
-          history.push('/participant/assessment/assessment-responses');
+          history.push('/participant/assessment/answers');
         }
       });
     });
