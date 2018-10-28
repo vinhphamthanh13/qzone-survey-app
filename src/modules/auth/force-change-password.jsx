@@ -110,6 +110,8 @@ class ForceChangePassword extends React.Component {
           open={openChangePassword}
           onClose={this.onDialogClose}
           aria-labelledby="form-dialog-title"
+          disableBackdropClick
+          disableEscapeKeyDown
         >
           <DialogTitle id="form-dialog-title">Change password</DialogTitle>
           <DialogContent>
