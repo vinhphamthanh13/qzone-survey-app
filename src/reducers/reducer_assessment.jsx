@@ -10,17 +10,9 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case FETCH_SURVEYS:
-      return {
-        ...state,
-        list: action.payload.data,
-        loading: !action.payload.data.length > 0,
-      };
+      return { ...state, list: action.payload.data };
     case FETCH_SURVEY:
-      return {
-        ...state,
-        detail: action.payload.data,
-        loading: !action.payload.data.survey !== '',
-      };
+      return { ...state, detail: action.payload.data };
     case TOGGLE_LOADING:
       return { ...state, loading: !state.loading };
     case UPDATE_PROFILE:
