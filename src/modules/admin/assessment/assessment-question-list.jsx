@@ -7,7 +7,6 @@ import { compose } from 'redux';
 import {
   Table, TableBody, TableCell, TableHead, TableRow, Checkbox,
 } from '@material-ui/core';
-import SweetAlert from 'react-bootstrap-sweetalert';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Alert from 'react-s-alert';
 import { Delete, FileCopy, Poll } from '@material-ui/icons';
@@ -26,9 +25,10 @@ import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/listP
 import {
   fetchSurveys, deleteSurvey, deleteAllSurvey,
 } from 'services/api/assessment';
+import DeleteAssessment from 'modules/shared/delete-assessment';
 import { checkAuth } from 'services/api/user';
 import { classesType, historyType } from 'types/global';
-import { SURVEY_APP_URL } from '../../../constants';
+import { SURVEY_APP_URL, CTA } from '../../../constants';
 
 const override = css`
     display: block;
@@ -58,7 +58,9 @@ class AdminAssessmentQuestionList extends React.Component {
       deleteAll: false,
       loading: false,
       token: '',
-      // copyId: null,
+      isOpenDeleteSurvey: false,
+      sId: '',
+      dialogType: CTA.DELETE,
     };
   }
 
@@ -73,35 +75,35 @@ class AdminAssessmentQuestionList extends React.Component {
     setTimeout(() => this.setState({ loading: false }), 1500);
   }
 
-  warningWithConfirmMessage = (SID = '') => {
-    const { classes } = this.props;
-
+  onOpenSurveyDeleteHandler = (SID = '') => {
     this.setState({
-      sweetAlert: (
-        <SweetAlert
-          warning
-          style={{ display: 'block', marginTop: '-100px' }}
-          title="Are you sure?"
-          onConfirm={() => this.successDelete(SID)}
-          onCancel={() => this.setState({ sweetAlert: '' })}
-          confirmBtnCssClass={`${classes.button} ${classes.success}`}
-          cancelBtnCssClass={`${classes.button} ${classes.danger}`}
-          confirmBtnText="Yes, delete it!"
-          cancelBtnText="Cancel"
-          showCancel
-        >
-          You will not be able to recover the Assessment!
-        </SweetAlert>
-      ),
-      deleteAll: false,
+      isOpenDeleteSurvey: true,
+      sId: SID,
+      dialogType: 'delete',
+      deleteAll: SID === '',
     });
+  };
+
+  onCloseDeleteSurveyHandler = () => {
+    this.setState({ isOpenDeleteSurvey: false });
+  };
+
+  deleteAllShowingHandler = () => {
+    const { surveyList } = this.props;
+    if (surveyList.length) {
+      this.setState(prevState => ({
+        deleteAll: !prevState.deleteAll,
+      }));
+    }
   };
 
   successDelete = (SID) => {
     const {
-      deleteSurvey: deleteSurveyAction, deleteAllSurvey: deleteAllSurveyAction,
-      classes, fetchSurveys: fetchSurveysAction,
+      deleteSurvey: deleteSurveyAction,
+      deleteAllSurvey: deleteAllSurveyAction,
+      fetchSurveys: fetchSurveysAction,
     } = this.props;
+
     const { token } = this.state;
     let api = deleteAllSurveyAction;
 
@@ -110,20 +112,7 @@ class AdminAssessmentQuestionList extends React.Component {
     }
 
     api(SID, token, () => {
-      this.setState({
-        sweetAlert: (
-          <SweetAlert
-            success
-            style={{ display: 'block', marginTop: '-100px' }}
-            title="Deleted!"
-            onConfirm={() => this.setState({ sweetAlert: '' })}
-            onCancel={() => this.setState({ sweetAlert: '' })}
-            confirmBtnCssClass={classes.success}
-          >
-            Assessment has been deleted.
-          </SweetAlert>
-        ),
-      });
+      this.setState({ dialogType: CTA.DELETE_CONFIRMED, deleteAll: false });
       fetchSurveysAction(token);
     });
   };
@@ -141,82 +130,92 @@ class AdminAssessmentQuestionList extends React.Component {
 
   render() {
     const { classes, surveyList, history } = this.props;
-    const { loading, deleteAll, sweetAlert } = this.state;
-
+    const {
+      loading, deleteAll, sweetAlert, isOpenDeleteSurvey, sId, dialogType,
+    } = this.state;
+    const deleteAllCheckboxStatus = !surveyList.length;
     return (
       surveyList && surveyList.length >= 0
       && (
-        <GridContainer>
-          <ClipLoader
-            className={override}
-            sizeUnit="px"
-            size={70}
-            color="#123abc"
-            loading={loading}
-          />
-          <GridItem xs={12}>
-            <Card>
-              <CardHeader color="rose" icon>
-                <CardIcon color="rose">
-                  <Poll />
-                </CardIcon>
-                <h3 className={classes.cardIconTitle}>Assessments</h3>
-                <Button size="md" className={classes.buttonDisplay} onClick={() => { history.push('/admin/assessment/create'); }}>
-                  New Assessment
-                </Button>
-              </CardHeader>
-              <CardBody>
-                <Table className={classes.table} aria-labelledby="tableTitle">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>
-                        <Checkbox
-                          checked={deleteAll || false}
-                          onChange={() => this.setState(oldState => ({
-                            deleteAll: !oldState.deleteAll,
-                          }))}
-                        />
-                      </TableCell>
-                      <TableCell
-                        key="title"
-                      >
-                        Title
-                      </TableCell>
-                      <TableCell />
-                      <TableCell>
-                        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                        {deleteAll && <Link to="#" data-tip="Delete" onClick={() => this.warningWithConfirmMessage('')}><Delete /></Link>}
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {(surveyList)
-                      .map((surveyItem, index) => (
-                        <TableRow hover key={surveyItem.id}>
-                          <TableCell>{index + 1}</TableCell>
-                          <TableCell><Link data-tip="Show Survey" to={`/assessment/show/${surveyItem.id}`}>{surveyItem.title}</Link></TableCell>
-                          <TableCell>
-                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                            <Link style={iconStyle} data-tip="Delete Survey" to="#" onClick={() => this.warningWithConfirmMessage(surveyItem.id)}><Delete /></Link>
-                            <CopyToClipboard text={`${SURVEY_APP_URL}/surveys/${surveyItem.id}`}>
+        <div>
+          <GridContainer>
+            <ClipLoader
+              className={override}
+              sizeUnit="px"
+              size={70}
+              color="#123abc"
+              loading={loading}
+            />
+            <GridItem xs={12}>
+              <Card>
+                <CardHeader color="rose" icon>
+                  <CardIcon color="rose">
+                    <Poll />
+                  </CardIcon>
+                  <h3 className={classes.cardIconTitle}>Assessments</h3>
+                  <Button size="md" className={classes.buttonDisplay} onClick={() => { history.push('/admin/assessment/create'); }}>
+                    New Assessment
+                  </Button>
+                </CardHeader>
+                <CardBody>
+                  <Table className={classes.table} aria-labelledby="tableTitle">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>
+                          <Checkbox
+                            checked={deleteAll || false}
+                            onChange={this.deleteAllShowingHandler}
+                            disabled={deleteAllCheckboxStatus}
+                          />
+                        </TableCell>
+                        <TableCell
+                          key="title"
+                        >
+                          Title
+                        </TableCell>
+                        <TableCell>
+                          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                          {deleteAll && <Link to="#" data-tip="Delete" onClick={() => this.onOpenSurveyDeleteHandler('')}><Delete /></Link>}
+                        </TableCell>
+                        <TableCell />
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {(surveyList)
+                        .map((surveyItem, index) => (
+                          <TableRow hover key={surveyItem.id}>
+                            <TableCell>{index + 1}</TableCell>
+                            <TableCell><Link data-tip="Show Survey" to={`/assessment/show/${surveyItem.id}`}>{surveyItem.title}</Link></TableCell>
+                            <TableCell>
                               {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                              <Link style={iconStyle} data-tip="Copy Link" to="#" onClick={this.handleClick}><LinkIcon /></Link>
-                            </CopyToClipboard>
-                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                            <Link data-tip="Clone Survey" to="#" onClick={() => this.copySurvey(surveyItem.id)}><FileCopy /></Link>
-                          </TableCell>
-                          <TableCell>
-                            <ReactTooltip />
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
-                {sweetAlert}
-              </CardBody>
-            </Card>
-          </GridItem>
-        </GridContainer>
+                              <Link style={iconStyle} data-tip="Delete Survey" to="#" onClick={() => this.onOpenSurveyDeleteHandler(surveyItem.id)}><Delete /></Link>
+                              <CopyToClipboard text={`${SURVEY_APP_URL}/surveys/${surveyItem.id}`}>
+                                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                <Link style={iconStyle} data-tip="Copy Link" to="#" onClick={this.handleClick}><LinkIcon /></Link>
+                              </CopyToClipboard>
+                              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                              <Link data-tip="Clone Survey" to="#" onClick={() => this.copySurvey(surveyItem.id)}><FileCopy /></Link>
+                            </TableCell>
+                            <TableCell>
+                              <ReactTooltip />
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
+                  {sweetAlert}
+                </CardBody>
+              </Card>
+            </GridItem>
+          </GridContainer>
+          <DeleteAssessment
+            openDialog={isOpenDeleteSurvey}
+            closeDialog={this.onCloseDeleteSurveyHandler}
+            surveyId={sId}
+            surveyDeleteHandler={this.successDelete}
+            type={dialogType}
+          />
+        </div>
       )
     );
   }
