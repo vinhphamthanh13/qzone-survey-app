@@ -21,6 +21,11 @@ class CreateUserDialog extends PureComponent {
     closeDialog: PropTypes.func.isRequired,
     onCreateUser: PropTypes.func.isRequired,
     classes: classesType.isRequired,
+    editedUser: PropTypes.objectOf(PropTypes.string),
+  }
+
+  static defaultProps = {
+    editedUser: null,
   }
 
   defaultState = {
@@ -33,14 +38,30 @@ class CreateUserDialog extends PureComponent {
     department: undefined,
     companyName: undefined,
     phoneNumber: '',
-    postCode: undefined,
     userType: eUserType.assessor,
     password: 'Test@2018',
   }
 
   constructor(props) {
     super(props);
-    this.state = { ...this.defaultState };
+    this.state = props.editedUser ? {
+      ...props.editedUser,
+      emailState: 'success',
+      firstnameState: 'success',
+      lastnameState: 'success',
+    } : { ...this.defaultState };
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (props.editedUser && props.editedUser.id !== state.id) {
+      return {
+        ...props.editedUser,
+        emailState: 'success',
+        firstnameState: 'success',
+        lastnameState: 'success',
+      };
+    }
+    return null;
   }
 
   handleSubmit = () => {
@@ -79,13 +100,20 @@ class CreateUserDialog extends PureComponent {
   }
 
   render() {
-    const { open, classes } = this.props;
+    const { open, classes, editedUser } = this.props;
     const {
+      email,
       emailState,
+      firstname,
       firstnameState,
+      lastname,
       lastnameState,
+      department,
+      companyName,
+      phoneNumber,
       userType,
     } = this.state;
+
     return (
       <Dialog
         open={open}
@@ -104,16 +132,13 @@ class CreateUserDialog extends PureComponent {
                   inputProps={{
                     name: 'user-type',
                     id: 'user-type',
+                    disabled: !!editedUser,
                   }}
                 >
-                  <MenuItem
-                    value={eUserType.assessor}
-                  >
+                  <MenuItem value={eUserType.assessor}>
                     {eUserType.assessor}
                   </MenuItem>
-                  <MenuItem
-                    value={eUserType.sponsor}
-                  >
+                  <MenuItem value={eUserType.sponsor}>
                     {eUserType.sponsor}
                   </MenuItem>
                 </Select>
@@ -129,7 +154,9 @@ class CreateUserDialog extends PureComponent {
                 inputProps={{
                   onChange: e => this.change(e, 'email', 'email'),
                   type: 'email',
+                  disabled: !!editedUser,
                 }}
+                value={email}
               />
             </GridItem>
             <GridItem md={6}>
@@ -140,6 +167,7 @@ class CreateUserDialog extends PureComponent {
                 id="firstname"
                 formControlProps={{ fullWidth: true }}
                 inputProps={{ onChange: e => this.change(e, 'firstname', 'name') }}
+                value={firstname}
               />
             </GridItem>
             <GridItem md={6}>
@@ -150,6 +178,7 @@ class CreateUserDialog extends PureComponent {
                 id="lastname"
                 formControlProps={{ fullWidth: true }}
                 inputProps={{ onChange: e => this.change(e, 'lastname', 'name') }}
+                value={lastname}
               />
             </GridItem>
             <GridItem md={6}>
@@ -158,6 +187,7 @@ class CreateUserDialog extends PureComponent {
                 id="department"
                 formControlProps={{ fullWidth: true }}
                 inputProps={{ onChange: e => this.change(e, 'department') }}
+                value={department}
               />
             </GridItem>
             <GridItem md={6}>
@@ -166,6 +196,7 @@ class CreateUserDialog extends PureComponent {
                 id="company"
                 formControlProps={{ fullWidth: true }}
                 inputProps={{ onChange: e => this.change(e, 'companyName') }}
+                value={companyName}
               />
             </GridItem>
             <GridItem md={6}>
@@ -173,14 +204,7 @@ class CreateUserDialog extends PureComponent {
                 placeholder="Your phone number"
                 className={classes.phoneNumber}
                 onChange={value => this.change({ target: { value: value || '' } }, 'phoneNumber')}
-              />
-            </GridItem>
-            <GridItem md={6}>
-              <CustomInput
-                labelText="Your post code"
-                id="postCode"
-                formControlProps={{ fullWidth: true }}
-                inputProps={{ onChange: e => this.change(e, 'postCode') }}
+                value={phoneNumber}
               />
             </GridItem>
           </GridContainer>
