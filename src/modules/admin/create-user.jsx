@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Table, TableBody, TableCell, TableHead, TableRow,
+  Table, TableBody, TableCell, TableHead, TableRow, IconButton,
 } from '@material-ui/core';
 import { Poll } from '@material-ui/icons';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -16,8 +16,12 @@ import CardIcon from 'components/Card/CardIcon';
 import CardHeader from 'components/Card/CardHeader';
 import Button from 'components/CustomButtons/Button';
 import { toggleLoading } from 'services/api/assessment';
-import { fetchMultipleUserType, registerUser, fetchUserTypeListActionCreator } from 'services/api/user';
+import {
+  fetchMultipleUserType,
+  registerUser, fetchUserTypeListActionCreator, updateUser, updateUserActionCreator,
+} from 'services/api/user';
 import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/listPageStyle';
+import EditIcon from '@material-ui/icons/Edit';
 import createUserStyle from './create-user.style';
 import { eUserType } from '../../constants';
 import CreateUserDialog from './create-user-dialog';
@@ -30,13 +34,15 @@ class CreateUser extends PureComponent {
     fetchMultipleUserTypeAction: PropTypes.func.isRequired,
     registerUserAction: PropTypes.func.isRequired,
     fetchUserTypeListAction: PropTypes.func.isRequired,
+    updateUserAction: PropTypes.func.isRequired,
+    updateUserRequestAction: PropTypes.func.isRequired,
   }
 
-  rowNames = ['User type', 'First name', 'Last name', 'Email', 'Phone number'];
+  rowNames = ['User type', 'First name', 'Last name', 'Email', 'Phone number', 'Actions'];
 
   constructor(props) {
     super(props);
-    this.state = { isDialogOpen: false };
+    this.state = { isDialogOpen: false, editedUser: null };
   }
 
   componentDidMount = () => {
@@ -64,29 +70,52 @@ class CreateUser extends PureComponent {
   }
 
   closeDialog = () => {
-    this.setState({ isDialogOpen: false });
+    this.setState({ isDialogOpen: false, editedUser: null });
   }
 
   onCreateUser = (newUser) => {
-    const { toggleLoadingAction, registerUserAction, fetchUserTypeListAction } = this.props;
-    toggleLoadingAction();
-    registerUserAction(newUser, (response) => {
-      toggleLoadingAction();
+    const {
+      toggleLoadingAction,
+      registerUserAction, fetchUserTypeListAction, updateUserAction, updateUserRequestAction,
+    } = this.props;
+    const { editedUser } = this.state;
 
-      if (response) {
-        if (response.status !== 201) {
-          Alert.error(response.data.message);
-        } else {
-          Alert.success('User was created successfully');
-          fetchUserTypeListAction({ data: [newUser] });
+    toggleLoadingAction();
+
+    if (editedUser) {
+      updateUserRequestAction(newUser, (response) => {
+        toggleLoadingAction();
+        if (response) {
+          if (response.status !== 200) {
+            Alert.error(response.data.message);
+          } else {
+            Alert.success('User was updated successfully');
+            updateUserAction(newUser);
+          }
         }
-      }
-    });
+      });
+    } else {
+      registerUserAction(newUser, (response) => {
+        toggleLoadingAction();
+        if (response) {
+          if (response.status !== 201) {
+            Alert.error(response.data.message);
+          } else {
+            Alert.success('User was created successfully');
+            fetchUserTypeListAction({ data: [response.data] });
+          }
+        }
+      });
+    }
+  }
+
+  editUser = (user) => {
+    this.setState({ isDialogOpen: true, editedUser: user });
   }
 
   render() {
     const { classes, userList } = this.props;
-    const { isDialogOpen } = this.state;
+    const { isDialogOpen, editedUser } = this.state;
 
     return (
       <React.Fragment>
@@ -94,6 +123,7 @@ class CreateUser extends PureComponent {
           open={isDialogOpen}
           closeDialog={this.closeDialog}
           onCreateUser={this.onCreateUser}
+          editedUser={editedUser}
         />
         <Card>
           <CardHeader color="primary" icon>
@@ -122,15 +152,21 @@ class CreateUser extends PureComponent {
               </TableHead>
               <TableBody>
                 {
-                  userList.map(({
-                    id, userType, firstname, lastname, email, phoneNumber,
-                  }) => (
-                    <TableRow key={id}>
-                      <TableCell className={classes.userTypeCol}>{userType}</TableCell>
-                      <TableCell>{firstname}</TableCell>
-                      <TableCell>{lastname}</TableCell>
-                      <TableCell>{email}</TableCell>
-                      <TableCell>{formatPhoneNumber(phoneNumber, 'International')}</TableCell>
+                  userList.map(user => (
+                    <TableRow key={user.id}>
+                      <TableCell className={classes.userTypeCol}>{user.userType}</TableCell>
+                      <TableCell>{user.firstname}</TableCell>
+                      <TableCell>{user.lastname}</TableCell>
+                      <TableCell>{user.email}</TableCell>
+                      <TableCell>{formatPhoneNumber(user.phoneNumber, 'International')}</TableCell>
+                      <TableCell>
+                        <IconButton
+                          aria-label="Edit"
+                          onClick={() => this.editUser(user)}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </TableCell>
                     </TableRow>
                   ))
                 }
@@ -144,9 +180,7 @@ class CreateUser extends PureComponent {
 }
 
 const mapStateToProps = state => ({
-  userList: state.user.userTypeList.map(
-    user => ({ ...user, userType: user.userType.toLowerCase() }),
-  ),
+  userList: state.user.userTypeList,
 });
 
 export default compose(
@@ -156,5 +190,7 @@ export default compose(
     fetchMultipleUserTypeAction: fetchMultipleUserType,
     registerUserAction: registerUser,
     fetchUserTypeListAction: fetchUserTypeListActionCreator,
+    updateUserRequestAction: updateUser,
+    updateUserAction: updateUserActionCreator,
   }),
 )(CreateUser);

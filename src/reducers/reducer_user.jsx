@@ -4,6 +4,7 @@ import {
   TOGGLE_LOADING,
   FETCH_MULTIPLE_USER_TYPE,
   FORCE_RESET_PASSWORD,
+  UPDATE_USER,
 } from 'services/api/user';
 import { UPDATE_PROFILE } from 'services/api/profile';
 import { eUserType } from '../constants';
@@ -45,6 +46,16 @@ export default function (state = initialState, action) {
       });
       return { ...state, userTypeList };
     }
+    case UPDATE_USER:
+      return {
+        ...state,
+        userTypeList: state.userTypeList.map((user) => {
+          if (user.id === action.payload.id) {
+            return action.payload;
+          }
+          return user;
+        }),
+      };
     default:
       return state;
   }

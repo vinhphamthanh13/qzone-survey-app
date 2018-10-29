@@ -16,6 +16,8 @@ export const FETCH_USER_BY_USERID = 'fetch_user_by_userid';
 export const TOGGLE_LOADING = 'auth_toggle_loading';
 export const FORCE_RESET_PASSWORD = 'force_reset_password';
 export const FETCH_MULTIPLE_USER_TYPE = 'fetch_multiple_user_type';
+export const UPDATE_USER = 'update_user';
+export const REQUEST_UPDATE_USER = 'request_update_user';
 
 const handleSuccessResponse = callback => (response) => { callback(response); };
 
@@ -128,3 +130,17 @@ export async function completeNewPasswordChallenge(values, callback) {
 
   return { type: eUserType.temporary };
 }
+
+export const updateUser = async (userInfo, callback) => {
+  const axiosConfig = { headers: await makeHeaders() };
+  axios.put(`${REG_SERVICE_URL}/updateUser`, userInfo, axiosConfig)
+    .then(handleSuccessResponse(callback))
+    .catch(handleErrorResponse(callback));
+
+  return { type: REQUEST_UPDATE_USER };
+};
+
+export const updateUserActionCreator = userInfo => ({
+  type: UPDATE_USER,
+  payload: userInfo,
+});
