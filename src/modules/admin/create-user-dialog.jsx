@@ -120,7 +120,7 @@ class CreateUserDialog extends PureComponent {
         onClose={this.handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Create user</DialogTitle>
+        <DialogTitle id="form-dialog-title">{`${editedUser ? 'Edit' : 'Create'} user`}</DialogTitle>
         <DialogContent>
           <GridContainer>
             <GridItem md={12}>
