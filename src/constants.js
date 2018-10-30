@@ -36,3 +36,8 @@ export const REG_SERVICE_URL = 'http://54.252.134.87:8091/api/user';
 // export const REG_SERVICE_URL = `http://localhost:8091/api/user`;
 export const SURVEY_URL = 'http://54.252.134.87:8090/api';
 // export const SURVEY_URL = `http://localhost:8090/api`;
+
+export const CTA = {
+  DELETE: 'delete',
+  DELETE_CONFIRMED: 'deleted',
+};
