@@ -18,6 +18,8 @@ export const FORCE_RESET_PASSWORD = 'force_reset_password';
 export const FETCH_MULTIPLE_USER_TYPE = 'fetch_multiple_user_type';
 export const UPDATE_USER = 'update_user';
 export const REQUEST_UPDATE_USER = 'request_update_user';
+export const REQUEST_DELETE_USER = 'request_delete_user';
+export const DELETE_USER = 'delete_user';
 
 const handleSuccessResponse = callback => (response) => { callback(response); };
 
@@ -142,5 +144,19 @@ export const updateUser = async (userInfo, callback) => {
 
 export const updateUserActionCreator = userInfo => ({
   type: UPDATE_USER,
+  payload: userInfo,
+});
+
+export const deleteUser = async (userInfo, callback) => {
+  const axiosConfig = { headers: await makeHeaders() };
+  axios.post(`${REG_SERVICE_URL}/deleteUserByEmail`, userInfo, axiosConfig)
+    .then(handleSuccessResponse(callback))
+    .catch(handleErrorResponse(callback));
+
+  return { type: REQUEST_DELETE_USER };
+};
+
+export const deleteUserActionCreator = userInfo => ({
+  type: DELETE_USER,
   payload: userInfo,
 });

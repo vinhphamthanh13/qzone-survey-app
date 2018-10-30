@@ -18,10 +18,14 @@ import Button from 'components/CustomButtons/Button';
 import { toggleLoading } from 'services/api/assessment';
 import {
   fetchMultipleUserType,
-  registerUser, fetchUserTypeListActionCreator, updateUser, updateUserActionCreator,
+  registerUser, fetchUserTypeListActionCreator,
+  updateUser, updateUserActionCreator, deleteUser, deleteUserActionCreator,
 } from 'services/api/user';
 import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/listPageStyle';
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import SweetAlert from 'react-bootstrap-sweetalert';
+import buttonStyle from 'assets/jss/material-dashboard-pro-react/components/buttonStyle';
 import createUserStyle from './create-user.style';
 import { eUserType } from '../../constants';
 import CreateUserDialog from './create-user-dialog';
@@ -36,13 +40,19 @@ class CreateUser extends PureComponent {
     fetchUserTypeListAction: PropTypes.func.isRequired,
     updateUserAction: PropTypes.func.isRequired,
     updateUserRequestAction: PropTypes.func.isRequired,
+    deleteUserAction: PropTypes.func.isRequired,
+    deleteUserRequestAction: PropTypes.func.isRequired,
   }
 
   rowNames = ['User type', 'First name', 'Last name', 'Email', 'Phone number', 'Actions'];
 
   constructor(props) {
     super(props);
-    this.state = { isDialogOpen: false, editedUser: null };
+    this.state = {
+      isDialogOpen: false,
+      editedUser: null,
+      deletedUser: null,
+    };
   }
 
   componentDidMount = () => {
@@ -113,9 +123,39 @@ class CreateUser extends PureComponent {
     this.setState({ isDialogOpen: true, editedUser: user });
   }
 
+  deleteUser = (user) => {
+    this.setState({ deletedUser: user });
+  }
+
+  confirmDelete = () => {
+    const {
+      toggleLoadingAction,
+      deleteUserAction, deleteUserRequestAction,
+    } = this.props;
+    const { deletedUser } = this.state;
+
+    toggleLoadingAction();
+    deleteUserRequestAction({ email: deletedUser.email }, (response) => {
+      toggleLoadingAction();
+      if (response) {
+        if (response.status !== 200) {
+          Alert.error(response.data.message);
+        } else {
+          Alert.success('User was deleted successfully');
+          this.setState({ deletedUser: null });
+          deleteUserAction(deletedUser);
+        }
+      }
+    });
+  }
+
+  cancelDelete = () => {
+    this.setState({ deletedUser: null });
+  }
+
   render() {
     const { classes, userList } = this.props;
-    const { isDialogOpen, editedUser } = this.state;
+    const { isDialogOpen, editedUser, deletedUser } = this.state;
 
     return (
       <React.Fragment>
@@ -125,6 +165,21 @@ class CreateUser extends PureComponent {
           onCreateUser={this.onCreateUser}
           editedUser={editedUser}
         />
+        <SweetAlert
+          warning
+          showCancel
+          show={deletedUser !== null}
+          onConfirm={this.confirmDelete}
+          onCancel={this.cancelDelete}
+          confirmBtnCssClass={`${classes.button} ${classes.success}`}
+          cancelBtnCssClass={`${classes.button} ${classes.danger}`}
+          confirmBtnText="Delete anyway"
+          cancelBtnText="Cancel"
+        >
+          {`Do you want to delete ${deletedUser ? deletedUser.userType.toLowerCase() : ''} `}
+          <code>{`${deletedUser ? deletedUser.email : ''}`}</code>
+          {' ?'}
+        </SweetAlert>
         <Card>
           <CardHeader color="primary" icon>
             <CardIcon color="rose"><Poll /></CardIcon>
@@ -166,6 +221,12 @@ class CreateUser extends PureComponent {
                         >
                           <EditIcon />
                         </IconButton>
+                        <IconButton
+                          aria-label="Delete"
+                          onClick={() => this.deleteUser(user)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
                       </TableCell>
                     </TableRow>
                   ))
@@ -184,7 +245,7 @@ const mapStateToProps = state => ({
 });
 
 export default compose(
-  withStyles({ cardIconTitle: listPageStyle.cardIconTitle, ...createUserStyle }),
+  withStyles({ ...buttonStyle, cardIconTitle: listPageStyle.cardIconTitle, ...createUserStyle }),
   connect(mapStateToProps, {
     toggleLoadingAction: toggleLoading,
     fetchMultipleUserTypeAction: fetchMultipleUserType,
@@ -192,5 +253,7 @@ export default compose(
     fetchUserTypeListAction: fetchUserTypeListActionCreator,
     updateUserRequestAction: updateUser,
     updateUserAction: updateUserActionCreator,
+    deleteUserRequestAction: deleteUser,
+    deleteUserAction: deleteUserActionCreator,
   }),
 )(CreateUser);
