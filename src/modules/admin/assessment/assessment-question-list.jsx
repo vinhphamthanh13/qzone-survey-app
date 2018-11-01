@@ -221,7 +221,6 @@ class AdminAssessmentQuestionList extends React.Component {
   }
 }
 
-
 function mapStateToProps(state) {
   return { surveyList: state.surveys.list, survey: state.surveys.detail };
 }

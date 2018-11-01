@@ -7,6 +7,7 @@ export const FETCH_SURVEY_PARTICIPANT_RESPONSE = 'fetch_survey_participant_respo
 export const FETCH_ALL_SURVEY_ANSWERS = 'fetch_all_survey_answers';
 export const FETCH_SURVEY_PARTICIPANT_LIST = 'fetch_survey_participant_list';
 export const FETCH_SURVEY_RESPONSE_BY_PARTICIPANT_ID = 'fetch_survey_answer_by_participant_id';
+export const FETCH_SURVEY_CHART = 'fetch_survey_chart';
 export const FETCH_RESPONSE_BY_ASSESSMENT_PARTICIPANT_ID = 'fetch_response_by_assessment_participant_id';
 
 export async function createSurveyResponse(values, callback) {
@@ -70,3 +71,12 @@ export const fetchResponseByAssessmentAndParticipantId = async (aId, uId) => {
     payload: request,
   };
 };
+
+export async function fetchSurveyChart(sid) {
+  const axiosConfig = { headers: await makeHeaders() };
+  const request = axios.get(`${SURVEY_URL}/chart/${sid}`, axiosConfig);
+  return {
+    type: FETCH_SURVEY_CHART,
+    payload: request,
+  };
+}
