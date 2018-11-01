@@ -55,7 +55,7 @@ export const adminRoutes = [
   },
   {
     path: '/admin/user/list',
-    name: 'Users',
+    name: 'User Management',
     icon: Person,
     component: CreateUser,
   },
