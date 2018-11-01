@@ -103,7 +103,7 @@ class ParticipantList extends React.Component {
                   <TableBody>
                     {
                       participantList.map(({
-                        id, firstname, lastname, email, phoneNumber,
+                        id, firstname, lastname, userType, email, phoneNumber,
                       }, index) => (
                         <TableRow key={id}>
                           <TableCell>
@@ -117,6 +117,7 @@ class ParticipantList extends React.Component {
                             {firstname}
                           </TableCell>
                           <TableCell>{lastname}</TableCell>
+                          <TableCell>{userType}</TableCell>
                           <TableCell>{email}</TableCell>
                           <TableCell>{formatPhoneNumber(phoneNumber, 'International')}</TableCell>
                         </TableRow>
