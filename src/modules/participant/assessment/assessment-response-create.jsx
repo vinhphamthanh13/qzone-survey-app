@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { sessionService } from 'redux-react-session';
 import withStyles from '@material-ui/core/styles/withStyles';
 import GridContainer from 'components/Grid/GridContainer';
 import GridItem from 'components/Grid/GridItem';
@@ -7,38 +10,31 @@ import Card from 'components/Card/Card';
 import CardBody from 'components/Card/CardBody';
 import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/registerPageStyle';
 import { fetchSurvey } from 'services/api/assessment';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
 import * as Survey from 'survey-react';
-import { sessionService } from 'redux-react-session';
-import { createSurveyResponse } from 'services/api/assessment-response';
-import { Storage } from 'react-jhipster';
+import { createSurveyResponse, fetchResponseByAssessmentAndParticipantId } from 'services/api/assessment-response';
 import { classesType, historyType, matchType } from 'types/global';
+import { toggleLoading } from 'services/api/user';
+import { eSurveyStatus } from '../../../constants';
 
-const SURVEY_ID = 'SurveyId';
 let surveyInfo = '';
 
 class AssessmentResponseCreate extends React.Component {
   static propTypes = {
     classes: classesType.isRequired,
     match: matchType.isRequired,
-    survey: PropTypes.objectOf(PropTypes.object).isRequired,
+    surveyData: PropTypes.objectOf(PropTypes.object).isRequired,
     history: historyType.isRequired,
-    fetchSurvey: PropTypes.func.isRequired,
-    createSurveyResponse: PropTypes.func.isRequired,
+    fetchSurveyAction: PropTypes.func.isRequired,// eslint-disable-line
+    createSurveyResponseAction: PropTypes.func.isRequired,
+    assessmentResponse: PropTypes.objectOf(PropTypes.object).isRequired, // eslint-disable-line
+    fetchResponseByAssessmentAndParticipantIdAction: PropTypes.func.isRequired,
+    toggleLoadingAction: PropTypes.func.isRequired,// eslint-disable-line
+    loading: PropTypes.bool.isRequired,// eslint-disable-line
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      surveyData: {
-        title: '',
-        description: '',
-        logo: '',
-        privacy: false,
-        id: '',
-        survey: {},
-      },
       participantResponse: {
         participantId: '',
         surveyId: '',
@@ -46,27 +42,38 @@ class AssessmentResponseCreate extends React.Component {
         status: 'COMPLETED',
       },
       userId: '',
-      token: '',
     };
   }
 
   componentDidMount() {
-    const { match: { params: { id } }, fetchSurvey: fetchSurveyAction } = this.props;
-    if (id !== '' || id !== null) {
-      Storage.local.set(SURVEY_ID, id);
-    }
+    const {
+      match: { params: { id } },
+      fetchResponseByAssessmentAndParticipantIdAction,
+    } = this.props;
     sessionService.loadUser().then((currentUser) => {
       this.setState({ userId: currentUser.userId });
-    });
-    sessionService.loadSession().then((currentSession) => {
-      this.setState({ token: currentSession.token }, () => {
-        fetchSurveyAction(id, currentSession.token);
-      });
+      fetchResponseByAssessmentAndParticipantIdAction(id, currentUser.userId);
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({ surveyData: nextProps.survey });
+  componentWillReceiveProps = (nextProps) => {
+    const {
+      match: { params: { id } },
+      fetchSurveyAction,
+      history,
+      toggleLoadingAction,
+      assessmentResponse,
+      surveyData,
+      loading,
+    } = nextProps;
+
+    if (assessmentResponse && assessmentResponse.status
+      && assessmentResponse.status === eSurveyStatus.completed) {
+      history.push('/');
+    } else if (!loading && Object.keys(surveyData).length === 0) {
+      toggleLoadingAction();
+      fetchSurveyAction(id);
+    }
   }
 
   sendDataToServer = (survey) => {
@@ -77,19 +84,18 @@ class AssessmentResponseCreate extends React.Component {
 
     const {
       match: { params: { id } },
-      createSurveyResponse: createSurveyResponseAction, history,
+      createSurveyResponseAction, history,
     } = this.props;
     this.setState(oldState => ({
       participantResponse: {
         participantId: oldState.userId, status: 'COMPLETED', surveyId: id, questionAnswers: resultAsString,
       },
     }), () => {
-      const { participantResponse, token, userId } = this.state;
-      createSurveyResponseAction(participantResponse, token, (response) => {
+      const { participantResponse, userId } = this.state;
+      createSurveyResponseAction(participantResponse, (response) => {
         if (response.status === 201) {
           history.push(`/assessment/result/${id}/${userId}`);
         } else {
-          // back to assessment response list
           history.push('/participant/assessment/answers');
         }
       });
@@ -97,8 +103,7 @@ class AssessmentResponseCreate extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
-    const { surveyData } = this.state;
+    const { classes, surveyData } = this.props;
     if (!surveyData) { return null; }
     const { title, description, survey } = surveyData;
     surveyInfo = new Survey.Model(survey);
@@ -135,10 +140,19 @@ class AssessmentResponseCreate extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return { survey: state.surveys.detail };
+  return {
+    surveyData: state.surveys.detail,
+    loading: state.user.loading,
+    assessmentResponse: state.surveyParticipantAnswer.assessmentResponse,
+  };
 }
 
 export default compose(
   withStyles(listPageStyle),
-  connect(mapStateToProps, { fetchSurvey, createSurveyResponse }),
+  connect(mapStateToProps, {
+    fetchSurveyAction: fetchSurvey,
+    createSurveyResponseAction: createSurveyResponse,
+    fetchResponseByAssessmentAndParticipantIdAction: fetchResponseByAssessmentAndParticipantId,
+    toggleLoadingAction: toggleLoading,
+  }),
 )(AssessmentResponseCreate);

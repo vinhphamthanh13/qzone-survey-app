@@ -15,7 +15,6 @@ import Header from 'components/Header/Header';
 import appStyle from 'assets/jss/material-dashboard-pro-react/layouts/dashboardStyle';
 import logo from 'assets/img/logo-white.svg';
 import { checkAuth, fetchUserByUserId } from 'services/api/user';
-import { getUserFromSession } from 'utils/session';
 import 'perfect-scrollbar/css/perfect-scrollbar.css';
 import { Storage } from 'react-jhipster';
 import NotFound from 'modules/not-found/not-found';
@@ -47,8 +46,7 @@ class Dashboard extends React.Component {
   static propTypes = {
     classes: classesType.isRequired,
     surveyLoading: PropTypes.bool.isRequired,
-    checkAuth: PropTypes.func.isRequired,
-    fetchUserByUserId: PropTypes.func.isRequired,
+    checkAuthAction: PropTypes.func.isRequired,
     history: historyType.isRequired,
     location: locationType.isRequired,
   }
@@ -63,13 +61,10 @@ class Dashboard extends React.Component {
     };
   }
 
-  componentDidMount() {
-    const { checkAuth: checkAuthAction, fetchUserByUserId: fetchUserByUserIdAction } = this.props;
+  async componentDidMount() {
+    const { checkAuthAction } = this.props;
     checkAuthAction(async (session) => {
-      if (session) {
-        const { userId } = await getUserFromSession();
-        fetchUserByUserIdAction(userId, session.token);
-      } else {
+      if (!session) {
         this.setState({ isLoggedIn: false });
       }
     });
@@ -171,10 +166,13 @@ class Dashboard extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return { user: state.user.detail, surveyLoading: state.surveys.loading };
+  return { surveyLoading: state.surveys.loading };
 }
 
 export default compose(
   withStyles(appStyle),
-  connect(mapStateToProps, { checkAuth, fetchUserByUserId }),
+  connect(mapStateToProps, {
+    checkAuthAction: checkAuth,
+    fetchUserByUserIdAction: fetchUserByUserId,
+  }),
 )(Dashboard);

@@ -19,14 +19,12 @@ import CardFooter from 'components/Card/CardFooter';
 import loginPageStyle from 'assets/jss/material-dashboard-pro-react/modules/loginPageStyle';
 import fontAwesomeIcon from 'assets/jss/material-dashboard-pro-react/layouts/font-awesome-icon';
 import { loginUser, toggleLoading, forceResetPasswordStatus } from 'services/api/user';
-import { Storage } from 'react-jhipster';
-import { classesType, historyType } from 'types/global';
+import { classesType, historyType, locationType } from 'types/global';
 import VerificationPage from './verification-page';
 import ResetPassword from './reset-password';
 import validateEmail from '../../utils/validateEmail';
-import { surveyLocalData, eUserType } from '../../constants';
+import { eUserType } from '../../constants';
 
-let surveyId = '';
 class LoginPage extends React.Component {
   static propTypes = {
     classes: classesType.isRequired,
@@ -34,6 +32,7 @@ class LoginPage extends React.Component {
     loginUser: PropTypes.func.isRequired,
     history: historyType.isRequired,
     forceResetPasswordStatus: PropTypes.func.isRequired,
+    location: locationType.isRequired,
   };
 
   constructor(props) {
@@ -45,16 +44,11 @@ class LoginPage extends React.Component {
       password: '',
       passwordState: '',
       openVerificationModal: false,
-      // openForceChangePassword: false,
       disabled: false,
     };
   }
 
   componentDidMount() {
-    if (Storage.local.get(surveyLocalData.SURVEY_ID)) {
-      surveyId = Storage.local.get(surveyLocalData.SURVEY_ID);
-    }
-
     setTimeout(() => {
       this.setState({ cardAnimation: '' });
     }, 200);
@@ -67,6 +61,7 @@ class LoginPage extends React.Component {
       const {
         toggleLoading: toggleLoadingAction, loginUser: loginUserAction,
         history, forceResetPasswordStatus: forceResetPasswordStatusAction,
+        location,
       } = this.props;
       toggleLoadingAction();
       this.setState({ disabled: true }, () => {
@@ -83,12 +78,7 @@ class LoginPage extends React.Component {
             }
 
             if (response.status === 200) {
-              if (surveyId) {
-                history.push(`/surveys/${surveyId}`);
-                Storage.local.remove(surveyLocalData.SURVEY_ID);
-              } else {
-                history.push('/');
-              }
+              history.push((location.state && location.state.from) || '/');
             } else {
               const newState = { disabled: false };
               if (response.data.message === 'User is not confirmed.') {

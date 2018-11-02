@@ -189,7 +189,7 @@ class AssessmentQuestionCopy extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return { survey: state.surveys.detail, user: state.user.detail, loading: state.surveys.loading };
+  return { survey: state.surveys.detail, loading: state.surveys.loading };
 }
 
 export default compose(

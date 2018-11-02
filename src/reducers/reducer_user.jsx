@@ -8,6 +8,7 @@ import {
   DELETE_USER,
 } from 'services/api/user';
 import { UPDATE_PROFILE } from 'services/api/profile';
+import { FETCH_SURVEY } from 'services/api/assessment';
 import { eUserType } from '../constants';
 
 const initialState = {
@@ -22,6 +23,7 @@ export default function (state = initialState, action) {
       return { ...state, userTypeList: action.payload.data.concat(state.userTypeList) };
     case FETCH_USER_BY_USERID:
       return { ...state, detail: action.payload.data };
+    case FETCH_SURVEY:
     case TOGGLE_LOADING:
       return { ...state, loading: !state.loading };
     case UPDATE_PROFILE: {

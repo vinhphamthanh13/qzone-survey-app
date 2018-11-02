@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import validateEmail from 'utils/validateEmail';
 import { updateProfile } from 'services/api/profile';
-import { resetPassword, forceResetPasswordStatus } from 'services/api/user';
+import { resetPassword, forceResetPasswordStatus, fetchUserByUserId } from 'services/api/user';
 import { toggleLoading } from 'services/api/assessment';
 import ForceChangePassword from 'modules/auth/force-change-password';
+import { userDetailType } from 'types/global';
+import { getUserFromSession } from 'utils/session';
 import { userStatus as eUserStatus } from '../../constants';
 import Account from './account';
 import Personal from './personal';
@@ -17,12 +19,11 @@ class Profile extends React.Component {
   };
 
   static propTypes = {
-    user: PropTypes.objectOf(PropTypes.oneOfType([
-      PropTypes.object, PropTypes.string,
-    ])).isRequired,
+    user: userDetailType.isRequired,
     updateProfile: PropTypes.func.isRequired,
     forceResetPasswordStatus: PropTypes.func,
     isDefaultPwdChanged: PropTypes.bool,
+    fetchUserByUserIdAction: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -44,6 +45,14 @@ class Profile extends React.Component {
         emailState: '',
       },
     };
+  }
+
+  async componentDidMount() {
+    const { fetchUserByUserIdAction, user } = this.props;
+    if (!user || !user.userType) {
+      const { userId } = await getUserFromSession();
+      fetchUserByUserIdAction(userId);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -171,5 +180,9 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  updateProfile, resetPassword, toggleLoading, forceResetPasswordStatus,
+  updateProfile,
+  resetPassword,
+  toggleLoading,
+  forceResetPasswordStatus,
+  fetchUserByUserIdAction: fetchUserByUserId,
 })(Profile);

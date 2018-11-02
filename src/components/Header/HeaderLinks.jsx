@@ -36,9 +36,6 @@ class HeaderLinks extends React.Component {
   };
 
   handleLogout = () => {
-    if (Storage.local.get(surveyLocalData.SURVEY_ID)) {
-      Storage.local.remove(surveyLocalData.SURVEY_ID);
-    }
     if (Storage.local.get(surveyLocalData.USER_TYPE)) {
       Storage.local.remove(surveyLocalData.USER_TYPE);
     }

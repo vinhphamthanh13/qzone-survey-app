@@ -6,31 +6,42 @@ import pagesStyle from 'assets/jss/material-dashboard-pro-react/layouts/pagesSty
 import bgImage from 'assets/img/register.jpeg';
 import AssessmentResponseCreate from 'modules/participant/assessment/assessment-response-create';
 import AssessmentResponseResult from 'modules/participant/assessment/assessment-response-result';
-import { checkAuth } from 'services/api/user';
+import { fetchUserByUserId } from 'services/api/user';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { classesType, locationType } from 'types/global';
+import {
+  classesType, locationType, userDetailType,
+} from 'types/global';
+import { getUserFromSession } from 'utils/session';
+import { eUserType } from '../constants';
 
 class AssessmentResponse extends React.Component {
-  propTypes = {
+  static propTypes = {
     classes: classesType.isRequired,
-    checkAuth: PropTypes.func.isRequired,
     location: locationType.isRequired,
+    user: userDetailType.isRequired,
+    fetchUserByUserIdAction: PropTypes.func.isRequired,
   }
 
   state = {
     isLoggedIn: true,
   };
 
-  componentWillMount() {
-    const { checkAuth: checkAuthAction } = this.props;
-    checkAuthAction((response) => {
-      if (response === false) { this.setState({ isLoggedIn: false }); }
-    });
+  async componentDidMount() {
+    const { fetchUserByUserIdAction, user } = this.props;
+
+    if (!user || !user.userType) {
+      const { userId } = await getUserFromSession();
+      if (!userId) {
+        this.setState({ isLoggedIn: false });
+      } else {
+        fetchUserByUserIdAction(userId);
+      }
+    }
   }
 
   render() {
-    const { classes, location } = this.props;
+    const { classes, location, user } = this.props;
     const { isLoggedIn } = this.state;
 
     if (!isLoggedIn) {
@@ -43,6 +54,11 @@ class AssessmentResponse extends React.Component {
         />
       );
     }
+
+    if (user && user.userType && user.userType !== eUserType.participant) {
+      return (<Redirect to="/" />);
+    }
+
     return (
       <div>
         <div className={classes.wrapper}>
@@ -74,7 +90,9 @@ class AssessmentResponse extends React.Component {
   }
 }
 
+const mapStateToProps = state => ({ user: state.user.detail });
+
 export default compose(
   withStyles(pagesStyle),
-  connect(null, { checkAuth }),
+  connect(mapStateToProps, { fetchUserByUserIdAction: fetchUserByUserId }),
 )(AssessmentResponse);

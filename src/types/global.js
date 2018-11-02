@@ -15,3 +15,7 @@ export const routesType = PropTypes.arrayOf(PropTypes.object);
 export const matchType = PropTypes.objectOf(PropTypes.oneOfType([
   PropTypes.object, PropTypes.string, PropTypes.bool,
 ]));
+
+export const userDetailType = PropTypes.objectOf(PropTypes.oneOfType([
+  PropTypes.object, PropTypes.string,
+]));
