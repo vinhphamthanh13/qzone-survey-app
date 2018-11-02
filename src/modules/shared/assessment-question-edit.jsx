@@ -16,9 +16,10 @@ import { isEmpty } from 'lodash';
 import { sessionService } from 'redux-react-session';
 import { css } from 'react-emotion';
 import { ClipLoader } from 'react-spinners';
-import { Storage } from 'react-jhipster';
-import { classesType, matchType, historyType } from 'types/global';
-import { surveyLocalData, eUserType } from '../../constants';
+import {
+  classesType, matchType, historyType, userDetailType,
+} from 'types/global';
+import { eUserType } from '../../constants';
 
 const override = css`
     display: block;
@@ -26,7 +27,6 @@ const override = css`
     border-color: red;
 `;
 
-let userType;
 class AssessmentQuestionEdit extends React.Component {
   static propTypes = {
     classes: classesType.isRequired,
@@ -36,6 +36,7 @@ class AssessmentQuestionEdit extends React.Component {
     survey: PropTypes.objectOf(PropTypes.object).isRequired,
     match: matchType.isRequired,
     history: historyType.isRequired,
+    user: userDetailType.isRequired,
   }
 
   constructor(props) {
@@ -58,9 +59,6 @@ class AssessmentQuestionEdit extends React.Component {
         fetchSurveyAction(id, currentSession.token);
       });
     });
-    if (Storage.local.get(surveyLocalData.USER_TYPE)) {
-      userType = Storage.local.get(surveyLocalData.USER_TYPE);
-    }
     setTimeout(() => this.setState({ loading: false }), 2000);
   }
 
@@ -95,7 +93,7 @@ class AssessmentQuestionEdit extends React.Component {
   changeQuestions = (newSurvey) => {
     const { surveyInfo, token } = this.state;
     const {
-      toggleLoading: toggleLoadingAction, editSurvey: editSurveyAction, history,
+      toggleLoading: toggleLoadingAction, editSurvey: editSurveyAction, history, user,
     } = this.props;
     const { title, description } = surveyInfo;
 
@@ -106,7 +104,7 @@ class AssessmentQuestionEdit extends React.Component {
         survey: JSON.stringify(newSurvey),
       }, token, () => {
         toggleLoadingAction();
-        if (userType === eUserType.admin) {
+        if (user.userType === eUserType.admin) {
           history.push('/admin/assessment/list');
         } else {
           history.push('/assessor/assessment/list');
@@ -171,7 +169,7 @@ class AssessmentQuestionEdit extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return { survey: state.surveys.detail };
+  return { survey: state.surveys.detail, user: state.user.detail };
 }
 
 export default compose(

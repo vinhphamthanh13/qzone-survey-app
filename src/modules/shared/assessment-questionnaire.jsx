@@ -19,13 +19,13 @@ import { Poll } from '@material-ui/icons';
 import { sessionService } from 'redux-react-session';
 import fullName from 'utils/fullName';
 import { css } from 'react-emotion';
-import { Storage } from 'react-jhipster';
 import { ClipLoader } from 'react-spinners';
-import { classesType, matchType, historyType } from 'types/global';
-import { eUserType, surveyLocalData } from '../../constants';
+import {
+  classesType, matchType, historyType, userDetailType,
+} from 'types/global';
+import { eUserType } from '../../constants';
 
 
-let userType = 'ADMIN';
 const override = css`
     display: block;
     margin: 0 auto;
@@ -41,7 +41,7 @@ class AssessmentQuestionnaire extends React.Component {
     match: matchType.isRequired,
     fetchSurvey: PropTypes.func.isRequired,
     survey: PropTypes.objectOf(PropTypes.object).isRequired,
-    user: PropTypes.objectOf(PropTypes.object).isRequired,
+    user: userDetailType.isRequired,
     history: historyType.isRequired,
   };
 
@@ -67,10 +67,6 @@ class AssessmentQuestionnaire extends React.Component {
     sessionService.loadSession().then((currentSession) => {
       fetchSurveyAction(id, currentSession.token);
     });
-    // userType
-    if (Storage.local.get(surveyLocalData.USER_TYPE)) {
-      userType = Storage.local.get(surveyLocalData.USER_TYPE);
-    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -81,7 +77,7 @@ class AssessmentQuestionnaire extends React.Component {
           surveyData[key] = JSON.parse(nextProps.survey.survey);
           surveyData.title = nextProps.survey.title;
           surveyData.description = nextProps.survey.description;
-          surveyData.user = nextProps.user;
+          surveyData.user = nextProps.survey.user;
         }
       });
       this.setState({ surveyData });
@@ -89,8 +85,8 @@ class AssessmentQuestionnaire extends React.Component {
   }
 
   goBack = () => {
-    const { history } = this.props;
-    if (userType === eUserType.admin) {
+    const { history, user } = this.props;
+    if (user.userType === eUserType.admin) {
       history.push('/admin/assessment/list');
     } else {
       history.push('/assessor/assessment/list');
@@ -188,7 +184,7 @@ class AssessmentQuestionnaire extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return { survey: state.surveys.detail, user: state.surveys.detail.user };
+  return { survey: state.surveys.detail, user: state.user.detail };
 }
 
 export default compose(
