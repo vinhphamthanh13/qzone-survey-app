@@ -7,6 +7,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import ChartistGraph from 'react-chartist';
 import Chartist from 'chartist';
 import 'chartist-plugin-tooltips';
+import { classesType } from 'types/global';
 import { fetchSurveyChart } from 'services/api/assessment-response';
 
 class SurveyChart extends PureComponent {
@@ -15,6 +16,7 @@ class SurveyChart extends PureComponent {
   };
 
   static propTypes = {
+    classes: classesType.isRequired,
     surveyChartData: PropTypes.objectOf(PropTypes.any),
     fetchSurveyChart: PropTypes.func.isRequired,
     sId: PropTypes.string.isRequired,
@@ -48,7 +50,7 @@ class SurveyChart extends PureComponent {
         listSelectedItems.map((item, ind) => {
           const { questionItem, numSelected } = item;
           series[ind] = series[ind] ? [...series[ind]] : [];
-          series[ind].push(numSelected);
+          series[ind].push({ meta: questionItem, value: numSelected });
           return questionItem;
         });
         return chart;
@@ -57,7 +59,7 @@ class SurveyChart extends PureComponent {
     this.setState({ chart: { labels, series } });
   }
 
-  drawingChart = state => ({
+  drawingChart = (state, classes) => ({
     data: state.chart,
     options: {
       seriesBarDistance: 10,
@@ -67,14 +69,17 @@ class SurveyChart extends PureComponent {
       },
       height: '300px',
       plugins: [
-        Chartist.plugins.tooltip(),
+        Chartist.plugins.tooltip({
+          class: classes.chartToolTip,
+          appendToBody: false,
+        }),
       ],
     },
     responsiveOptions: [
       [
         'screen and (max-width: 640px)',
         {
-          seriesBarDistance: 5,
+          seriesBarDistance: 15,
           axisX: {
             labelInterpolationFnc(value) {
               return value[0];
@@ -104,9 +109,8 @@ class SurveyChart extends PureComponent {
   });
 
   render() {
-    const chartData = this.drawingChart(this.state);
-    // const { surveyChartData } = this.props;
-    console.log('chartist ', Chartist);
+    const { classes } = this.props;
+    const chartData = this.drawingChart(this.state, classes);
     return (
       <ChartistGraph
         data={chartData.data}

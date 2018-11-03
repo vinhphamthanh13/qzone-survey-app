@@ -18,6 +18,16 @@ const chartsStyle = {
     fontWeight: 'bold',
     textTransform: 'capitalize',
   },
+  chartToolTip: {
+    textAlign: 'center',
+    position: 'relative',
+    top: 'auto',
+    left: 'auto',
+    background: 'rgba(254, 250, 240, 0.8)',
+    width: 'fit-content',
+    borderRadius: '5px',
+    fontWeight: 'bold',
+  },
 };
 
 export default chartsStyle;
