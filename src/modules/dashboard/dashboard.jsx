@@ -73,7 +73,6 @@ class Dashboard extends PureComponent {
   render() {
     const { classes } = this.props;
     const { listAssessments, isDataLoading } = this.state;
-    console.log('is DAta Loading', isDataLoading);
     return (
       <Card>
         <CardHeader color="rose" icon>
