@@ -2,56 +2,21 @@
 // // // IconCard styles
 // #############################
 
-import {
-  primaryColor,
-  warningColor,
-  dangerColor,
-  successColor,
-  infoColor,
-  roseColor,
-  grayColor,
-  cardTitle,
-} from 'assets/jss/material-dashboard-pro-react';
-
 const chartsStyle = {
-  cardTitle,
-  cardCategory: {
-    margin: '0',
-    color: '#999999',
+  container: {
+    border: 'none',
   },
-  cardIconTitle: {
-    ...cardTitle,
-    marginTop: '15px',
-    marginBottom: '0px',
+  root: {
+    width: '100%',
   },
-  legendTitle: {
-    color: grayColor,
-    margin: '10px 0 !important',
-    display: 'flex',
+  columnOrder: {
+    width: '20%',
   },
-  primary: {
-    color: primaryColor,
-  },
-  warning: {
-    color: warningColor,
-  },
-  danger: {
-    color: dangerColor,
-  },
-  success: {
-    color: successColor,
-  },
-  info: {
-    color: infoColor,
-  },
-  rose: {
-    color: roseColor,
-  },
-  gray: {
-    color: grayColor,
-  },
-  cardFooter: {
-    display: 'block',
+  columnTitle: {
+    width: '80%',
+    fontSize: '1.2rem',
+    fontWeight: 'bold',
+    textTransform: 'capitalize',
   },
 };
 

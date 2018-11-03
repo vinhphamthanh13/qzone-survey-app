@@ -1,32 +1,119 @@
-import React, { Fragment, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-// import { classesType } from 'type/global';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import chartsStyle from 'assets/jss/material-dashboard-pro-react/modules/chartsStyle';
 import withStyles from '@material-ui/core/styles/withStyles';
-// import ChartistGraph from 'react-chartist';
-// import Timeline from '@material-ui/icons/Timeline';
+import ChartistGraph from 'react-chartist';
+import Chartist from 'chartist';
+import 'chartist-plugin-tooltips';
 import { fetchSurveyChart } from 'services/api/assessment-response';
 
 class SurveyChart extends PureComponent {
-  static propTypes = {
-    fetchSurveyChart: PropTypes.func.isRequired,
-    sId: PropTypes.string.isRequired,
+  static defaultProps = {
+    surveyChartData: {},
   };
 
-  componentDidMount() {
-    const { fetchSurveyChart: fetchSurveyChartAction, sId } = this.props;
-    fetchSurveyChartAction(sId);
+  static propTypes = {
+    surveyChartData: PropTypes.objectOf(PropTypes.any),
+    fetchSurveyChart: PropTypes.func.isRequired,
+    sId: PropTypes.string.isRequired,
+    loadData: PropTypes.bool.isRequired,
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      chart: {},
+    };
   }
 
+  componentDidMount() {
+    const {
+      fetchSurveyChart: fetchSurveyChartAction, sId, loadData,
+    } = this.props;
+    if (loadData) {
+      fetchSurveyChartAction(sId);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { surveyChartData: { chartBars } } = nextProps;
+    const labels = [];
+    const series = [];
+    if (chartBars) {
+      chartBars.map((chart) => {
+        const { question, listSelectedItems } = chart;
+        labels.push(question);
+        listSelectedItems.map((item, ind) => {
+          const { questionItem, numSelected } = item;
+          series[ind] = series[ind] ? [...series[ind]] : [];
+          series[ind].push(numSelected);
+          return questionItem;
+        });
+        return chart;
+      });
+    }
+    this.setState({ chart: { labels, series } });
+  }
+
+  drawingChart = state => ({
+    data: state.chart,
+    options: {
+      seriesBarDistance: 10,
+      stackBars: false,
+      axisX: {
+        showGrid: false,
+      },
+      height: '300px',
+      plugins: [
+        Chartist.plugins.tooltip(),
+      ],
+    },
+    responsiveOptions: [
+      [
+        'screen and (max-width: 640px)',
+        {
+          seriesBarDistance: 5,
+          axisX: {
+            labelInterpolationFnc(value) {
+              return value[0];
+            },
+          },
+          axisY: {
+            scaleMinSpace: 15,
+          },
+        },
+      ],
+    ],
+    animation: {
+      draw(data) {
+        if (data.type === 'bar') {
+          data.element.animate({
+            opacity: {
+              begin: (data.index + 1) * 80,
+              dur: 500,
+              from: 0,
+              to: 1,
+              easing: 'ease',
+            },
+          });
+        }
+      },
+    },
+  });
+
   render() {
+    const chartData = this.drawingChart(this.state);
+    // const { surveyChartData } = this.props;
+    console.log('chartist ', Chartist);
     return (
-      <Fragment>
-        <p>
-          Chart Bar
-        </p>
-      </Fragment>
+      <ChartistGraph
+        data={chartData.data}
+        type="Bar"
+        options={chartData.options}
+        listener={chartData.animation}
+      />
     );
   }
 }
