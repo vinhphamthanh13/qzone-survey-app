@@ -20,7 +20,9 @@ import GridItem from 'components/Grid/GridItem';
 import Card from 'components/Card/Card';
 import CardBody from 'components/Card/CardBody';
 import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/listPageStyle';
-import { fetchSurveysByAssessorId, deleteSurvey, deleteAllSurvey } from 'services/api/assessment';
+import {
+  fetchSurveys, fetchSurveysByAssessorId, deleteSurvey, deleteAllSurvey,
+} from 'services/api/assessment';
 import { checkAuth } from 'services/api/user';
 import { sessionService } from 'redux-react-session';
 import { classesType } from 'types/global';
@@ -100,7 +102,7 @@ class AssessorAssessmentQuestionList extends React.Component {
   successDelete = (SID) => {
     const {
       deleteSurvey: deleteSurveyAction, deleteAllSurvey: deleteAllSurveyAction,
-      fetchSurveys, classes,
+      fetchSurveys: fetchSurveysAction, classes,
     } = this.props;
     const { token } = this.state;
     let api = deleteAllSurveyAction;
@@ -124,7 +126,7 @@ class AssessorAssessmentQuestionList extends React.Component {
           </SweetAlert>
         ),
       });
-      fetchSurveys(token);
+      fetchSurveysAction(token);
     });
   }
 
@@ -211,6 +213,6 @@ function mapStateToProps(state) {
 export default compose(
   withStyles(listPageStyle),
   connect(mapStateToProps, {
-    fetchSurveysByAssessorId, deleteSurvey, deleteAllSurvey, checkAuth,
+    fetchSurveys, fetchSurveysByAssessorId, deleteSurvey, deleteAllSurvey, checkAuth,
   }),
 )(AssessorAssessmentQuestionList);

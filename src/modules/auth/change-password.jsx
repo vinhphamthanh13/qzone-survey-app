@@ -32,7 +32,7 @@ class ChangePassword extends React.Component {
     newPasswordState: false,
     confirmPwd: undefined,
     confirmPwdState: false,
-    countDownResendCode: 30,
+    countDownResendCode: 60,
   };
 
   countDownResendCodeId = null;
@@ -49,7 +49,7 @@ class ChangePassword extends React.Component {
         this.startCountDown();
       } else {
         this.stopCountDown();
-        this.setState({ countDownResendCode: 30 });
+        this.setState({ countDownResendCode: 60 });
       }
     }
   }
@@ -79,12 +79,12 @@ class ChangePassword extends React.Component {
   }
 
   cbAfterResend = () => {
-    this.setState({ countDownResendCode: 30 }, this.startCountDown);
+    this.setState({ countDownResendCode: 60 }, this.startCountDown);
   }
 
   handleChangePassword = () => {
-    const { changePassword: changePasswordAction } = this.props;
-    const { code, newPassword, email } = this.state;
+    const { changePassword: changePasswordAction, email } = this.props;
+    const { code, newPassword } = this.state;
     changePasswordAction({ code, newPassword, email }, (response) => {
       if (response.status === 200) {
         const { closeChangePassword } = this.props;
