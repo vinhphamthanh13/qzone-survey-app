@@ -5,7 +5,7 @@
 import {
   defaultFont,
   dangerColor,
-  primaryColor,
+  roseColor,
   primaryBoxShadow,
 } from 'assets/jss/material-dashboard-pro-react';
 
@@ -150,7 +150,7 @@ const headerLinksStyle = theme => ({
     color: '#333',
     whiteSpace: 'nowrap',
     '&:hover': {
-      backgroundColor: primaryColor,
+      backgroundColor: roseColor,
       color: '#FFFFFF',
       ...primaryBoxShadow,
     },
