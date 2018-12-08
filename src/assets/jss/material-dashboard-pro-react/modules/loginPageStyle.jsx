@@ -31,8 +31,13 @@ const loginPageStyle = {
     color: theme.indigoTheme.palette.primary.contrastText,
   },
   socialIcon: {
-    margin: '0 15px',
     width: 'auto',
+    fontSize: '1.6rem !important',
+    margin: 'auto !important',
+    '&:hover': {
+      color: silverColor,
+      transition: `color ${silverColor} .2s`,
+    },
   },
   textCenter: {
     textAlign: 'center',

@@ -4,7 +4,6 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 import InputAdornment from '@material-ui/core/es/InputAdornment/InputAdornment';
-import Icon from '@material-ui/core/Icon';
 import Alert from 'react-s-alert';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
@@ -17,7 +16,7 @@ import CardHeader from 'components/Card/CardHeader';
 import CardBody from 'components/Card/CardBody';
 import CardFooter from 'components/Card/CardFooter';
 import loginPageStyle from 'assets/jss/material-dashboard-pro-react/modules/loginPageStyle';
-import fontAwesomeIcon from 'assets/jss/material-dashboard-pro-react/layouts/font-awesome-icon';
+import socialIcons from 'assets/jss/material-dashboard-pro-react/layouts/font-awesome-icon';
 import { Email, Lock } from '@material-ui/icons';
 import { loginUser, toggleLoading, forceResetPasswordStatus } from 'services/api/user';
 import { classesType, historyType, locationType } from 'types/global';
@@ -145,6 +144,15 @@ class LoginPage extends React.Component {
     const loginDisabled = disabled || !email || emailState === 'error' || !password || passwordState === 'error';
     const adornmentEmailClass = `inputAdornmentIcon${emailState}`;
     const adornmentPasswordClass = `inputAdornmentIcon${passwordState}`;
+    const socialButtons = Object.keys(socialIcons).map(icon => (
+      <Button
+        key={icon}
+        color="transparent"
+        target="_blank"
+      >
+        <i className={[socialIcons[icon], classes.socialIcon].join(' ')} />
+      </Button>
+    ));
     return (
       <div className={classes.content}>
         <div className={classes.container}>
@@ -156,21 +164,7 @@ class LoginPage extends React.Component {
                     <div className={classNames(classes.textCenter, classes.headerPanel)}>
                       <h3 className={classes.contrastText}>Log in</h3>
                       <div className={classes.iconsBar}>
-                        <div>
-                          <Icon
-                            className={classNames(fontAwesomeIcon.twitter, classes.socialIcon)}
-                          />
-                        </div>
-                        <div>
-                          <Icon
-                            className={classNames(fontAwesomeIcon.facebook, classes.socialIcon)}
-                          />
-                        </div>
-                        <div>
-                          <Icon
-                            className={classNames(fontAwesomeIcon.googlep, classes.socialIcon)}
-                          />
-                        </div>
+                        {socialButtons}
                       </div>
                     </div>
                   </CardHeader>

@@ -1,9 +1,7 @@
-const fontAwesomeIcon = {
-  email: 'fas fa-envelope',
-  password: 'fas fa-lock',
-  facebook: 'fab fa-facebook',
+const socialIcons = {
   twitter: 'fab fa-twitter',
-  googlep: 'fab fa-google-plus-g',
+  facebook: 'fab fa-facebook',
+  google: 'fab fa-google-plus-g',
 };
 
-export default fontAwesomeIcon;
+export default socialIcons;
