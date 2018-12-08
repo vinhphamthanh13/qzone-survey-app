@@ -4,7 +4,6 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Icon from '@material-ui/core/Icon';
-import _ from 'lodash';
 import Alert from 'react-s-alert';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
@@ -23,6 +22,7 @@ import { classesType, historyType, locationType } from 'types/global';
 import VerificationPage from './verification-page';
 import ResetPassword from './reset-password';
 import validateEmail from '../../utils/validateEmail';
+import validatePassword from '../../utils/validatePassword';
 import { eUserType } from '../../constants';
 
 class LoginPage extends React.Component {
@@ -118,12 +118,14 @@ class LoginPage extends React.Component {
         this.setState({
           [stateName]: value,
           [`${stateName}State`]: validateEmail(value) ? 'success' : 'error',
+          disabled: false,
         });
         return;
       case 'password':
         this.setState({
           [stateName]: value,
-          [`${stateName}State`]: _.isEmpty(value) ? 'error' : 'success',
+          [`${stateName}State`]: validatePassword(value) ? 'success' : 'error',
+          disabled: false,
         });
         break;
       default: {
@@ -136,9 +138,9 @@ class LoginPage extends React.Component {
     const { classes, history } = this.props;
     const {
       cardAnimation, emailState, email, openVerificationModal,
-      disabled, passwordState,
+      disabled, passwordState, password,
     } = this.state;
-
+    const loginDisabled = disabled || !email || emailState === 'error' || !password || passwordState === 'error';
     return (
       <div className={classes.content}>
         <div className={classes.container}>
@@ -206,7 +208,7 @@ class LoginPage extends React.Component {
                     <Button
                       fullWidth
                       color="rose"
-                      disabled={disabled}
+                      disabled={loginDisabled}
                       onClick={this.loginClick}
                       className={classes.loginButtonLabel}
                     >

@@ -16,7 +16,7 @@ import { surveyLocalData } from '../../constants';
 class HeaderLinks extends React.Component {
   static propTypes = {
     classes: classesType.isRequired,
-  }
+  };
 
   state = {
     notificationOpen: false,
@@ -43,7 +43,7 @@ class HeaderLinks extends React.Component {
     sessionService.deleteSession();
     sessionService.deleteUser();
     window.location = '/login';
-  }
+  };
 
   render() {
     const { classes } = this.props;
