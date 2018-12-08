@@ -159,7 +159,7 @@ class LoginPage extends React.Component {
           <GridContainer justify="center" className={classes.loginPanel}>
             <GridItem xs={12} sm={6} md={5}>
               <form>
-                <Card className={classes[cardAnimation]}>
+                <Card login className={classes[cardAnimation]}>
                   <CardHeader className={classes.headerWrapper}>
                     <div className={classNames(classes.textCenter, classes.headerPanel)}>
                       <h3 className={classes.contrastText}>Log in</h3>

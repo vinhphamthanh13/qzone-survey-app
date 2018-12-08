@@ -158,6 +158,7 @@ const cardStyle = {
     },
   },
   cardLogin: {
+    margin: '8em auto',
     transform: `translate3d(${blackRgb})`,
     transition: 'all 300ms linear',
   },

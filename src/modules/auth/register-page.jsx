@@ -30,7 +30,7 @@ class RegisterPage extends React.Component {
     classes: classesType.isRequired,
     history: historyType.isRequired,
     registerUser: PropTypes.func.isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -177,9 +177,7 @@ class RegisterPage extends React.Component {
   goToLogin = () => {
     const { history } = this.props;
     history.push('/login');
-  }
-
-  verifyLength = (value, length) => value.length >= length
+  };
 
   render() {
     const { classes, history } = this.props;
@@ -195,7 +193,7 @@ class RegisterPage extends React.Component {
         <div className={classes.container}>
           {loading && <ReactLoader loading={loading} />}
           <GridContainer justify="center">
-            <GridItem xs={12} sm={6} md={5}>
+            <GridItem xs={12} sm={10} md={8} lg={6}>
               <Card login className={classes[cardAnimaton]}>
                 <CardHeader className={classes.headerWrapper}>
                   <h3 className={classes.standardCardTitle}>Register</h3>
@@ -241,46 +239,48 @@ class RegisterPage extends React.Component {
                       passwordState={passwordState}
                       confirmPwdState={confirmPwdState}
                     />
-                    <FormControlLabel
-                      className={classes.registerTermsWrapper}
-                      control={(
-                        <Checkbox
-                          onClick={event => this.change(event, eRegisterPage.registerTermAndCondition, 'checkbox')}
-                          checkedIcon={<Check className={classes.checkedIcon} />}
-                          icon={<Check className={classes.uncheckedIcon} />}
-                          classes={{ checked: classes.checked }}
-                        />
-                      )}
-                      classes={{
-                        label: `${classes.label} ${registerTermAndConditionState === 'error' ? classes.labelError : ''}`,
-                      }}
-                      label={(
-                        <span>
+                    <div>
+                      <FormControlLabel
+                        className={classes.registerTermsWrapper}
+                        control={(
+                          <Checkbox
+                            onClick={event => this.change(event, eRegisterPage.registerTermAndCondition, 'checkbox')}
+                            checkedIcon={<Check className={classes.checkedIcon} />}
+                            icon={<Check className={classes.uncheckedIcon} />}
+                            classes={{ checked: classes.checked }}
+                          />
+                        )}
+                        classes={{
+                          label: `${classes.label} ${registerTermAndConditionState === 'error' ? classes.labelError : ''}`,
+                        }}
+                        label={(
+                          <span>
                           I agree to the&nbsp;
-                          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                          <Link to="#" className={registerTermAndConditionState === 'error' ? classes.labelError : ''}>Terms</Link>
-                          &nbsp;and&nbsp;
-                          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                          <Link to="#" className={registerTermAndConditionState === 'error' ? classes.labelError : ''}>Conditions</Link>
-                        </span>
-                      )}
-                    />
-                    <FormControlLabel
-                      className={classes.registerTermsWrapper}
-                      control={(
-                        <Checkbox
-                          onClick={event => this.change(event, eRegisterPage.eReceivedInfo, 'checkbox')}
-                          checkedIcon={<Check className={classes.checkedIcon} />}
-                          icon={<Check className={classes.uncheckedIcon} />}
-                          classes={{ checked: classes.checked }}
-                          name={eRegisterPage.eReceivedInfo}
-                        />
-                      )}
-                      classes={{ label: `${classes.label}` }}
-                      label={
-                        <span>Agree to Receive Information About Private Health Insurance</span>
-                      }
-                    />
+                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                            <Link to="#" className={registerTermAndConditionState === 'error' ? classes.labelError : ''}>Terms</Link>
+                            &nbsp;and&nbsp;
+                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                            <Link to="#" className={registerTermAndConditionState === 'error' ? classes.labelError : ''}>Conditions</Link>
+                          </span>
+                        )}
+                      />
+                      <FormControlLabel
+                        className={classes.registerTermsWrapper}
+                        control={(
+                          <Checkbox
+                            onClick={event => this.change(event, eRegisterPage.eReceivedInfo, 'checkbox')}
+                            checkedIcon={<Check className={classes.checkedIcon} />}
+                            icon={<Check className={classes.uncheckedIcon} />}
+                            classes={{ checked: classes.checked }}
+                            name={eRegisterPage.eReceivedInfo}
+                          />
+                        )}
+                        classes={{ label: `${classes.label}` }}
+                        label={
+                          <span>Agree to Receive Information About Private Health Insurance</span>
+                        }
+                      />
+                    </div>
                     <VerificationPage
                       open={openVerificationModal}
                       email={email}

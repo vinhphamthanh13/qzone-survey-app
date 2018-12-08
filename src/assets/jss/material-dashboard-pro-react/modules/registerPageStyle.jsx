@@ -7,6 +7,7 @@ import {
   cardTitle,
 } from 'assets/jss/material-dashboard-pro-react';
 import customCheckboxRadioSwitch from 'assets/jss/material-dashboard-pro-react/customCheckboxRadioSwitch';
+import { altoColor, darkGrayColor, whiteRgb } from 'assets/jss/color-theme';
 
 const registerPageStyle = {
   ...customCheckboxRadioSwitch,
@@ -35,7 +36,7 @@ const registerPageStyle = {
   cardSignup: {
     borderRadius: '6px',
     boxShadow:
-      '0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)',
+      `0 16px 24px 2px rgba(${whiteRgb}, 0.14), 0 6px 30px 5px rgba(${whiteRgb}, 0.12), 0 8px 10px -5px rgba(${whiteRgb}, 0.2)`,
     marginBottom: '100px',
     padding: '40px 0px',
     marginTop: '15vh',
@@ -57,7 +58,7 @@ const registerPageStyle = {
     position: 'relative',
   },
   inputAdornmentIcon: {
-    color: '#555',
+    color: darkGrayColor,
   },
   customFormControlClasses: {
     margin: '0 12px',
@@ -67,7 +68,7 @@ const registerPageStyle = {
   },
   checkboxLabel: {
     marginLeft: '6px',
-    color: 'rgba(0, 0, 0, 0.26)',
+    color: `rgba(${whiteRgb}, 0.26)`,
   },
   linkDisplay: {
     position: 'absolute',
@@ -89,7 +90,7 @@ const registerPageStyle = {
     },
   },
   footerWrapper: {
-    borderTop: '1px solid #d2d2d26e',
+    borderTop: `1px solid ${altoColor}`,
   },
   loginButton: {
     padding: '12px 30px',
@@ -102,7 +103,7 @@ const registerPageStyle = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderBottom: '1px solid #d2d2d26e',
+    borderBottom: `1px solid ${altoColor}`,
   },
   hiddenInput: {
     visibility: 'hidden',
