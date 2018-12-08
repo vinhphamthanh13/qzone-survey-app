@@ -3,17 +3,13 @@
 // #############################
 
 import {
-  drawerMiniWidth,
-  boxShadow,
-  defaultFont,
-  primaryColor,
-  primaryBoxShadow,
-  infoColor,
-  successColor,
-  warningColor,
-  dangerColor,
-  roseColor,
+  drawerMiniWidth, boxShadow, defaultFont, primaryBoxShadow,
 } from 'assets/jss/material-dashboard-pro-react';
+import {
+  primaryColor, infoColor, successColor, navyBlueColor,
+  warningColor, dangerColor, roseColor, whiteColor,
+  oxfordBlueColor, pacificBlueColor, silverColor,
+} from 'assets/jss/color-theme';
 
 const sidebarStyle = theme => ({
   drawerPaper: {
@@ -34,23 +30,23 @@ const sidebarStyle = theme => ({
     },
   },
   blackBackground: {
-    color: '#FFFFFF',
+    color: whiteColor,
     '&:after': {
-      background: '#000f6d',
+      background: navyBlueColor,
       // opacity: ".8"
     },
   },
   blueBackground: {
-    color: '#FFFFFF',
+    color: whiteColor,
     '&:after': {
-      background: '#00acc1',
+      background: pacificBlueColor,
       opacity: '.93',
     },
   },
   whiteBackground: {
-    color: '#3C4858',
+    color: oxfordBlueColor,
     '&:after': {
-      background: '#FFFFFF',
+      background: whiteColor,
       opacity: '.93',
     },
   },
@@ -60,7 +56,7 @@ const sidebarStyle = theme => ({
     },
   },
   drawerPaperMini: {
-    width: `${drawerMiniWidth}px!important`,
+    width: `${drawerMiniWidth}px !important`,
   },
   logo: {
     padding: '15px 0px',
@@ -183,7 +179,7 @@ const sidebarStyle = theme => ({
     width: 'auto',
     '&:hover': {
       outline: 'none',
-      backgroundColor: 'rgba(200, 200, 200, 0.2)',
+      backgroundColor: `rgba(${silverColor}, 0.2)`,
       boxShadow: 'none',
     },
     '&,&:hover,&:focus': {
@@ -247,7 +243,7 @@ const sidebarStyle = theme => ({
   },
   collapseActive: {
     outline: 'none',
-    backgroundColor: 'rgba(200, 200, 200, 0.2)',
+    backgroundColor: `rgba(${silverColor}, 0.2)`,
     boxShadow: 'none',
   },
   collapseItemLink: {
@@ -262,7 +258,7 @@ const sidebarStyle = theme => ({
     width: 'auto',
     '&:hover': {
       outline: 'none',
-      backgroundColor: 'rgba(200, 200, 200, 0.2)',
+      backgroundColor: `rgba(${silverColor}, 0.2)`,
       boxShadow: 'none',
     },
     '&,&:hover,&:focus': {
@@ -336,14 +332,14 @@ const sidebarStyle = theme => ({
   },
   purple: {
     '&,&:hover,&:focus': {
-      color: '#FFFFFF',
+      color: whiteColor,
       backgroundColor: primaryColor,
       ...primaryBoxShadow,
     },
   },
   blue: {
     '&,&:hover,&:focus': {
-      color: '#FFFFFF',
+      color: whiteColor,
       backgroundColor: infoColor,
       boxShadow:
         '0 12px 20px -10px rgba(0,188,212,.28), 0 4px 20px 0 rgba(0,0,0,.12), 0 7px 8px -5px rgba(0,188,212,.2)',
@@ -351,7 +347,7 @@ const sidebarStyle = theme => ({
   },
   green: {
     '&,&:hover,&:focus': {
-      color: '#FFFFFF',
+      color: whiteColor,
       backgroundColor: successColor,
       boxShadow:
         '0 12px 20px -10px rgba(76,175,80,.28), 0 4px 20px 0 rgba(0,0,0,.12), 0 7px 8px -5px rgba(76,175,80,.2)',
@@ -359,7 +355,7 @@ const sidebarStyle = theme => ({
   },
   orange: {
     '&,&:hover,&:focus': {
-      color: '#FFFFFF',
+      color: whiteColor,
       backgroundColor: warningColor,
       boxShadow:
         '0 12px 20px -10px rgba(255,152,0,.28), 0 4px 20px 0 rgba(0,0,0,.12), 0 7px 8px -5px rgba(255,152,0,.2)',
@@ -367,7 +363,7 @@ const sidebarStyle = theme => ({
   },
   red: {
     '&,&:hover,&:focus': {
-      color: '#FFFFFF',
+      color: whiteColor,
       backgroundColor: dangerColor,
       boxShadow:
         '0 12px 20px -10px rgba(244,67,54,.28), 0 4px 20px 0 rgba(0,0,0,.12), 0 7px 8px -5px rgba(244,67,54,.2)',
@@ -375,15 +371,15 @@ const sidebarStyle = theme => ({
   },
   white: {
     '&,&:hover,&:focus': {
-      color: '#3C4858',
-      backgroundColor: '#FFFFFF',
+      color: oxfordBlueColor,
+      backgroundColor: whiteColor,
       boxShadow:
         '0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(60,72,88,.4)',
     },
   },
   rose: {
     '&,&:hover,&:focus': {
-      color: '#FFFFFF',
+      color: whiteColor,
       backgroundColor: roseColor,
       boxShadow:
         '0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(233,30,99,.4)',
@@ -451,7 +447,7 @@ const sidebarStyle = theme => ({
   userCollapseLinks: {
     marginTop: '-4px',
     '&:hover,&:focus': {
-      color: '#FFFFFF',
+      color: whiteColor,
     },
   },
 });

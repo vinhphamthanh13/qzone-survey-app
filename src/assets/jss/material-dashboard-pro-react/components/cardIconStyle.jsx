@@ -6,12 +6,13 @@ import {
   primaryCardHeader,
   roseCardHeader,
 } from 'assets/jss/material-dashboard-pro-react';
+import { grayColor } from 'assets/jss/color-theme';
 
 const cardIconStyle = {
   cardIcon: {
     '&$warningCardHeader,&$successCardHeader,&$dangerCardHeader,&$infoCardHeader,&$primaryCardHeader,&$roseCardHeader': {
       borderRadius: '3px',
-      backgroundColor: '#999',
+      backgroundColor: grayColor,
       padding: '15px',
       marginTop: '-20px',
       marginRight: '15px',

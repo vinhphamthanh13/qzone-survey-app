@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
+import InputAdornment from '@material-ui/core/es/InputAdornment/InputAdornment';
 import Icon from '@material-ui/core/Icon';
 import Alert from 'react-s-alert';
 import { Link } from 'react-router-dom';
@@ -17,6 +18,7 @@ import CardBody from 'components/Card/CardBody';
 import CardFooter from 'components/Card/CardFooter';
 import loginPageStyle from 'assets/jss/material-dashboard-pro-react/modules/loginPageStyle';
 import fontAwesomeIcon from 'assets/jss/material-dashboard-pro-react/layouts/font-awesome-icon';
+import { Email, Lock } from '@material-ui/icons';
 import { loginUser, toggleLoading, forceResetPasswordStatus } from 'services/api/user';
 import { classesType, historyType, locationType } from 'types/global';
 import VerificationPage from './verification-page';
@@ -180,8 +182,13 @@ class LoginPage extends React.Component {
                       inputProps={{
                         onChange: event => this.change(event, 'email'),
                         type: 'email',
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Email className={classes.inputAdornmentIcon} />
+                          </InputAdornment>
+                        ),
                       }}
-                      iconFaName={classNames(fontAwesomeIcon.email, classes.inputIcon)}
+                      // iconFaName={classNames(fontAwesomeIcon.email, classes.inputIcon)}
                     />
                     <CustomInput
                       labelText="Password"
@@ -192,8 +199,13 @@ class LoginPage extends React.Component {
                       inputProps={{
                         onChange: event => this.change(event, 'password'),
                         type: 'password',
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Lock className={classes.inputAdornmentIcon} />
+                          </InputAdornment>
+                        ),
                       }}
-                      iconFaName={classNames(fontAwesomeIcon.password, classes.inputIcon)}
+                      // iconFaName={classNames(fontAwesomeIcon.password, classes.inputIcon)}
                     />
                     <ResetPassword classes={classes} />
                     <VerificationPage

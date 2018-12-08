@@ -8,10 +8,12 @@ import {
   alertWrapper,
   alertLink,
   noMarginTop,
-  dangerColor,
 } from 'assets/jss/material-dashboard-pro-react';
 import customCheckboxRadioSwitch from 'assets/jss/material-dashboard-pro-react/customCheckboxRadioSwitch';
 import theme from 'assets/jss/material-dashboard-pro-react/layouts/theme';
+import {
+  dangerColor, successColor, darkGrayColor, sanMarinoColor,
+} from 'assets/jss/color-theme';
 
 const loginPageStyle = {
   container,
@@ -58,7 +60,10 @@ const loginPageStyle = {
     marginRight: '18px',
   },
   inputAdornmentIcon: {
-    color: '#555',
+    color: darkGrayColor,
+  },
+  inputAdornmentIconSuccess: {
+    color: successColor,
   },
   cardHidden: {
     opacity: '0',
@@ -79,11 +84,11 @@ const loginPageStyle = {
     },
   },
   fbButton: {
-    backgroundColor: '#4267b2',
+    backgroundColor: sanMarinoColor,
     marginRight: 10,
     marginLeft: 10,
     '&:focus, &:hover': {
-      backgroundColor: '#4267b2',
+      backgroundColor: sanMarinoColor,
     },
   },
   googleButton: {

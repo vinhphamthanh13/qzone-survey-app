@@ -1,9 +1,8 @@
+import { defaultFont } from 'assets/jss/material-dashboard-pro-react';
 import {
-  dangerColor,
-  successColor,
-  defaultFont,
-  roseColor,
-} from 'assets/jss/material-dashboard-pro-react';
+  dangerColor, successColor, roseColor,
+  altoColor, silverChaliceColor, troutColor, whiteColor,
+} from 'assets/jss/color-theme';
 
 const customInputStyle = {
   disabled: {
@@ -13,7 +12,7 @@ const customInputStyle = {
   },
   underline: {
     '&:hover:not($disabled):before,&:before': {
-      borderColor: '#D2D2D2 !important',
+      borderColor: `${altoColor} !important`,
       borderWidth: '1px !important',
     },
     '&:after': {
@@ -32,7 +31,7 @@ const customInputStyle = {
   },
   labelRoot: {
     ...defaultFont,
-    color: '#AAAAAA !important',
+    color: `${silverChaliceColor} !important`,
     fontWeight: '400',
     fontSize: '14px',
     lineHeight: '1.42857',
@@ -66,15 +65,15 @@ const customInputStyle = {
     paddingTop: '27px',
     position: 'relative',
     '& svg,& .fab,& .far,& .fal,& .fas': {
-      color: '#495057',
+      color: troutColor,
     },
   },
   whiteUnderline: {
     '&:hover:not($disabled):before,&:before': {
-      backgroundColor: '#FFFFFF',
+      backgroundColor: whiteColor,
     },
     '&:after': {
-      backgroundColor: '#FFFFFF',
+      backgroundColor: whiteColor,
     },
   },
   input: {
@@ -87,12 +86,12 @@ const customInputStyle = {
       opacity: '1',
     },
     '&::placeholder': {
-      color: '#AAAAAA',
+      color: silverChaliceColor,
     },
   },
   whiteInput: {
     '&,&::placeholder': {
-      color: '#FFFFFF',
+      color: whiteColor,
       opacity: '1',
     },
   },

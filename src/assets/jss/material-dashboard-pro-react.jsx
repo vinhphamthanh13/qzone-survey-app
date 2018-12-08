@@ -19,9 +19,14 @@
 // // // Variables - Styles that are used on more than one component
 // #############################
 import theme from 'assets/jss/material-dashboard-pro-react/layouts/theme';
+import {
+  whiteColor,
+  boulderColor,
+  oxfordBlueColor,
+  barleyWhiteColor,
+} from './color-theme';
 
 const drawerWidth = 260;
-
 const drawerMiniWidth = 80;
 
 const transition = {
@@ -78,7 +83,7 @@ const card = {
   boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.14)',
   borderRadius: '6px',
   color: 'rgba(0, 0, 0, 0.87)',
-  background: '#fff',
+  background: whiteColor,
 };
 
 const defaultFont = {
@@ -86,14 +91,6 @@ const defaultFont = {
   fontWeight: '300',
   lineHeight: '1.5em',
 };
-
-const primaryColor = '#9c27b0';
-const warningColor = '#ff9800';
-const dangerColor = '#f44336';
-const successColor = '#4caf50';
-const infoColor = '#00acc1';
-const roseColor = '#303f9f';
-const grayColor = '#999999';
 
 const primaryBoxShadow = {
   boxShadow:
@@ -193,7 +190,7 @@ const defaultBoxShadow = {
 const tooltip = {
   padding: '10px 15px',
   minWidth: '130px',
-  color: '#FFFFFF',
+  color: whiteColor,
   lineHeight: '1.7em',
   background: 'rgba(85,85,85,0.9)',
   border: 'none',
@@ -218,7 +215,7 @@ const tooltip = {
 };
 
 const title = {
-  color: '#3C4858',
+  color: oxfordBlueColor,
   textDecoration: 'none',
   fontWeight: '300',
   marginTop: '30px',
@@ -226,7 +223,7 @@ const title = {
   minHeight: '32px',
   fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
   '& small': {
-    color: '#777',
+    color: boulderColor,
     fontSize: '65%',
     fontWeight: '400',
     lineHeight: '1',
@@ -257,7 +254,7 @@ const cardLink = {
 };
 
 const alertWrapper = {
-  backgroundColor: '#fff3cd',
+  backgroundColor: barleyWhiteColor,
   border: '1px solid #ffeeba',
   borderRadius: 4,
   padding: '16px 24px',
@@ -293,13 +290,6 @@ export {
   boxShadow,
   card,
   defaultFont,
-  primaryColor,
-  warningColor,
-  dangerColor,
-  successColor,
-  infoColor,
-  roseColor,
-  grayColor,
   primaryBoxShadow,
   infoBoxShadow,
   successBoxShadow,

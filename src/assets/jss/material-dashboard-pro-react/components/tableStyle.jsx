@@ -1,13 +1,10 @@
 import {
-  warningColor,
-  primaryColor,
-  dangerColor,
-  successColor,
-  infoColor,
-  roseColor,
-  grayColor,
-  defaultFont,
-} from 'assets/jss/material-dashboard-pro-react';
+  warningColor, dangerColor, successColor, infoColor, roseColor, grayColor,
+  alabasterColor, bizzareColor, champagneColor, linkWaterColor,
+  mintTulipColor, oysterPinkColor, pearlLustaColor, peppermintColor,
+  primaryColor, whiteSandColor, zanahColor,
+} from 'assets/jss/color-theme';
+import { defaultFont } from 'assets/jss/material-dashboard-pro-react';
 
 const tableStyle = theme => ({
   warning: {
@@ -86,35 +83,35 @@ const tableStyle = theme => ({
     overflowX: 'auto',
   },
   tableStripedRow: {
-    backgroundColor: '#f9f9f9',
+    backgroundColor: alabasterColor,
   },
   tableRowHover: {
     '&:hover': {
-      backgroundColor: '#f5f5f5',
+      backgroundColor: whiteSandColor,
     },
   },
   warningRow: {
-    backgroundColor: '#fcf8e3',
+    backgroundColor: pearlLustaColor,
     '&:hover': {
-      backgroundColor: '#faf2cc',
+      backgroundColor: champagneColor,
     },
   },
   dangerRow: {
-    backgroundColor: '#f2dede',
+    backgroundColor: bizzareColor,
     '&:hover': {
-      backgroundColor: '#ebcccc',
+      backgroundColor: oysterPinkColor,
     },
   },
   successRow: {
-    backgroundColor: '#dff0d8',
+    backgroundColor: peppermintColor,
     '&:hover': {
-      backgroundColor: '#d0e9c6',
+      backgroundColor: zanahColor,
     },
   },
   infoRow: {
-    backgroundColor: '#d9edf7',
+    backgroundColor: linkWaterColor,
     '&:hover': {
-      backgroundColor: '#c4e3f3',
+      backgroundColor: mintTulipColor,
     },
   },
 });

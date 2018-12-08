@@ -3,18 +3,13 @@
 // #############################
 
 import {
-  container,
-  defaultFont,
-  primaryColor,
-  defaultBoxShadow,
-  infoColor,
-  successColor,
-  warningColor,
-  dangerColor,
-  boxShadow,
-  drawerWidth,
-  transition,
+  container, defaultFont, defaultBoxShadow,
+  boxShadow, drawerWidth, transition,
 } from 'assets/jss/material-dashboard-pro-react';
+import {
+  darkGrayColor, primaryColor, successColor, whiteColor,
+  blackColor, dangerColor, infoColor, warningColor,
+} from 'assets/jss/color-theme';
 
 const pagesHeaderStyle = theme => ({
   appBar: {
@@ -26,7 +21,7 @@ const pagesHeaderStyle = theme => ({
     width: '100%',
     paddingTop: '10px',
     zIndex: '1029',
-    color: '#555555',
+    color: darkGrayColor,
     border: '0',
     borderRadius: '3px',
     padding: '10px 0',
@@ -43,10 +38,10 @@ const pagesHeaderStyle = theme => ({
     lineHeight: '30px',
     fontSize: '24px',
     textTransform: 'none',
-    color: '#FFFFFF',
+    color: whiteColor,
     '&:hover,&:focus': {
       opacity: 0.8,
-      color: '#FFFFFF',
+      color: whiteColor,
     },
   },
   appResponsive: {
@@ -54,27 +49,27 @@ const pagesHeaderStyle = theme => ({
   },
   primary: {
     backgroundColor: primaryColor,
-    color: '#FFFFFF',
+    color: whiteColor,
     ...defaultBoxShadow,
   },
   info: {
     backgroundColor: infoColor,
-    color: '#FFFFFF',
+    color: whiteColor,
     ...defaultBoxShadow,
   },
   success: {
     backgroundColor: successColor,
-    color: '#FFFFFF',
+    color: whiteColor,
     ...defaultBoxShadow,
   },
   warning: {
     backgroundColor: warningColor,
-    color: '#FFFFFF',
+    color: whiteColor,
     ...defaultBoxShadow,
   },
   danger: {
     backgroundColor: dangerColor,
-    color: '#FFFFFF',
+    color: whiteColor,
     ...defaultBoxShadow,
   },
   list: {
@@ -84,7 +79,7 @@ const pagesHeaderStyle = theme => ({
     marginRight: '-15px',
     paddingLeft: '0',
     listStyle: 'none',
-    color: '#FFFFFF',
+    color: whiteColor,
     paddingTop: '0',
     paddingBottom: '0',
   },
@@ -102,7 +97,7 @@ const pagesHeaderStyle = theme => ({
     },
   },
   navLink: {
-    color: '#FFFFFF',
+    color: whiteColor,
     margin: '0 5px',
     paddingTop: '15px',
     paddingBottom: '15px',
@@ -116,7 +111,7 @@ const pagesHeaderStyle = theme => ({
     padding: '10px 15px',
     textDecoration: 'none',
     '&:hover,&:focus': {
-      color: '#FFFFFF',
+      color: whiteColor,
       background: 'rgba(200, 200, 200, 0.2)',
     },
   },
@@ -141,7 +136,7 @@ const pagesHeaderStyle = theme => ({
     whiteSpace: 'nowrap',
   },
   navLinkActive: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: `rgba(${whiteColor}, 0.1)`,
   },
   drawerPaper: {
     ...transition,
@@ -174,13 +169,13 @@ const pagesHeaderStyle = theme => ({
       top: '0',
     },
     '&:after': {
-      background: '#000',
+      background: blackColor,
       opacity: '.8',
     },
   },
   sidebarButton: {
     '&,&:hover,&:focus': {
-      color: '#FFFFFF',
+      color: whiteColor,
     },
     top: '-2px',
   },

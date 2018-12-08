@@ -3,23 +3,22 @@
 // #############################
 
 import {
-  grayColor,
-  roseColor,
-  primaryColor,
-  infoColor,
-  successColor,
-  warningColor,
-  dangerColor,
-} from 'assets/jss/material-dashboard-pro-react';
+  primaryColor, infoColor, successColor,
+  warningColor, dangerColor, whiteColor,
+  dustyGrayRgb, seanceRgb, blackRgb, punchColor, chambrayColor,
+  pictonBlueColor, deepCeruleanColor, cardinalColor, alizarinCrimsonColor,
+  mineShaftColor, pickleBluewoodColor, blueRibbonColor, vermilionColor, frenchRoseColor,
+  grayColor, roseColor,
+} from 'assets/jss/color-theme';
 
 const buttonStyle = {
   button: {
     minHeight: 'auto',
     minWidth: 'auto',
     backgroundColor: grayColor,
-    color: '#FFFFFF',
+    color: whiteColor,
     boxShadow:
-      '0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12)',
+      `0 2px 2px 0 rgba(${dustyGrayRgb}, 0.14), 0 3px 1px -2px rgba(${dustyGrayRgb}, 0.2), 0 1px 5px 0 rgba(${dustyGrayRgb}, 0.12)`,
     border: 'none',
     borderRadius: '3px',
     position: 'relative',
@@ -39,11 +38,11 @@ const buttonStyle = {
     touchAction: 'manipulation',
     cursor: 'pointer',
     '&:hover,&:focus': {
-      color: '#FFFFFF',
+      color: whiteColor,
       backgroundColor: grayColor,
       outline: 'none',
       boxShadow:
-        '0 14px 26px -12px rgba(153, 153, 153, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(153, 153, 153, 0.2)',
+        `0 14px 26px -12px rgba(${dustyGrayRgb}, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(${dustyGrayRgb}, 0.2)`,
     },
     '& .fab,& .fas,& .far,& .fal': {
       position: 'relative',
@@ -84,11 +83,11 @@ const buttonStyle = {
   primary: {
     backgroundColor: primaryColor,
     boxShadow:
-      '0 2px 2px 0 rgba(156, 39, 176, 0.14), 0 3px 1px -2px rgba(156, 39, 176, 0.2), 0 1px 5px 0 rgba(156, 39, 176, 0.12)',
+      `0 2px 2px 0 rgba(${seanceRgb}, 0.14), 0 3px 1px -2px rgba(${seanceRgb}, 0.2), 0 1px 5px 0 rgba(${seanceRgb}, 0.12)`,
     '&:hover,&:focus': {
       backgroundColor: primaryColor,
       boxShadow:
-        '0 14px 26px -12px rgba(156, 39, 176, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(156, 39, 176, 0.2)',
+        `0 14px 26px -12px rgba(${seanceRgb}, 0.42), 0 4px 23px 0px rgba(${blackRgb}, 0.12), 0 8px 10px -5px rgba(${seanceRgb}, 0.2)`,
     },
   },
   info: {
@@ -141,137 +140,137 @@ const buttonStyle = {
   },
   white: {
     '&,&:focus,&:hover': {
-      backgroundColor: '#FFFFFF',
+      backgroundColor: whiteColor,
       color: grayColor,
     },
   },
   twitter: {
-    backgroundColor: '#55acee',
-    color: '#fff',
+    backgroundColor: pictonBlueColor,
+    color: whiteColor,
     boxShadow:
       '0 2px 2px 0 rgba(85, 172, 238, 0.14), 0 3px 1px -2px rgba(85, 172, 238, 0.2), 0 1px 5px 0 rgba(85, 172, 238, 0.12)',
     '&:hover,&:focus,&:visited': {
-      backgroundColor: '#55acee',
-      color: '#fff',
+      backgroundColor: pictonBlueColor,
+      color: whiteColor,
       boxShadow:
         '0 14px 26px -12px rgba(85, 172, 238, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(85, 172, 238, 0.2)',
     },
   },
   facebook: {
-    backgroundColor: '#3b5998',
-    color: '#fff',
+    backgroundColor: chambrayColor,
+    color: whiteColor,
     boxShadow:
       '0 2px 2px 0 rgba(59, 89, 152, 0.14), 0 3px 1px -2px rgba(59, 89, 152, 0.2), 0 1px 5px 0 rgba(59, 89, 152, 0.12)',
     '&:hover,&:focus': {
-      backgroundColor: '#3b5998',
-      color: '#fff',
+      backgroundColor: chambrayColor,
+      color: whiteColor,
       boxShadow:
         '0 14px 26px -12px rgba(59, 89, 152, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(59, 89, 152, 0.2)',
     },
   },
   google: {
-    backgroundColor: '#dd4b39',
-    color: '#fff',
+    backgroundColor: punchColor,
+    color: whiteColor,
     boxShadow:
       '0 2px 2px 0 rgba(221, 75, 57, 0.14), 0 3px 1px -2px rgba(221, 75, 57, 0.2), 0 1px 5px 0 rgba(221, 75, 57, 0.12)',
     '&:hover,&:focus': {
-      backgroundColor: '#dd4b39',
-      color: '#fff',
+      backgroundColor: punchColor,
+      color: whiteColor,
       boxShadow:
         '0 14px 26px -12px rgba(221, 75, 57, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(221, 75, 57, 0.2)',
     },
   },
   linkedin: {
-    backgroundColor: '#0976b4',
-    color: '#fff',
+    backgroundColor: deepCeruleanColor,
+    color: whiteColor,
     boxShadow:
       '0 2px 2px 0 rgba(9, 118, 180, 0.14), 0 3px 1px -2px rgba(9, 118, 180, 0.2), 0 1px 5px 0 rgba(9, 118, 180, 0.12)',
     '&:hover,&:focus': {
-      backgroundColor: '#0976b4',
-      color: '#fff',
+      backgroundColor: deepCeruleanColor,
+      color: whiteColor,
       boxShadow:
         '0 14px 26px -12px rgba(9, 118, 180, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(9, 118, 180, 0.2)',
     },
   },
   pinterest: {
-    backgroundColor: '#cc2127',
-    color: '#fff',
+    backgroundColor: cardinalColor,
+    color: whiteColor,
     boxShadow:
       '0 2px 2px 0 rgba(204, 33, 39, 0.14), 0 3px 1px -2px rgba(204, 33, 39, 0.2), 0 1px 5px 0 rgba(204, 33, 39, 0.12)',
     '&:hover,&:focus': {
-      backgroundColor: '#cc2127',
-      color: '#fff',
+      backgroundColor: cardinalColor,
+      color: whiteColor,
       boxShadow:
         '0 14px 26px -12px rgba(204, 33, 39, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(204, 33, 39, 0.2)',
     },
   },
   youtube: {
-    backgroundColor: '#e52d27',
-    color: '#fff',
+    backgroundColor: alizarinCrimsonColor,
+    color: whiteColor,
     boxShadow:
       '0 2px 2px 0 rgba(229, 45, 39, 0.14), 0 3px 1px -2px rgba(229, 45, 39, 0.2), 0 1px 5px 0 rgba(229, 45, 39, 0.12)',
     '&:hover,&:focus': {
-      backgroundColor: '#e52d27',
-      color: '#fff',
+      backgroundColor: alizarinCrimsonColor,
+      color: whiteColor,
       boxShadow:
         '0 14px 26px -12px rgba(229, 45, 39, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(229, 45, 39, 0.2)',
     },
   },
   tumblr: {
-    backgroundColor: '#35465c',
-    color: '#fff',
+    backgroundColor: pickleBluewoodColor,
+    color: whiteColor,
     boxShadow:
       '0 2px 2px 0 rgba(53, 70, 92, 0.14), 0 3px 1px -2px rgba(53, 70, 92, 0.2), 0 1px 5px 0 rgba(53, 70, 92, 0.12)',
     '&:hover,&:focus': {
-      backgroundColor: '#35465c',
-      color: '#fff',
+      backgroundColor: pickleBluewoodColor,
+      color: whiteColor,
       boxShadow:
         '0 14px 26px -12px rgba(53, 70, 92, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(53, 70, 92, 0.2)',
     },
   },
   github: {
-    backgroundColor: '#333333',
-    color: '#fff',
+    backgroundColor: mineShaftColor,
+    color: whiteColor,
     boxShadow:
       '0 2px 2px 0 rgba(51, 51, 51, 0.14), 0 3px 1px -2px rgba(51, 51, 51, 0.2), 0 1px 5px 0 rgba(51, 51, 51, 0.12)',
     '&:hover,&:focus': {
-      backgroundColor: '#333333',
-      color: '#fff',
+      backgroundColor: mineShaftColor,
+      color: whiteColor,
       boxShadow:
         '0 14px 26px -12px rgba(51, 51, 51, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(51, 51, 51, 0.2)',
     },
   },
   behance: {
-    backgroundColor: '#1769ff',
-    color: '#fff',
+    backgroundColor: blueRibbonColor,
+    color: whiteColor,
     boxShadow:
       '0 2px 2px 0 rgba(23, 105, 255, 0.14), 0 3px 1px -2px rgba(23, 105, 255, 0.2), 0 1px 5px 0 rgba(23, 105, 255, 0.12)',
     '&:hover,&:focus': {
-      backgroundColor: '#1769ff',
-      color: '#fff',
+      backgroundColor: blueRibbonColor,
+      color: whiteColor,
       boxShadow:
         '0 14px 26px -12px rgba(23, 105, 255, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(23, 105, 255, 0.2)',
     },
   },
   dribbble: {
-    backgroundColor: '#ea4c89',
-    color: '#fff',
+    backgroundColor: frenchRoseColor,
+    color: whiteColor,
     boxShadow:
       '0 2px 2px 0 rgba(234, 76, 137, 0.14), 0 3px 1px -2px rgba(234, 76, 137, 0.2), 0 1px 5px 0 rgba(234, 76, 137, 0.12)',
     '&:hover,&:focus': {
-      backgroundColor: '#ea4c89',
-      color: '#fff',
+      backgroundColor: frenchRoseColor,
+      color: whiteColor,
       boxShadow:
         '0 14px 26px -12px rgba(234, 76, 137, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(234, 76, 137, 0.2)',
     },
   },
   reddit: {
-    backgroundColor: '#ff4500',
+    backgroundColor: vermilionColor,
     color: ' #fff',
     boxShadow:
       '0 2px 2px 0 rgba(255, 69, 0, 0.14), 0 3px 1px -2px rgba(255, 69, 0, 0.2), 0 1px 5px 0 rgba(255, 69, 0, 0.12)',
     '&:hover,&:focus': {
-      backgroundColor: '#ff4500',
+      backgroundColor: vermilionColor,
       color: ' #fff',
       boxShadow:
         '0 14px 26px -12px rgba(255, 69, 0, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(255, 69, 0, 0.2)',
@@ -279,7 +278,7 @@ const buttonStyle = {
   },
   simple: {
     '&,&:focus,&:hover': {
-      color: '#FFFFFF',
+      color: whiteColor,
       background: 'transparent',
       boxShadow: 'none',
     },
@@ -315,57 +314,57 @@ const buttonStyle = {
     },
     '&$twitter': {
       '&,&:focus,&:hover,&:visited': {
-        color: '#55acee',
+        color: pictonBlueColor,
       },
     },
     '&$facebook': {
       '&,&:focus,&:hover,&:visited': {
-        color: '#3b5998',
+        color: chambrayColor,
       },
     },
     '&$google': {
       '&,&:focus,&:hover,&:visited': {
-        color: '#dd4b39',
+        color: punchColor,
       },
     },
     '&$linkedin': {
       '&,&:focus,&:hover,&:visited': {
-        color: '#0976b4',
+        color: deepCeruleanColor,
       },
     },
     '&$pinterest': {
       '&,&:focus,&:hover,&:visited': {
-        color: '#cc2127',
+        color: cardinalColor,
       },
     },
     '&$youtube': {
       '&,&:focus,&:hover,&:visited': {
-        color: '#e52d27',
+        color: alizarinCrimsonColor,
       },
     },
     '&$tumblr': {
       '&,&:focus,&:hover,&:visited': {
-        color: '#35465c',
+        color: pickleBluewoodColor,
       },
     },
     '&$github': {
       '&,&:focus,&:hover,&:visited': {
-        color: '#333333',
+        color: mineShaftColor,
       },
     },
     '&$behance': {
       '&,&:focus,&:hover,&:visited': {
-        color: '#1769ff',
+        color: blueRibbonColor,
       },
     },
     '&$dribbble': {
       '&,&:focus,&:hover,&:visited': {
-        color: '#ea4c89',
+        color: frenchRoseColor,
       },
     },
     '&$reddit': {
       '&,&:focus,&:hover,&:visited': {
-        color: '#ff4500',
+        color: vermilionColor,
       },
     },
   },
@@ -401,7 +400,7 @@ const buttonStyle = {
   link: {
     '&,&:hover,&:focus': {
       backgroundColor: 'transparent',
-      color: '#999999',
+      color: grayColor,
       boxShadow: 'none',
     },
   },

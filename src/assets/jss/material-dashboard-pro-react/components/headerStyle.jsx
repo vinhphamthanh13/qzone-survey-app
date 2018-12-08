@@ -3,14 +3,11 @@
 // #############################
 
 import {
-  containerFluid,
-  defaultFont,
-  primaryColor,
-  defaultBoxShadow,
-  infoColor,
-  successColor,
-  warningColor,
-  dangerColor,
+  dangerColor, primaryColor, infoColor, whiteColor,
+  successColor, warningColor, darkGrayColor,
+} from 'assets/jss/color-theme';
+import {
+  containerFluid, defaultFont, defaultBoxShadow,
 } from 'assets/jss/material-dashboard-pro-react';
 
 const headerStyle = () => ({
@@ -23,7 +20,7 @@ const headerStyle = () => ({
     width: '100%',
     paddingTop: '10px',
     zIndex: '1029',
-    color: '#555555',
+    color: darkGrayColor,
     border: '0',
     borderRadius: '3px',
     padding: '10px 0',
@@ -53,34 +50,34 @@ const headerStyle = () => ({
   },
   primary: {
     backgroundColor: primaryColor,
-    color: '#FFFFFF',
+    color: whiteColor,
     ...defaultBoxShadow,
   },
   info: {
     backgroundColor: infoColor,
-    color: '#FFFFFF',
+    color: whiteColor,
     ...defaultBoxShadow,
   },
   success: {
     backgroundColor: successColor,
-    color: '#FFFFFF',
+    color: whiteColor,
     ...defaultBoxShadow,
   },
   warning: {
     backgroundColor: warningColor,
-    color: '#FFFFFF',
+    color: whiteColor,
     ...defaultBoxShadow,
   },
   danger: {
     backgroundColor: dangerColor,
-    color: '#FFFFFF',
+    color: whiteColor,
     ...defaultBoxShadow,
   },
   sidebarMinimize: {
     float: 'left',
     padding: '0 0 0 15px',
     display: 'block',
-    color: '#555555',
+    color: darkGrayColor,
   },
   sidebarMinimizeRTL: {
     padding: '0 15px 0 0 !important',

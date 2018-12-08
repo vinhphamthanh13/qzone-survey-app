@@ -4,10 +4,11 @@
 
 import {
   defaultFont,
-  dangerColor,
-  roseColor,
   primaryBoxShadow,
 } from 'assets/jss/material-dashboard-pro-react';
+import {
+  dangerColor, roseColor, whiteColor, blackColor, mineShaftColor,
+} from 'assets/jss/color-theme';
 
 const headerLinksStyle = theme => ({
   popperClose: {
@@ -88,11 +89,11 @@ const headerLinksStyle = theme => ({
     [theme.breakpoints.up('md')]: {
       position: 'absolute',
       top: '5px',
-      border: '1px solid #FFF',
+      border: `1px solid ${whiteColor}`,
       right: '5px',
       fontSize: '9px',
       background: dangerColor,
-      color: '#FFFFFF',
+      color: whiteColor,
       minWidth: '16px',
       height: '16px',
       borderRadius: '10px',
@@ -110,7 +111,7 @@ const headerLinksStyle = theme => ({
   dropdown: {
     borderRadius: '3px',
     border: '0',
-    boxShadow: '0 2px 5px 0 rgba(0, 0, 0, 0.26)',
+    boxShadow: `0 2px 5px 0 rgba(${blackColor}, 0.26)`,
     top: '100%',
     zIndex: '1000',
     minWidth: '160px',
@@ -119,7 +120,7 @@ const headerLinksStyle = theme => ({
     fontSize: '14px',
     textAlign: 'left',
     listStyle: 'none',
-    backgroundColor: '#fff',
+    backgroundColor: whiteColor,
     backgroundClip: 'padding-box',
   },
   pooperResponsive: {
@@ -147,11 +148,11 @@ const headerLinksStyle = theme => ({
     clear: 'both',
     fontWeight: '400',
     height: 'fit-content',
-    color: '#333',
+    color: mineShaftColor,
     whiteSpace: 'nowrap',
     '&:hover': {
       backgroundColor: roseColor,
-      color: '#FFFFFF',
+      color: whiteColor,
       ...primaryBoxShadow,
     },
   },
