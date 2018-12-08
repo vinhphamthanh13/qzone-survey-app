@@ -40,7 +40,10 @@ class ResetPassword extends React.Component {
         this.setState({ open: false, openChangePassword: true });
         Alert.success('Code is successfully send to your email');
       } else {
-        Alert.error(response.data.message);
+        const { data: { message } } = response;
+        if (/emailMessage/.test(message)) {
+          Alert.error('Email address is required!');
+        }
       }
     });
   };

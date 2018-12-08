@@ -70,17 +70,17 @@ class ChangePassword extends React.Component {
         },
       );
     }, 1000);
-  }
+  };
 
   stopCountDown = () => {
     if (this.countDownResendCodeId) {
       clearInterval(this.countDownResendCodeId);
     }
-  }
+  };
 
   cbAfterResend = () => {
     this.setState({ countDownResendCode: 60 }, this.startCountDown);
-  }
+  };
 
   handleChangePassword = () => {
     const { changePassword: changePasswordAction, email } = this.props;
@@ -94,7 +94,7 @@ class ChangePassword extends React.Component {
         Alert.error(response.data.message);
       }
     });
-  }
+  };
 
   onChangePassword = ({ target: { value } }) => {
     const newState = {
@@ -110,19 +110,19 @@ class ChangePassword extends React.Component {
     }
 
     this.setState(newState);
-  }
+  };
 
   onChangeConfirmPwd = ({ target: { value } }) => {
     this.setState(oldState => ({
       confirmPwdState: value !== '' && value === oldState.newPassword ? 'success' : 'error',
       confirmPwd: value,
     }));
-  }
+  };
 
   onDialogClose = () => {
     const { closeChangePassword } = this.props;
     this.setState(this.defaultState, closeChangePassword);
-  }
+  };
 
   render() {
     const { classes, openChangePassword, email } = this.props;
