@@ -1,4 +1,7 @@
-import { primaryColor } from 'assets/jss/color-theme';
+import {
+  primaryColor, altoColor, blackRgb,
+  mineShaftColor, oxfordBlueColor, whiteColor,
+} from 'assets/jss/color-theme';
 import { primaryBoxShadow } from 'assets/jss/material-dashboard-pro-react';
 
 const customSelectStyle = {
@@ -7,7 +10,7 @@ const customSelectStyle = {
     fontWeight: '400',
     lineHeight: '1.42857',
     textDecoration: 'none',
-    color: '#3C4858',
+    color: oxfordBlueColor,
     letterSpacing: '0',
     '&:focus': {
       backgroundColor: 'transparent',
@@ -23,7 +26,7 @@ const customSelectStyle = {
     margin: '7px 1px 10px 0px !important',
     '& > div': {
       '&:before': {
-        borderColor: '#D2D2D2 !important',
+        borderColor: `${altoColor} !important`,
         borderWidth: '1px !important',
       },
       '&:after': {
@@ -34,7 +37,7 @@ const customSelectStyle = {
   selectLabel: {
     fontSize: '12px',
     textTransform: 'uppercase',
-    color: '#3C4858 !important',
+    color: `${oxfordBlueColor} !important`,
     top: '8px',
   },
   selectMenu: {
@@ -50,7 +53,7 @@ const customSelectStyle = {
       fontSize: '14px',
       textAlign: 'left',
       listStyle: 'none',
-      backgroundColor: '#fff',
+      backgroundColor: whiteColor,
       backgroundClip: 'padding-box',
     },
     '& > div + div': {
@@ -68,16 +71,16 @@ const customSelectStyle = {
     fontWeight: '400',
     lineHeight: '2',
     whiteSpace: 'nowrap',
-    color: '#333',
+    color: mineShaftColor,
     '&:hover': {
       backgroundColor: primaryColor,
-      color: '#FFFFFF',
+      color: whiteColor,
       ...primaryBoxShadow,
     },
   },
   selectMenuItemSelected: {
     backgroundColor: `${primaryColor}!important`,
-    color: '#FFFFFF',
+    color: whiteColor,
   },
   selectPaper: {
     boxSizing: 'borderBox',
@@ -86,7 +89,7 @@ const customSelectStyle = {
     minWidth: '100%',
     display: 'block',
     border: '0',
-    boxShadow: '0 2px 5px 0 rgba(0, 0, 0, 0.26)',
+    boxShadow: `0 2px 5px 0 rgba(${blackRgb}, 0.26)`,
     backgroundClip: 'padding-box',
     margin: '2px 0 0',
     fontSize: '14px',

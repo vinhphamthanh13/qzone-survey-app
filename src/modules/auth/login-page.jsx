@@ -143,13 +143,15 @@ class LoginPage extends React.Component {
       disabled, passwordState, password,
     } = this.state;
     const loginDisabled = disabled || !email || emailState === 'error' || !password || passwordState === 'error';
+    const adornmentEmailClass = `inputAdornmentIcon${emailState}`;
+    const adornmentPasswordClass = `inputAdornmentIcon${passwordState}`;
     return (
       <div className={classes.content}>
         <div className={classes.container}>
           <GridContainer justify="center" className={classes.loginPanel}>
             <GridItem xs={12} sm={6} md={5}>
               <form>
-                <Card login className={classes[cardAnimation]}>
+                <Card className={classes[cardAnimation]}>
                   <CardHeader className={classes.headerWrapper}>
                     <div className={classNames(classes.textCenter, classes.headerPanel)}>
                       <h3 className={classes.contrastText}>Log in</h3>
@@ -184,11 +186,11 @@ class LoginPage extends React.Component {
                         type: 'email',
                         endAdornment: (
                           <InputAdornment position="end">
-                            <Email className={classes.inputAdornmentIcon} />
+                            <Email className={classes[adornmentEmailClass]} />
                           </InputAdornment>
                         ),
                       }}
-                      // iconFaName={classNames(fontAwesomeIcon.email, classes.inputIcon)}
+                      iconAppend={false}
                     />
                     <CustomInput
                       labelText="Password"
@@ -201,11 +203,11 @@ class LoginPage extends React.Component {
                         type: 'password',
                         endAdornment: (
                           <InputAdornment position="end">
-                            <Lock className={classes.inputAdornmentIcon} />
+                            <Lock className={classes[adornmentPasswordClass]} />
                           </InputAdornment>
                         ),
                       }}
-                      // iconFaName={classNames(fontAwesomeIcon.password, classes.inputIcon)}
+                      iconAppend={false}
                     />
                     <ResetPassword classes={classes} />
                     <VerificationPage

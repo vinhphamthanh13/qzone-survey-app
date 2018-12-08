@@ -12,7 +12,7 @@ import {
 import customCheckboxRadioSwitch from 'assets/jss/material-dashboard-pro-react/customCheckboxRadioSwitch';
 import theme from 'assets/jss/material-dashboard-pro-react/layouts/theme';
 import {
-  dangerColor, successColor, darkGrayColor, sanMarinoColor,
+  dangerColor, successColor, darkGrayColor, sanMarinoColor, whiteColor, silverColor,
 } from 'assets/jss/color-theme';
 
 const loginPageStyle = {
@@ -51,7 +51,7 @@ const loginPageStyle = {
   },
   customButtonClass: {
     '&,&:focus,&:hover': {
-      color: '#FFFFFF',
+      color: whiteColor,
     },
     marginLeft: '5px',
     marginRight: '5px',
@@ -62,8 +62,11 @@ const loginPageStyle = {
   inputAdornmentIcon: {
     color: darkGrayColor,
   },
-  inputAdornmentIconSuccess: {
-    color: successColor,
+  inputAdornmentIconsuccess: {
+    color: `${successColor} !important`,
+  },
+  inputAdornmentIconerror: {
+    color: `${dangerColor} !important`,
   },
   cardHidden: {
     opacity: '0',
@@ -142,6 +145,7 @@ const loginPageStyle = {
     borderRadius: 8,
     marginTop: '-2.2em',
     background: theme.indigoTheme.palette.primary.main,
+    boxShadow: `2px 3px 3px ${silverColor}`,
   },
   inputIcon: {
     position: 'absolute',

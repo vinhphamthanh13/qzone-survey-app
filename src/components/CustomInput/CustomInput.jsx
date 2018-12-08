@@ -1,10 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { FormControl, InputLabel, Input } from '@material-ui/core';
 import { Check, Clear } from '@material-ui/icons';
-import Icon from '@material-ui/core/Icon';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import customInputStyle from 'assets/jss/material-dashboard-pro-react/components/customInputStyle';
 import { classesType } from 'types/global';
 
@@ -21,8 +20,8 @@ function CustomInput({ ...props }) {
     inputRootCustomClasses,
     success,
     value,
-    iconFaName,
     customClass,
+    iconAppend,
   } = props;
 
   const labelClasses = classNames({
@@ -64,16 +63,7 @@ function CustomInput({ ...props }) {
     }
   }
 
-  const appendIcon = (icon, isError, isSuccess) => {
-    if (icon) {
-      if (isError) {
-        return <Icon className={classNames(iconFaName, classes.labelRootError)} />;
-      }
-      return (isSuccess
-        ? <Icon className={classNames(iconFaName, classes.labelRootSuccess)} />
-        : <Icon className={iconFaName} />);
-    }
-
+  const appendIcon = (isError, isSuccess) => {
     if (isError) {
       return <Clear className={`${feedbackClasses} ${classes.labelRootError}`} />;
     }
@@ -107,7 +97,7 @@ function CustomInput({ ...props }) {
         }}
         {...inputProps}
       />
-      {appendIcon(iconFaName, error, success)}
+      {iconAppend && appendIcon(error, success)}
     </FormControl>
   );
 }
@@ -126,8 +116,8 @@ CustomInput.propTypes = {
   success: PropTypes.bool,
   white: PropTypes.bool,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  iconFaName: PropTypes.string,
   customClass: PropTypes.string,
+  iconAppend: PropTypes.bool,
 };
 
 CustomInput.defaultProps = {
@@ -140,8 +130,8 @@ CustomInput.defaultProps = {
   success: false,
   white: false,
   value: undefined,
-  iconFaName: undefined,
   customClass: '',
+  iconAppend: true,
 };
 
 export default withStyles(customInputStyle)(CustomInput);

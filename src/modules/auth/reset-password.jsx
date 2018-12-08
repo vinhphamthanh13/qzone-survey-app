@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
+import Typography from '@material-ui/core/Typography';
 import Button from 'components/CustomButtons/Button';
 import { resetPassword } from 'services/api/user';
 import ChangePassword from 'modules/auth/change-password';
@@ -71,9 +72,9 @@ class ResetPassword extends React.Component {
           <div>
             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
             <Link to="#" onClick={this.handleOpen}>
-              <h5 className={classNames(classes.alertLink, classes.noMarginTop)}>
+              <Typography className={classNames(classes.alertLink, classes.noMarginTop)}>
                 forgot password?
-              </h5>
+              </Typography>
             </Link>
           </div>
         </div>
