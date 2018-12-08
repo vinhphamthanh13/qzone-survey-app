@@ -14,8 +14,6 @@ const chartsStyle = {
   },
   columnTitle: {
     width: '80%',
-    fontSize: '1.2rem',
-    fontWeight: 'bold',
     textTransform: 'capitalize',
   },
   chartToolTip: {

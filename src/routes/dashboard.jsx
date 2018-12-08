@@ -1,5 +1,6 @@
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import { Person } from '@material-ui/icons';
+import {
+  Person as PersonIcon, Timeline as TimelineIcon, Poll as PollIcon, Group as GroupIcon,
+} from '@material-ui/icons';
 import Dashboard from 'modules/dashboard/dashboard';
 import Profile from 'modules/profile/profile';
 import AssessmentResponseList from 'modules/participant/assessment/assessment-response-list';
@@ -17,7 +18,7 @@ export const commonRoutes = [
   {
     path: '/profile',
     name: 'My Profile',
-    icon: Person,
+    icon: PersonIcon,
     component: Profile,
   },
 ];
@@ -26,7 +27,7 @@ export const participantRoutes = [
   {
     path: '/participant/assessment/answers',
     name: 'Assessments',
-    icon: Person,
+    icon: PersonIcon,
     component: AssessmentResponseList,
   },
 ];
@@ -35,7 +36,7 @@ export const assessorRoutes = [
   {
     path: '/assessor/assessment/list',
     name: 'Assessment Questions',
-    icon: Person,
+    icon: PersonIcon,
     component: AssessorAssessmentQuestionList,
   },
 ];
@@ -44,19 +45,19 @@ export const adminRoutes = [
   {
     path: '/admin/dashboard',
     name: 'Assessment Chart',
-    icon: DashboardIcon,
+    icon: TimelineIcon,
     component: Dashboard,
   },
   {
     path: '/admin/assessment/list',
     name: 'Assessments',
-    icon: Person,
+    icon: PollIcon,
     component: AdminAssessmentQuestionList,
   },
   {
     path: '/admin/user/list',
     name: 'User Management',
-    icon: Person,
+    icon: GroupIcon,
     component: CreateUser,
   },
 ];
@@ -65,7 +66,7 @@ export const sponsorRoutes = [
   {
     path: '/sponsor/participant/list',
     name: 'Participants',
-    icon: Person,
+    icon: PersonIcon,
     component: ParticipantList,
   },
 ];
@@ -73,7 +74,7 @@ export const sponsorRoutes = [
 export const otherRoutes = [
   {
     path: '/assessment/result/:sid/:pid',
-    name: 'Assessment Resposne Result',
+    name: 'Assessment Response Result',
     component: AssessmentResponseResult,
   },
   {

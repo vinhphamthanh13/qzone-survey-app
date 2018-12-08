@@ -28,11 +28,11 @@ class Account extends PureComponent {
     saveProfile: PropTypes.func.isRequired,
     resetAccount: PropTypes.func.isRequired,
     resetPassword: PropTypes.func.isRequired,
-  }
+  };
 
   static defaultProps = {
     email: undefined,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -47,29 +47,29 @@ class Account extends PureComponent {
   onChangeEmail = (event) => {
     const { inputChange: inputChangeAction } = this.props;
     inputChangeAction(event, 'email', 'email');
-  }
+  };
 
   changeEditMode = () => {
     this.setState({ isEditMode: true });
-  }
+  };
 
   cancelEdit = () => {
-    const { isEditMode, ...oldAccount } = this.state;
+    const { ...oldAccount } = this.state;
     const { resetAccount: resetAccountAction } = this.props;
     this.setState(
       { isEditMode: false },
       () => { resetAccountAction(oldAccount); },
     );
-  }
+  };
 
   saveEdit = () => {
     const { saveProfile: saveProfileAction } = this.props;
     this.setState({ isEditMode: false }, saveProfileAction);
-  }
+  };
 
   onCloseChangePassword = () => {
     this.setState({ openChangePassword: false });
-  }
+  };
 
   onOpenChangePassword = () => {
     const { resetPassword: resetPasswordAction } = this.props;
@@ -82,7 +82,7 @@ class Account extends PureComponent {
         Alert.error(response.data.message);
       }
     });
-  }
+  };
 
   render() {
     const {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
   Table, TableBody, TableCell, TableHead, TableRow, IconButton,
 } from '@material-ui/core';
-import { Poll } from '@material-ui/icons';
+import { Group as GroupIcon } from '@material-ui/icons';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { formatPhoneNumber } from 'react-phone-number-input';
 import { connect } from 'react-redux';
@@ -42,7 +42,7 @@ class CreateUser extends PureComponent {
     updateUserRequestAction: PropTypes.func.isRequired,
     deleteUserAction: PropTypes.func.isRequired,
     deleteUserRequestAction: PropTypes.func.isRequired,
-  }
+  };
 
   rowNames = ['User type', 'First name', 'Last name', 'Email', 'Phone number', 'Actions'];
 
@@ -66,22 +66,22 @@ class CreateUser extends PureComponent {
       { userType: eUserType.assessor },
       { userType: eUserType.sponsor },
     ]);
-  }
+  };
 
   componentWillReceiveProps = (nextProps) => {
     const { userList, toggleLoadingAction } = this.props;
     if (userList.length === 0 && userList.length !== nextProps.userList.length) {
       toggleLoadingAction();
     }
-  }
+  };
 
   openDialog = () => {
     this.setState({ isDialogOpen: true });
-  }
+  };
 
   closeDialog = () => {
     this.setState({ isDialogOpen: false, editedUser: null });
-  }
+  };
 
   onCreateUser = (newUser) => {
     const {
@@ -117,15 +117,15 @@ class CreateUser extends PureComponent {
         }
       });
     }
-  }
+  };
 
   editUser = (user) => {
     this.setState({ isDialogOpen: true, editedUser: user });
-  }
+  };
 
   deleteUser = (user) => {
     this.setState({ deletedUser: user });
-  }
+  };
 
   confirmDelete = () => {
     const {
@@ -147,11 +147,11 @@ class CreateUser extends PureComponent {
         }
       }
     });
-  }
+  };
 
   cancelDelete = () => {
     this.setState({ deletedUser: null });
-  }
+  };
 
   render() {
     const { classes, userList } = this.props;
@@ -182,7 +182,7 @@ class CreateUser extends PureComponent {
         </SweetAlert>
         <Card>
           <CardHeader color="primary" icon>
-            <CardIcon color="rose"><Poll /></CardIcon>
+            <CardIcon color="rose"><GroupIcon /></CardIcon>
             <div className={classes.header}>
               <h3 className={classes.cardIconTitle}>Users</h3>
               <Button
