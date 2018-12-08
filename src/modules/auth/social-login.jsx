@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react';
+import { withStyles } from '@material-ui/core/es/styles';
 import Button from 'components/CustomButtons/Button';
 import { classesType } from 'types/global';
+import loginPageStyle from '../../assets/jss/material-dashboard-pro-react/modules/loginPageStyle';
 
 class SocialLogin extends PureComponent {
   static propTypes = {
     classes: classesType.isRequired,
-  }
+  };
 
   render() {
     const { classes } = this.props;
@@ -16,6 +18,7 @@ class SocialLogin extends PureComponent {
           justIcon
           href="https://www.twitter.com"
           target="_blank"
+          color="transparent"
           className={`${classes.socialButton} ${classes.twitterButton}`}
         >
           <i className="fab fa-twitter" />
@@ -24,6 +27,7 @@ class SocialLogin extends PureComponent {
           justIcon
           href="https://www.facebook.com"
           target="_blank"
+          color="transparent"
           className={`${classes.socialButton} ${classes.fbButton}`}
         >
           <i className="fab fa-facebook" />
@@ -32,6 +36,7 @@ class SocialLogin extends PureComponent {
           justIcon
           href="https://www.plus.google.com"
           target="_blank"
+          color="transparent"
           className={`${classes.socialButton} ${classes.googleButton}`}
         >
           <i className="fab fa-google" />
@@ -41,4 +46,4 @@ class SocialLogin extends PureComponent {
   }
 }
 
-export default SocialLogin;
+export default withStyles(loginPageStyle)(SocialLogin);

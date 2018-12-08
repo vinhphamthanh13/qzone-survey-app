@@ -16,10 +16,10 @@ import CardHeader from 'components/Card/CardHeader';
 import CardBody from 'components/Card/CardBody';
 import CardFooter from 'components/Card/CardFooter';
 import loginPageStyle from 'assets/jss/material-dashboard-pro-react/modules/loginPageStyle';
-import socialIcons from 'assets/jss/material-dashboard-pro-react/layouts/font-awesome-icon';
 import { Email, Lock } from '@material-ui/icons';
 import { loginUser, toggleLoading, forceResetPasswordStatus } from 'services/api/user';
 import { classesType, historyType, locationType } from 'types/global';
+import SocialLogin from 'modules/auth/social-login';
 import VerificationPage from './verification-page';
 import ResetPassword from './reset-password';
 import validateEmail from '../../utils/validateEmail';
@@ -139,20 +139,11 @@ class LoginPage extends React.Component {
     const { classes, history } = this.props;
     const {
       cardAnimation, emailState, email, openVerificationModal,
-      disabled, passwordState, password,
+      disabled, passwordState,
     } = this.state;
-    const loginDisabled = disabled || !email || emailState === 'error' || !password || passwordState === 'error';
     const adornmentEmailClass = `inputAdornmentIcon${emailState}`;
     const adornmentPasswordClass = `inputAdornmentIcon${passwordState}`;
-    const socialButtons = Object.keys(socialIcons).map(icon => (
-      <Button
-        key={icon}
-        color="transparent"
-        target="_blank"
-      >
-        <i className={[socialIcons[icon], classes.socialIcon].join(' ')} />
-      </Button>
-    ));
+
     return (
       <div className={classes.content}>
         <div className={classes.container}>
@@ -164,7 +155,7 @@ class LoginPage extends React.Component {
                     <div className={classNames(classes.textCenter, classes.headerPanel)}>
                       <h3 className={classes.contrastText}>Log in</h3>
                       <div className={classes.iconsBar}>
-                        {socialButtons}
+                        <SocialLogin />
                       </div>
                     </div>
                   </CardHeader>
@@ -216,7 +207,7 @@ class LoginPage extends React.Component {
                     <Button
                       fullWidth
                       color="rose"
-                      disabled={loginDisabled}
+                      disabled={disabled}
                       onClick={this.loginClick}
                       className={classes.loginButtonLabel}
                     >
