@@ -10,7 +10,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Button from 'components/CustomButtons/Button';
 import GridContainer from 'components/Grid/GridContainer';
 import GridItem from 'components/Grid/GridItem';
-import { completeNewPasswordChallenge } from 'services/api/user';
+import { completeNewPasswordChallenge, fetchUserByUserId } from 'services/api/user';
 import validatePassword from 'utils/validatePassword';
 import verificationPageStyle from 'assets/jss/material-dashboard-pro-react/modules/verificationPageStyle';
 import { classesType } from 'types/global';
@@ -23,6 +23,8 @@ class ForceChangePassword extends React.Component {
     openChangePassword: PropTypes.bool,
     closeChangePassword: PropTypes.func.isRequired,
     completeNewPasswordChallenge: PropTypes.func.isRequired,
+    fetchUserByUserId: PropTypes.func.isRequired,
+    userId: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
@@ -44,8 +46,11 @@ class ForceChangePassword extends React.Component {
   }
 
   handleChangePassword = () => {
-    const { email } = this.props;
-    const { completeNewPasswordChallenge: completeNewPasswordChallengeAction } = this.props;
+    const { email, userId } = this.props;
+    const {
+      completeNewPasswordChallenge: completeNewPasswordChallengeAction,
+      fetchUserByUserId: fetchUserAction,
+    } = this.props;
     const { newPassword, defaultPwd } = this.state;
     completeNewPasswordChallengeAction({
       tempPassword: defaultPwd,
@@ -55,6 +60,7 @@ class ForceChangePassword extends React.Component {
       if (response.status === 200) {
         const { closeChangePassword } = this.props;
         closeChangePassword();
+        fetchUserAction(userId);
         Alert.success('Password is successfully updated', { effect: 'bouncyflip' });
       } else {
         Alert.error(response.data.message, { effect: 'bouncyflip' });
@@ -152,5 +158,5 @@ class ForceChangePassword extends React.Component {
 
 export default compose(
   withStyles(verificationPageStyle),
-  connect(null, { completeNewPasswordChallenge }),
+  connect(null, { completeNewPasswordChallenge, fetchUserByUserId }),
 )(ForceChangePassword);

@@ -8,18 +8,17 @@ import ForceChangePassword from 'modules/auth/force-change-password';
 import { userDetailType } from 'types/global';
 import Account from './account';
 import Personal from './personal';
+import { userStatus as eUserStatus } from '../../constants';
 
 class Profile extends React.Component {
   static defaultProps = {
     forceResetPasswordStatus: null,
-    isDefaultPwdChanged: false,
   };
 
   static propTypes = {
     user: userDetailType.isRequired,
     updateProfile: PropTypes.func.isRequired,
     forceResetPasswordStatus: PropTypes.func,
-    isDefaultPwdChanged: PropTypes.bool,
   };
 
   constructor(props) {
@@ -44,18 +43,18 @@ class Profile extends React.Component {
   }
 
   componentDidMount() {
-    const { isDefaultPwdChanged } = this.props;
+    const { user: { userStatus } } = this.props;
     this.setState({
-      openResetPasswordStatus: isDefaultPwdChanged,
+      openResetPasswordStatus: userStatus === eUserStatus.changePassword,
     });
   }
 
   componentWillReceiveProps(nextProps) {
     const { account: { email } } = this.state;
-    const { isDefaultPwdChanged } = this.props;
+    const { user: { userStatus } } = nextProps;
     if (email === undefined && nextProps.user.email) {
       this.setState(prevState => ({
-        openResetPasswordStatus: isDefaultPwdChanged,
+        openResetPasswordStatus: userStatus === eUserStatus.changePassword,
         id: nextProps.user.id,
         personal: {
           ...prevState.personal,
@@ -73,7 +72,7 @@ class Profile extends React.Component {
       }));
     } else {
       this.setState({
-        openResetPasswordStatus: isDefaultPwdChanged,
+        openResetPasswordStatus: userStatus === eUserStatus.changePassword,
       });
     }
   }
@@ -111,9 +110,8 @@ class Profile extends React.Component {
       account: { ...accountInfo },
       personal: { ...personalInfo },
     } = this.state;
-    const { updateProfile: updateProfileAction, toggleLoading: toggleLoadingAction } = this.props;
+    const { updateProfile: updateProfileAction } = this.props;
     updateProfileAction({ id, ...accountInfo, ...personalInfo });
-    toggleLoadingAction();
   };
 
   resetPersonalInfo = (oldPersonalInfo) => {
@@ -135,6 +133,7 @@ class Profile extends React.Component {
       account,
       account: { email },
       openResetPasswordStatus,
+      id,
     } = this.state;
     const { resetPassword: resetPasswordAction } = this.props;
     return (
@@ -161,6 +160,7 @@ class Profile extends React.Component {
             openChangePassword={openResetPasswordStatus}
             closeChangePassword={this.handleClose}
             email={email}
+            userId={id}
           />
         )}
       </React.Fragment>

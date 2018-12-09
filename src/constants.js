@@ -27,6 +27,7 @@ export const userStatus = {
   unconfirmed: 'UNCONFIRMED',
   confirmed: 'CONFIRMED',
   temporary: 'NEW_PASSWORD_REQUIRED',
+  changePassword: 'FORCE_CHANGE_PASSWORD',
 
 };
 
