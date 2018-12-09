@@ -17,6 +17,7 @@ import GridItem from 'components/Grid/GridItem';
 import Card from 'components/Card/Card';
 import CardBody from 'components/Card/CardBody';
 import Loading from 'components/Loader/Loading';
+import CustomInfo from 'components/CustomInfo/CustomInfo';
 import DeleteAssessment from 'modules/shared/delete-assessment';
 import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/listPageStyle';
 import {
@@ -129,50 +130,54 @@ class AssessorAssessmentQuestionList extends React.Component {
     } = this.state;
     const surveyListLen = surveyList.length;
     const deleteAllCheckboxStatus = !surveyListLen;
-    const assessmentList = surveyListLen === 0
-      ? <Loading isLoading={!surveyListLen} />
-      : (
-        <Table className={classes.table} aria-labelledby="tableTitle">
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                <Checkbox
-                  className={classes.deleteAllChecked}
-                  checked={deleteAll || false}
-                  onChange={this.deleteAllShowingHandler}
-                  disabled={deleteAllCheckboxStatus}
-                />
-              </TableCell>
-              <TableCell key="title">
-                Title
-              </TableCell>
+
+    let assessmentList = (
+      <Table className={classes.table} aria-labelledby="tableTitle">
+        <TableHead>
+          <TableRow>
+            <TableCell>
+              <Checkbox
+                className={classes.deleteAllChecked}
+                checked={deleteAll || false}
+                onChange={this.deleteAllShowingHandler}
+                disabled={deleteAllCheckboxStatus}
+              />
+            </TableCell>
+            <TableCell key="title">
+              Title
+            </TableCell>
+            <TableCell>
+              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+              {deleteAll && <Link to="#" data-tip="Delete" onClick={() => this.onOpenSurveyDeleteHandler('')}><Delete /></Link>}
+            </TableCell>
+            <TableCell />
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {surveyList.map((surveyItem, index) => (
+            <TableRow hover key={surveyItem.id}>
+              <TableCell>{index + 1}</TableCell>
+              <TableCell><Link data-tip="Show Survey" to={`/assessment/show/${surveyItem.id}`}>{surveyItem.title}</Link></TableCell>
               <TableCell>
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                {deleteAll && <Link to="#" data-tip="Delete" onClick={() => this.onOpenSurveyDeleteHandler('')}><Delete /></Link>}
-              </TableCell>
-              <TableCell />
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {surveyList.map((surveyItem, index) => (
-              <TableRow hover key={surveyItem.id}>
-                <TableCell>{index + 1}</TableCell>
-                <TableCell><Link data-tip="Show Survey" to={`/assessment/show/${surveyItem.id}`}>{surveyItem.title}</Link></TableCell>
-                <TableCell>
+                <Link style={iconStyle} data-tip="Delete Survey" to="#" onClick={() => this.onOpenSurveyDeleteHandler(surveyItem.id)}><Delete /></Link>
+                <CopyToClipboard text={`${SURVEY_APP_URL}/surveys/${surveyItem.id}`}>
                   {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                  <Link style={iconStyle} data-tip="Delete Survey" to="#" onClick={() => this.onOpenSurveyDeleteHandler(surveyItem.id)}><Delete /></Link>
-                  <CopyToClipboard text={`${SURVEY_APP_URL}/surveys/${surveyItem.id}`}>
-                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                    <Link data-tip="Copy Link" to="#" onClick={this.handleClick}><LinkIcon /></Link>
-                  </CopyToClipboard>
-                </TableCell>
-                <TableCell>
-                  <ReactTooltip />
-                </TableCell>
-              </TableRow>))}
-          </TableBody>
-        </Table>
-      );
+                  <Link data-tip="Copy Link" to="#" onClick={this.handleClick}><LinkIcon /></Link>
+                </CopyToClipboard>
+              </TableCell>
+              <TableCell>
+                <ReactTooltip />
+              </TableCell>
+            </TableRow>))}
+        </TableBody>
+      </Table>
+    );
+    if (Object.is(surveyList, null)) {
+      assessmentList = <Loading isLoading={!surveyList} />;
+    } else if (surveyListLen === 0) {
+      assessmentList = <CustomInfo content="There is no assessment in your box" />;
+    }
     return (
       <React.Fragment>
         <GridContainer>
@@ -201,7 +206,7 @@ class AssessorAssessmentQuestionList extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return { surveyList: state.surveys.list || [] };
+  return { surveyList: state.surveys.list || null };
 }
 
 export default compose(
