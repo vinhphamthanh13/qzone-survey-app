@@ -54,8 +54,10 @@ class Profile extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { account: { email } } = this.state;
+    const { isDefaultPwdChanged, user: { userStatus } } = this.props;
     if (email === undefined && nextProps.user.email) {
       this.setState(prevState => ({
+        openResetPasswordStatus: isDefaultPwdChanged && userStatus === eUserStatus.temporary,
         id: nextProps.user.id,
         personal: {
           ...prevState.personal,
@@ -71,6 +73,10 @@ class Profile extends React.Component {
           email: nextProps.user.email,
         },
       }));
+    } else {
+      this.setState({
+        openResetPasswordStatus: isDefaultPwdChanged && userStatus === eUserStatus.temporary,
+      });
     }
   }
 
