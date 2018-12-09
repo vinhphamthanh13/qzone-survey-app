@@ -23,7 +23,7 @@ class SurveyForm extends React.Component {
     fetchUserTypeList: PropTypes.func.isRequired,
     assessorList: PropTypes.arrayOf(PropTypes.object).isRequired,
     classes: classesType.isRequired,
-    survey: PropTypes.objectOf(PropTypes.object).isRequired,
+    survey: PropTypes.objectOf(PropTypes.any).isRequired,
     change: PropTypes.func.isRequired,
     changeQuestions: PropTypes.func.isRequired,
   };
@@ -95,7 +95,7 @@ class SurveyForm extends React.Component {
             />
           </GridItem>
         </GridContainer>
-        <GridContainer>
+        <GridContainer alignItems="flex-end">
           <GridItem xs={12} sm={3}>
             <FormLabel className={classes.labelHorizontal}>
               Assessor
@@ -123,7 +123,7 @@ class SurveyForm extends React.Component {
               </Select>
             </FormControl>
           </GridItem>
-          <GridItem>
+          <GridItem className={classes.addAssessor}>
             <Assessor classes={classes} reloadAssessorList={this.reloadAssessorList} />
           </GridItem>
         </GridContainer>

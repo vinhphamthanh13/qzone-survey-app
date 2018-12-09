@@ -1,5 +1,6 @@
 import {
   Person as PersonIcon, Timeline as TimelineIcon, Poll as PollIcon, Group as GroupIcon,
+  QuestionAnswer as QAIcon,
 } from '@material-ui/icons';
 import Dashboard from 'modules/dashboard/dashboard';
 import Profile from 'modules/profile/profile';
@@ -36,7 +37,7 @@ export const assessorRoutes = [
   {
     path: '/assessor/assessment/list',
     name: 'Assessment Questions',
-    icon: PersonIcon,
+    icon: QAIcon,
     component: AssessorAssessmentQuestionList,
   },
 ];

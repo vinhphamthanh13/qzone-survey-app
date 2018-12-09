@@ -20,9 +20,13 @@ class ForceChangePassword extends React.Component {
   static propTypes = {
     classes: classesType.isRequired,
     email: PropTypes.string.isRequired,
-    openChangePassword: PropTypes.bool.isRequired,
+    openChangePassword: PropTypes.bool,
     closeChangePassword: PropTypes.func.isRequired,
     completeNewPasswordChallenge: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    openChangePassword: false,
   };
 
   defaultState = {

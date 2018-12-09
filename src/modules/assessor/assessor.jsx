@@ -12,6 +12,7 @@ import { registerUser } from 'services/api/user';
 import { toggleLoading } from 'services/api/assessment';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import validateEmail from 'utils/validateEmail';
 import { eUserType } from '../../constants';
 
 class Assessor extends React.Component {
@@ -19,12 +20,13 @@ class Assessor extends React.Component {
     toggleLoading: PropTypes.func.isRequired,
     registerUser: PropTypes.func.isRequired,
     reloadAssessorList: PropTypes.func.isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);
     this.state = {
       email: '',
+      emailState: 'error',
       firstname: '',
       lastname: '',
       userType: eUserType.assessor,
@@ -51,19 +53,31 @@ class Assessor extends React.Component {
         }
       }
     });
-  }
+  };
+
+  handleChange = (event, type) => {
+    const newState = {
+      [type]: event.target.value,
+    };
+    if (/^email$/.test(type)) {
+      newState.emailState = validateEmail(event.target.value) ? 'success' : 'error';
+    }
+    this.setState(newState);
+  };
 
   handleClose = () => {
     this.setState({ open: false });
-  }
+  };
 
   handleOpen = () => {
     this.setState({ open: true });
-  }
+  };
 
 
   render() {
     const { open } = this.state;
+    const { firstname, lastname, emailState } = this.state;
+    const submitDisabled = !firstname || !lastname || /^error$/.test(emailState);
     return (
       <React.Fragment>
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
@@ -82,7 +96,7 @@ class Assessor extends React.Component {
                   fullWidth
                   id="firstName"
                   label="Enter first name"
-                  onChange={(event) => { this.setState({ firstname: event.target.value }); }}
+                  onChange={event => this.handleChange(event, 'firstname')}
                 />
               </GridItem>
               <GridItem md={6}>
@@ -90,7 +104,7 @@ class Assessor extends React.Component {
                   fullWidth
                   id="lastName"
                   label="Enter last name"
-                  onChange={(event) => { this.setState({ lastname: event.target.value }); }}
+                  onChange={event => this.handleChange(event, 'lastname')}
                 />
               </GridItem>
             </GridContainer>
@@ -101,7 +115,7 @@ class Assessor extends React.Component {
                   id="email"
                   type="email"
                   label="Enter email"
-                  onChange={(event) => { this.setState({ email: event.target.value }); }}
+                  onChange={event => this.handleChange(event, 'email')}
                 />
               </GridItem>
             </GridContainer>
@@ -110,7 +124,7 @@ class Assessor extends React.Component {
             <Button onClick={this.handleClose}>
               Close
             </Button>
-            <Button onClick={this.handleAssessor} color="rose">
+            <Button disabled={submitDisabled} onClick={this.handleAssessor} color="rose">
               Submit
             </Button>
           </DialogActions>

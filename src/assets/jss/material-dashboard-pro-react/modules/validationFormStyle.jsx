@@ -53,6 +53,9 @@ const validationFormsStyle = theme => ({
       // backgroundColor: "#303f9f"
     },
   },
+  addAssessor: {
+    paddingBottom: '1.5em !important',
+  },
   ...modalStyle(theme),
 });
 

@@ -10,15 +10,15 @@ import {
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Alert from 'react-s-alert';
-import { Delete } from '@material-ui/icons';
+import { Delete, QuestionAnswer as QAIcon } from '@material-ui/icons';
 import LinkIcon from '@material-ui/icons/Link';
 import ReactTooltip from 'react-tooltip';
-import { css } from 'react-emotion';
-import { ClipLoader } from 'react-spinners';
 import GridContainer from 'components/Grid/GridContainer';
 import GridItem from 'components/Grid/GridItem';
 import Card from 'components/Card/Card';
 import CardBody from 'components/Card/CardBody';
+import Loading from 'components/Loader/Loading';
+// import DeleteAssessment from 'modules/shared/delete-assessment';
 import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/listPageStyle';
 import {
   fetchSurveys, fetchSurveysByAssessorId, deleteSurvey, deleteAllSurvey,
@@ -27,12 +27,9 @@ import { checkAuth } from 'services/api/user';
 import { sessionService } from 'redux-react-session';
 import { classesType } from 'types/global';
 import { SURVEY_APP_URL } from '../../../constants';
+import CardHeader from '../../../components/Card/CardHeader';
+import CardIcon from '../../../components/Card/CardIcon';
 
-const override = css`
-    display: block;
-    margin: 0 auto;
-    border-color: red;
-`;
 
 const iconStyle = {
   marginRight: 30,
@@ -47,14 +44,13 @@ class AssessorAssessmentQuestionList extends React.Component {
     fetchSurveys: PropTypes.func.isRequired,
     deleteSurvey: PropTypes.func.isRequired,
     deleteAllSurvey: PropTypes.func.isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);
     this.state = {
       sweetAlert: '',
       deleteAll: false,
-      loading: true,
       token: '',
     };
   }
@@ -72,7 +68,6 @@ class AssessorAssessmentQuestionList extends React.Component {
         });
       }
     });
-    setTimeout(() => this.setState({ loading: false }), 1500);
   }
 
   warningWithConfirmMessage = (SID = '') => {
@@ -97,7 +92,7 @@ class AssessorAssessmentQuestionList extends React.Component {
       ),
       deleteAll: false,
     });
-  }
+  };
 
   successDelete = (SID) => {
     const {
@@ -128,86 +123,83 @@ class AssessorAssessmentQuestionList extends React.Component {
       });
       fetchSurveysAction(token);
     });
-  }
+  };
 
   handleClick = (e) => {
     e.preventDefault();
     Alert.closeAll();
     Alert.success('Copied');
-  }
+  };
 
   render() {
     const { classes, surveyList } = this.props;
-    const { loading, deleteAll, sweetAlert } = this.state;
-
+    const { deleteAll, sweetAlert } = this.state;
+    const surveyListLen = surveyList.length;
+    const assessmentList = surveyListLen === 0
+      ? <Loading isLoading={!surveyListLen} />
+      : (
+        <Table className={classes.table} aria-labelledby="tableTitle">
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                <Checkbox
+                  checked={deleteAll || false}
+                  onChange={() => this.setState(oldState => ({
+                    deleteAll: !oldState.deleteAll,
+                  }))}
+                />
+              </TableCell>
+              <TableCell key="title">
+                Title
+              </TableCell>
+              <TableCell>
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                {deleteAll && <Link to="#" data-tip="Delete" onClick={() => this.warningWithConfirmMessage('')}><Delete /></Link>}
+              </TableCell>
+              <TableCell />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {surveyList.map((surveyItem, index) => (
+              <TableRow hover key={surveyItem.id}>
+                <TableCell>{index + 1}</TableCell>
+                <TableCell><Link data-tip="Show Survey" to={`/assessment/show/${surveyItem.id}`}>{surveyItem.title}</Link></TableCell>
+                <TableCell>
+                  {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                  <Link style={iconStyle} data-tip="Delete Survey" to="#" onClick={() => this.warningWithConfirmMessage(surveyItem.id)}><Delete /></Link>
+                  <CopyToClipboard text={`${SURVEY_APP_URL}/surveys/${surveyItem.id}`}>
+                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                    <Link data-tip="Copy Link" to="#" onClick={this.handleClick}><LinkIcon /></Link>
+                  </CopyToClipboard>
+                </TableCell>
+                <TableCell>
+                  <ReactTooltip />
+                </TableCell>
+              </TableRow>))}
+          </TableBody>
+        </Table>
+      );
     return (
-      surveyList && surveyList.length >= 0
-      && (
-        <GridContainer>
-          <ClipLoader
-            className={override}
-            sizeUnit="px"
-            size={70}
-            color="#123abc"
-            loading={loading}
-          />
-          <GridItem xs={12}>
-            <Card>
-              <CardBody>
-                <Table className={classes.table} aria-labelledby="tableTitle">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>
-                        <Checkbox
-                          checked={deleteAll || false}
-                          onChange={() => this.setState(oldState => ({
-                            deleteAll: !oldState.deleteAll,
-                          }))}
-                        />
-                      </TableCell>
-                      <TableCell key="title">
-                        Title
-                      </TableCell>
-                      <TableCell />
-                      <TableCell>
-                        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                        {deleteAll && <Link to="#" data-tip="Delete" onClick={() => this.warningWithConfirmMessage('')}><Delete /></Link>}
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {(surveyList)
-                      .map((surveyItem, index) => (
-                        <TableRow hover key={surveyItem.id}>
-                          <TableCell>{index + 1}</TableCell>
-                          <TableCell><Link data-tip="Show Survey" to={`/assessment/show/${surveyItem.id}`}>{surveyItem.title}</Link></TableCell>
-                          <TableCell>
-                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                            <Link style={iconStyle} data-tip="Delete Survey" to="#" onClick={() => this.warningWithConfirmMessage(surveyItem.id)}><Delete /></Link>
-                            <CopyToClipboard text={`${SURVEY_APP_URL}/surveys/${surveyItem.id}`}>
-                              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                              <Link data-tip="Copy Link" to="#" onClick={this.handleClick}><LinkIcon /></Link>
-                            </CopyToClipboard>
-                          </TableCell>
-                          <TableCell>
-                            <ReactTooltip />
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
-                {sweetAlert}
-              </CardBody>
-            </Card>
-          </GridItem>
-        </GridContainer>
-      )
+      <GridContainer>
+        <GridItem xs={12}>
+          <Card>
+            <CardHeader color="rose" icon>
+              <CardIcon color="rose"><QAIcon /></CardIcon>
+              <h3 className={classes.cardIconTitle}>Assessments</h3>
+            </CardHeader>
+            <CardBody>
+              {assessmentList}
+              {sweetAlert}
+            </CardBody>
+          </Card>
+        </GridItem>
+      </GridContainer>
     );
   }
 }
 
 function mapStateToProps(state) {
-  return { surveyList: state.surveys.list };
+  return { surveyList: state.surveys.list || [] };
 }
 
 export default compose(
