@@ -7,7 +7,6 @@ import { compose } from 'redux';
 import {
   Table, TableBody, TableCell, TableHead, TableRow, Checkbox,
 } from '@material-ui/core';
-import SweetAlert from 'react-bootstrap-sweetalert';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Alert from 'react-s-alert';
 import { Delete, QuestionAnswer as QAIcon } from '@material-ui/icons';
@@ -18,7 +17,7 @@ import GridItem from 'components/Grid/GridItem';
 import Card from 'components/Card/Card';
 import CardBody from 'components/Card/CardBody';
 import Loading from 'components/Loader/Loading';
-// import DeleteAssessment from 'modules/shared/delete-assessment';
+import DeleteAssessment from 'modules/shared/delete-assessment';
 import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/listPageStyle';
 import {
   fetchSurveys, fetchSurveysByAssessorId, deleteSurvey, deleteAllSurvey,
@@ -26,7 +25,7 @@ import {
 import { checkAuth } from 'services/api/user';
 import { sessionService } from 'redux-react-session';
 import { classesType } from 'types/global';
-import { SURVEY_APP_URL } from '../../../constants';
+import { SURVEY_APP_URL, CTA } from '../../../constants';
 import CardHeader from '../../../components/Card/CardHeader';
 import CardIcon from '../../../components/Card/CardIcon';
 
@@ -49,9 +48,11 @@ class AssessorAssessmentQuestionList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sweetAlert: '',
       deleteAll: false,
       token: '',
+      isOpenDeleteSurvey: false,
+      sId: '',
+      dialogType: CTA.DELETE,
     };
   }
 
@@ -70,35 +71,35 @@ class AssessorAssessmentQuestionList extends React.Component {
     });
   }
 
-  warningWithConfirmMessage = (SID = '') => {
-    const { classes } = this.props;
-
+  onOpenSurveyDeleteHandler = (SID = '') => {
     this.setState({
-      sweetAlert: (
-        <SweetAlert
-          warning
-          style={{ display: 'block', marginTop: '-100px' }}
-          title="Are you sure?"
-          onConfirm={() => this.successDelete(SID)}
-          onCancel={() => this.setState({ sweetAlert: '' })}
-          confirmBtnCssClass={`${classes.button} ${classes.success}`}
-          cancelBtnCssClass={`${classes.button} ${classes.danger}`}
-          confirmBtnText="Yes, delete it!"
-          cancelBtnText="Cancel"
-          showCancel
-        >
-          You will not be able to recover the Assessment!
-        </SweetAlert>
-      ),
-      deleteAll: false,
+      isOpenDeleteSurvey: true,
+      sId: SID,
+      dialogType: 'delete',
+      deleteAll: SID === '',
     });
+  };
+
+  onCloseDeleteSurveyHandler = () => {
+    this.setState({ isOpenDeleteSurvey: false });
+  };
+
+  deleteAllShowingHandler = () => {
+    const { surveyList } = this.props;
+    if (surveyList.length) {
+      this.setState(prevState => ({
+        deleteAll: !prevState.deleteAll,
+      }));
+    }
   };
 
   successDelete = (SID) => {
     const {
-      deleteSurvey: deleteSurveyAction, deleteAllSurvey: deleteAllSurveyAction,
-      fetchSurveys: fetchSurveysAction, classes,
+      deleteSurvey: deleteSurveyAction,
+      deleteAllSurvey: deleteAllSurveyAction,
+      fetchSurveys: fetchSurveysAction,
     } = this.props;
+
     const { token } = this.state;
     let api = deleteAllSurveyAction;
 
@@ -108,18 +109,8 @@ class AssessorAssessmentQuestionList extends React.Component {
 
     api(SID, token, () => {
       this.setState({
-        sweetAlert: (
-          <SweetAlert
-            success
-            style={{ display: 'block', marginTop: '-100px' }}
-            title="Deleted!"
-            onConfirm={() => this.setState({ sweetAlert: '' })}
-            onCancel={() => this.setState({ sweetAlert: '' })}
-            confirmBtnCssClass={classes.success}
-          >
-            Assessment has been deleted.
-          </SweetAlert>
-        ),
+        dialogType: CTA.DELETE_CONFIRMED,
+        deleteAll: false,
       });
       fetchSurveysAction(token);
     });
@@ -133,8 +124,11 @@ class AssessorAssessmentQuestionList extends React.Component {
 
   render() {
     const { classes, surveyList } = this.props;
-    const { deleteAll, sweetAlert } = this.state;
+    const {
+      deleteAll, isOpenDeleteSurvey, sId, dialogType,
+    } = this.state;
     const surveyListLen = surveyList.length;
+    const deleteAllCheckboxStatus = !surveyListLen;
     const assessmentList = surveyListLen === 0
       ? <Loading isLoading={!surveyListLen} />
       : (
@@ -143,10 +137,10 @@ class AssessorAssessmentQuestionList extends React.Component {
             <TableRow>
               <TableCell>
                 <Checkbox
+                  className={classes.deleteAllChecked}
                   checked={deleteAll || false}
-                  onChange={() => this.setState(oldState => ({
-                    deleteAll: !oldState.deleteAll,
-                  }))}
+                  onChange={this.deleteAllShowingHandler}
+                  disabled={deleteAllCheckboxStatus}
                 />
               </TableCell>
               <TableCell key="title">
@@ -154,7 +148,7 @@ class AssessorAssessmentQuestionList extends React.Component {
               </TableCell>
               <TableCell>
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                {deleteAll && <Link to="#" data-tip="Delete" onClick={() => this.warningWithConfirmMessage('')}><Delete /></Link>}
+                {deleteAll && <Link to="#" data-tip="Delete" onClick={() => this.onOpenSurveyDeleteHandler('')}><Delete /></Link>}
               </TableCell>
               <TableCell />
             </TableRow>
@@ -166,7 +160,7 @@ class AssessorAssessmentQuestionList extends React.Component {
                 <TableCell><Link data-tip="Show Survey" to={`/assessment/show/${surveyItem.id}`}>{surveyItem.title}</Link></TableCell>
                 <TableCell>
                   {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                  <Link style={iconStyle} data-tip="Delete Survey" to="#" onClick={() => this.warningWithConfirmMessage(surveyItem.id)}><Delete /></Link>
+                  <Link style={iconStyle} data-tip="Delete Survey" to="#" onClick={() => this.onOpenSurveyDeleteHandler(surveyItem.id)}><Delete /></Link>
                   <CopyToClipboard text={`${SURVEY_APP_URL}/surveys/${surveyItem.id}`}>
                     {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                     <Link data-tip="Copy Link" to="#" onClick={this.handleClick}><LinkIcon /></Link>
@@ -180,20 +174,28 @@ class AssessorAssessmentQuestionList extends React.Component {
         </Table>
       );
     return (
-      <GridContainer>
-        <GridItem xs={12}>
-          <Card>
-            <CardHeader color="rose" icon>
-              <CardIcon color="rose"><QAIcon /></CardIcon>
-              <h3 className={classes.cardIconTitle}>Assessments</h3>
-            </CardHeader>
-            <CardBody>
-              {assessmentList}
-              {sweetAlert}
-            </CardBody>
-          </Card>
-        </GridItem>
-      </GridContainer>
+      <React.Fragment>
+        <GridContainer>
+          <GridItem xs={12}>
+            <Card>
+              <CardHeader color="rose" icon>
+                <CardIcon color="rose"><QAIcon /></CardIcon>
+                <h3 className={classes.cardIconTitle}>Assessments</h3>
+              </CardHeader>
+              <CardBody>
+                {assessmentList}
+              </CardBody>
+            </Card>
+          </GridItem>
+        </GridContainer>
+        <DeleteAssessment
+          openDialog={isOpenDeleteSurvey}
+          closeDialog={this.onCloseDeleteSurveyHandler}
+          surveyId={sId}
+          surveyDeleteHandler={this.successDelete}
+          type={dialogType}
+        />
+      </React.Fragment>
     );
   }
 }
