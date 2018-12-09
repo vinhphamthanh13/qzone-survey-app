@@ -11,21 +11,14 @@ import CardBody from 'components/Card/CardBody';
 import validationFormStyle from 'assets/jss/material-dashboard-pro-react/modules/validationFormStyle';
 import SurveyForm from 'modules/shared/SurveyForm';
 import { fetchSurvey, editSurvey, toggleLoading } from 'services/api/assessment';
-import { Poll } from '@material-ui/icons';
+import { RateReview as RateReviewIcon } from '@material-ui/icons';
 import { isEmpty } from 'lodash';
 import { sessionService } from 'redux-react-session';
-import { css } from 'react-emotion';
-import { ClipLoader } from 'react-spinners';
 import {
   classesType, matchType, historyType, userDetailType,
 } from 'types/global';
+import Loading from 'components/Loader/Loading';
 import { eUserType } from '../../constants';
-
-const override = css`
-    display: block;
-    margin: 0 auto;
-    border-color: red;
-`;
 
 class AssessmentQuestionEdit extends React.Component {
   static propTypes = {
@@ -33,11 +26,11 @@ class AssessmentQuestionEdit extends React.Component {
     toggleLoading: PropTypes.func.isRequired,
     fetchSurvey: PropTypes.func.isRequired,
     editSurvey: PropTypes.func.isRequired,
-    survey: PropTypes.objectOf(PropTypes.object).isRequired,
+    survey: PropTypes.objectOf(PropTypes.any).isRequired,
     match: matchType.isRequired,
     history: historyType.isRequired,
     user: userDetailType.isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -59,7 +52,6 @@ class AssessmentQuestionEdit extends React.Component {
         fetchSurveyAction(id, currentSession.token);
       });
     });
-    setTimeout(() => this.setState({ loading: false }), 2000);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -88,7 +80,7 @@ class AssessmentQuestionEdit extends React.Component {
         [stateName]: event.target.value || event.target.checked,
       },
     }));
-  }
+  };
 
   changeQuestions = (newSurvey) => {
     const { surveyInfo, token } = this.state;
@@ -117,11 +109,11 @@ class AssessmentQuestionEdit extends React.Component {
         descriptionState: isEmpty(description) ? 'error' : 'success',
       });
     }
-  }
+  };
 
   render() {
     const {
-      loading, surveyInfo, titleState,
+      surveyInfo, titleState,
       descriptionState,
       mode,
       edit,
@@ -134,36 +126,30 @@ class AssessmentQuestionEdit extends React.Component {
       edit,
     };
     const { classes, match: { params: { id } } } = this.props;
+    const assessmentEdit = surveyInfo && surveyInfo.id
+      ? (
+        <SurveyForm
+          survey={survey}
+          change={this.change}
+          changeQuestions={this.changeQuestions}
+          classes={classes}
+        />)
+      : <Loading isLoading={!surveyInfo} />;
     return (
-      surveyInfo
-      && (
-        <Card>
-          <ClipLoader
-            className={override}
-            sizeUnit="px"
-            size={70}
-            color="#123abc"
-            loading={loading}
-          />
-          <CardHeader color="rose" text>
-            <CardIcon color="rose">
-              <Poll />
-            </CardIcon>
-            <h3 className={classes.cardIconTitle}>Edit Assessment</h3>
-            <Link to={`/assessment/show/${id}`} className={classes.linkDisplay}>
-              <u>Back</u>
-            </Link>
-          </CardHeader>
-          <CardBody>
-            <SurveyForm
-              survey={survey}
-              change={this.change}
-              changeQuestions={this.changeQuestions}
-              classes={classes}
-            />
-          </CardBody>
-        </Card>
-      )
+      <Card>
+        <CardHeader color="rose" icon>
+          <CardIcon color="rose">
+            <RateReviewIcon />
+          </CardIcon>
+          <h3 className={classes.cardIconTitle}>Edit Assessment</h3>
+          <Link to={`/assessment/show/${id}`} className={classes.linkDisplay}>
+            <u>Back</u>
+          </Link>
+        </CardHeader>
+        <CardBody>
+          {assessmentEdit}
+        </CardBody>
+      </Card>
     );
   }
 }
