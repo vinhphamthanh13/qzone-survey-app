@@ -14,6 +14,7 @@ import CardBody from 'components/Card/CardBody';
 import CardIcon from 'components/Card/CardIcon';
 import CardHeader from 'components/Card/CardHeader';
 import Loading from 'components/Loader/Loading';
+import CustomInfo from 'components/CustomInfo/CustomInfo';
 import {
   ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Typography,
 } from '@material-ui/core';
@@ -74,29 +75,32 @@ class Dashboard extends PureComponent {
   render() {
     const { classes } = this.props;
     const { listAssessments, isDataLoading } = this.state;
-    const chartDashBoard = listAssessments.length === 0
-      ? <Loading isLoading={!listAssessments.length} />
-      : listAssessments.map((assessment, index) => (
-        <ExpansionPanel
-          key={assessment.id}
-          expanded={isDataLoading[index][index]}
-          onChange={() => { this.loadChartDataHandler(index); }}
-        >
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography className={classes.columnOrder}>
-              {index + 1}
-            </Typography>
-            <Typography className={classes.columnTitle}>
-              {assessment.title}
-            </Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            { isDataLoading[index][index]
-            && <SurveyChart sId={assessment.id} loadData={isDataLoading[index][index]} />
-            }
-          </ExpansionPanelDetails>
-        </ExpansionPanel>));
-
+    const listAssessmentsLen = listAssessments.length;
+    let chartDashBoard = listAssessments.map((assessment, index) => (
+      <ExpansionPanel
+        key={assessment.id}
+        expanded={isDataLoading[index][index]}
+        onChange={() => { this.loadChartDataHandler(index); }}
+      >
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography className={classes.columnOrder}>
+            {index + 1}
+          </Typography>
+          <Typography className={classes.columnTitle}>
+            {assessment.title}
+          </Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+          { isDataLoading[index][index]
+          && <SurveyChart sId={assessment.id} loadData={isDataLoading[index][index]} />
+          }
+        </ExpansionPanelDetails>
+      </ExpansionPanel>));
+    if (Object.is(listAssessments, null)) {
+      chartDashBoard = <Loading isLoading />;
+    } else if (listAssessmentsLen === 0) {
+      chartDashBoard = <CustomInfo content="There is no Chart data of Assessment." />;
+    }
     return (
       <Card>
         <CardHeader color="rose" icon>

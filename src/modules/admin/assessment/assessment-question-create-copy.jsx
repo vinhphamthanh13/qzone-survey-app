@@ -11,25 +11,17 @@ import CardBody from 'components/Card/CardBody';
 import validationFormStyle from 'assets/jss/material-dashboard-pro-react/modules/validationFormStyle';
 import SurveyForm from 'modules/shared/SurveyForm';
 import { createSurvey } from 'services/api/assessment';
-import { Poll } from '@material-ui/icons';
+import { Create as CreateIcon } from '@material-ui/icons';
 import { isEmpty, pick } from 'lodash';
 import { sessionService } from 'redux-react-session';
-import { css } from 'react-emotion';
-import { ClipLoader } from 'react-spinners';
 import { classesType, historyType } from 'types/global';
-
-const override = css`
-    display: block;
-    margin: 0 auto;
-    border-color: red;
-`;
 
 class AssessmentQuestionCreateCopy extends React.Component {
   static propTypes = {
     classes: classesType.isRequired,
     createSurvey: PropTypes.func.isRequired,
     history: historyType.isRequired,
-    surveyInfo: PropTypes.objectOf(PropTypes.object).isRequired,
+    surveyInfo: PropTypes.objectOf(PropTypes.any).isRequired,
   };
 
   constructor(props) {
@@ -40,7 +32,6 @@ class AssessmentQuestionCreateCopy extends React.Component {
         userId: props.surveyInfo.user.id,
       },
       titleState: '',
-      loading: true,
       descriptionState: '',
       mode: 'edit',
       edit: true,
@@ -52,7 +43,6 @@ class AssessmentQuestionCreateCopy extends React.Component {
     sessionService.loadSession().then((currentSession) => {
       this.setState({ token: currentSession.token });
     });
-    setTimeout(() => this.setState({ loading: false }), 1500);
   }
 
   change = (event, stateName) => {
@@ -88,23 +78,16 @@ class AssessmentQuestionCreateCopy extends React.Component {
   render() {
     const { classes } = this.props;
     const {
-      loading, titleState, descriptionState, mode, edit, editSurveyInfo,
+      titleState, descriptionState, mode, edit, editSurveyInfo,
     } = this.state;
     const survey = {
       surveyInfo: editSurveyInfo, titleState, descriptionState, mode, edit,
     };
     return (
       <Card>
-        <ClipLoader
-          className={override}
-          sizeUnit="px"
-          size={70}
-          color="#123abc"
-          loading={loading}
-        />
-        <CardHeader color="rose" text>
+        <CardHeader color="rose" icon>
           <CardIcon color="rose">
-            <Poll />
+            <CreateIcon />
           </CardIcon>
           <h3 className={classes.cardIconTitle}>Edit Assessment</h3>
           <Link to="/admin/assessment/list" className={classes.linkDisplay}>

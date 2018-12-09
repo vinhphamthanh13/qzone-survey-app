@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Storage } from 'react-jhipster';
 import { sessionService } from 'redux-react-session';
 import makeHeaders from '../helper/makeHeaders';
-import { REG_SERVICE_URL, surveyLocalData, eUserType } from '../../constants';
+import { REG_SERVICE_URL, surveyLocalData, userStatus } from '../../constants';
 
 export const REGISTER_USER = 'register_user';
 export const VERIFY_USER = 'verify_user';
@@ -129,8 +129,7 @@ export async function completeNewPasswordChallenge(values, callback) {
   axios.post(`${REG_SERVICE_URL}/completeNewPasswordChallenge`, values, axiosConfig)
     .then(handleSuccessResponse(callback))
     .catch(handleErrorResponse(callback));
-
-  return { type: eUserType.temporary };
+  return { type: userStatus.temporary };
 }
 
 export const updateUser = async (userInfo, callback) => {

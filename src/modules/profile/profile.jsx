@@ -4,17 +4,15 @@ import { connect } from 'react-redux';
 import validateEmail from 'utils/validateEmail';
 import { updateProfile } from 'services/api/profile';
 import { resetPassword, forceResetPasswordStatus } from 'services/api/user';
-import { toggleLoading } from 'services/api/assessment';
 import ForceChangePassword from 'modules/auth/force-change-password';
 import { userDetailType } from 'types/global';
-import { userStatus as eUserStatus } from '../../constants';
 import Account from './account';
 import Personal from './personal';
 
 class Profile extends React.Component {
   static defaultProps = {
     forceResetPasswordStatus: null,
-    isDefaultPwdChanged: true,
+    isDefaultPwdChanged: false,
   };
 
   static propTypes = {
@@ -46,18 +44,18 @@ class Profile extends React.Component {
   }
 
   componentDidMount() {
-    const { isDefaultPwdChanged, user: { userStatus } } = this.props;
+    const { isDefaultPwdChanged } = this.props;
     this.setState({
-      openResetPasswordStatus: isDefaultPwdChanged && userStatus === eUserStatus.temporary,
+      openResetPasswordStatus: isDefaultPwdChanged,
     });
   }
 
   componentWillReceiveProps(nextProps) {
     const { account: { email } } = this.state;
-    const { isDefaultPwdChanged, user: { userStatus } } = this.props;
+    const { isDefaultPwdChanged } = this.props;
     if (email === undefined && nextProps.user.email) {
       this.setState(prevState => ({
-        openResetPasswordStatus: isDefaultPwdChanged && userStatus === eUserStatus.temporary,
+        openResetPasswordStatus: isDefaultPwdChanged,
         id: nextProps.user.id,
         personal: {
           ...prevState.personal,
@@ -75,7 +73,7 @@ class Profile extends React.Component {
       }));
     } else {
       this.setState({
-        openResetPasswordStatus: isDefaultPwdChanged && userStatus === eUserStatus.temporary,
+        openResetPasswordStatus: isDefaultPwdChanged,
       });
     }
   }
@@ -178,6 +176,5 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   updateProfile,
   resetPassword,
-  toggleLoading,
   forceResetPasswordStatus,
 })(Profile);

@@ -16,18 +16,10 @@ import { fetchSurvey } from 'services/api/assessment';
 import AssessmentQuestionCreateCopy from 'modules/admin/assessment/assessment-question-create-copy';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Poll } from '@material-ui/icons';
+import { FileCopy } from '@material-ui/icons';
 import { sessionService } from 'redux-react-session';
 import fullName from 'utils/fullName';
-import { css } from 'react-emotion';
-import { ClipLoader } from 'react-spinners';
 import { classesType, historyType, matchType } from 'types/global';
-
-const override = css`
-    display: block;
-    margin: 0 auto;
-    border-color: red;
-`;
 
 Survey.Survey.cssType = 'bootstrap';
 Survey.defaultBootstrapCss.navigationButton = 'btn btn-green';
@@ -37,9 +29,8 @@ class AssessmentQuestionCopy extends React.Component {
     classes: classesType.isRequired,
     match: matchType.isRequired,
     fetchSurvey: PropTypes.func.isRequired,
-    survey: PropTypes.objectOf(PropTypes.object).isRequired,
+    survey: PropTypes.objectOf(PropTypes.any).isRequired,
     history: historyType.isRequired,
-    loading: PropTypes.bool.isRequired,
   };
 
   constructor(props) {
@@ -51,7 +42,6 @@ class AssessmentQuestionCopy extends React.Component {
         description: '',
         logo: '',
         privacy: false,
-        loading: true,
         id: '',
         survey: '',
         user: '',
@@ -60,9 +50,8 @@ class AssessmentQuestionCopy extends React.Component {
   }
 
   componentDidMount() {
-    const { match: { params: { id } }, fetchSurvey: fetchSurveyAction, loading } = this.props;
+    const { match: { params: { id } }, fetchSurvey: fetchSurveyAction } = this.props;
     sessionService.loadSession().then(curSession => fetchSurveyAction(id, curSession.token));
-    this.setState(oldState => ({ ...oldState, loading }));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -99,7 +88,6 @@ class AssessmentQuestionCopy extends React.Component {
       surveyData: {
         title, description, survey, logo, user,
       },
-      loading,
     } = this.state;
 
     surveyInfo = new Survey.Model(survey);
@@ -107,13 +95,6 @@ class AssessmentQuestionCopy extends React.Component {
     if (!survey) { return null; }
     return (
       <GridContainer>
-        <ClipLoader
-          className={override}
-          sizeUnit="px"
-          size={70}
-          color="#123abc"
-          loading={loading}
-        />
         <GridItem xs={12}>
           { editCopy
             ? <AssessmentQuestionCreateCopy history={history} surveyInfo={surveyData} />
@@ -121,7 +102,7 @@ class AssessmentQuestionCopy extends React.Component {
               <Card>
                 <CardHeader color="primary" icon>
                   <CardIcon color="rose">
-                    <Poll />
+                    <FileCopy />
                   </CardIcon>
                   <h3 className={classes.cardIconTitle}>Copy Assessment</h3>
                   <Button size="md" onClick={this.copySurveyHandle} className={classes.buttonDisplay}>
@@ -189,7 +170,7 @@ class AssessmentQuestionCopy extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return { survey: state.surveys.detail, loading: state.surveys.loading };
+  return { survey: state.surveys.detail };
 }
 
 export default compose(

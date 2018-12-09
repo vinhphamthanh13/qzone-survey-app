@@ -24,7 +24,7 @@ import VerificationPage from './verification-page';
 import ResetPassword from './reset-password';
 import validateEmail from '../../utils/validateEmail';
 import validatePassword from '../../utils/validatePassword';
-import { eUserType } from '../../constants';
+import { userStatus } from '../../constants';
 
 class LoginPage extends React.Component {
   static propTypes = {
@@ -69,12 +69,10 @@ class LoginPage extends React.Component {
         const { email, password } = this.state;
         loginUserAction({ email, password }, (response) => {
           if (response) {
-            const { data: { challengeNameType, userType } } = response;
+            const { data: { challengeNameType } } = response;
             toggleLoadingAction();
-
             if (response.status === 200) {
-              if (challengeNameType && challengeNameType === eUserType.temporary
-                && userType === eUserType.assessor) {
+              if (challengeNameType && challengeNameType === userStatus.temporary) {
                 forceResetPasswordStatusAction(true);
                 history.push('/profile');
               } else {

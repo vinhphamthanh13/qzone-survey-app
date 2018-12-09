@@ -20,7 +20,7 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case FETCH_USERTYPE_LIST:
-      return { ...state, userTypeList: action.payload.data.concat(state.userTypeList) };
+      return { ...state, userTypeList: action.payload.data };
     case FETCH_USER_BY_USERID:
       return { ...state, detail: action.payload.data };
     case FETCH_SURVEY:
@@ -32,8 +32,9 @@ export default function (state = initialState, action) {
       }
       return state;
     }
-    case FORCE_RESET_PASSWORD:
+    case FORCE_RESET_PASSWORD: {
       return { ...state, isDefaultPwdChanged: action.payload };
+    }
     case eUserType.temporary: {
       if (action.payload && action.payload.status === 200) {
         return { ...state, forceChangePasswordSuccess: true };

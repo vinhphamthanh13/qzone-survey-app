@@ -26,6 +26,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import buttonStyle from 'assets/jss/material-dashboard-pro-react/components/buttonStyle';
+import Loading from 'components/Loader/Loading';
+import CustomInfo from 'components/CustomInfo/CustomInfo';
 import createUserStyle from './create-user.style';
 import { eUserType } from '../../constants';
 import CreateUserDialog from './create-user-dialog';
@@ -34,7 +36,6 @@ class CreateUser extends PureComponent {
   static propTypes = {
     classes: classesType.isRequired,
     userList: PropTypes.arrayOf(PropTypes.object).isRequired,
-    toggleLoadingAction: PropTypes.func.isRequired,
     fetchMultipleUserTypeAction: PropTypes.func.isRequired,
     registerUserAction: PropTypes.func.isRequired,
     fetchUserTypeListAction: PropTypes.func.isRequired,
@@ -57,22 +58,12 @@ class CreateUser extends PureComponent {
 
   componentDidMount = () => {
     const {
-      toggleLoadingAction,
       fetchMultipleUserTypeAction,
-      userList,
     } = this.props;
-    if (userList.length === 0) toggleLoadingAction();
     fetchMultipleUserTypeAction([
       { userType: eUserType.assessor },
       { userType: eUserType.sponsor },
     ]);
-  };
-
-  componentWillReceiveProps = (nextProps) => {
-    const { userList, toggleLoadingAction } = this.props;
-    if (userList.length === 0 && userList.length !== nextProps.userList.length) {
-      toggleLoadingAction();
-    }
   };
 
   openDialog = () => {
@@ -85,16 +76,12 @@ class CreateUser extends PureComponent {
 
   onCreateUser = (newUser) => {
     const {
-      toggleLoadingAction,
       registerUserAction, fetchUserTypeListAction, updateUserAction, updateUserRequestAction,
     } = this.props;
     const { editedUser } = this.state;
 
-    toggleLoadingAction();
-
     if (editedUser) {
       updateUserRequestAction(newUser, (response) => {
-        toggleLoadingAction();
         if (response) {
           if (response.status !== 200) {
             Alert.error(response.data.message);
@@ -106,7 +93,6 @@ class CreateUser extends PureComponent {
       });
     } else {
       registerUserAction(newUser, (response) => {
-        toggleLoadingAction();
         if (response) {
           if (response.status !== 201) {
             Alert.error(response.data.message);
@@ -129,14 +115,11 @@ class CreateUser extends PureComponent {
 
   confirmDelete = () => {
     const {
-      toggleLoadingAction,
       deleteUserAction, deleteUserRequestAction,
     } = this.props;
     const { deletedUser } = this.state;
 
-    toggleLoadingAction();
     deleteUserRequestAction({ email: deletedUser.email }, (response) => {
-      toggleLoadingAction();
       if (response) {
         if (response.status !== 200) {
           Alert.error(response.data.message);
@@ -156,7 +139,50 @@ class CreateUser extends PureComponent {
   render() {
     const { classes, userList } = this.props;
     const { isDialogOpen, editedUser, deletedUser } = this.state;
-
+    let listUser = null;
+    if (Object.is(userList, null) || Object.is(userList, undefined)) {
+      listUser = <Loading isLoading />;
+    } else if (userList.length === 0) {
+      listUser = <CustomInfo content="There is no User added." />;
+    } else {
+      listUser = (
+        <Table>
+          <TableHead>
+            <TableRow>
+              {this.rowNames.map(row => (
+                <TableCell key={row}>
+                  {row}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {userList.map(user => (
+              <TableRow key={user.id}>
+                <TableCell className={classes.userTypeCol}>{user.userType}</TableCell>
+                <TableCell>{user.firstname}</TableCell>
+                <TableCell>{user.lastname}</TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>{formatPhoneNumber(user.phoneNumber, 'International')}</TableCell>
+                <TableCell>
+                  <IconButton
+                    aria-label="Edit"
+                    onClick={() => this.editUser(user)}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton
+                    aria-label="Delete"
+                    onClick={() => this.deleteUser(user)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>);
+    }
     return (
       <React.Fragment>
         <CreateUserDialog
@@ -196,44 +222,7 @@ class CreateUser extends PureComponent {
             </div>
           </CardHeader>
           <CardBody>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  {this.rowNames.map(row => (
-                    <TableCell key={row}>
-                      {row}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {
-                  userList.map(user => (
-                    <TableRow key={user.id}>
-                      <TableCell className={classes.userTypeCol}>{user.userType}</TableCell>
-                      <TableCell>{user.firstname}</TableCell>
-                      <TableCell>{user.lastname}</TableCell>
-                      <TableCell>{user.email}</TableCell>
-                      <TableCell>{formatPhoneNumber(user.phoneNumber, 'International')}</TableCell>
-                      <TableCell>
-                        <IconButton
-                          aria-label="Edit"
-                          onClick={() => this.editUser(user)}
-                        >
-                          <EditIcon />
-                        </IconButton>
-                        <IconButton
-                          aria-label="Delete"
-                          onClick={() => this.deleteUser(user)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                }
-              </TableBody>
-            </Table>
+            { listUser }
           </CardBody>
         </Card>
       </React.Fragment>
