@@ -166,6 +166,7 @@ class CreateUser extends PureComponent {
           editedUser={editedUser}
         />
         <SweetAlert
+          title="Delete User"
           warning
           showCancel
           show={deletedUser !== null}

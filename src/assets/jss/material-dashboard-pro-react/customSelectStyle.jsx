@@ -1,5 +1,5 @@
 import {
-  primaryColor, altoColor, blackRgb,
+  primaryColor, altoColor, blackRgb, roseColor,
   mineShaftColor, oxfordBlueColor, whiteColor,
 } from 'assets/jss/color-theme';
 import { primaryBoxShadow } from 'assets/jss/material-dashboard-pro-react';
@@ -30,7 +30,7 @@ const customSelectStyle = {
         borderWidth: '1px !important',
       },
       '&:after': {
-        borderColor: primaryColor,
+        borderColor: roseColor,
       },
     },
   },

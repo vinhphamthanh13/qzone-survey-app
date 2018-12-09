@@ -1,7 +1,12 @@
 import { cardTitle, container } from 'assets/jss/material-dashboard-pro-react';
 import buttonStyle from 'assets/jss/material-dashboard-pro-react/components/buttonStyle';
+import { roseColor } from 'assets/jss/color-theme';
 
 const listPageStyle = {
+  // for checkbox
+  deleteAllChecked: {
+    color: `${roseColor} !important`,
+  },
   cardIconTitle: {
     ...cardTitle,
     marginTop: '15px',
@@ -11,9 +16,9 @@ const listPageStyle = {
     position: 'absolute',
     right: 0,
     top: 10,
-    backgroundColor: '#303f9f',
+    backgroundColor: roseColor,
     '&:hover,&:focus': {
-      backgroundColor: '#303f9f',
+      backgroundColor: roseColor,
     },
   },
   container: {

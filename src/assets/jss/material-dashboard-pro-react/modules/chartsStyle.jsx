@@ -1,6 +1,7 @@
 // ##############################
 // // // IconCard styles
 // #############################
+import { cardTitle } from 'assets/jss/material-dashboard-pro-react';
 
 const chartsStyle = {
   container: {
@@ -8,6 +9,10 @@ const chartsStyle = {
   },
   root: {
     width: '100%',
+  },
+  chartTitle: {
+    ...cardTitle,
+    marginTop: '15px',
   },
   columnOrder: {
     width: '20%',
