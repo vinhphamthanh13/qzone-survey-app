@@ -45,16 +45,20 @@ class Profile extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { isDefaultPwdChanged, user: { userStatus } } = nextProps;
-    const { account: { email } } = this.state;
+  componentDidMount() {
+    const { isDefaultPwdChanged, user: { userStatus } } = this.props;
+    this.setState({
+      openResetPasswordStatus: isDefaultPwdChanged && userStatus === eUserStatus.temporary,
+    });
+  }
 
+  componentWillReceiveProps(nextProps) {
+    const { account: { email } } = this.state;
     if (email === undefined && nextProps.user.email) {
-      this.setState(oldState => ({
-        openResetPasswordStatus: isDefaultPwdChanged && userStatus === eUserStatus.temporary,
+      this.setState(prevState => ({
         id: nextProps.user.id,
         personal: {
-          ...oldState.personal,
+          ...prevState.personal,
           firstname: nextProps.user.firstname,
           lastname: nextProps.user.lastname,
           companyName: nextProps.user.companyName,
@@ -63,14 +67,10 @@ class Profile extends React.Component {
           postCode: nextProps.user.postCode,
         },
         account: {
-          ...oldState.account,
+          ...prevState.account,
           email: nextProps.user.email,
         },
       }));
-    } else {
-      this.setState({
-        openResetPasswordStatus: isDefaultPwdChanged && userStatus === eUserStatus.temporary,
-      });
     }
   }
 
@@ -79,33 +79,33 @@ class Profile extends React.Component {
 
     switch (type) {
       case 'name':
-        this.setState(oldState => ({
+        this.setState(prevState => ({
           personal: {
-            ...oldState.personal,
+            ...prevState.personal,
             [`${stateName}State`]: value.length > 0 ? 'success' : 'error',
             [stateName]: value,
           },
         }));
         return;
       case 'email':
-        this.setState(oldState => ({
+        this.setState(prevState => ({
           account: {
-            ...oldState.account,
+            ...prevState.account,
             [`${stateName}State`]: validateEmail(value) ? 'success' : 'error',
             [stateName]: value,
           },
         }));
         return;
       default:
-        this.setState(oldState => ({ personal: { ...oldState.personal, [stateName]: value } }));
+        this.setState(prevState => ({ personal: { ...prevState.personal, [stateName]: value } }));
     }
   };
 
   saveProfile = () => {
     const {
       id,
-      account: { emailState, ...accountInfo },
-      personal: { firstnameState, lastnameState, ...personalInfo },
+      account: { ...accountInfo },
+      personal: { ...personalInfo },
     } = this.state;
     const { updateProfile: updateProfileAction, toggleLoading: toggleLoadingAction } = this.props;
     updateProfileAction({ id, ...accountInfo, ...personalInfo });

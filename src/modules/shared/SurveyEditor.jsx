@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 class SurveyEditor extends Component {
   static propTypes = {
-    data: PropTypes.objectOf(PropTypes.any).isRequired,
+    data: PropTypes.objectOf(PropTypes.array).isRequired,
     change: PropTypes.func.isRequired,
   };
 

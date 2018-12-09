@@ -46,7 +46,6 @@ class SurveyForm extends React.Component {
       surveyInfo, titleState, descriptionState, mode,
     } = survey;
     if (mode === 'create' || surveyInfo.survey) { editor = true; }
-
     return assessorList && (
       <form>
         <GridContainer>

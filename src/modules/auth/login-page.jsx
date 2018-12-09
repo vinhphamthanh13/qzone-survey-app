@@ -71,15 +71,16 @@ class LoginPage extends React.Component {
           if (response) {
             const { data: { challengeNameType, userType } } = response;
             toggleLoadingAction();
-            if (challengeNameType && challengeNameType === eUserType.temporary
-              && userType === eUserType.assessor) {
-              forceResetPasswordStatusAction(true);
-            } else {
-              forceResetPasswordStatusAction(false);
-            }
 
             if (response.status === 200) {
-              history.push((location.state && location.state.from) || '/');
+              if (challengeNameType && challengeNameType === eUserType.temporary
+                && userType === eUserType.assessor) {
+                forceResetPasswordStatusAction(true);
+                history.push('/profile');
+              } else {
+                forceResetPasswordStatusAction(false);
+                history.push((location.state && location.state.from) || '/');
+              }
             } else {
               const newState = { disabled: false };
               if (response.data.message === 'User is not confirmed.') {

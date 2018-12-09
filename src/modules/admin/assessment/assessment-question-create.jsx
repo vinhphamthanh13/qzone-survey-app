@@ -31,7 +31,7 @@ class AssessmentQuestionCreate extends React.Component {
         description: '',
         logo: '',
         privacy: false,
-        survey: '',
+        survey: {},
         userId: '',
       },
       titleState: '',
