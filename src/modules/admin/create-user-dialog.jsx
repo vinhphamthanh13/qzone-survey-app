@@ -111,7 +111,6 @@ class CreateUserDialog extends PureComponent {
       phoneNumber,
       userType,
     } = this.state;
-
     return (
       <Dialog
         open={open}
@@ -150,6 +149,7 @@ class CreateUserDialog extends PureComponent {
                 id="email"
                 formControlProps={{ fullWidth: true }}
                 inputProps={{
+                  autoFocus: true,
                   onChange: e => this.change(e, 'email', 'email'),
                   type: 'email',
                   disabled: !!editedUser,

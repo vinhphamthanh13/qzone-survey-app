@@ -17,8 +17,11 @@ import CardHeader from 'components/Card/CardHeader';
 import Button from 'components/CustomButtons/Button';
 import {
   fetchMultipleUserType,
-  registerUser, fetchUserTypeListActionCreator,
-  updateUser, updateUserActionCreator, deleteUser, deleteUserActionCreator,
+  registerUser,
+  updateUser,
+  updateUserActionCreator,
+  deleteUser,
+  deleteUserActionCreator,
 } from 'services/api/user';
 import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/listPageStyle';
 import EditIcon from '@material-ui/icons/Edit';
@@ -27,8 +30,9 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import buttonStyle from 'assets/jss/material-dashboard-pro-react/components/buttonStyle';
 import Loading from 'components/Loader/Loading';
 import CustomInfo from 'components/CustomInfo/CustomInfo';
+import AlertMessage from 'components/Alert/Message';
 import createUserStyle from './create-user.style';
-import { eUserType } from '../../constants';
+import { ASUser } from '../../constants';
 import CreateUserDialog from './create-user-dialog';
 
 class CreateUser extends PureComponent {
@@ -37,7 +41,6 @@ class CreateUser extends PureComponent {
     userList: PropTypes.arrayOf(PropTypes.object).isRequired,
     fetchMultipleUserTypeAction: PropTypes.func.isRequired,
     registerUserAction: PropTypes.func.isRequired,
-    fetchUserTypeListAction: PropTypes.func.isRequired,
     updateUserAction: PropTypes.func.isRequired,
     updateUserRequestAction: PropTypes.func.isRequired,
     deleteUserAction: PropTypes.func.isRequired,
@@ -59,10 +62,7 @@ class CreateUser extends PureComponent {
     const {
       fetchMultipleUserTypeAction,
     } = this.props;
-    fetchMultipleUserTypeAction([
-      { userType: eUserType.assessor },
-      { userType: eUserType.sponsor },
-    ]);
+    fetchMultipleUserTypeAction(ASUser);
   };
 
   openDialog = () => {
@@ -75,7 +75,8 @@ class CreateUser extends PureComponent {
 
   onCreateUser = (newUser) => {
     const {
-      registerUserAction, fetchUserTypeListAction, updateUserAction, updateUserRequestAction,
+      registerUserAction, updateUserAction, updateUserRequestAction,
+      fetchMultipleUserTypeAction,
     } = this.props;
     const { editedUser } = this.state;
 
@@ -83,9 +84,9 @@ class CreateUser extends PureComponent {
       updateUserRequestAction(newUser, (response) => {
         if (response) {
           if (response.status !== 200) {
-            Alert.error(response.data.message);
+            Alert.error(<AlertMessage>{response.data.message}</AlertMessage>);
           } else {
-            Alert.success('User was updated successfully');
+            Alert.success(<AlertMessage>User was updated successfully</AlertMessage>);
             updateUserAction(newUser);
           }
         }
@@ -94,10 +95,12 @@ class CreateUser extends PureComponent {
       registerUserAction(newUser, (response) => {
         if (response) {
           if (response.status !== 201) {
-            Alert.error(response.data.message);
+            Alert.error(<AlertMessage>{response.data.message}</AlertMessage>);
           } else {
-            Alert.success('User was created successfully');
-            fetchUserTypeListAction({ data: [response.data] });
+            Alert.success(<AlertMessage>User was created successfully</AlertMessage>);
+            // fetchUserTypeListAction({ data: [...data] });
+            fetchMultipleUserTypeAction(ASUser);
+            this.closeDialog();
           }
         }
       });
@@ -121,9 +124,9 @@ class CreateUser extends PureComponent {
     deleteUserRequestAction({ email: deletedUser.email }, (response) => {
       if (response) {
         if (response.status !== 200) {
-          Alert.error(response.data.message);
+          Alert.error(<AlertMessage>{response.data.message}</AlertMessage>);
         } else {
-          Alert.success('User was deleted successfully');
+          Alert.success(<AlertMessage>User was deleted successfully</AlertMessage>);
           this.setState({ deletedUser: null });
           deleteUserAction(deletedUser);
         }
@@ -138,6 +141,13 @@ class CreateUser extends PureComponent {
   render() {
     const { classes, userList } = this.props;
     const { isDialogOpen, editedUser, deletedUser } = this.state;
+    const creation = isDialogOpen ? (
+      <CreateUserDialog
+        open={isDialogOpen}
+        closeDialog={this.closeDialog}
+        onCreateUser={this.onCreateUser}
+        editedUser={editedUser}
+      />) : null;
     let listUser = null;
     if (Object.is(userList, null) || Object.is(userList, undefined)) {
       listUser = <Loading isLoading />;
@@ -184,12 +194,7 @@ class CreateUser extends PureComponent {
     }
     return (
       <React.Fragment>
-        <CreateUserDialog
-          open={isDialogOpen}
-          closeDialog={this.closeDialog}
-          onCreateUser={this.onCreateUser}
-          editedUser={editedUser}
-        />
+        {creation}
         <SweetAlert
           title="Delete User"
           warning
@@ -238,7 +243,6 @@ export default compose(
   connect(mapStateToProps, {
     fetchMultipleUserTypeAction: fetchMultipleUserType,
     registerUserAction: registerUser,
-    fetchUserTypeListAction: fetchUserTypeListActionCreator,
     updateUserRequestAction: updateUser,
     updateUserAction: updateUserActionCreator,
     deleteUserRequestAction: deleteUser,
