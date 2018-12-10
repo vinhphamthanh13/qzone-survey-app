@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { withStyles } from '@material-ui/core/es/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Button from 'components/CustomButtons/Button';
 import { classesType } from 'types/global';
 import loginPageStyle from '../../assets/jss/material-dashboard-pro-react/modules/loginPageStyle';

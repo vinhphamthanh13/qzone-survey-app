@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
-import InputAdornment from '@material-ui/core/es/InputAdornment/InputAdornment';
+import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
 import Alert from 'react-s-alert';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
