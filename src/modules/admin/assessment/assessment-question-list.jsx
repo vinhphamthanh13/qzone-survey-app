@@ -131,7 +131,7 @@ class AdminAssessmentQuestionList extends React.Component {
     } else if (surveyList.length === 0) {
       assessmentList = <CustomInfo content="There is no Assessment in your list!" />;
     } else {
-      disableDeleteAll = !surveyList.length;
+      disableDeleteAll = false;
       assessmentList = (
         <Table className={classes.table} aria-labelledby="tableTitle">
           <TableHead>

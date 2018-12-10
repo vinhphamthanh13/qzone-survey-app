@@ -22,11 +22,11 @@ class CreateUserDialog extends PureComponent {
     onCreateUser: PropTypes.func.isRequired,
     classes: classesType.isRequired,
     editedUser: PropTypes.objectOf(PropTypes.string),
-  }
+  };
 
   static defaultProps = {
     editedUser: null,
-  }
+  };
 
   defaultState = {
     email: undefined,
@@ -40,7 +40,7 @@ class CreateUserDialog extends PureComponent {
     phoneNumber: '',
     userType: eUserType.assessor,
     password: 'Test@2018',
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -66,17 +66,15 @@ class CreateUserDialog extends PureComponent {
 
   handleSubmit = () => {
     const { onCreateUser } = this.props;
-    const {
-      emailState, firstnameState, lastnameState, ...userInfo
-    } = this.state;
+    const { ...userInfo } = this.state;
     onCreateUser(userInfo);
-  }
+  };
 
   handleClose = () => {
     const { closeDialog } = this.props;
     this.setState({ ...this.defaultState });
     closeDialog();
-  }
+  };
 
   change = (event, stateName, type) => {
     const { value } = event.target;
@@ -97,7 +95,7 @@ class CreateUserDialog extends PureComponent {
       default:
         this.setState(({ [stateName]: value }));
     }
-  }
+  };
 
   render() {
     const { open, classes, editedUser } = this.props;

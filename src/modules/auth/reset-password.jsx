@@ -43,6 +43,8 @@ class ResetPassword extends React.Component {
         const { data: { message } } = response;
         if (/emailMessage/.test(message)) {
           Alert.error('Email address is required!');
+        } else {
+          Alert.error(message);
         }
       }
     });

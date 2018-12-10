@@ -15,7 +15,6 @@ import CardBody from 'components/Card/CardBody';
 import CardIcon from 'components/Card/CardIcon';
 import CardHeader from 'components/Card/CardHeader';
 import Button from 'components/CustomButtons/Button';
-import { toggleLoading } from 'services/api/assessment';
 import {
   fetchMultipleUserType,
   registerUser, fetchUserTypeListActionCreator,
@@ -237,7 +236,6 @@ const mapStateToProps = state => ({
 export default compose(
   withStyles({ ...buttonStyle, cardIconTitle: listPageStyle.cardIconTitle, ...createUserStyle }),
   connect(mapStateToProps, {
-    toggleLoadingAction: toggleLoading,
     fetchMultipleUserTypeAction: fetchMultipleUserType,
     registerUserAction: registerUser,
     fetchUserTypeListAction: fetchUserTypeListActionCreator,

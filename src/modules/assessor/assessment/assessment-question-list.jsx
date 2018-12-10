@@ -128,55 +128,55 @@ class AssessorAssessmentQuestionList extends React.Component {
     const {
       deleteAll, isOpenDeleteSurvey, sId, dialogType,
     } = this.state;
-    const surveyListLen = surveyList.length;
-    const deleteAllCheckboxStatus = !surveyListLen;
-
-    let assessmentList = (
-      <Table className={classes.table} aria-labelledby="tableTitle">
-        <TableHead>
-          <TableRow>
-            <TableCell>
-              <Checkbox
-                className={classes.deleteAllChecked}
-                checked={deleteAll || false}
-                onChange={this.deleteAllShowingHandler}
-                disabled={deleteAllCheckboxStatus}
-              />
-            </TableCell>
-            <TableCell key="title">
-              Title
-            </TableCell>
-            <TableCell>
-              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-              {deleteAll && <Link to="#" data-tip="Delete" onClick={() => this.onOpenSurveyDeleteHandler('')}><Delete /></Link>}
-            </TableCell>
-            <TableCell />
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {surveyList.map((surveyItem, index) => (
-            <TableRow hover key={surveyItem.id}>
-              <TableCell>{index + 1}</TableCell>
-              <TableCell><Link data-tip="Show Survey" to={`/assessment/show/${surveyItem.id}`}>{surveyItem.title}</Link></TableCell>
+    let disableDeleteAll = true;
+    let assessmentList = null;
+    if (Object.is(surveyList, null) || Object.is(surveyList, undefined)) {
+      assessmentList = <Loading isLoading />;
+    } else if (surveyList.length === 0) {
+      assessmentList = <CustomInfo content="There is no Assessment in your list" />;
+    } else {
+      disableDeleteAll = false;
+      assessmentList = (
+        <Table className={classes.table} aria-labelledby="tableTitle">
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                <Checkbox
+                  className={classes.deleteAllChecked}
+                  checked={deleteAll || false}
+                  onChange={this.deleteAllShowingHandler}
+                  disabled={disableDeleteAll}
+                />
+              </TableCell>
+              <TableCell key="title">
+                Title
+              </TableCell>
               <TableCell>
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                <Link style={iconStyle} data-tip="Delete Survey" to="#" onClick={() => this.onOpenSurveyDeleteHandler(surveyItem.id)}><Delete /></Link>
-                <CopyToClipboard text={`${SURVEY_APP_URL}/surveys/${surveyItem.id}`}>
+                {deleteAll && <Link to="#" data-tip="Delete" onClick={() => this.onOpenSurveyDeleteHandler('')}><Delete /></Link>}
+              </TableCell>
+              <TableCell />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {surveyList.map((surveyItem, index) => (
+              <TableRow hover key={surveyItem.id}>
+                <TableCell>{index + 1}</TableCell>
+                <TableCell><Link data-tip="Show Survey" to={`/assessment/show/${surveyItem.id}`}>{surveyItem.title}</Link></TableCell>
+                <TableCell>
                   {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                  <Link data-tip="Copy Link" to="#" onClick={this.handleClick}><LinkIcon /></Link>
-                </CopyToClipboard>
-              </TableCell>
-              <TableCell>
-                <ReactTooltip />
-              </TableCell>
-            </TableRow>))}
-        </TableBody>
-      </Table>
-    );
-    if (Object.is(surveyList, null)) {
-      assessmentList = <Loading isLoading={!surveyList} />;
-    } else if (surveyListLen === 0) {
-      assessmentList = <CustomInfo content="There is no assessment in your box" />;
+                  <Link style={iconStyle} data-tip="Delete Survey" to="#" onClick={() => this.onOpenSurveyDeleteHandler(surveyItem.id)}><Delete /></Link>
+                  <CopyToClipboard text={`${SURVEY_APP_URL}/surveys/${surveyItem.id}`}>
+                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                    <Link data-tip="Copy Link" to="#" onClick={this.handleClick}><LinkIcon /></Link>
+                  </CopyToClipboard>
+                </TableCell>
+                <TableCell>
+                  <ReactTooltip />
+                </TableCell>
+              </TableRow>))}
+          </TableBody>
+        </Table>);
     }
     return (
       <React.Fragment>
