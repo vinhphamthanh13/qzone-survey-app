@@ -6,6 +6,7 @@ import { Check } from '@material-ui/icons';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import Alert from 'react-s-alert';
+import AlertMessage from 'components/Alert/Message';
 import { Link } from 'react-router-dom';
 import GridContainer from 'components/Grid/GridContainer';
 import GridItem from 'components/Grid/GridItem';
@@ -80,9 +81,9 @@ class RegisterPage extends React.Component {
           if (response) {
             if (response.status === 201) {
               newState.openVerificationModal = true;
-              Alert.success('Thank you for registering!');
+              Alert.success(<AlertMessage>Thank you for registering!</AlertMessage>);
             } else {
-              Alert.error(response.data.message);
+              Alert.error(<AlertMessage>{response.data.message}</AlertMessage>);
             }
           }
 

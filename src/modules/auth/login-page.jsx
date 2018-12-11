@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
 import Alert from 'react-s-alert';
+import AlertMessage from 'components/Alert/Message';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import GridContainer from 'components/Grid/GridContainer';
@@ -91,7 +92,9 @@ class LoginPage extends React.Component {
 
               Alert.error(
                 ['User is not confirmed.', 'User does not exist.', 'Incorrect username or password.']
-                  .includes(response.data.message) ? response.data.message : 'Cannot connect to server',
+                  .includes(response.data.message)
+                  ? <AlertMessage>{response.data.message}</AlertMessage>
+                  : <AlertMessage>Cannot connect to server</AlertMessage>,
               );
 
               this.setState(newState);

@@ -3,6 +3,7 @@ import {
   Dialog, DialogContent, DialogTitle, DialogActions, DialogContentText,
 } from '@material-ui/core';
 import Alert from 'react-s-alert';
+import AlertMessage from 'components/Alert/Message';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -38,13 +39,13 @@ class ResetPassword extends React.Component {
     resetPasswordAction(this.state, (response) => {
       if (response.status === 200) {
         this.setState({ open: false, openChangePassword: true });
-        Alert.success('Code is successfully send to your email');
+        Alert.success(<AlertMessage>Code is successfully send to your email</AlertMessage>);
       } else {
         const { data: { message } } = response;
         if (/emailMessage/.test(message)) {
-          Alert.error('Email address is required!');
+          Alert.error(<AlertMessage>Email address is required!</AlertMessage>);
         } else {
-          Alert.error(message);
+          Alert.error(<AlertMessage>{message}</AlertMessage>);
         }
       }
     });

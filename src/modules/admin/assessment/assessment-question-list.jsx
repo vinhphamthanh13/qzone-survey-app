@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Alert from 'react-s-alert';
+import AlertMessage from 'components/Alert/Message';
 import { Delete, FileCopy, Poll } from '@material-ui/icons';
 import LinkIcon from '@material-ui/icons/Link';
 import ReactTooltip from 'react-tooltip';
@@ -111,7 +112,7 @@ class AdminAssessmentQuestionList extends React.Component {
   handleClick = (e) => {
     e.preventDefault();
     Alert.closeAll();
-    Alert.success('Copied');
+    Alert.success(<AlertMessage>Assessment link is copied!</AlertMessage>);
   };
 
   copySurvey = (id) => {

@@ -4,6 +4,7 @@ import {
 } from '@material-ui/core';
 import Button from 'components/CustomButtons/Button';
 import Alert from 'react-s-alert';
+import AlertMessage from 'components/Alert/Message';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import GridContainer from 'components/Grid/GridContainer';
@@ -46,9 +47,9 @@ class Assessor extends React.Component {
 
       if (response) {
         if (response.status !== 201) {
-          Alert.error(response.data.message);
+          Alert.error(<AlertMessage>{response.data.message}</AlertMessage>);
         } else {
-          Alert.success('Assessor was created successfully');
+          Alert.success(<AlertMessage>Assessor was created successfully</AlertMessage>);
           this.setState({ open: false }, reloadAssessorList);
         }
       }
