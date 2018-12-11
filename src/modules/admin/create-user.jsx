@@ -32,8 +32,8 @@ import Loading from 'components/Loader/Loading';
 import CustomInfo from 'components/CustomInfo/CustomInfo';
 import AlertMessage from 'components/Alert/Message';
 import createUserStyle from './create-user.style';
-import { ASUser } from '../../constants';
 import CreateUserDialog from './create-user-dialog';
+import { ASUser } from '../../constants';
 
 class CreateUser extends PureComponent {
   static propTypes = {
@@ -73,21 +73,43 @@ class CreateUser extends PureComponent {
     this.setState({ isDialogOpen: false, editedUser: null });
   };
 
+  onUpdateList = () => {
+    const { fetchMultipleUserTypeAction } = this.props;
+    fetchMultipleUserTypeAction(ASUser);
+    this.closeDialog();
+  };
+
   onCreateUser = (newUser) => {
     const {
       registerUserAction, updateUserAction, updateUserRequestAction,
-      fetchMultipleUserTypeAction,
     } = this.props;
     const { editedUser } = this.state;
 
     if (editedUser) {
-      updateUserRequestAction(newUser, (response) => {
+      const {
+        companyName, department, deviceId, deviceToken,
+        eReceivedInfo, email, firstname, lastname, phoneNumber, postCode,
+      } = newUser;
+      const updatedUser = {
+        companyName,
+        department,
+        deviceId,
+        deviceToken,
+        eReceivedInfo,
+        email,
+        firstname,
+        lastname,
+        phoneNumber,
+        postCode,
+      };
+      updateUserRequestAction(updatedUser, (response) => {
         if (response) {
           if (response.status !== 200) {
             Alert.error(<AlertMessage>{response.data.message}</AlertMessage>);
           } else {
             Alert.success(<AlertMessage>User was updated successfully</AlertMessage>);
             updateUserAction(newUser);
+            this.onUpdateList();
           }
         }
       });
@@ -98,9 +120,7 @@ class CreateUser extends PureComponent {
             Alert.error(<AlertMessage>{response.data.message}</AlertMessage>);
           } else {
             Alert.success(<AlertMessage>User was created successfully</AlertMessage>);
-            // fetchUserTypeListAction({ data: [...data] });
-            fetchMultipleUserTypeAction(ASUser);
-            this.closeDialog();
+            this.onUpdateList();
           }
         }
       });

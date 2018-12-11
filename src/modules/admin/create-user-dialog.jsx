@@ -13,7 +13,11 @@ import CustomInput from 'components/CustomInput/CustomInput';
 import { classesType } from 'types/global';
 import personalPageStyles from 'assets/jss/material-dashboard-pro-react/modules/personalPageStyles';
 import validateEmail from 'utils/validateEmail';
+import { minLength } from 'utils/validateLength';
+import isDirty from 'utils/isDirty';
 import { eUserType } from '../../constants';
+
+const minLength2 = minLength(2);
 
 class CreateUserDialog extends PureComponent {
   static propTypes = {
@@ -40,6 +44,7 @@ class CreateUserDialog extends PureComponent {
     phoneNumber: '',
     userType: eUserType.assessor,
     password: 'Test@2018',
+    postCode: '',
   };
 
   constructor(props) {
@@ -49,6 +54,12 @@ class CreateUserDialog extends PureComponent {
       emailState: 'success',
       firstnameState: 'success',
       lastnameState: 'success',
+      oldFirstName: props.editedUser.firstname,
+      oldLastName: props.editedUser.lastname,
+      oldDepartment: props.editedUser.department,
+      oldCompanyName: props.editedUser.companyName,
+      oldPhoneNumber: props.editedUser.phoneNumber,
+      oldPostCode: props.editedUser.postCode,
     } : { ...this.defaultState };
   }
 
@@ -109,8 +120,23 @@ class CreateUserDialog extends PureComponent {
       department,
       companyName,
       phoneNumber,
+      postCode,
       userType,
+      oldFirstName,
+      oldLastName,
+      oldDepartment,
+      oldCompanyName,
+      oldPhoneNumber,
+      oldPostCode,
     } = this.state;
+    const formDirty = isDirty(oldFirstName, firstname)
+      || isDirty(oldLastName, lastname)
+      || isDirty(oldDepartment, department)
+      || isDirty(oldCompanyName, companyName)
+      || isDirty(oldPhoneNumber, phoneNumber)
+      || isDirty(oldPostCode, postCode);
+    const firstnameMin = minLength2(firstname);
+    const lastnameMinLen = minLength2(lastname);
     return (
       <Dialog
         open={open}
@@ -161,7 +187,7 @@ class CreateUserDialog extends PureComponent {
               <CustomInput
                 labelText="First name (required)"
                 success={firstnameState === 'success'}
-                error={firstnameState === 'error'}
+                error={firstnameState === 'error' || !firstnameMin}
                 id="firstname"
                 formControlProps={{ fullWidth: true }}
                 inputProps={{ onChange: e => this.change(e, 'firstname', 'name') }}
@@ -172,7 +198,7 @@ class CreateUserDialog extends PureComponent {
               <CustomInput
                 labelText="Last name (required)"
                 success={lastnameState === 'success'}
-                error={lastnameState === 'error'}
+                error={lastnameState === 'error' || !lastnameMinLen}
                 id="lastname"
                 formControlProps={{ fullWidth: true }}
                 inputProps={{ onChange: e => this.change(e, 'lastname', 'name') }}
@@ -205,6 +231,15 @@ class CreateUserDialog extends PureComponent {
                 value={phoneNumber}
               />
             </GridItem>
+            <GridItem md={6}>
+              <CustomInput
+                labelText="Your post code"
+                id="postCode"
+                formControlProps={{ fullWidth: true }}
+                inputProps={{ onChange: e => this.change(e, 'postCode') }}
+                value={postCode}
+              />
+            </GridItem>
           </GridContainer>
         </DialogContent>
         <DialogActions>
@@ -212,7 +247,12 @@ class CreateUserDialog extends PureComponent {
             Close
           </Button>
           <Button
-            disabled={emailState !== 'success' || firstnameState !== 'success' || lastnameState !== 'success'}
+            disabled={
+              emailState !== 'success'
+              || firstnameState !== 'success'
+              || lastnameState !== 'success'
+              || !formDirty
+            }
             onClick={this.handleSubmit}
             color="rose"
           >
