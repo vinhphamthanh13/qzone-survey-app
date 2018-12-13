@@ -24,7 +24,7 @@ import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/listP
 import {
   fetchSurveys, deleteSurvey, deleteAllSurvey,
 } from 'services/api/assessment';
-import DeleteAssessment from 'modules/shared/delete-assessment';
+import DeletionModal from 'modules/shared/deletion-modal';
 import { checkAuth } from 'services/api/user';
 import { classesType, historyType } from 'types/global';
 import Loading from 'components/Loader/Loading';
@@ -182,6 +182,16 @@ class AdminAssessmentQuestionList extends React.Component {
         </Table>
       );
     }
+    const deletionPopup = isOpenDeleteSurvey ? (
+      <DeletionModal
+        openDialog={isOpenDeleteSurvey}
+        closeDialog={this.onCloseDeleteSurveyHandler}
+        itemId={sId}
+        itemDeleteHandler={this.successDelete}
+        type={dialogType}
+        itemName="Assessment"
+      />
+    ) : null;
     return (
       <div>
         <GridContainer>
@@ -202,13 +212,7 @@ class AdminAssessmentQuestionList extends React.Component {
             </Card>
           </GridItem>
         </GridContainer>
-        <DeleteAssessment
-          openDialog={isOpenDeleteSurvey}
-          closeDialog={this.onCloseDeleteSurveyHandler}
-          surveyId={sId}
-          surveyDeleteHandler={this.successDelete}
-          type={dialogType}
-        />
+        {deletionPopup}
       </div>);
   }
 }

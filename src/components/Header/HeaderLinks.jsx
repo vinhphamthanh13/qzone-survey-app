@@ -1,5 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import { Manager, Target, Popper } from 'react-popper';
 import withStyles from '@material-ui/core/styles/withStyles';
 import {
@@ -16,6 +18,7 @@ import { surveyLocalData } from '../../constants';
 class HeaderLinks extends React.Component {
   static propTypes = {
     classes: classesType.isRequired,
+    history: PropTypes.objectOf(PropTypes.any).isRequired,
   };
 
   state = {
@@ -43,6 +46,11 @@ class HeaderLinks extends React.Component {
     sessionService.deleteSession();
     sessionService.deleteUser();
     window.location = '/login';
+  };
+
+  handleProfile = () => {
+    const { history } = this.props;
+    history.push('/profile');
   };
 
   render() {
@@ -163,7 +171,7 @@ class HeaderLinks extends React.Component {
                 <Paper className={classes.dropdown}>
                   <MenuList role="menu">
                     <MenuItem
-                      onClick={this.handleClose}
+                      onClick={this.handleProfile}
                       className={dropdownItem}
                     >
                       Profile
@@ -185,4 +193,4 @@ class HeaderLinks extends React.Component {
   }
 }
 
-export default withStyles(headerLinksStyle)(HeaderLinks);
+export default withRouter(withStyles(headerLinksStyle)(HeaderLinks));

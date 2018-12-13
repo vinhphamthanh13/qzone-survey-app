@@ -26,11 +26,11 @@ import {
 import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/listPageStyle';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import SweetAlert from 'react-bootstrap-sweetalert';
 import buttonStyle from 'assets/jss/material-dashboard-pro-react/components/buttonStyle';
 import Loading from 'components/Loader/Loading';
 import CustomInfo from 'components/CustomInfo/CustomInfo';
 import AlertMessage from 'components/Alert/Message';
+import DeletionModal from 'modules/shared/deletion-modal';
 import createUserStyle from './create-user.style';
 import CreateUserDialog from './create-user-dialog';
 import { ASUser } from '../../constants';
@@ -212,25 +212,20 @@ class CreateUser extends PureComponent {
           </TableBody>
         </Table>);
     }
+    const deletionPopup = deletedUser ? (
+      <DeletionModal
+        openDialog={!!deletedUser}
+        closeDialog={this.cancelDelete}
+        itemDeleteHandler={this.confirmDelete}
+        itemName="User"
+        itemSubName={deletedUser.email}
+        itemId="email"
+      />
+    ) : null;
     return (
       <React.Fragment>
         {creation}
-        <SweetAlert
-          title="Delete User"
-          warning
-          showCancel
-          show={deletedUser !== null}
-          onConfirm={this.confirmDelete}
-          onCancel={this.cancelDelete}
-          confirmBtnCssClass={`${classes.button} ${classes.success}`}
-          cancelBtnCssClass={`${classes.button} ${classes.danger}`}
-          confirmBtnText="Delete anyway"
-          cancelBtnText="Cancel"
-        >
-          {`Do you want to delete ${deletedUser ? deletedUser.userType.toLowerCase() : ''} `}
-          <code>{`${deletedUser ? deletedUser.email : ''}`}</code>
-          {' ?'}
-        </SweetAlert>
+        {deletionPopup}
         <Card>
           <CardHeader color="primary" icon>
             <CardIcon color="rose"><GroupIcon /></CardIcon>

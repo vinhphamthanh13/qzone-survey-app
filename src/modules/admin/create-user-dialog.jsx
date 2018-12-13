@@ -13,11 +13,8 @@ import CustomInput from 'components/CustomInput/CustomInput';
 import { classesType } from 'types/global';
 import personalPageStyles from 'assets/jss/material-dashboard-pro-react/modules/personalPageStyles';
 import validateEmail from 'utils/validateEmail';
-import { minLength } from 'utils/validateLength';
 import isDirty from 'utils/isDirty';
 import { eUserType } from '../../constants';
-
-const minLength2 = minLength(2);
 
 class CreateUserDialog extends PureComponent {
   static propTypes = {
@@ -135,8 +132,6 @@ class CreateUserDialog extends PureComponent {
       || isDirty(oldCompanyName, companyName)
       || isDirty(oldPhoneNumber, phoneNumber)
       || isDirty(oldPostCode, postCode);
-    const firstnameMin = minLength2(firstname);
-    const lastnameMinLen = minLength2(lastname);
     return (
       <Dialog
         open={open}
@@ -187,7 +182,7 @@ class CreateUserDialog extends PureComponent {
               <CustomInput
                 labelText="First name (required)"
                 success={firstnameState === 'success'}
-                error={firstnameState === 'error' || !firstnameMin}
+                error={firstnameState === 'error'}
                 id="firstname"
                 formControlProps={{ fullWidth: true }}
                 inputProps={{ onChange: e => this.change(e, 'firstname', 'name') }}
@@ -198,7 +193,7 @@ class CreateUserDialog extends PureComponent {
               <CustomInput
                 labelText="Last name (required)"
                 success={lastnameState === 'success'}
-                error={lastnameState === 'error' || !lastnameMinLen}
+                error={lastnameState === 'error'}
                 id="lastname"
                 formControlProps={{ fullWidth: true }}
                 inputProps={{ onChange: e => this.change(e, 'lastname', 'name') }}
