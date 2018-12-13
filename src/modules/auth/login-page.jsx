@@ -18,10 +18,7 @@ import CardBody from 'components/Card/CardBody';
 import CardFooter from 'components/Card/CardFooter';
 import loginPageStyle from 'assets/jss/material-dashboard-pro-react/modules/loginPageStyle';
 import { Email, Lock } from '@material-ui/icons';
-import {
-  loginUser, toggleLoading,
-  // forceResetPasswordStatus,
-} from 'services/api/user';
+import { loginUser } from 'services/api/user';
 import { classesType, historyType, locationType } from 'types/global';
 import SocialLogin from 'modules/auth/social-login';
 import VerificationPage from './verification-page';
@@ -33,10 +30,8 @@ import { userStatus } from '../../constants';
 class LoginPage extends React.Component {
   static propTypes = {
     classes: classesType.isRequired,
-    toggleLoading: PropTypes.func.isRequired,
     loginUser: PropTypes.func.isRequired,
     history: historyType.isRequired,
-    // forceResetPasswordStatus: PropTypes.func.isRequired,
     location: locationType.isRequired,
   };
 
@@ -64,24 +59,19 @@ class LoginPage extends React.Component {
 
     if (emailState === 'success' && passwordState === 'success') {
       const {
-        toggleLoading: toggleLoadingAction, loginUser: loginUserAction,
+        loginUser: loginUserAction,
         history,
-        // forceResetPasswordStatus: forceResetPasswordStatusAction,
         location,
       } = this.props;
-      toggleLoadingAction();
       this.setState({ disabled: true }, () => {
         const { email, password } = this.state;
         loginUserAction({ email, password }, (response) => {
           if (response) {
             const { data: { challengeNameType } } = response;
-            toggleLoadingAction();
             if (response.status === 200) {
               if (challengeNameType && challengeNameType === userStatus.temporary) {
-                // forceResetPasswordStatusAction(true);
                 history.push('/profile');
               } else {
-                // forceResetPasswordStatusAction(false);
                 history.push((location.state && location.state.from) || '/');
               }
             } else {
@@ -241,7 +231,5 @@ export default compose(
   withStyles(loginPageStyle),
   connect(null, {
     loginUser,
-    toggleLoading,
-    // forceResetPasswordStatus,
   }),
 )(LoginPage);
