@@ -47,11 +47,13 @@ class ParticipantList extends React.Component {
 
   checkAll = () => {
     const { participantList } = this.props;
-    this.setState(oldState => ({
-      checkList: oldState.checkList.length === 0
-        ? participantList.map(user => user.id)
-        : [],
-    }));
+    const { checkList } = this.state;
+    const listLen = checkList.length;
+    let newCheckList = participantList.map(user => user.id);
+    if (listLen === newCheckList.length) {
+      newCheckList = [];
+    }
+    this.setState({ checkList: newCheckList });
   };
 
   checkParticipant = (id) => {
