@@ -47,62 +47,63 @@ class AssessmentResponseList extends React.Component {
     const { classes, surveyAnswers } = this.props;
     const surveyAnswerList = surveyAnswers && surveyAnswers.length >= 0
       ? (
-        <GridContainer>
-          <GridItem xs={12}>
-            <Card>
-              <CardHeader color="primary" icon>
-                <CardIcon color="rose">
-                  <Poll />
-                </CardIcon>
-                <h3 className={classes.cardIconTitle}>Assessments</h3>
-              </CardHeader>
-              <CardBody>
-                <Table className={classes.table} aria-labelledby="tableTitle">
-                  <TableHead>
-                    <TableRow>
-                      {rows.map(row => (
-                        <TableCell key={row}>
-                          {row}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {
-                      surveyAnswers.map(({ participant, status, surveyId }, index) => (
-                        <TableRow key={participant.id}>
-                          <TableCell>{index + 1}</TableCell>
-                          <TableCell>
-                            {surveyAnswers[index].surveyDTO.title}
-                          </TableCell>
-                          <TableCell>{fullName(participant)}</TableCell>
-                          <TableCell>{participant.email}</TableCell>
-                          <TableCell>
-                            <Link to={status === eSurveyStatus.completed
-                            || status === eSurveyStatus.expired
-                              ? `/assessment/result/${surveyId}/${participant.id}`
-                              : `/participant/assessment/${surveyId}`
-                            }
-                            >
-                              <OpenInNew titleAccess="Open survey" />
-                            </Link>
-                          </TableCell>
-                          <TableCell>
-                            {status === eSurveyStatus.completed
-                              ? <CheckCircleOutlined style={{ color: '#4caf50' }} titleAccess="Completed" />
-                              : <ErrorOutline color="error" titleAccess="Not available" /> }
-                          </TableCell>
-                        </TableRow>
-                      ))
+        <Table className={classes.table} aria-labelledby="tableTitle">
+          <TableHead>
+            <TableRow>
+              {rows.map(row => (
+                <TableCell key={row}>
+                  {row}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {
+              surveyAnswers.map(({ participant, status, surveyId }, index) => (
+                <TableRow key={participant.id}>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>
+                    {surveyAnswers[index].surveyDTO.title}
+                  </TableCell>
+                  <TableCell>{fullName(participant)}</TableCell>
+                  <TableCell>{participant.email}</TableCell>
+                  <TableCell>
+                    <Link to={status === eSurveyStatus.completed
+                    || status === eSurveyStatus.expired
+                      ? `/assessment/result/${surveyId}/${participant.id}`
+                      : `/participant/assessment/${surveyId}`
                     }
-                  </TableBody>
-                </Table>
-              </CardBody>
-            </Card>
-          </GridItem>
-        </GridContainer>
+                    >
+                      <OpenInNew titleAccess="Open survey" />
+                    </Link>
+                  </TableCell>
+                  <TableCell>
+                    {status === eSurveyStatus.completed
+                      ? <CheckCircleOutlined style={{ color: '#4caf50' }} titleAccess="Completed" />
+                      : <ErrorOutline color="error" titleAccess="Not available" /> }
+                  </TableCell>
+                </TableRow>
+              ))
+            }
+          </TableBody>
+        </Table>
       ) : <Loading isLoading />;
-    return (surveyAnswerList);
+    return (
+      <GridContainer>
+        <GridItem xs={12}>
+          <Card>
+            <CardHeader color="primary" icon>
+              <CardIcon color="rose">
+                <Poll />
+              </CardIcon>
+              <h3 className={classes.cardIconTitle}>Assessments</h3>
+            </CardHeader>
+            <CardBody>
+              {surveyAnswerList}
+            </CardBody>
+          </Card>
+        </GridItem>
+      </GridContainer>);
   }
 }
 

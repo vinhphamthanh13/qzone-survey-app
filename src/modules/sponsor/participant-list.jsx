@@ -8,7 +8,7 @@ import {
   Table, TableBody, TableCell,
   TableHead, TableRow, Checkbox,
 } from '@material-ui/core';
-import { Poll } from '@material-ui/icons';
+import { GroupOutlined as GroupOutlinedIcon } from '@material-ui/icons';
 import { formatPhoneNumber } from 'react-phone-number-input';
 import GridContainer from 'components/Grid/GridContainer';
 import GridItem from 'components/Grid/GridItem';
@@ -18,6 +18,8 @@ import CardIcon from 'components/Card/CardIcon';
 import CardHeader from 'components/Card/CardHeader';
 import { fetchUserTypeList } from 'services/api/user';
 import { classesType } from 'types/global';
+import Loading from 'components/Loader/Loading';
+import CustomInfo from 'components/CustomInfo/CustomInfo';
 import participantListStyle from './participant-list.style';
 import ParticipantListExcel from './participant-list-excel';
 import { eUserType, userStatus } from '../../constants';
@@ -29,7 +31,7 @@ class ParticipantList extends React.Component {
     classes: classesType.isRequired,
     fetchUserTypeList: PropTypes.func.isRequired,
     participantList: PropTypes.arrayOf(PropTypes.object).isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -50,7 +52,7 @@ class ParticipantList extends React.Component {
         ? participantList.map(user => user.id)
         : [],
     }));
-  }
+  };
 
   checkParticipant = (id) => {
     this.setState(oldState => ({
@@ -58,78 +60,82 @@ class ParticipantList extends React.Component {
         ? oldState.checkList.filter(checkedUserId => checkedUserId !== id)
         : [...oldState.checkList, id],
     }));
-  }
+  };
 
   render() {
     const { classes, participantList } = this.props;
     const { checkList } = this.state;
-
-    return (
-      participantList && participantList.length >= 0
-      && (
-        <GridContainer>
-          <GridItem xs={12}>
-            <Card>
-              <CardHeader color="primary" icon>
-                <CardIcon color="rose"><Poll /></CardIcon>
-                <div className={`${classes.header} ${checkList.length === 0 ? classes.disabledDownload : ''}`}>
-                  <h3 className={classes.cardIconTitle}>Participants</h3>
-                  <ParticipantListExcel
-                    checkList={checkList}
-                    classes={classes}
-                    participantList={participantList}
+    let listParticipant = null;
+    if (Object.is(participantList, null) || Object.is(participantList, undefined)) {
+      listParticipant = <Loading isLoading />;
+    } else if (participantList.length === 0) {
+      listParticipant = <CustomInfo content="There is no Participant in list." />;
+    } else {
+      listParticipant = (
+        <Table aria-labelledby="tableTitle">
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                <Checkbox
+                  className={classes.deleteAllChecked}
+                  checked={checkList.length === participantList.length}
+                  indeterminate={checkList.length > 0
+                  && checkList.length !== participantList.length}
+                  onChange={this.checkAll}
+                />
+              </TableCell>
+              {rows.map(row => (
+                <TableCell key={row}>
+                  {row}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {participantList.map(({
+              id, firstname, lastname, email, phoneNumber,
+            }, index) => (
+              <TableRow key={id}>
+                <TableCell>
+                  <Checkbox
+                    className={classes.deleteAllChecked}
+                    checked={checkList.includes(id)}
+                    onChange={() => this.checkParticipant(id)}
                   />
-                </div>
-              </CardHeader>
-              <CardBody>
-                <Table aria-labelledby="tableTitle">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>
-                        <Checkbox
-                          checked={checkList.length === participantList.length}
-                          indeterminate={checkList.length > 0
-                            && checkList.length !== participantList.length}
-                          onChange={this.checkAll}
-                        />
-                      </TableCell>
-                      {rows.map(row => (
-                        <TableCell key={row}>
-                          {row}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {
-                      participantList.map(({
-                        id, firstname, lastname, userType, email, phoneNumber,
-                      }, index) => (
-                        <TableRow key={id}>
-                          <TableCell>
-                            <Checkbox
-                              checked={checkList.includes(id)}
-                              onChange={() => this.checkParticipant(id)}
-                            />
-                          </TableCell>
-                          <TableCell>{index + 1}</TableCell>
-                          <TableCell>
-                            {firstname}
-                          </TableCell>
-                          <TableCell>{lastname}</TableCell>
-                          <TableCell>{userType}</TableCell>
-                          <TableCell>{email}</TableCell>
-                          <TableCell>{formatPhoneNumber(phoneNumber, 'International')}</TableCell>
-                        </TableRow>
-                      ))
-                    }
-                  </TableBody>
-                </Table>
-              </CardBody>
-            </Card>
-          </GridItem>
-        </GridContainer>
-      )
+                </TableCell>
+                <TableCell>{index + 1}</TableCell>
+                <TableCell>
+                  {firstname}
+                </TableCell>
+                <TableCell>{lastname}</TableCell>
+                <TableCell>{email}</TableCell>
+                <TableCell>{formatPhoneNumber(phoneNumber, 'International')}</TableCell>
+              </TableRow>))
+            }
+          </TableBody>
+        </Table>);
+    }
+    return (
+      <GridContainer>
+        <GridItem xs={12}>
+          <Card>
+            <CardHeader color="primary" icon>
+              <CardIcon color="rose"><GroupOutlinedIcon /></CardIcon>
+              <div className={`${classes.header} ${checkList.length === 0 ? classes.disabledDownload : ''}`}>
+                <h3 className={classes.cardIconTitle}>Participants</h3>
+                <ParticipantListExcel
+                  checkList={checkList}
+                  classes={classes}
+                  participantList={participantList}
+                />
+              </div>
+            </CardHeader>
+            <CardBody>
+              {listParticipant}
+            </CardBody>
+          </Card>
+        </GridItem>
+      </GridContainer>
     );
   }
 }

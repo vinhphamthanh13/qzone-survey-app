@@ -28,7 +28,7 @@ export const participantRoutes = [
   {
     path: '/participant/assessment/answers',
     name: 'Assessments',
-    icon: PersonIcon,
+    icon: PollIcon,
     component: AssessmentResponseList,
   },
 ];
@@ -67,7 +67,7 @@ export const sponsorRoutes = [
   {
     path: '/sponsor/participant/list',
     name: 'Participants',
-    icon: PersonIcon,
+    icon: GroupIcon,
     component: ParticipantList,
   },
 ];
