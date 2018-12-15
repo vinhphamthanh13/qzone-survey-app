@@ -131,6 +131,11 @@ class LoginPage extends React.Component {
     }
   };
 
+  handleSubmit = (event) => {
+    event.preventDefault();
+    this.loginClick();
+  };
+
   render() {
     const { classes, history } = this.props;
     const {
@@ -145,7 +150,7 @@ class LoginPage extends React.Component {
         <div className={classes.container}>
           <GridContainer justify="center" className={classes.loginPanel}>
             <GridItem xs={12} sm={6} md={5}>
-              <form>
+              <form onSubmit={this.handleSubmit}>
                 <Card login className={classes[cardAnimation]}>
                   <CardHeader className={classes.headerWrapper}>
                     <div className={classNames(classes.textCenter, classes.headerPanel)}>
@@ -204,8 +209,8 @@ class LoginPage extends React.Component {
                       fullWidth
                       color="rose"
                       disabled={disabled}
-                      onClick={this.loginClick}
                       className={classes.loginButtonLabel}
+                      type="submit"
                     >
                       let&#39;s go
                     </Button>
