@@ -4,12 +4,12 @@ import {
 } from '@material-ui/core';
 import Button from 'components/CustomButtons/Button';
 import Alert from 'react-s-alert';
+import AlertMessage from 'components/Alert/Message';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import GridContainer from 'components/Grid/GridContainer';
 import GridItem from 'components/Grid/GridItem';
 import { registerUser } from 'services/api/user';
-import { toggleLoading } from 'services/api/assessment';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import validateEmail from 'utils/validateEmail';
@@ -17,7 +17,6 @@ import { eUserType } from '../../constants';
 
 class Assessor extends React.Component {
   static propTypes = {
-    toggleLoading: PropTypes.func.isRequired,
     registerUser: PropTypes.func.isRequired,
     reloadAssessorList: PropTypes.func.isRequired,
   };
@@ -37,18 +36,15 @@ class Assessor extends React.Component {
 
   handleAssessor = () => {
     const {
-      toggleLoading: toggleLoadingAction, registerUser: registerUserAction,
+      registerUser: registerUserAction,
       reloadAssessorList,
     } = this.props;
-    toggleLoadingAction();
     registerUserAction(this.state, (response) => {
-      toggleLoadingAction();
-
       if (response) {
         if (response.status !== 201) {
-          Alert.error(response.data.message);
+          Alert.error(<AlertMessage>{response.data.message}</AlertMessage>);
         } else {
-          Alert.success('Assessor was created successfully');
+          Alert.success(<AlertMessage>Assessor was created successfully</AlertMessage>);
           this.setState({ open: false }, reloadAssessorList);
         }
       }
@@ -135,5 +131,5 @@ class Assessor extends React.Component {
 }
 
 export default compose(
-  connect(null, { registerUser, toggleLoading }),
+  connect(null, { registerUser }),
 )(Assessor);

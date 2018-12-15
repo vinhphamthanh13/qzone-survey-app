@@ -6,31 +6,35 @@ import {
 import withStyles from '@material-ui/core/styles/withStyles';
 import Slide from '@material-ui/core/Slide';
 import Button from 'components/CustomButtons/Button';
-import deleteAssessmentStyle from 'assets/jss/material-dashboard-pro-react/modules/deleteAssessment';
+import deletionModalStyle from 'assets/jss/material-dashboard-pro-react/modules/deletionModal';
 import { CTA } from '../../constants';
 
 function Transition(props) {
   return <Slide direction="down" {...props} />;
 }
 
-class DeleteAssessment extends Component {
+class DeletionModal extends Component {
   static defaultProps = {
     type: CTA.DELETE,
-    surveyId: '',
+    itemId: '',
+    itemName: '',
+    itemSubName: '',
   };
 
   static propTypes = {
-    surveyDeleteHandler: PropTypes.func.isRequired,
+    itemDeleteHandler: PropTypes.func.isRequired,
     openDialog: PropTypes.bool.isRequired,
     closeDialog: PropTypes.func.isRequired,
     type: PropTypes.string,
-    surveyId: PropTypes.string,
+    itemId: PropTypes.string,
+    itemName: PropTypes.string,
+    itemSubName: PropTypes.string,
     classes: PropTypes.objectOf(PropTypes.string).isRequired,
   };
 
   deleteSurveyHandler = () => {
-    const { surveyId, surveyDeleteHandler } = this.props;
-    surveyDeleteHandler(surveyId);
+    const { itemId, itemDeleteHandler } = this.props;
+    itemDeleteHandler(itemId);
   };
 
   onDialogClose = () => {
@@ -40,26 +44,26 @@ class DeleteAssessment extends Component {
 
   render() {
     const {
-      openDialog, type, surveyId, classes,
+      openDialog, type, itemId, classes, itemName, itemSubName,
     } = this.props;
-    let surveyCount = 'this assessment';
-    let surveyDeterminer = 'it is';
-    let dialogTitle = 'Delete Assessment';
+    let itemCount = `this ${itemName}`;
+    let itemDeterminer = 'it is';
+    let dialogTitle = `Delete ${itemName} ${itemSubName}`;
     let cancelButtonLabel = 'Cancel';
 
-    if (!surveyId) {
-      surveyCount = 'all assessments';
-      surveyDeterminer = 'they are';
-      dialogTitle = 'Delete All Assessments';
+    if (!itemId) {
+      itemCount = `all ${itemName}s`;
+      itemDeterminer = 'they are';
+      dialogTitle = `Delete All ${itemName}s`;
     }
     if (type === CTA.DELETE_CONFIRMED) {
-      dialogTitle = surveyId ? 'Assessment Deleted' : 'Assessments Deleted';
+      dialogTitle = itemId ? `${itemName} deleted` : `${itemName}s deleted`;
       cancelButtonLabel = 'OK';
     }
 
-    const dialogContent = type === 'delete' ? `Do you want to delete ${surveyCount}? You cannot recovery as
-                         ${surveyDeterminer} permanently purged from the Assessment Database.`
-      : 'Assessment(s) permanently deleted from DataBase!';
+    const dialogContent = type === 'delete' ? `Do you want to delete ${itemCount}? You cannot recovery as
+                         ${itemDeterminer} permanently purged from the ${itemName} Database.`
+      : `${itemName}s permanently deleted from DataBase!`;
 
     const isDeleteButtonVisible = cancelButtonLabel === 'Cancel';
     const deleteButton = isDeleteButtonVisible ? (
@@ -74,15 +78,15 @@ class DeleteAssessment extends Component {
           keepMounted
           open={openDialog}
           onClose={this.onDialogClose}
-          aria-labelledby="delete-survey-dialog"
+          aria-labelledby="delete-item-dialog"
           disableBackdropClick
           classes={{ paper: classes.paper }}
         >
-          <DialogTitle id="delete-survey-title">
+          <DialogTitle id="delete-item-title">
             {dialogTitle}
           </DialogTitle>
           <DialogContent>
-            <DialogContentText id="delete-survey-content">
+            <DialogContentText id="delete-item-content">
               {dialogContent}
             </DialogContentText>
           </DialogContent>
@@ -98,4 +102,4 @@ class DeleteAssessment extends Component {
   }
 }
 
-export default withStyles(deleteAssessmentStyle)(DeleteAssessment);
+export default withStyles(deletionModalStyle)(DeletionModal);

@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Alert from 'react-s-alert';
+import AlertMessage from 'components/Alert/Message';
 import { Delete, FileCopy, Poll } from '@material-ui/icons';
 import LinkIcon from '@material-ui/icons/Link';
 import ReactTooltip from 'react-tooltip';
@@ -23,7 +24,7 @@ import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/listP
 import {
   fetchSurveys, deleteSurvey, deleteAllSurvey,
 } from 'services/api/assessment';
-import DeleteAssessment from 'modules/shared/delete-assessment';
+import DeletionModal from 'modules/shared/deletion-modal';
 import { checkAuth } from 'services/api/user';
 import { classesType, historyType } from 'types/global';
 import Loading from 'components/Loader/Loading';
@@ -111,7 +112,7 @@ class AdminAssessmentQuestionList extends React.Component {
   handleClick = (e) => {
     e.preventDefault();
     Alert.closeAll();
-    Alert.success('Copied');
+    Alert.success(<AlertMessage>Assessment link is copied!</AlertMessage>);
   };
 
   copySurvey = (id) => {
@@ -181,6 +182,16 @@ class AdminAssessmentQuestionList extends React.Component {
         </Table>
       );
     }
+    const deletionPopup = isOpenDeleteSurvey ? (
+      <DeletionModal
+        openDialog={isOpenDeleteSurvey}
+        closeDialog={this.onCloseDeleteSurveyHandler}
+        itemId={sId}
+        itemDeleteHandler={this.successDelete}
+        type={dialogType}
+        itemName="Assessment"
+      />
+    ) : null;
     return (
       <div>
         <GridContainer>
@@ -201,13 +212,7 @@ class AdminAssessmentQuestionList extends React.Component {
             </Card>
           </GridItem>
         </GridContainer>
-        <DeleteAssessment
-          openDialog={isOpenDeleteSurvey}
-          closeDialog={this.onCloseDeleteSurveyHandler}
-          surveyId={sId}
-          surveyDeleteHandler={this.successDelete}
-          type={dialogType}
-        />
+        {deletionPopup}
       </div>);
   }
 }

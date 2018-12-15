@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Alert from 'react-s-alert';
+import AlertMessage from 'components/Alert/Message';
 import { Delete, QuestionAnswer as QAIcon } from '@material-ui/icons';
 import LinkIcon from '@material-ui/icons/Link';
 import ReactTooltip from 'react-tooltip';
@@ -18,7 +19,7 @@ import Card from 'components/Card/Card';
 import CardBody from 'components/Card/CardBody';
 import Loading from 'components/Loader/Loading';
 import CustomInfo from 'components/CustomInfo/CustomInfo';
-import DeleteAssessment from 'modules/shared/delete-assessment';
+import DeletionModal from 'modules/shared/deletion-modal';
 import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/listPageStyle';
 import {
   fetchSurveys, fetchSurveysByAssessorId, deleteSurvey, deleteAllSurvey,
@@ -120,7 +121,7 @@ class AssessorAssessmentQuestionList extends React.Component {
   handleClick = (e) => {
     e.preventDefault();
     Alert.closeAll();
-    Alert.success('Copied');
+    Alert.success(<AlertMessage>Assessment link is copied!</AlertMessage>);
   };
 
   render() {
@@ -178,6 +179,19 @@ class AssessorAssessmentQuestionList extends React.Component {
           </TableBody>
         </Table>);
     }
+
+    const deletionPopup = isOpenDeleteSurvey
+      ? (
+        <DeletionModal
+          openDialog={isOpenDeleteSurvey}
+          closeDialog={this.onCloseDeleteSurveyHandler}
+          itemId={sId}
+          itemDeleteHandler={this.successDelete}
+          type={dialogType}
+          itemName="Assessment"
+        />
+      ) : null;
+
     return (
       <React.Fragment>
         <GridContainer>
@@ -193,13 +207,7 @@ class AssessorAssessmentQuestionList extends React.Component {
             </Card>
           </GridItem>
         </GridContainer>
-        <DeleteAssessment
-          openDialog={isOpenDeleteSurvey}
-          closeDialog={this.onCloseDeleteSurveyHandler}
-          surveyId={sId}
-          surveyDeleteHandler={this.successDelete}
-          type={dialogType}
-        />
+        {deletionPopup}
       </React.Fragment>
     );
   }

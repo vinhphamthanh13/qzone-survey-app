@@ -18,6 +18,7 @@ import GridItem from 'components/Grid/GridItem';
 import accountPageStyles from 'assets/jss/material-dashboard-pro-react/modules/accountPageStyles';
 import ChangePassword from 'modules/auth/change-password';
 import { classesType } from 'types/global';
+import AlertMessage from 'components/Alert/Message';
 
 class Account extends PureComponent {
   static propTypes = {
@@ -77,9 +78,9 @@ class Account extends PureComponent {
     resetPasswordAction({ email }, (response) => {
       if (response.status === 200) {
         this.setState({ openChangePassword: true });
-        Alert.success('Code is successfully send to your email');
+        Alert.success(<AlertMessage>Code is successfully send to your email</AlertMessage>);
       } else {
-        Alert.error(response.data.message);
+        Alert.error(<AlertMessage>{response.data.message}</AlertMessage>);
       }
     });
   };
@@ -101,13 +102,23 @@ class Account extends PureComponent {
       }
     });
 
+    const changePasswordModal = openChangePassword
+      ? (
+        <ChangePassword
+          openChangePassword={openChangePassword}
+          closeChangePassword={this.onCloseChangePassword}
+          email={email}
+        />) : null;
+    const editEmailIcon = !isEditMode
+      ? <IconButton disabled={!isEditMode} aria-label="Edit" onClick={this.changeEditMode}><EditIcon /></IconButton>
+      : null;
     return (
       <ExpansionPanel expanded>
         <ExpansionPanelSummary classes={{ content: classes.summary }}>
           <h4>Account</h4>
           <div>
             <Button onClick={this.onOpenChangePassword}>Change password</Button>
-            {!isEditMode && <IconButton aria-label="Edit" onClick={this.changeEditMode}><EditIcon /></IconButton>}
+            {editEmailIcon}
             {isEditMode
               && (
                 <IconButton
@@ -150,11 +161,7 @@ class Account extends PureComponent {
               />
             </GridItem>
           </GridContainer>
-          <ChangePassword
-            openChangePassword={openChangePassword}
-            closeChangePassword={this.onCloseChangePassword}
-            email={email}
-          />
+          {changePasswordModal}
         </ExpansionPanelDetails>
       </ExpansionPanel>
     );

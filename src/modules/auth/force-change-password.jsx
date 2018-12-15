@@ -14,6 +14,7 @@ import { completeNewPasswordChallenge, fetchUserByUserId } from 'services/api/us
 import validatePassword from 'utils/validatePassword';
 import verificationPageStyle from 'assets/jss/material-dashboard-pro-react/modules/verificationPageStyle';
 import { classesType } from 'types/global';
+import AlertMessage from 'components/Alert/Message';
 import PasswordField from './password-field';
 
 class ForceChangePassword extends React.Component {
@@ -61,9 +62,9 @@ class ForceChangePassword extends React.Component {
         const { closeChangePassword } = this.props;
         closeChangePassword();
         fetchUserAction(userId);
-        Alert.success('Password is successfully updated', { effect: 'bouncyflip' });
+        Alert.success(<AlertMessage>Password is successfully updated</AlertMessage>, { effect: 'bouncyflip' });
       } else {
-        Alert.error(response.data.message, { effect: 'bouncyflip' });
+        Alert.error(<AlertMessage>{response.data.message}</AlertMessage>, { effect: 'bouncyflip' });
       }
     });
   };

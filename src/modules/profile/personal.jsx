@@ -32,12 +32,12 @@ class Personal extends PureComponent {
     saveProfile: PropTypes.func.isRequired,
     resetPersonalInfo: PropTypes.func.isRequired,
     inputChange: PropTypes.func.isRequired,
-  }
+  };
 
   static defaultProps = {
     firstname: undefined,
     lastname: undefined,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -57,52 +57,52 @@ class Personal extends PureComponent {
   onChangeFirstname = (event) => {
     const { inputChange: inputChangeAction } = this.props;
     inputChangeAction(event, 'firstname', 'name');
-  }
+  };
 
   onChangeLastname = (event) => {
     const { inputChange: inputChangeAction } = this.props;
     inputChangeAction(event, 'lastname', 'name');
-  }
+  };
 
   onChangeDepartment = (event) => {
     const { inputChange: inputChangeAction } = this.props;
     inputChangeAction(event, 'department', 'department');
-  }
+  };
 
   onChangeCompanyName = (event) => {
     const { inputChange: inputChangeAction } = this.props;
     inputChangeAction(event, 'companyName', 'companyName');
-  }
+  };
 
   onChangePhoneNumber = (phoneNumber) => {
     if (phoneNumber) {
       const { inputChange: inputChangeAction } = this.props;
       inputChangeAction({ target: { value: phoneNumber } }, 'phoneNumber', 'phoneNumber');
     }
-  }
+  };
 
   onChangePostCode = (event) => {
     const { inputChange: inputChangeAction } = this.props;
     inputChangeAction(event, 'postCode', 'postCode');
-  }
+  };
 
   changeEditMode = () => {
     this.setState({ isEditMode: true });
-  }
+  };
 
   cancelEdit = () => {
-    const { isEditMode, ...oldPersonalInfo } = this.state;
+    const { ...oldPersonalInfo } = this.state;
     const { resetPersonalInfo: resetPersonalInfoAction } = this.props;
     this.setState(
       { isEditMode: false },
       () => { resetPersonalInfoAction(oldPersonalInfo); },
     );
-  }
+  };
 
   saveEdit = () => {
     const { saveProfile: saveProfileAction } = this.props;
     this.setState({ isEditMode: false }, saveProfileAction);
-  }
+  };
 
   render() {
     const {

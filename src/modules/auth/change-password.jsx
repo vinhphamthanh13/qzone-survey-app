@@ -4,6 +4,7 @@ import {
   TextField, Dialog, DialogContent, DialogTitle, DialogActions, DialogContentText,
 } from '@material-ui/core';
 import Alert from 'react-s-alert';
+import AlertMessage from 'components/Alert/Message';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -89,9 +90,9 @@ class ChangePassword extends React.Component {
       if (response.status === 200) {
         const { closeChangePassword } = this.props;
         closeChangePassword();
-        Alert.success('Password is successfully updated');
+        Alert.success(<AlertMessage>Password is successfully updated</AlertMessage>);
       } else {
-        Alert.error(response.data.message);
+        Alert.error(<AlertMessage>{response.data.message}</AlertMessage>);
       }
     });
   };

@@ -6,6 +6,11 @@ export const eUserType = {
   admin: 'ADMIN',
 };
 
+export const ASUser = [
+  { userType: eUserType.assessor },
+  { userType: eUserType.sponsor },
+];
+
 export const eSurveyStatus = {
   completed: 'COMPLETED',
   inProgress: 'INPROGRESS',

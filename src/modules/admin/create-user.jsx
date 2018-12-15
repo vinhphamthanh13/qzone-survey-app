@@ -17,19 +17,23 @@ import CardHeader from 'components/Card/CardHeader';
 import Button from 'components/CustomButtons/Button';
 import {
   fetchMultipleUserType,
-  registerUser, fetchUserTypeListActionCreator,
-  updateUser, updateUserActionCreator, deleteUser, deleteUserActionCreator,
+  registerUser,
+  updateUser,
+  updateUserActionCreator,
+  deleteUser,
+  deleteUserActionCreator,
 } from 'services/api/user';
 import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/listPageStyle';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import SweetAlert from 'react-bootstrap-sweetalert';
 import buttonStyle from 'assets/jss/material-dashboard-pro-react/components/buttonStyle';
 import Loading from 'components/Loader/Loading';
 import CustomInfo from 'components/CustomInfo/CustomInfo';
+import AlertMessage from 'components/Alert/Message';
+import DeletionModal from 'modules/shared/deletion-modal';
 import createUserStyle from './create-user.style';
-import { eUserType } from '../../constants';
 import CreateUserDialog from './create-user-dialog';
+import { ASUser } from '../../constants';
 
 class CreateUser extends PureComponent {
   static propTypes = {
@@ -37,7 +41,6 @@ class CreateUser extends PureComponent {
     userList: PropTypes.arrayOf(PropTypes.object).isRequired,
     fetchMultipleUserTypeAction: PropTypes.func.isRequired,
     registerUserAction: PropTypes.func.isRequired,
-    fetchUserTypeListAction: PropTypes.func.isRequired,
     updateUserAction: PropTypes.func.isRequired,
     updateUserRequestAction: PropTypes.func.isRequired,
     deleteUserAction: PropTypes.func.isRequired,
@@ -59,10 +62,7 @@ class CreateUser extends PureComponent {
     const {
       fetchMultipleUserTypeAction,
     } = this.props;
-    fetchMultipleUserTypeAction([
-      { userType: eUserType.assessor },
-      { userType: eUserType.sponsor },
-    ]);
+    fetchMultipleUserTypeAction(ASUser);
   };
 
   openDialog = () => {
@@ -73,20 +73,43 @@ class CreateUser extends PureComponent {
     this.setState({ isDialogOpen: false, editedUser: null });
   };
 
+  onUpdateList = () => {
+    const { fetchMultipleUserTypeAction } = this.props;
+    fetchMultipleUserTypeAction(ASUser);
+    this.closeDialog();
+  };
+
   onCreateUser = (newUser) => {
     const {
-      registerUserAction, fetchUserTypeListAction, updateUserAction, updateUserRequestAction,
+      registerUserAction, updateUserAction, updateUserRequestAction,
     } = this.props;
     const { editedUser } = this.state;
 
     if (editedUser) {
-      updateUserRequestAction(newUser, (response) => {
+      const {
+        companyName, department, deviceId, deviceToken,
+        eReceivedInfo, email, firstname, lastname, phoneNumber, postCode,
+      } = newUser;
+      const updatedUser = {
+        companyName,
+        department,
+        deviceId,
+        deviceToken,
+        eReceivedInfo,
+        email,
+        firstname,
+        lastname,
+        phoneNumber,
+        postCode,
+      };
+      updateUserRequestAction(updatedUser, (response) => {
         if (response) {
           if (response.status !== 200) {
-            Alert.error(response.data.message);
+            Alert.error(<AlertMessage>{response.data.message}</AlertMessage>);
           } else {
-            Alert.success('User was updated successfully');
+            Alert.success(<AlertMessage>User was updated successfully</AlertMessage>);
             updateUserAction(newUser);
+            this.onUpdateList();
           }
         }
       });
@@ -94,10 +117,10 @@ class CreateUser extends PureComponent {
       registerUserAction(newUser, (response) => {
         if (response) {
           if (response.status !== 201) {
-            Alert.error(response.data.message);
+            Alert.error(<AlertMessage>{response.data.message}</AlertMessage>);
           } else {
-            Alert.success('User was created successfully');
-            fetchUserTypeListAction({ data: [response.data] });
+            Alert.success(<AlertMessage>User was created successfully</AlertMessage>);
+            this.onUpdateList();
           }
         }
       });
@@ -121,9 +144,9 @@ class CreateUser extends PureComponent {
     deleteUserRequestAction({ email: deletedUser.email }, (response) => {
       if (response) {
         if (response.status !== 200) {
-          Alert.error(response.data.message);
+          Alert.error(<AlertMessage>{response.data.message}</AlertMessage>);
         } else {
-          Alert.success('User was deleted successfully');
+          Alert.success(<AlertMessage>User was deleted successfully</AlertMessage>);
           this.setState({ deletedUser: null });
           deleteUserAction(deletedUser);
         }
@@ -138,6 +161,13 @@ class CreateUser extends PureComponent {
   render() {
     const { classes, userList } = this.props;
     const { isDialogOpen, editedUser, deletedUser } = this.state;
+    const creation = isDialogOpen ? (
+      <CreateUserDialog
+        open={isDialogOpen}
+        closeDialog={this.closeDialog}
+        onCreateUser={this.onCreateUser}
+        editedUser={editedUser}
+      />) : null;
     let listUser = null;
     if (Object.is(userList, null) || Object.is(userList, undefined)) {
       listUser = <Loading isLoading />;
@@ -182,30 +212,20 @@ class CreateUser extends PureComponent {
           </TableBody>
         </Table>);
     }
+    const deletionPopup = deletedUser ? (
+      <DeletionModal
+        openDialog={!!deletedUser}
+        closeDialog={this.cancelDelete}
+        itemDeleteHandler={this.confirmDelete}
+        itemName="User"
+        itemSubName={deletedUser.email}
+        itemId="email"
+      />
+    ) : null;
     return (
       <React.Fragment>
-        <CreateUserDialog
-          open={isDialogOpen}
-          closeDialog={this.closeDialog}
-          onCreateUser={this.onCreateUser}
-          editedUser={editedUser}
-        />
-        <SweetAlert
-          title="Delete User"
-          warning
-          showCancel
-          show={deletedUser !== null}
-          onConfirm={this.confirmDelete}
-          onCancel={this.cancelDelete}
-          confirmBtnCssClass={`${classes.button} ${classes.success}`}
-          cancelBtnCssClass={`${classes.button} ${classes.danger}`}
-          confirmBtnText="Delete anyway"
-          cancelBtnText="Cancel"
-        >
-          {`Do you want to delete ${deletedUser ? deletedUser.userType.toLowerCase() : ''} `}
-          <code>{`${deletedUser ? deletedUser.email : ''}`}</code>
-          {' ?'}
-        </SweetAlert>
+        {creation}
+        {deletionPopup}
         <Card>
           <CardHeader color="primary" icon>
             <CardIcon color="rose"><GroupIcon /></CardIcon>
@@ -238,7 +258,6 @@ export default compose(
   connect(mapStateToProps, {
     fetchMultipleUserTypeAction: fetchMultipleUserType,
     registerUserAction: registerUser,
-    fetchUserTypeListAction: fetchUserTypeListActionCreator,
     updateUserRequestAction: updateUser,
     updateUserAction: updateUserActionCreator,
     deleteUserRequestAction: deleteUser,
