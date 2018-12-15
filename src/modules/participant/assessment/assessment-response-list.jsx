@@ -24,6 +24,7 @@ import { fetchSurveyAnswerByParticipantId } from 'services/api/assessment-respon
 import fullName from 'utils/fullName';
 import { classesType } from 'types/global';
 import Loading from 'components/Loader/Loading';
+import CustomInfo from 'components/CustomInfo/CustomInfo';
 import { getUserFromSession, getTokenFromSession } from '../../../utils/session';
 import { eSurveyStatus } from '../../../constants';
 
@@ -45,8 +46,13 @@ class AssessmentResponseList extends React.Component {
 
   render() {
     const { classes, surveyAnswers } = this.props;
-    const surveyAnswerList = surveyAnswers && surveyAnswers.length >= 0
-      ? (
+    let surveyAnswerList = null;
+    if (Object.is(surveyAnswers, null) || Object.is(surveyAnswers, undefined)) {
+      surveyAnswerList = <Loading isLoading />;
+    } else if (surveyAnswers.length === 0) {
+      surveyAnswerList = <CustomInfo content="You have no Assessment at the moment!" />;
+    } else {
+      surveyAnswerList = (
         <Table className={classes.table} aria-labelledby="tableTitle">
           <TableHead>
             <TableRow>
@@ -87,7 +93,8 @@ class AssessmentResponseList extends React.Component {
             }
           </TableBody>
         </Table>
-      ) : <Loading isLoading />;
+      );
+    }
     return (
       <GridContainer>
         <GridItem xs={12}>
