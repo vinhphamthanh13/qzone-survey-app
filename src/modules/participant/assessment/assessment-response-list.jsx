@@ -67,7 +67,7 @@ class AssessmentResponseList extends React.Component {
             {
               surveyAnswers.map(({ participant, status, surveyId }, index) => (
                 <TableRow key={participant.id}>
-                  <TableCell>{index + 1}</TableCell>
+                  <TableCell padding="checkbox" className={classes.order}>{index + 1}</TableCell>
                   <TableCell>
                     {surveyAnswers[index].surveyDTO.title}
                   </TableCell>

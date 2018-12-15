@@ -35,6 +35,9 @@ const listPageStyle = {
   justifyContentCenter: {
     justifyContent: 'center',
   },
+  order: {
+    textAlign: 'center',
+  },
   ...buttonStyle,
 };
 export default listPageStyle;

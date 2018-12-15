@@ -137,7 +137,7 @@ class AdminAssessmentQuestionList extends React.Component {
         <Table className={classes.table} aria-labelledby="tableTitle">
           <TableHead>
             <TableRow>
-              <TableCell>
+              <TableCell padding="checkbox" className={classes.order}>
                 <Checkbox
                   className={classes.deleteAllChecked}
                   checked={deleteAll || false}
@@ -161,7 +161,7 @@ class AdminAssessmentQuestionList extends React.Component {
             {(surveyList)
               .map((surveyItem, index) => (
                 <TableRow hover key={surveyItem.id}>
-                  <TableCell>{index + 1}</TableCell>
+                  <TableCell padding="checkbox" className={classes.order}>{index + 1}</TableCell>
                   <TableCell><Link data-tip="Show Survey" to={`/assessment/show/${surveyItem.id}`}>{surveyItem.title}</Link></TableCell>
                   <TableCell>
                     {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
