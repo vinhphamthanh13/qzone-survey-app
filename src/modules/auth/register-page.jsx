@@ -24,7 +24,7 @@ import validatePassword from 'utils/validatePassword';
 import validateEmail from 'utils/validateEmail';
 import { classesType, historyType } from 'types/global';
 import PasswordField from './password-field';
-import { eUserType, eRegisterPage } from '../../constants';
+import { eUserType, eRegisterPage, AUTH_PAGE } from '../../constants';
 
 class RegisterPage extends React.Component {
   static propTypes = {
@@ -288,7 +288,7 @@ class RegisterPage extends React.Component {
                       open={openVerificationModal}
                       email={email}
                       history={history}
-                      page="register"
+                      page={AUTH_PAGE.REGISTER}
                     />
                   </CardBody>
                   <CardFooter className={classes.footerWrapper}>

@@ -18,8 +18,11 @@ import { connect } from 'react-redux';
 import Button from 'components/CustomButtons/Button';
 import { verifyUser } from 'services/api/user';
 import verificationPageStyle from 'assets/jss/material-dashboard-pro-react/modules/verificationPageStyle';
+import { exactLength } from 'utils/validateLength';
 import { classesType, historyType } from 'types/global';
 import ResendCodeButton from './resend-code-button';
+
+const codeLength = exactLength(6);
 
 class VerificationPage extends React.PureComponent {
   static propTypes = {
@@ -30,18 +33,23 @@ class VerificationPage extends React.PureComponent {
     page: PropTypes.string.isRequired,
     actionAfterSubmit: PropTypes.func,
     verifyUser: PropTypes.func.isRequired,
-  }
+  };
 
   static defaultProps = {
     email: undefined,
     actionAfterSubmit: undefined,
-  }
+  };
 
   countDownResendCodeId = null;
 
   constructor(props) {
     super(props);
-    this.state = { code: '', errorCode: false, countDownResendCode: 30 };
+    this.state = {
+      code: '',
+      isCodeValid: false,
+      errorCode: false,
+      countDownResendCode: 60,
+    };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -51,7 +59,7 @@ class VerificationPage extends React.PureComponent {
         this.startCountDown();
       } else {
         this.stopCountDown();
-        this.setState({ countDownResendCode: 30 });
+        this.setState({ countDownResendCode: 60 });
       }
     }
   }
@@ -72,13 +80,13 @@ class VerificationPage extends React.PureComponent {
         },
       );
     }, 1000);
-  }
+  };
 
   stopCountDown = () => {
     if (this.countDownResendCodeId) {
       clearInterval(this.countDownResendCodeId);
     }
-  }
+  };
 
   handleVerificationCode = () => {
     const { code } = this.state;
@@ -99,15 +107,41 @@ class VerificationPage extends React.PureComponent {
         this.setState({ errorCode: true });
       }
     });
-  }
+  };
 
   cbAfterResend = () => {
-    this.setState({ errorCode: false, countDownResendCode: 30 }, this.startCountDown);
-  }
+    this.setState({
+      errorCode: false,
+      countDownResendCode: 60,
+      isCodeValid: false,
+    }, this.startCountDown);
+  };
+
+  handleCodeChange = ({ target: { value } }) => {
+    this.setState({
+      code: value,
+      errorCode: false,
+      isCodeValid: codeLength(value),
+    });
+  };
+
+  handleClose = () => {
+    const { history } = this.props;
+    history.push('/login');
+  };
 
   render() {
-    const { email, classes, open } = this.props;
-    const { countDownResendCode, errorCode } = this.state;
+    const {
+      email,
+      classes,
+      open,
+      page,
+    } = this.props;
+    const {
+      countDownResendCode,
+      errorCode,
+      isCodeValid,
+    } = this.state;
 
     return (
       <React.Fragment>
@@ -132,9 +166,11 @@ class VerificationPage extends React.PureComponent {
             >
               <InputLabel htmlFor="code-input">Enter code</InputLabel>
               <Input
+                autoFocus
+                disabled={!countDownResendCode}
                 fullWidth
                 id="code-input"
-                onChange={(event) => { this.setState({ code: event.target.value }); }}
+                onChange={this.handleCodeChange}
               />
               {errorCode && <FormHelperText id="code-input-wrapper">Please enter correct code!</FormHelperText>}
             </FormControl>
@@ -147,7 +183,13 @@ class VerificationPage extends React.PureComponent {
               countDownResendCode={countDownResendCode}
             />
             <div>
-              <Button onClick={this.handleVerificationCode} color="rose">
+              {Object.is(page, 'register')
+              && (
+                <Button disabled={isCodeValid || !!countDownResendCode} onClick={this.handleClose}>
+                  Exit
+                </Button>)
+              }
+              <Button disabled={!isCodeValid || !countDownResendCode} onClick={this.handleVerificationCode} color="rose">
                 Submit
               </Button>
             </div>

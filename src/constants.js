@@ -47,3 +47,8 @@ export const CTA = {
   DELETE: 'delete',
   DELETE_CONFIRMED: 'deleted',
 };
+
+export const AUTH_PAGE = {
+  LOGIN: 'login',
+  REGISTER: 'register',
+};
