@@ -15,12 +15,14 @@ class PasswordField extends PureComponent {
     confirmPwdState: PropTypes.string.isRequired,
     classes: classesType.isRequired,
     useLabel: PropTypes.bool,
+    disabledFields: PropTypes.bool,
   };
 
   static defaultProps = {
     useLabel: true,
     onChangeDefaultPwd: null,
     defaultPwdState: 'null',
+    disabledFields: false,
   };
 
   render() {
@@ -33,6 +35,7 @@ class PasswordField extends PureComponent {
       confirmPwdState,
       classes,
       useLabel,
+      disabledFields,
     } = this.props;
 
     const defaultPwdProps = {
@@ -51,6 +54,7 @@ class PasswordField extends PureComponent {
         onChange: onChangePassword,
         type: 'password',
         placeholder: !useLabel ? 'Password (required)' : undefined,
+        disabled: disabledFields,
       },
     };
 
@@ -60,6 +64,7 @@ class PasswordField extends PureComponent {
         onChange: onChangeConfirmPwd,
         type: 'password',
         placeholder: !useLabel ? 'Confirm password (required)' : undefined,
+        disabled: disabledFields,
       },
     };
 
