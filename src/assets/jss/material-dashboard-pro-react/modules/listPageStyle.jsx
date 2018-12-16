@@ -1,6 +1,6 @@
 import { cardTitle, container } from 'assets/jss/material-dashboard-pro-react';
 import buttonStyle from 'assets/jss/material-dashboard-pro-react/components/buttonStyle';
-import { roseColor } from 'assets/jss/color-theme';
+import { roseColor, blackRgb } from 'assets/jss/color-theme';
 
 const listPageStyle = {
   // for checkbox
@@ -34,6 +34,16 @@ const listPageStyle = {
   },
   justifyContentCenter: {
     justifyContent: 'center',
+  },
+  order: {
+    textAlign: 'center',
+  },
+  surveyLogo: {
+    width: '45px',
+    height: '100%',
+  },
+  assessTooltip: {
+    background: `rgba(${blackRgb}, .2) !important`,
   },
   ...buttonStyle,
 };

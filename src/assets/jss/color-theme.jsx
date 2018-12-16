@@ -47,3 +47,4 @@ export const blackRgb = '0,0,0';
 export const whiteRgb = '255,255,255';
 export const dustyGrayRgb = '153,153,153';
 export const seanceRgb = '156,39,176';
+export const roseRgb = '48,63,159';

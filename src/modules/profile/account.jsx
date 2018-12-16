@@ -149,8 +149,8 @@ class Account extends PureComponent {
             <GridItem md={12}>
               <CustomInput
                 labelText="Email (required)"
-                success={emailState === 'success'}
-                error={emailState === 'error'}
+                success={emailState === 'success' && isEditMode}
+                error={emailState === 'error' && isEditMode}
                 id="email"
                 formControlProps={{ fullWidth: true, disabled: !isEditMode }}
                 inputProps={{

@@ -93,7 +93,8 @@ class RegisterPage extends React.Component {
     }
   };
 
-  registerClick = () => {
+  registerClick = (event) => {
+    event.preventDefault();
     const newState = {};
     const {
       firstname, lastname, email, password, confirmPwd, registerTermAndCondition,
@@ -199,8 +200,8 @@ class RegisterPage extends React.Component {
                 <CardHeader className={classes.headerWrapper}>
                   <h3 className={classes.standardCardTitle}>Register</h3>
                 </CardHeader>
-                <CardBody>
-                  <form>
+                <form onSubmit={this.registerClick}>
+                  <CardBody>
                     <div className={classes.inputWrapper}>
                       <CustomInput
                         labelText="First name (required)"
@@ -208,6 +209,7 @@ class RegisterPage extends React.Component {
                         error={firstnameState === 'error'}
                         id="firstname"
                         inputProps={{
+                          autoFocus: true,
                           onChange: event => this.change(event, 'firstname', 'name'),
                           type: 'text',
                         }}
@@ -288,22 +290,22 @@ class RegisterPage extends React.Component {
                       history={history}
                       page="register"
                     />
-                  </form>
-                </CardBody>
-                <CardFooter className={classes.footerWrapper}>
-                  <MaterialButton
-                    className={classes.loginButton}
-                    onClick={this.goToLogin}
-                  >
-                    Log in
-                  </MaterialButton>
-                  <Button
-                    color="rose"
-                    onClick={this.registerClick}
-                  >
-                    Register
-                  </Button>
-                </CardFooter>
+                  </CardBody>
+                  <CardFooter className={classes.footerWrapper}>
+                    <MaterialButton
+                      className={classes.loginButton}
+                      onClick={this.goToLogin}
+                    >
+                      Log in
+                    </MaterialButton>
+                    <Button
+                      color="rose"
+                      type="submit"
+                    >
+                      Register
+                    </Button>
+                  </CardFooter>
+                </form>
               </Card>
             </GridItem>
           </GridContainer>

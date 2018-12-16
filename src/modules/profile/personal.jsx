@@ -167,13 +167,14 @@ class Personal extends PureComponent {
             <GridItem md={6}>
               <CustomInput
                 labelText="First name (required)"
-                success={firstnameState === 'success'}
-                error={firstnameState === 'error'}
+                success={firstnameState === 'success' && isEditMode}
+                error={firstnameState === 'error' && isEditMode}
                 id="firstname"
                 formControlProps={{ fullWidth: true }}
                 inputProps={{
-                  onChange: this.onChangeFirstname,
                   disabled: !isEditMode,
+                  autoFocus: isEditMode, // the focus() only works from the initial render
+                  onChange: this.onChangeFirstname,
                 }}
                 value={firstname}
               />
@@ -181,8 +182,8 @@ class Personal extends PureComponent {
             <GridItem md={6}>
               <CustomInput
                 labelText="Last name (required)"
-                success={lastnameState === 'success'}
-                error={lastnameState === 'error'}
+                success={lastnameState === 'success' && isEditMode}
+                error={lastnameState === 'error' && isEditMode}
                 id="lastname"
                 formControlProps={{ fullWidth: true }}
                 inputProps={{

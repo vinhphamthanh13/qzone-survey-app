@@ -1,6 +1,6 @@
 import {
   Person as PersonIcon, Timeline as TimelineIcon, Poll as PollIcon, Group as GroupIcon,
-  QuestionAnswer as QAIcon,
+  QuestionAnswer as QAIcon, GroupOutlined as GroupOutlinedIcon,
 } from '@material-ui/icons';
 import Dashboard from 'modules/dashboard/dashboard';
 import Profile from 'modules/profile/profile';
@@ -67,7 +67,7 @@ export const sponsorRoutes = [
   {
     path: '/sponsor/participant/list',
     name: 'Participants',
-    icon: GroupIcon,
+    icon: GroupOutlinedIcon,
     component: ParticipantList,
   },
 ];

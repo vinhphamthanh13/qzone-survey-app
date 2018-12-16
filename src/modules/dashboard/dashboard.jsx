@@ -67,10 +67,13 @@ class Dashboard extends PureComponent {
     const { isDataLoading } = this.state;
     const isLoading = !isDataLoading[index][index];
     const newDataLoading = isDataLoading.map((_, ind) => ({ [ind]: false }));
-    // const newDataLoading = isDataLoading.slice();
     newDataLoading[index][index] = isLoading;
     this.setState({ isDataLoading: newDataLoading });
   };
+
+  loadChart = (isLoad, surveyId) => (
+    isLoad ? <SurveyChart sId={surveyId} loadData={isLoad} /> : <div />
+  );
 
   render() {
     const { classes } = this.props;
@@ -95,10 +98,8 @@ class Dashboard extends PureComponent {
               {assessment.title}
             </Typography>
           </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            { isDataLoading[index][index]
-            && <SurveyChart sId={assessment.id} loadData={isDataLoading[index][index]} />
-            }
+          <ExpansionPanelDetails className={classes.customInfo}>
+            { this.loadChart(isDataLoading[index][index], assessment.id) }
           </ExpansionPanelDetails>
         </ExpansionPanel>));
     }

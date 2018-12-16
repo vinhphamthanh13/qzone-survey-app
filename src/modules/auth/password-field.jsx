@@ -41,6 +41,7 @@ class PasswordField extends PureComponent {
         onChange: onChangeDefaultPwd,
         type: 'password',
         placeholder: !useLabel ? 'Default Password (required)' : undefined,
+        autoFocus: true,
       },
     };
 
