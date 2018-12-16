@@ -9,7 +9,6 @@ import {
 } from 'services/api/user';
 import { UPDATE_PROFILE } from 'services/api/profile';
 import { FETCH_SURVEY } from 'services/api/assessment';
-import { eUserType } from '../constants';
 
 const initialState = {
   userTypeList: [],
@@ -34,9 +33,6 @@ export default function (state = initialState, action) {
       return state;
     }
     case FORCE_RESET_PASSWORD: {
-      return { ...state, isDefaultPwdChanged: action.payload };
-    }
-    case eUserType.temporary: {
       if (action.payload && action.payload.status === 200) {
         return { ...state, forceChangePasswordSuccess: true };
       }

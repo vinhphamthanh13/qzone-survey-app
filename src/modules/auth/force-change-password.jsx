@@ -46,7 +46,8 @@ class ForceChangePassword extends React.Component {
     this.state = { ...this.defaultState };
   }
 
-  handleChangePassword = () => {
+  handleChangePassword = (event) => {
+    event.preventDefault();
     const { email, userId } = this.props;
     const {
       completeNewPasswordChallenge: completeNewPasswordChallengeAction,
@@ -125,32 +126,34 @@ class ForceChangePassword extends React.Component {
           disableEscapeKeyDown
         >
           <DialogTitle id="form-dialog-title">Change password</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              Please enter your new password for security!
-            </DialogContentText>
-            <div>
-              <GridContainer>
-                <GridItem md={12}>
-                  <PasswordField
-                    onChangeDefaultPwd={this.onChangeDefaultPassword}
-                    onChangePassword={this.onChangePassword}
-                    onChangeConfirmPwd={this.onChangeConfirmPwd}
-                    defaultPwdState={defaultPwdState}
-                    passwordState={newPasswordState}
-                    confirmPwdState={confirmPwdState}
-                  />
-                </GridItem>
-              </GridContainer>
-            </div>
-          </DialogContent>
-          <DialogActions className={classes.dialogActions}>
-            <div>
-              <Button disabled={isSubmitDisabled} onClick={this.handleChangePassword} color="rose">
-                Submit
-              </Button>
-            </div>
-          </DialogActions>
+          <form onSubmit={this.handleChangePassword}>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Please enter your new password for security!
+              </DialogContentText>
+              <div>
+                <GridContainer>
+                  <GridItem md={12}>
+                    <PasswordField
+                      onChangeDefaultPwd={this.onChangeDefaultPassword}
+                      onChangePassword={this.onChangePassword}
+                      onChangeConfirmPwd={this.onChangeConfirmPwd}
+                      defaultPwdState={defaultPwdState}
+                      passwordState={newPasswordState}
+                      confirmPwdState={confirmPwdState}
+                    />
+                  </GridItem>
+                </GridContainer>
+              </div>
+            </DialogContent>
+            <DialogActions className={classes.dialogActions}>
+              <div>
+                <Button disabled={isSubmitDisabled} type="submit" color="rose">
+                  Submit
+                </Button>
+              </div>
+            </DialogActions>
+          </form>
         </Dialog>
       </React.Fragment>
     );

@@ -174,7 +174,7 @@ class AdminAssessmentQuestionList extends React.Component {
                     <Link data-tip="Clone Survey" to="#" onClick={() => this.copySurvey(surveyItem.id)}><FileCopy /></Link>
                   </TableCell>
                   <TableCell>
-                    <ReactTooltip />
+                    <ReactTooltip className={classes.assessTooltip} />
                   </TableCell>
                 </TableRow>
               ))}

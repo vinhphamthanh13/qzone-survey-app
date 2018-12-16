@@ -8,6 +8,7 @@ import ChartistGraph from 'react-chartist';
 import Chartist from 'chartist';
 import 'chartist-plugin-tooltips';
 import { classesType } from 'types/global';
+import CustomInfo from 'components/CustomInfo/CustomInfo';
 import { fetchSurveyChart } from 'services/api/assessment-response';
 
 class SurveyChart extends PureComponent {
@@ -56,7 +57,12 @@ class SurveyChart extends PureComponent {
         return chart;
       });
     }
-    this.setState({ chart: { labels, series } });
+    this.setState({
+      chart: {
+        labels: labels.length === 0 ? null : labels,
+        series: series.length === 0 ? null : series,
+      },
+    });
   }
 
   drawingChart = (state, classes) => ({
@@ -111,14 +117,14 @@ class SurveyChart extends PureComponent {
   render() {
     const { classes } = this.props;
     const chartData = this.drawingChart(this.state, classes);
-    return (
+    const chartDrawing = chartData.data.labels ? (
       <ChartistGraph
         data={chartData.data}
         type="Bar"
         options={chartData.options}
         listener={chartData.animation}
-      />
-    );
+      />) : <CustomInfo content="There is no response from the assessment" />;
+    return (chartDrawing);
   }
 }
 

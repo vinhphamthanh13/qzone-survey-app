@@ -173,7 +173,7 @@ class AssessorAssessmentQuestionList extends React.Component {
                   </CopyToClipboard>
                 </TableCell>
                 <TableCell>
-                  <ReactTooltip />
+                  <ReactTooltip className={classes.assessTooltip} />
                 </TableCell>
               </TableRow>))}
           </TableBody>

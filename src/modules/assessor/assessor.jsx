@@ -34,18 +34,20 @@ class Assessor extends React.Component {
     };
   }
 
-  handleAssessor = () => {
+  handleAssessor = (event) => {
+    event.preventDefault();
     const {
       registerUser: registerUserAction,
       reloadAssessorList,
     } = this.props;
+    this.handleClose();
     registerUserAction(this.state, (response) => {
       if (response) {
         if (response.status !== 201) {
           Alert.error(<AlertMessage>{response.data.message}</AlertMessage>);
         } else {
           Alert.success(<AlertMessage>Assessor was created successfully</AlertMessage>);
-          this.setState({ open: false }, reloadAssessorList);
+          reloadAssessorList();
         }
       }
     });
@@ -69,7 +71,6 @@ class Assessor extends React.Component {
     this.setState({ open: true });
   };
 
-
   render() {
     const { open } = this.state;
     const { firstname, lastname, emailState } = this.state;
@@ -85,45 +86,48 @@ class Assessor extends React.Component {
           aria-labelledby="form-dialog-title"
         >
           <DialogTitle id="form-dialog-title">Add Assessor</DialogTitle>
-          <DialogContent>
-            <GridContainer style={{ marginBottom: 10 }}>
-              <GridItem md={6}>
-                <TextField
-                  fullWidth
-                  id="firstName"
-                  label="Enter first name"
-                  onChange={event => this.handleChange(event, 'firstname')}
-                />
-              </GridItem>
-              <GridItem md={6}>
-                <TextField
-                  fullWidth
-                  id="lastName"
-                  label="Enter last name"
-                  onChange={event => this.handleChange(event, 'lastname')}
-                />
-              </GridItem>
-            </GridContainer>
-            <GridContainer>
-              <GridItem md={12}>
-                <TextField
-                  fullWidth
-                  id="email"
-                  type="email"
-                  label="Enter email"
-                  onChange={event => this.handleChange(event, 'email')}
-                />
-              </GridItem>
-            </GridContainer>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose}>
-              Close
-            </Button>
-            <Button disabled={submitDisabled} onClick={this.handleAssessor} color="rose">
-              Submit
-            </Button>
-          </DialogActions>
+          <form onSubmit={this.handleAssessor}>
+            <DialogContent>
+              <GridContainer style={{ marginBottom: 10 }}>
+                <GridItem md={6}>
+                  <TextField
+                    fullWidth
+                    id="firstName"
+                    label="Enter first name"
+                    onChange={event => this.handleChange(event, 'firstname')}
+                    autoFocus
+                  />
+                </GridItem>
+                <GridItem md={6}>
+                  <TextField
+                    fullWidth
+                    id="lastName"
+                    label="Enter last name"
+                    onChange={event => this.handleChange(event, 'lastname')}
+                  />
+                </GridItem>
+              </GridContainer>
+              <GridContainer>
+                <GridItem md={12}>
+                  <TextField
+                    fullWidth
+                    id="email"
+                    type="email"
+                    label="Enter email"
+                    onChange={event => this.handleChange(event, 'email')}
+                  />
+                </GridItem>
+              </GridContainer>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleClose}>
+                Close
+              </Button>
+              <Button disabled={submitDisabled} type="submit" color="rose">
+                Submit
+              </Button>
+            </DialogActions>
+          </form>
         </Dialog>
       </React.Fragment>
     );

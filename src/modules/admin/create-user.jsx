@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import {
   Table, TableBody, TableCell, TableHead, TableRow, IconButton,
 } from '@material-ui/core';
+import { noop } from 'lodash';
 import { Group as GroupIcon } from '@material-ui/icons';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { formatPhoneNumber } from 'react-phone-number-input';
+import PhoneInput, { formatPhoneNumber } from 'react-phone-number-input';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import Alert from 'react-s-alert';
@@ -24,6 +25,7 @@ import {
   deleteUserActionCreator,
 } from 'services/api/user';
 import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/listPageStyle';
+import profileStyle from 'assets/jss/material-dashboard-pro-react/modules/profileStyle';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import buttonStyle from 'assets/jss/material-dashboard-pro-react/components/buttonStyle';
@@ -143,11 +145,11 @@ class CreateUser extends PureComponent {
 
     deleteUserRequestAction({ email: deletedUser.email }, (response) => {
       if (response) {
+        this.setState({ deletedUser: null });
         if (response.status !== 200) {
           Alert.error(<AlertMessage>{response.data.message}</AlertMessage>);
         } else {
           Alert.success(<AlertMessage>User was deleted successfully</AlertMessage>);
-          this.setState({ deletedUser: null });
           deleteUserAction(deletedUser);
         }
       }
@@ -192,7 +194,14 @@ class CreateUser extends PureComponent {
                 <TableCell>{user.firstname}</TableCell>
                 <TableCell>{user.lastname}</TableCell>
                 <TableCell>{user.email}</TableCell>
-                <TableCell>{formatPhoneNumber(user.phoneNumber, 'International')}</TableCell>
+                <TableCell>
+                  <PhoneInput
+                    className={classes.phoneNumber}
+                    onChange={noop}
+                    disabled
+                    value={formatPhoneNumber(user.phoneNumber, 'International')}
+                  />
+                </TableCell>
                 <TableCell>
                   <IconButton
                     aria-label="Edit"
@@ -254,7 +263,12 @@ const mapStateToProps = state => ({
 });
 
 export default compose(
-  withStyles({ ...buttonStyle, cardIconTitle: listPageStyle.cardIconTitle, ...createUserStyle }),
+  withStyles({
+    ...buttonStyle,
+    cardIconTitle: listPageStyle.cardIconTitle,
+    ...createUserStyle,
+    phoneNumber: profileStyle.phoneNumber,
+  }),
   connect(mapStateToProps, {
     fetchMultipleUserTypeAction: fetchMultipleUserType,
     registerUserAction: registerUser,

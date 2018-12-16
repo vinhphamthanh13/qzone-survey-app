@@ -72,7 +72,8 @@ class CreateUserDialog extends PureComponent {
     return null;
   }
 
-  handleSubmit = () => {
+  handleSubmit = (event) => {
+    event.preventDefault();
     const { onCreateUser } = this.props;
     const { ...userInfo } = this.state;
     onCreateUser(userInfo);
@@ -139,121 +140,125 @@ class CreateUserDialog extends PureComponent {
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">{`${editedUser ? 'Edit' : 'Create'} user`}</DialogTitle>
-        <DialogContent>
-          <GridContainer>
-            <GridItem md={12}>
-              <FormControl fullWidth>
-                <InputLabel htmlFor="user-type">User type (required)</InputLabel>
-                <Select
-                  value={userType}
-                  onChange={event => this.change(event, 'userType')}
+        <form onSubmit={this.handleSubmit}>
+          <DialogContent>
+            <GridContainer>
+              <GridItem md={12}>
+                <FormControl fullWidth>
+                  <InputLabel htmlFor="user-type">User type (required)</InputLabel>
+                  <Select
+                    value={userType}
+                    onChange={event => this.change(event, 'userType')}
+                    inputProps={{
+                      name: 'user-type',
+                      id: 'user-type',
+                      disabled: !!editedUser,
+                    }}
+                  >
+                    <MenuItem value={eUserType.assessor}>
+                      {eUserType.assessor}
+                    </MenuItem>
+                    <MenuItem value={eUserType.sponsor}>
+                      {eUserType.sponsor}
+                    </MenuItem>
+                  </Select>
+                </FormControl>
+              </GridItem>
+              <GridItem md={12}>
+                <CustomInput
+                  labelText="Email (required)"
+                  success={emailState === 'success'}
+                  error={emailState === 'error'}
+                  id="email"
+                  formControlProps={{ fullWidth: true }}
                   inputProps={{
-                    name: 'user-type',
-                    id: 'user-type',
+                    autoFocus: true,
+                    onChange: e => this.change(e, 'email', 'email'),
+                    type: 'email',
                     disabled: !!editedUser,
                   }}
-                >
-                  <MenuItem value={eUserType.assessor}>
-                    {eUserType.assessor}
-                  </MenuItem>
-                  <MenuItem value={eUserType.sponsor}>
-                    {eUserType.sponsor}
-                  </MenuItem>
-                </Select>
-              </FormControl>
-            </GridItem>
-            <GridItem md={12}>
-              <CustomInput
-                labelText="Email (required)"
-                success={emailState === 'success'}
-                error={emailState === 'error'}
-                id="email"
-                formControlProps={{ fullWidth: true }}
-                inputProps={{
-                  autoFocus: true,
-                  onChange: e => this.change(e, 'email', 'email'),
-                  type: 'email',
-                  disabled: !!editedUser,
-                }}
-                value={email}
-              />
-            </GridItem>
-            <GridItem md={6}>
-              <CustomInput
-                labelText="First name (required)"
-                success={firstnameState === 'success'}
-                error={firstnameState === 'error'}
-                id="firstname"
-                formControlProps={{ fullWidth: true }}
-                inputProps={{ onChange: e => this.change(e, 'firstname', 'name') }}
-                value={firstname}
-              />
-            </GridItem>
-            <GridItem md={6}>
-              <CustomInput
-                labelText="Last name (required)"
-                success={lastnameState === 'success'}
-                error={lastnameState === 'error'}
-                id="lastname"
-                formControlProps={{ fullWidth: true }}
-                inputProps={{ onChange: e => this.change(e, 'lastname', 'name') }}
-                value={lastname}
-              />
-            </GridItem>
-            <GridItem md={6}>
-              <CustomInput
-                labelText="Your department"
-                id="department"
-                formControlProps={{ fullWidth: true }}
-                inputProps={{ onChange: e => this.change(e, 'department') }}
-                value={department}
-              />
-            </GridItem>
-            <GridItem md={6}>
-              <CustomInput
-                labelText="Your company"
-                id="company"
-                formControlProps={{ fullWidth: true }}
-                inputProps={{ onChange: e => this.change(e, 'companyName') }}
-                value={companyName}
-              />
-            </GridItem>
-            <GridItem md={6}>
-              <PhoneInput
-                placeholder="Your phone number"
-                className={classes.phoneNumber}
-                onChange={value => this.change({ target: { value: value || '' } }, 'phoneNumber')}
-                value={phoneNumber}
-              />
-            </GridItem>
-            <GridItem md={6}>
-              <CustomInput
-                labelText="Your post code"
-                id="postCode"
-                formControlProps={{ fullWidth: true }}
-                inputProps={{ onChange: e => this.change(e, 'postCode') }}
-                value={postCode}
-              />
-            </GridItem>
-          </GridContainer>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={this.handleClose}>
-            Close
-          </Button>
-          <Button
-            disabled={
-              emailState !== 'success'
-              || firstnameState !== 'success'
-              || lastnameState !== 'success'
-              || !formDirty
-            }
-            onClick={this.handleSubmit}
-            color="rose"
-          >
-            Submit
-          </Button>
-        </DialogActions>
+                  value={email}
+                />
+              </GridItem>
+              <GridItem md={6}>
+                <CustomInput
+                  labelText="First name (required)"
+                  success={firstnameState === 'success'}
+                  error={firstnameState === 'error'}
+                  id="firstname"
+                  formControlProps={{ fullWidth: true }}
+                  inputProps={{
+                    onChange: e => this.change(e, 'firstname', 'name'),
+                  }}
+                  value={firstname}
+                />
+              </GridItem>
+              <GridItem md={6}>
+                <CustomInput
+                  labelText="Last name (required)"
+                  success={lastnameState === 'success'}
+                  error={lastnameState === 'error'}
+                  id="lastname"
+                  formControlProps={{ fullWidth: true }}
+                  inputProps={{ onChange: e => this.change(e, 'lastname', 'name') }}
+                  value={lastname}
+                />
+              </GridItem>
+              <GridItem md={6}>
+                <CustomInput
+                  labelText="Your department"
+                  id="department"
+                  formControlProps={{ fullWidth: true }}
+                  inputProps={{ onChange: e => this.change(e, 'department') }}
+                  value={department}
+                />
+              </GridItem>
+              <GridItem md={6}>
+                <CustomInput
+                  labelText="Your company"
+                  id="company"
+                  formControlProps={{ fullWidth: true }}
+                  inputProps={{ onChange: e => this.change(e, 'companyName') }}
+                  value={companyName}
+                />
+              </GridItem>
+              <GridItem md={6}>
+                <PhoneInput
+                  placeholder="Your phone number"
+                  className={classes.phoneNumber}
+                  onChange={value => this.change({ target: { value: value || '' } }, 'phoneNumber')}
+                  value={phoneNumber}
+                />
+              </GridItem>
+              <GridItem md={6}>
+                <CustomInput
+                  labelText="Your post code"
+                  id="postCode"
+                  formControlProps={{ fullWidth: true }}
+                  inputProps={{ onChange: e => this.change(e, 'postCode') }}
+                  value={postCode}
+                />
+              </GridItem>
+            </GridContainer>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose}>
+              Close
+            </Button>
+            <Button
+              disabled={
+                emailState !== 'success'
+                || firstnameState !== 'success'
+                || lastnameState !== 'success'
+                || !formDirty
+              }
+              type="submit"
+              color="rose"
+            >
+              Submit
+            </Button>
+          </DialogActions>
+        </form>
       </Dialog>
     );
   }

@@ -65,6 +65,7 @@ class SurveyForm extends React.Component {
                 fullWidth: true,
               }}
               inputProps={{
+                autoFocus: true,
                 onChange: event => change(event, 'title', 'title'),
                 type: 'text',
               }}

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import validateEmail from 'utils/validateEmail';
 import { updateProfile } from 'services/api/profile';
-import { resetPassword, forceResetPasswordStatus } from 'services/api/user';
+import { resetPassword } from 'services/api/user';
 import ForceChangePassword from 'modules/auth/force-change-password';
 import { userDetailType } from 'types/global';
 import Account from './account';
@@ -11,14 +11,9 @@ import Personal from './personal';
 import { userStatus as eUserStatus } from '../../constants';
 
 class Profile extends React.Component {
-  static defaultProps = {
-    forceResetPasswordStatus: null,
-  };
-
   static propTypes = {
     user: userDetailType.isRequired,
     updateProfile: PropTypes.func.isRequired,
-    forceResetPasswordStatus: PropTypes.func,
   };
 
   constructor(props) {
@@ -123,8 +118,7 @@ class Profile extends React.Component {
   };
 
   handleClose = () => {
-    const { forceResetPasswordStatus: forceResetAction } = this.props;
-    forceResetAction(false);
+    this.setState({ openResetPasswordStatus: false });
   };
 
   render() {
@@ -176,5 +170,4 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   updateProfile,
   resetPassword,
-  forceResetPasswordStatus,
 })(Profile);

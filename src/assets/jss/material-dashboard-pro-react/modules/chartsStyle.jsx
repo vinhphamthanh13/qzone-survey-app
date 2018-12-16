@@ -31,6 +31,9 @@ const chartsStyle = {
     borderRadius: '5px',
     fontWeight: 'bold',
   },
+  customInfo: {
+    justifyContent: 'center',
+  },
 };
 
 export default chartsStyle;

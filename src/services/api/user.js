@@ -14,7 +14,7 @@ export const VERIFY_RESEND_USER = 'verify_resend_user';
 export const FETCH_USERTYPE_LIST = 'fetch_usertype_list';
 export const FETCH_USER_BY_USERID = 'fetch_user_by_userid';
 export const TOGGLE_LOADING = 'auth_toggle_loading';
-export const FORCE_RESET_PASSWORD = 'force_reset_password';
+export const FORCE_RESET_PASSWORD = userStatus.temporary;
 export const FETCH_MULTIPLE_USER_TYPE = 'fetch_multiple_user_type';
 export const UPDATE_USER = 'update_user';
 export const REQUEST_UPDATE_USER = 'request_update_user';
@@ -120,16 +120,12 @@ export function toggleLoading() {
   return { type: TOGGLE_LOADING };
 }
 
-export function forceResetPasswordStatus(value) {
-  return { type: FORCE_RESET_PASSWORD, payload: value };
-}
-
 export async function completeNewPasswordChallenge(values, callback) {
   const axiosConfig = { headers: await makeHeaders() };
   axios.post(`${REG_SERVICE_URL}/completeNewPasswordChallenge`, values, axiosConfig)
     .then(handleSuccessResponse(callback))
     .catch(handleErrorResponse(callback));
-  return { type: userStatus.temporary };
+  return { type: FORCE_RESET_PASSWORD };
 }
 
 export const updateUser = async (userInfo, callback) => {

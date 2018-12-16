@@ -22,6 +22,7 @@ import Loading from 'components/Loader/Loading';
 import {
   classesType, matchType, historyType, userDetailType,
 } from 'types/global';
+import SurveyLogo from 'assets/img/survey.png';
 import { eUserType } from '../../constants';
 
 Survey.Survey.cssType = 'bootstrap';
@@ -43,7 +44,7 @@ class AssessmentQuestionnaire extends React.Component {
       surveyData: {
         title: '',
         description: '',
-        logo: '',
+        logo: SurveyLogo,
         privacy: false,
         loading: true,
         id: '',
@@ -116,7 +117,7 @@ class AssessmentQuestionnaire extends React.Component {
               <h4>Logo:</h4>
             </GridItem>
             <GridItem xs={12} sm={7}>
-              <img src={logo} alt="survey logo" />
+              <img src={logo} className={classes.surveyLogo} alt="survey logo" />
             </GridItem>
           </GridContainer>
           <GridContainer>
