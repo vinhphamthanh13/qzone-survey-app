@@ -15,8 +15,11 @@ import { changePassword } from 'services/api/user';
 import validatePassword from 'utils/validatePassword';
 import verificationPageStyle from 'assets/jss/material-dashboard-pro-react/modules/verificationPageStyle';
 import { classesType } from 'types/global';
+import { exactLength } from 'utils/validateLength';
 import PasswordField from './password-field';
 import ResendCodeButton from './resend-code-button';
+
+const codeLength = exactLength(6);
 
 class ChangePassword extends React.Component {
   static propTypes = {
@@ -29,10 +32,12 @@ class ChangePassword extends React.Component {
 
   defaultState = {
     code: '',
+    errorCode: false,
+    isCodeValid: false,
     newPassword: undefined,
-    newPasswordState: false,
+    newPasswordState: '',
     confirmPwd: undefined,
-    confirmPwdState: false,
+    confirmPwdState: '',
     countDownResendCode: 60,
   };
 
@@ -80,7 +85,7 @@ class ChangePassword extends React.Component {
   };
 
   cbAfterResend = () => {
-    this.setState({ countDownResendCode: 60 }, this.startCountDown);
+    this.setState({ countDownResendCode: 360 }, this.startCountDown);
   };
 
   handleChangePassword = () => {
@@ -92,6 +97,9 @@ class ChangePassword extends React.Component {
         closeChangePassword();
         Alert.success(<AlertMessage>Password is successfully updated</AlertMessage>);
       } else {
+        this.setState({
+          errorCode: true,
+        });
         Alert.error(<AlertMessage>{response.data.message}</AlertMessage>);
       }
     });
@@ -125,9 +133,30 @@ class ChangePassword extends React.Component {
     this.setState(this.defaultState, closeChangePassword);
   };
 
+  handleOnchangeCode = ({ target: { value } }) => {
+    this.setState({
+      code: value,
+      isCodeValid: codeLength(value),
+      errorCode: false,
+    });
+  };
+
   render() {
     const { classes, openChangePassword, email } = this.props;
-    const { countDownResendCode, newPasswordState, confirmPwdState } = this.state;
+    const {
+      countDownResendCode,
+      newPasswordState,
+      confirmPwdState,
+      newPassword,
+      isCodeValid,
+      confirmPwd,
+      errorCode,
+    } = this.state;
+    const disableSubmitButton = newPasswordState === 'error'
+      || confirmPwdState === 'error'
+      || countDownResendCode === 0 || !isCodeValid
+      || !newPassword || !confirmPwd || errorCode;
+
     return (
       <React.Fragment>
         <Dialog
@@ -148,15 +177,18 @@ class ChangePassword extends React.Component {
                     onChangeConfirmPwd={this.onChangeConfirmPwd}
                     passwordState={newPasswordState}
                     confirmPwdState={confirmPwdState}
+                    disabledFields={!countDownResendCode}
                   />
                 </GridItem>
                 <GridItem md={12}>
                   <TextField
+                    disabled={!countDownResendCode}
                     fullWidth
                     id="code"
                     label="Enter code"
-                    onChange={(event) => { this.setState({ code: event.target.value }); }}
+                    onChange={this.handleOnchangeCode}
                   />
+                  {errorCode && <div style={{ color: 'red' }}>Code is invalid</div>}
                 </GridItem>
               </GridContainer>
             </div>
@@ -172,7 +204,7 @@ class ChangePassword extends React.Component {
               <Button onClick={this.onDialogClose}>
                 Close
               </Button>
-              <Button onClick={this.handleChangePassword} color="rose">
+              <Button disabled={disableSubmitButton} onClick={this.handleChangePassword} color="rose">
                 Submit
               </Button>
             </div>

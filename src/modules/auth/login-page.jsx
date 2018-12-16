@@ -25,7 +25,7 @@ import VerificationPage from './verification-page';
 import ResetPassword from './reset-password';
 import validateEmail from '../../utils/validateEmail';
 import validatePassword from '../../utils/validatePassword';
-import { userStatus } from '../../constants';
+import { userStatus, AUTH_PAGE } from '../../constants';
 
 class LoginPage extends React.Component {
   static propTypes = {
@@ -200,7 +200,7 @@ class LoginPage extends React.Component {
                       open={openVerificationModal}
                       email={email}
                       history={history}
-                      page="login"
+                      page={AUTH_PAGE.LOGIN}
                       actionAfterSubmit={this.login}
                     />
                   </CardBody>

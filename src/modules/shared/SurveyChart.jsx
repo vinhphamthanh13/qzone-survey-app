@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import chartsStyle from 'assets/jss/material-dashboard-pro-react/modules/chartsStyle';
 import withStyles from '@material-ui/core/styles/withStyles';
 import ChartistGraph from 'react-chartist';
-import Chartist from 'chartist';
+// import Chartist from 'chartist';
 import 'chartist-plugin-tooltips';
 import { classesType } from 'types/global';
 import CustomInfo from 'components/CustomInfo/CustomInfo';
@@ -65,7 +65,7 @@ class SurveyChart extends PureComponent {
     });
   }
 
-  drawingChart = (state, classes) => ({
+  drawingChart = state => ({
     data: state.chart,
     options: {
       seriesBarDistance: 10,
@@ -75,10 +75,10 @@ class SurveyChart extends PureComponent {
       },
       height: '300px',
       plugins: [
-        Chartist.plugins.tooltip({
-          class: classes.chartToolTip,
-          appendToBody: false,
-        }),
+        // Chartist.plugins.tooltip({
+        //   class: classes.chartToolTip,
+        //   appendToBody: false,
+        // }),
       ],
     },
     responsiveOptions: [

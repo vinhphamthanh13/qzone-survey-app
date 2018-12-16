@@ -23,7 +23,6 @@ const chartsStyle = {
   },
   chartToolTip: {
     textAlign: 'center',
-    position: 'relative',
     top: 'auto',
     left: 'auto',
     background: 'rgba(254, 250, 240, 0.8)',

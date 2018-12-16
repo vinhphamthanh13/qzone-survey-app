@@ -101,14 +101,6 @@ class Account extends PureComponent {
         }
       }
     });
-
-    const changePasswordModal = openChangePassword
-      ? (
-        <ChangePassword
-          openChangePassword={openChangePassword}
-          closeChangePassword={this.onCloseChangePassword}
-          email={email}
-        />) : null;
     const editEmailIcon = !isEditMode
       ? <IconButton disabled={!isEditMode} aria-label="Edit" onClick={this.changeEditMode}><EditIcon /></IconButton>
       : null;
@@ -161,7 +153,11 @@ class Account extends PureComponent {
               />
             </GridItem>
           </GridContainer>
-          {changePasswordModal}
+          <ChangePassword
+            openChangePassword={openChangePassword}
+            closeChangePassword={this.onCloseChangePassword}
+            email={email}
+          />
         </ExpansionPanelDetails>
       </ExpansionPanel>
     );
