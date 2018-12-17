@@ -13,7 +13,7 @@ import {
 import Sidebar from 'components/Sidebar/Sidebar';
 import Header from 'components/Header/Header';
 import appStyle from 'assets/jss/material-dashboard-pro-react/layouts/dashboardStyle';
-import logo from 'assets/img/logo-white.svg';
+import logo from 'assets/img/logo-white.png';
 import { fetchUserByUserId } from 'services/api/user';
 import 'perfect-scrollbar/css/perfect-scrollbar.css';
 import NotFound from 'modules/not-found/not-found';
