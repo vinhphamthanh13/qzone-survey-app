@@ -13,12 +13,13 @@ import { sessionService } from 'redux-react-session';
 import headerLinksStyle from 'assets/jss/material-dashboard-pro-react/components/headerLinksStyle';
 import { Storage } from 'react-jhipster';
 import { classesType } from 'types/global';
-import { surveyLocalData } from '../../constants';
+import { surveyLocalData, eUserType } from '../../constants';
 
 class HeaderLinks extends React.Component {
   static propTypes = {
     classes: classesType.isRequired,
     history: PropTypes.objectOf(PropTypes.any).isRequired,
+    userType: PropTypes.string.isRequired,
   };
 
   state = {
@@ -54,7 +55,7 @@ class HeaderLinks extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, userType } = this.props;
     const { notificationOpen, userOpen } = this.state;
     const dropdownItem = `${classes.dropdownItem} `;
     const managerClasses = classNames({
@@ -62,28 +63,30 @@ class HeaderLinks extends React.Component {
     });
     return (
       <div>
-        <Button
-          color="transparent"
-          simple
-          aria-label="Dashboard"
-          href="/admin/dashboard"
-          justIcon
-          className={classes.buttonLink}
-          muiClasses={{
-            label: '',
-          }}
-        >
-          <Dashboard
-            className={
-              `${classes.headerLinksSvg} ${classes.links}`
-            }
-          />
-          <Hidden mdUp>
-            <span className={classes.linkText}>
-              {'Dashboard'}
-            </span>
-          </Hidden>
-        </Button>
+        { userType === eUserType.admin
+        && (
+          <Button
+            color="transparent"
+            simple
+            aria-label="Dashboard"
+            href="/admin/dashboard"
+            justIcon
+            className={classes.buttonLink}
+            muiClasses={{
+              label: '',
+            }}
+          >
+            <Dashboard
+              className={
+                `${classes.headerLinksSvg} ${classes.links}`
+              }
+            />
+            <Hidden mdUp>
+              <span className={classes.linkText}>
+                {'Dashboard'}
+              </span>
+            </Hidden>
+          </Button>) }
         <Manager className={managerClasses}>
           <Target>
             <Button

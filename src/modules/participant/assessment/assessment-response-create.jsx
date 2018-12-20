@@ -22,7 +22,7 @@ class AssessmentResponseCreate extends React.Component {
   static propTypes = {
     classes: classesType.isRequired,
     match: matchType.isRequired,
-    surveyData: PropTypes.objectOf(PropTypes.object).isRequired,
+    surveyData: PropTypes.objectOf(PropTypes.any).isRequired,
     history: historyType.isRequired,
     fetchSurveyAction: PropTypes.func.isRequired,// eslint-disable-line
     createSurveyResponseAction: PropTypes.func.isRequired,
@@ -30,7 +30,7 @@ class AssessmentResponseCreate extends React.Component {
     fetchResponseByAssessmentAndParticipantIdAction: PropTypes.func.isRequired,
     toggleLoadingAction: PropTypes.func.isRequired,// eslint-disable-line
     loading: PropTypes.bool.isRequired,// eslint-disable-line
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -74,7 +74,7 @@ class AssessmentResponseCreate extends React.Component {
       toggleLoadingAction();
       fetchSurveyAction(id);
     }
-  }
+  };
 
   sendDataToServer = (survey) => {
     let resultAsString = survey.data;
@@ -100,14 +100,13 @@ class AssessmentResponseCreate extends React.Component {
         }
       });
     });
-  }
+  };
 
   render() {
     const { classes, surveyData } = this.props;
     if (!surveyData) { return null; }
     const { title, description, survey } = surveyData;
     surveyInfo = new Survey.Model(survey);
-
     return (
       <div className={classes.content}>
         <div className={classes.container}>

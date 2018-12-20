@@ -11,7 +11,7 @@ import { classesType } from 'types/global';
 
 function Header({ ...props }) {
   const {
-    classes, color, miniActive, sidebarMinimize, handleDrawerToggle,
+    classes, color, miniActive, sidebarMinimize, handleDrawerToggle, userType,
   } = props;
   const appBarClasses = cx({ [` ${classes[color]}`]: color });
   const sidebarMinimizeClass = classes.sidebarMinimize;
@@ -44,7 +44,7 @@ function Header({ ...props }) {
           <div className={classes.flex} />
         </Hidden>
         <Hidden smDown implementation="css">
-          <HeaderLinks />
+          <HeaderLinks userType={userType} />
         </Hidden>
         <Hidden mdUp>
           <Button
@@ -68,10 +68,12 @@ Header.propTypes = {
   handleDrawerToggle: PropTypes.func.isRequired,
   sidebarMinimize: PropTypes.func.isRequired,
   miniActive: PropTypes.bool.isRequired,
+  userType: PropTypes.string,
 };
 
 Header.defaultProps = {
   color: undefined,
+  userType: 'Admin',
 };
 
 export default withStyles(headerStyle)(Header);
