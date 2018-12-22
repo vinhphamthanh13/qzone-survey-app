@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { ClipLoader } from 'react-spinners';
+import { PulseLoader } from 'react-spinners';
 import { roseColor } from 'assets/jss/color-theme';
 
 const styles = () => ({
@@ -16,9 +16,9 @@ const styles = () => ({
 const Loading = props => (
   props.isLoading && (
     <div className={props.classes.wrapper}>
-      <ClipLoader
+      <PulseLoader
         sizeUnit="px"
-        size={62}
+        size={18}
         color={roseColor}
         loading={props.isLoading}
       />
