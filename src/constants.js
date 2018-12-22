@@ -52,3 +52,6 @@ export const AUTH_PAGE = {
   LOGIN: 'login',
   REGISTER: 'register',
 };
+
+export const LOGO_FALLBACK1 = 'https://logo.clearbit.com/quizlet.com';
+export const LOGO_FALLBACK2 = 'https://logo.clearbit.com/quizlet.nl';

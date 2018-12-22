@@ -23,7 +23,7 @@ import {
   classesType, matchType, historyType, userDetailType,
 } from 'types/global';
 import SurveyLogo from 'assets/img/survey.png';
-import { eUserType } from '../../constants';
+import { eUserType, LOGO_FALLBACK1, LOGO_FALLBACK2 } from '../../constants';
 
 Survey.Survey.cssType = 'bootstrap';
 Survey.defaultBootstrapCss.navigationButton = 'btn btn-green';
@@ -118,7 +118,11 @@ class AssessmentQuestionnaire extends React.Component {
               <h4>Logo:</h4>
             </GridItem>
             <GridItem xs={12} sm={7}>
-              <img src={logo} className={classes.surveyLogo} alt="survey logo" />
+              <picture>
+                <source srcSet={LOGO_FALLBACK1} />
+                <source srcSet={LOGO_FALLBACK2} />
+                <img width="42px" height="42px" src={logo} className={classes.surveyLogo} alt="survey logo" />
+              </picture>
             </GridItem>
           </GridContainer>
           <GridContainer>
