@@ -16,6 +16,7 @@ import Button from 'components/CustomButtons/Button';
 import CardIcon from 'components/Card/CardIcon';
 import CardFooter from 'components/Card/CardFooter';
 import CardHeader from 'components/Card/CardHeader';
+import Loading from 'components/Loader/Loading';
 import { Poll } from '@material-ui/icons';
 import fullName from 'utils/fullName';
 import { classesType, matchType, historyType } from 'types/global';
@@ -28,8 +29,8 @@ class AssessmentResponseResult extends React.Component {
     history: historyType.isRequired,
     fetchSurvey: PropTypes.func.isRequired,
     fetchSurveyParticipantResponse: PropTypes.func.isRequired,
-    survey: PropTypes.objectOf(PropTypes.object).isRequired,
-    participantAnswer: PropTypes.objectOf(PropTypes.object).isRequired,
+    survey: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired,
+    participantAnswer: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired,
   };
 
   componentWillMount() {
@@ -50,17 +51,65 @@ class AssessmentResponseResult extends React.Component {
 
   render() {
     const { classes, survey: surveyDetail, participantAnswer } = this.props;
+    let assessmentResult = null;
     if (!participantAnswer || !participantAnswer.questionAnswers
       || !surveyDetail || !surveyDetail.user) {
-      return <div>Participant is not associated with this survey</div>;
+      assessmentResult = <Loading isLoading />;
+    } else {
+      const {
+        title, description, survey, user,
+      } = surveyDetail;
+      surveyInfo = new Survey.Model(survey);
+      surveyInfo.mode = 'display';
+      surveyInfo.data = JSON.parse(participantAnswer.questionAnswers);
+      assessmentResult = (
+        <React.Fragment>
+          <GridContainer>
+            <GridItem xs={12} sm={3}>
+              <h4>Title:</h4>
+            </GridItem>
+            <GridItem xs={12} sm={7}>
+              <h4>{title}</h4>
+            </GridItem>
+          </GridContainer>
+          <GridContainer>
+            <GridItem xs={12} sm={3}>
+              <h4>Logo:</h4>
+            </GridItem>
+            <GridItem xs={12} sm={7}>
+              <img src={surveyDetail.logo} alt="survey logo" />
+            </GridItem>
+          </GridContainer>
+          <GridContainer>
+            <GridItem xs={12} sm={3}>
+              <h4>Description:</h4>
+            </GridItem>
+            <GridItem xs={12} sm={7}>
+              <h4>
+                {description}
+              </h4>
+            </GridItem>
+          </GridContainer>
+          <GridContainer>
+            <GridItem xs={12} sm={3}>
+              <h4>Assessor:</h4>
+            </GridItem>
+            <GridItem xs={12} sm={7}>
+              <h4>
+                {fullName(user)}
+              </h4>
+            </GridItem>
+          </GridContainer>
+          <hr />
+          <GridContainer>
+            <GridItem xs={12} sm={10}>
+              <Survey.Survey model={surveyInfo} />
+            </GridItem>
+          </GridContainer>
+        </React.Fragment>
+      );
     }
 
-    const {
-      title, description, survey, user,
-    } = surveyDetail;
-    surveyInfo = new Survey.Model(survey);
-    surveyInfo.mode = 'display';
-    surveyInfo.data = JSON.parse(participantAnswer.questionAnswers);
     return (
       <GridContainer>
         <GridItem xs={12}>
@@ -72,48 +121,7 @@ class AssessmentResponseResult extends React.Component {
               <h3 className={classes.cardIconTitle}>Assessments result</h3>
             </CardHeader>
             <CardBody>
-              <GridContainer>
-                <GridItem xs={12} sm={3}>
-                  <h4>Title:</h4>
-                </GridItem>
-                <GridItem xs={12} sm={7}>
-                  <h4>{title}</h4>
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={3}>
-                  <h4>Logo:</h4>
-                </GridItem>
-                <GridItem xs={12} sm={7}>
-                  <img src={surveyDetail.logo} alt="survey logo" />
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={3}>
-                  <h4>Description:</h4>
-                </GridItem>
-                <GridItem xs={12} sm={7}>
-                  <h4>
-                    {description}
-                  </h4>
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={3}>
-                  <h4>Assessor:</h4>
-                </GridItem>
-                <GridItem xs={12} sm={7}>
-                  <h4>
-                    {fullName(user)}
-                  </h4>
-                </GridItem>
-              </GridContainer>
-              <hr />
-              <GridContainer>
-                <GridItem xs={12} sm={10}>
-                  <Survey.Survey model={surveyInfo} />
-                </GridItem>
-              </GridContainer>
+              {assessmentResult}
             </CardBody>
             <CardFooter className={classes.justifyContentCenter}>
               <Button
@@ -131,7 +139,10 @@ class AssessmentResponseResult extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return { survey: state.surveys.detail, participantAnswer: state.surveyParticipantAnswer.data };
+  return {
+    survey: state.surveys.detail,
+    participantAnswer: state.surveyParticipantAnswer.data,
+  };
 }
 
 export default compose(
