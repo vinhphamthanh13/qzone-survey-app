@@ -13,7 +13,6 @@ import { fetchSurvey } from 'services/api/assessment';
 import * as Survey from 'survey-react';
 import { createSurveyResponse, fetchResponseByAssessmentAndParticipantId } from 'services/api/assessment-response';
 import { classesType, historyType, matchType } from 'types/global';
-import { toggleLoading } from 'services/api/user';
 import { eSurveyStatus } from '../../../constants';
 
 let surveyInfo = '';
@@ -26,9 +25,8 @@ class AssessmentResponseCreate extends React.Component {
     history: historyType.isRequired,
     fetchSurveyAction: PropTypes.func.isRequired,// eslint-disable-line
     createSurveyResponseAction: PropTypes.func.isRequired,
-    assessmentResponse: PropTypes.objectOf(PropTypes.object).isRequired, // eslint-disable-line
+    assessmentResponse: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired, // eslint-disable-line
     fetchResponseByAssessmentAndParticipantIdAction: PropTypes.func.isRequired,
-    toggleLoadingAction: PropTypes.func.isRequired,// eslint-disable-line
     loading: PropTypes.bool.isRequired,// eslint-disable-line
   };
 
@@ -61,17 +59,14 @@ class AssessmentResponseCreate extends React.Component {
       match: { params: { id } },
       fetchSurveyAction,
       history,
-      toggleLoadingAction,
       assessmentResponse,
       surveyData,
-      loading,
     } = nextProps;
 
     if (assessmentResponse && assessmentResponse.status
       && assessmentResponse.status === eSurveyStatus.completed) {
       history.push('/');
-    } else if (!loading && Object.keys(surveyData).length === 0) {
-      toggleLoadingAction();
+    } else if (Object.keys(surveyData).length === 0) {
       fetchSurveyAction(id);
     }
   };
@@ -152,6 +147,5 @@ export default compose(
     fetchSurveyAction: fetchSurvey,
     createSurveyResponseAction: createSurveyResponse,
     fetchResponseByAssessmentAndParticipantIdAction: fetchResponseByAssessmentAndParticipantId,
-    toggleLoadingAction: toggleLoading,
   }),
 )(AssessmentResponseCreate);
