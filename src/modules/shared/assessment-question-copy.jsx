@@ -20,7 +20,7 @@ import { FileCopy } from '@material-ui/icons';
 import { sessionService } from 'redux-react-session';
 import fullName from 'utils/fullName';
 import { classesType, historyType, matchType } from 'types/global';
-import { LOGO_FALLBACK1, LOGO_FALLBACK2 } from '../../constants';
+import CustomLogo from 'components/CustomLogo/CustomLogo';
 
 Survey.Survey.cssType = 'bootstrap';
 Survey.defaultBootstrapCss.navigationButton = 'btn btn-green';
@@ -124,11 +124,7 @@ class AssessmentQuestionCopy extends React.Component {
                       <h4>Logo:</h4>
                     </GridItem>
                     <GridItem xs={12} sm={7}>
-                      <picture>
-                        <source srcSet={LOGO_FALLBACK1} />
-                        <source srcSet={LOGO_FALLBACK2} />
-                        <img src={logo} alt="survey logo" />
-                      </picture>
+                      <CustomLogo logo={logo} />
                     </GridItem>
                   </GridContainer>
                   <GridContainer>

@@ -19,11 +19,12 @@ import { Poll } from '@material-ui/icons';
 import { sessionService } from 'redux-react-session';
 import fullName from 'utils/fullName';
 import Loading from 'components/Loader/Loading';
+import CustomLogo from 'components/CustomLogo/CustomLogo';
 import {
   classesType, matchType, historyType, userDetailType,
 } from 'types/global';
 import SurveyLogo from 'assets/img/survey.png';
-import { eUserType, LOGO_FALLBACK1, LOGO_FALLBACK2 } from '../../constants';
+import { eUserType } from '../../constants';
 
 Survey.Survey.cssType = 'bootstrap';
 Survey.defaultBootstrapCss.navigationButton = 'btn btn-green';
@@ -118,11 +119,7 @@ class AssessmentQuestionnaire extends React.Component {
               <h4>Logo:</h4>
             </GridItem>
             <GridItem xs={12} sm={7}>
-              <picture>
-                <source srcSet={LOGO_FALLBACK1} />
-                <source srcSet={LOGO_FALLBACK2} />
-                <img width="42px" height="42px" src={logo} className={classes.surveyLogo} alt="survey logo" />
-              </picture>
+              <CustomLogo logo={logo} />
             </GridItem>
           </GridContainer>
           <GridContainer>
