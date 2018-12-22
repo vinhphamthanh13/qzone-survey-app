@@ -70,6 +70,7 @@ class AssessmentQuestionnaire extends React.Component {
           surveyData.title = nextProps.survey.title;
           surveyData.description = nextProps.survey.description;
           surveyData.user = nextProps.survey.user;
+          surveyData.logo = nextProps.survey.logo;
         }
       });
       this.setState({ surveyData });
