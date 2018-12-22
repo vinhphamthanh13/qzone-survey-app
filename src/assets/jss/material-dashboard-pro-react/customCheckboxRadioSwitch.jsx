@@ -32,6 +32,7 @@ const customCheckboxRadioSwitch = {
     height: '20px',
     border: '1px solid rgba(0, 0, 0, .54)',
     borderRadius: '3px',
+    color: `${roseColor} !important`,
   },
   uncheckedIcon: {
     width: '0px',

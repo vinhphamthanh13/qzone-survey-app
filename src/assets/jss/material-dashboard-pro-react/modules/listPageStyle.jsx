@@ -43,7 +43,7 @@ const listPageStyle = {
     height: '100%',
   },
   assessTooltip: {
-    background: `rgba(${blackRgb}, .2) !important`,
+    background: `rgba(${blackRgb}, 1) !important`,
   },
   ...buttonStyle,
 };
