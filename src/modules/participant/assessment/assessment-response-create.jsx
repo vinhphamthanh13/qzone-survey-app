@@ -13,7 +13,6 @@ import { fetchSurvey } from 'services/api/assessment';
 import * as Survey from 'survey-react';
 import { createSurveyResponse, fetchResponseByAssessmentAndParticipantId } from 'services/api/assessment-response';
 import { classesType, historyType, matchType } from 'types/global';
-import { toggleLoading } from 'services/api/user';
 import { eSurveyStatus } from '../../../constants';
 
 let surveyInfo = '';
@@ -22,15 +21,14 @@ class AssessmentResponseCreate extends React.Component {
   static propTypes = {
     classes: classesType.isRequired,
     match: matchType.isRequired,
-    surveyData: PropTypes.objectOf(PropTypes.object).isRequired,
+    surveyData: PropTypes.objectOf(PropTypes.any).isRequired,
     history: historyType.isRequired,
     fetchSurveyAction: PropTypes.func.isRequired,// eslint-disable-line
     createSurveyResponseAction: PropTypes.func.isRequired,
-    assessmentResponse: PropTypes.objectOf(PropTypes.object).isRequired, // eslint-disable-line
+    assessmentResponse: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired, // eslint-disable-line
     fetchResponseByAssessmentAndParticipantIdAction: PropTypes.func.isRequired,
-    toggleLoadingAction: PropTypes.func.isRequired,// eslint-disable-line
     loading: PropTypes.bool.isRequired,// eslint-disable-line
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -61,20 +59,17 @@ class AssessmentResponseCreate extends React.Component {
       match: { params: { id } },
       fetchSurveyAction,
       history,
-      toggleLoadingAction,
       assessmentResponse,
       surveyData,
-      loading,
     } = nextProps;
 
     if (assessmentResponse && assessmentResponse.status
       && assessmentResponse.status === eSurveyStatus.completed) {
       history.push('/');
-    } else if (!loading && Object.keys(surveyData).length === 0) {
-      toggleLoadingAction();
+    } else if (Object.keys(surveyData).length === 0) {
       fetchSurveyAction(id);
     }
-  }
+  };
 
   sendDataToServer = (survey) => {
     let resultAsString = survey.data;
@@ -100,14 +95,13 @@ class AssessmentResponseCreate extends React.Component {
         }
       });
     });
-  }
+  };
 
   render() {
     const { classes, surveyData } = this.props;
     if (!surveyData) { return null; }
     const { title, description, survey } = surveyData;
     surveyInfo = new Survey.Model(survey);
-
     return (
       <div className={classes.content}>
         <div className={classes.container}>
@@ -153,6 +147,5 @@ export default compose(
     fetchSurveyAction: fetchSurvey,
     createSurveyResponseAction: createSurveyResponse,
     fetchResponseByAssessmentAndParticipantIdAction: fetchResponseByAssessmentAndParticipantId,
-    toggleLoadingAction: toggleLoading,
   }),
 )(AssessmentResponseCreate);

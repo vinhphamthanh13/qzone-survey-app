@@ -11,12 +11,13 @@ const initialState = {
   sResponseByParticipant: [],
   allSurveyAnswers: [],
   assessmentResponse: {},
+  data: {},
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
     case FETCH_SURVEY_PARTICIPANT_RESPONSE:
-      return { ...state, data: action.payload.data };
+      return { ...state, data: action.payload.data || {} };
     case FETCH_ALL_SURVEY_ANSWERS:
       return { ...state, allSurveyAnswers: action.payload.data };
     case FETCH_SURVEY_PARTICIPANT_LIST:

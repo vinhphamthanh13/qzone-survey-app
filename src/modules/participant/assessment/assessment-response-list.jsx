@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import ReactTooltip from 'react-tooltip';
 import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/listPageStyle';
 import {
   Table, TableBody, TableCell, TableHead, TableRow,
@@ -25,6 +26,7 @@ import fullName from 'utils/fullName';
 import { classesType } from 'types/global';
 import Loading from 'components/Loader/Loading';
 import CustomInfo from 'components/CustomInfo/CustomInfo';
+import { successColor, infoColor } from 'assets/jss/color-theme';
 import { getUserFromSession, getTokenFromSession } from '../../../utils/session';
 import { eSurveyStatus } from '../../../constants';
 
@@ -66,7 +68,7 @@ class AssessmentResponseList extends React.Component {
           <TableBody>
             {
               surveyAnswers.map(({ participant, status, surveyId }, index) => (
-                <TableRow key={participant.id}>
+                <TableRow key={surveyId}>
                   <TableCell padding="checkbox" className={classes.order}>{index + 1}</TableCell>
                   <TableCell>
                     {surveyAnswers[index].surveyDTO.title}
@@ -74,19 +76,24 @@ class AssessmentResponseList extends React.Component {
                   <TableCell>{fullName(participant)}</TableCell>
                   <TableCell>{participant.email}</TableCell>
                   <TableCell>
-                    <Link to={status === eSurveyStatus.completed
+                    <Link
+                      data-tip="Show Result"
+                      to={status === eSurveyStatus.completed
                     || status === eSurveyStatus.expired
-                      ? `/assessment/result/${surveyId}/${participant.id}`
-                      : `/participant/assessment/${surveyId}`
+                        ? `/assessment/result/${surveyId}/${participant.id}`
+                        : `/participant/assessment/${surveyId}`
                     }
                     >
-                      <OpenInNew titleAccess="Open survey" />
+                      <OpenInNew style={{ color: `${infoColor}` }} />
                     </Link>
                   </TableCell>
                   <TableCell>
                     {status === eSurveyStatus.completed
-                      ? <CheckCircleOutlined style={{ color: '#4caf50' }} titleAccess="Completed" />
-                      : <ErrorOutline color="error" titleAccess="Not available" /> }
+                      ? <CheckCircleOutlined style={{ color: `${successColor}` }} data-tip="Completed" />
+                      : <ErrorOutline color="error" data-tip="Not available" /> }
+                  </TableCell>
+                  <TableCell>
+                    <ReactTooltip className={classes.assessTooltip} />
                   </TableCell>
                 </TableRow>
               ))

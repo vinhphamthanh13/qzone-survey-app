@@ -19,6 +19,7 @@ import { Poll } from '@material-ui/icons';
 import { sessionService } from 'redux-react-session';
 import fullName from 'utils/fullName';
 import Loading from 'components/Loader/Loading';
+import CustomLogo from 'components/CustomLogo/CustomLogo';
 import {
   classesType, matchType, historyType, userDetailType,
 } from 'types/global';
@@ -70,6 +71,7 @@ class AssessmentQuestionnaire extends React.Component {
           surveyData.title = nextProps.survey.title;
           surveyData.description = nextProps.survey.description;
           surveyData.user = nextProps.survey.user;
+          surveyData.logo = nextProps.survey.logo;
         }
       });
       this.setState({ surveyData });
@@ -117,7 +119,7 @@ class AssessmentQuestionnaire extends React.Component {
               <h4>Logo:</h4>
             </GridItem>
             <GridItem xs={12} sm={7}>
-              <img src={logo} className={classes.surveyLogo} alt="survey logo" />
+              <CustomLogo logo={logo} />
             </GridItem>
           </GridContainer>
           <GridContainer>

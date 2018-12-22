@@ -51,7 +51,7 @@ class Dashboard extends React.Component {
     history: historyType.isRequired,
     location: locationType.isRequired,
     user: userDetailType.isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -105,7 +105,7 @@ class Dashboard extends React.Component {
         this.setState({ mobileOpen: false });
       }
     }
-  }
+  };
 
   componentWillUnmount() {
     if (this.ps !== null && navigator.platform.includes('Win')) {
@@ -119,18 +119,17 @@ class Dashboard extends React.Component {
 
   handleDrawerToggle = () => {
     this.setState(oldState => ({ mobileOpen: !oldState.mobileOpen }));
-  }
+  };
 
   render() {
     const {
-      classes, location, surveyLoading,
+      classes, location, surveyLoading, user: { userType },
     } = this.props;
     const { isLoggedIn, miniActive, mobileOpen } = this.state;
     const mainPanel = `${classes.mainPanel} ${classnames({
       [classes.mainPanelSidebarMini]: miniActive,
       [classes.mainPanelWithPerfectScrollbar]: navigator.platform.includes('Win'),
     })}`;
-
     return (
       !isLoggedIn
         ? (
@@ -163,6 +162,7 @@ class Dashboard extends React.Component {
                 miniActive={miniActive}
                 routes={this.sidebarRoutes}
                 handleDrawerToggle={this.handleDrawerToggle}
+                userType={userType}
               />
               <div className={classes.content}>
                 {this.sidebarRoutes.length > 0
