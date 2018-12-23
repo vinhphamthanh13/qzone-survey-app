@@ -153,8 +153,20 @@ class AssessorAssessmentQuestionList extends React.Component {
                 Title
               </TableCell>
               <TableCell>
-                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                {deleteAll && <Link to="#" data-tip="Delete" onClick={() => this.onOpenSurveyDeleteHandler('')}><Delete /></Link>}
+                {deleteAll
+                && (
+                  <React.Fragment>
+                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                    <Link
+                      to="#"
+                      data-tip="Delete all assessments"
+                      onClick={() => this.onOpenSurveyDeleteHandler('')}
+                    >
+                      <Delete />
+                    </Link>
+                    <ReactTooltip className={classes.assessTooltip} />
+                  </React.Fragment>)
+                }
               </TableCell>
               <TableCell />
             </TableRow>
@@ -163,13 +175,13 @@ class AssessorAssessmentQuestionList extends React.Component {
             {surveyList.map((surveyItem, index) => (
               <TableRow hover key={surveyItem.id}>
                 <TableCell padding="checkbox" className={classes.order}>{index + 1}</TableCell>
-                <TableCell><Link data-tip="Show Survey" to={`/assessment/show/${surveyItem.id}`}>{surveyItem.title}</Link></TableCell>
+                <TableCell><Link data-tip="Show assessment" to={`/assessment/show/${surveyItem.id}`}>{surveyItem.title}</Link></TableCell>
                 <TableCell>
                   {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                  <Link style={iconStyle} data-tip="Delete Survey" to="#" onClick={() => this.onOpenSurveyDeleteHandler(surveyItem.id)}><Delete /></Link>
+                  <Link style={iconStyle} data-tip="Delete assessment" to="#" onClick={() => this.onOpenSurveyDeleteHandler(surveyItem.id)}><Delete /></Link>
                   <CopyToClipboard text={`${SURVEY_APP_URL}/surveys/${surveyItem.id}`}>
                     {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                    <Link data-tip="Copy Link" to="#" onClick={this.handleClick}><LinkIcon /></Link>
+                    <Link data-tip="Copy assessment link" to="#" onClick={this.handleClick}><LinkIcon /></Link>
                   </CopyToClipboard>
                 </TableCell>
                 <TableCell>

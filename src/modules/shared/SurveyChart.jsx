@@ -44,18 +44,30 @@ class SurveyChart extends PureComponent {
     const { surveyChartData: { chartBars } } = nextProps;
     const labels = [];
     const series = [];
+    let queSorted = {};
     if (chartBars) {
+      const queResult = {};
       chartBars.map((chart) => {
         const { question, listSelectedItems } = chart;
-        labels.push(question);
-        listSelectedItems.map((item, ind) => {
+        queResult[question.replace(/question(\d+)/, '$1')] = listSelectedItems;
+        queSorted = this.sortObject(queResult);
+        return chart;
+      });
+    }
+    const queKeys = Object.keys(queSorted);
+    if (queKeys.length) {
+      queKeys.map((question) => {
+        labels.push(`Q${question}`);
+        queSorted[question].map((item, ind) => {
           const { questionItem, numSelected } = item;
           series[ind] = series[ind] ? [...series[ind]] : [];
           series[ind].push({ meta: questionItem, value: numSelected });
-          return questionItem;
+          // series[ind].push(numSelected);
+          return numSelected;
         });
-        return chart;
+        return question;
       });
+      // console.log(Object.keys(queSorted));
     }
     this.setState({
       chart: {
@@ -65,6 +77,10 @@ class SurveyChart extends PureComponent {
     });
   }
 
+  sortObject = obj => Object.keys(obj).sort().reduce(
+    (r, k) => Object.assign(r, { [k]: obj[k] }), {},
+  );
+
   drawingChart = state => ({
     data: state.chart,
     options: {
@@ -73,7 +89,12 @@ class SurveyChart extends PureComponent {
       axisX: {
         showGrid: false,
       },
+      axisY: {
+        showGrid: true,
+        scaleMinSpace: 100,
+      },
       height: '300px',
+      stretch: true,
       plugins: [
         // Chartist.plugins.tooltip({
         //   class: classes.chartToolTip,
@@ -123,7 +144,8 @@ class SurveyChart extends PureComponent {
         type="Bar"
         options={chartData.options}
         listener={chartData.animation}
-      />) : <CustomInfo content="There is no response from the assessment" />;
+        className="ct-bar ct-major-twelfth"
+      />) : <CustomInfo content="There is no data for statistics from the assessment" />;
     return (chartDrawing);
   }
 }
