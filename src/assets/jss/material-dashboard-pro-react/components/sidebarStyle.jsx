@@ -84,7 +84,7 @@ const sidebarStyle = theme => ({
     maxHeight: '30px',
     marginLeft: '22px',
     marginRight: '18px',
-    marginTop: '7px',
+    marginTop: '4px',
     color: 'inherit',
   },
   logoMiniRTL: {
@@ -120,8 +120,9 @@ const sidebarStyle = theme => ({
     transform: 'translate3d(25px, 0, 0)',
   },
   img: {
-    width: '35px',
-    verticalAlign: 'middle',
+    width: '30px',
+    height: '30px',
+    marginLeft: '.3em',
     border: '0',
   },
   background: {
