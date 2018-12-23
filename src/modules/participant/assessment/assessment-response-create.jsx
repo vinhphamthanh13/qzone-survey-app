@@ -58,10 +58,10 @@ class AssessmentResponseCreate extends React.Component {
     const {
       match: { params: { id } },
       fetchSurveyAction,
-      history,
       assessmentResponse,
       surveyData,
     } = nextProps;
+    const { history } = this.props;
 
     if (assessmentResponse && assessmentResponse.status
       && assessmentResponse.status === eSurveyStatus.completed) {
@@ -79,7 +79,7 @@ class AssessmentResponseCreate extends React.Component {
 
     const {
       match: { params: { id } },
-      createSurveyResponseAction, history,
+      createSurveyResponseAction,
     } = this.props;
     this.setState(oldState => ({
       participantResponse: {
@@ -89,9 +89,9 @@ class AssessmentResponseCreate extends React.Component {
       const { participantResponse, userId } = this.state;
       createSurveyResponseAction(participantResponse, (response) => {
         if (response.status === 201) {
-          history.push(`/assessment/result/${id}/${userId}`);
+          window.location = `/assessment/result/${id}/${userId}`;
         } else {
-          history.push('/participant/assessment/answers');
+          window.location = '/participant/assessment/answers';
         }
       });
     });

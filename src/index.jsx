@@ -26,7 +26,7 @@ sessionService.initSessionService(store, { driver: 'LOCALSTORAGE' });
 ReactDOM.render(
   <React.Fragment>
     <Provider store={store}>
-      <Router history={history}>
+      <Router history={history} forceRefresh>
         <Switch>
           {indexRoutes.map(route => (<Route key={route.path} {...route} />))}
         </Switch>

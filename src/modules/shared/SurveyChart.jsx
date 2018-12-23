@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import chartsStyle from 'assets/jss/material-dashboard-pro-react/modules/chartsStyle';
 import withStyles from '@material-ui/core/styles/withStyles';
 import ChartistGraph from 'react-chartist';
-// import Chartist from 'chartist';
+import Chartist from 'chartist';
 import 'chartist-plugin-tooltips';
 import { classesType } from 'types/global';
 import CustomInfo from 'components/CustomInfo/CustomInfo';
@@ -62,12 +62,10 @@ class SurveyChart extends PureComponent {
           const { questionItem, numSelected } = item;
           series[ind] = series[ind] ? [...series[ind]] : [];
           series[ind].push({ meta: questionItem, value: numSelected });
-          // series[ind].push(numSelected);
           return numSelected;
         });
         return question;
       });
-      // console.log(Object.keys(queSorted));
     }
     this.setState({
       chart: {
@@ -81,13 +79,13 @@ class SurveyChart extends PureComponent {
     (r, k) => Object.assign(r, { [k]: obj[k] }), {},
   );
 
-  drawingChart = state => ({
+  drawingChart = (state, classes) => ({
     data: state.chart,
     options: {
       seriesBarDistance: 10,
       stackBars: false,
       axisX: {
-        showGrid: false,
+        showGrid: true,
       },
       axisY: {
         showGrid: true,
@@ -96,10 +94,10 @@ class SurveyChart extends PureComponent {
       height: '300px',
       stretch: true,
       plugins: [
-        // Chartist.plugins.tooltip({
-        //   class: classes.chartToolTip,
-        //   appendToBody: false,
-        // }),
+        Chartist.plugins.tooltip({
+          class: classes.chartToolTip,
+          appendToBody: true,
+        }),
       ],
     },
     responsiveOptions: [
