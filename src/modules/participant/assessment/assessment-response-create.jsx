@@ -101,9 +101,11 @@ class AssessmentResponseCreate extends React.Component {
   };
 
   render() {
-    const { classes, surveyData, assessmentResponse } = this.props;
+    const {
+      classes, surveyData, assessmentResponse, history,
+    } = this.props;
     const { completingSurvey } = this.state;
-    if (!surveyData) { window.location = '/participant/assessment/answers'; }
+    if (!surveyData) { history.push('/participant/assessment/answers'); }
     const { title, description, survey } = surveyData;
     let createResponse;
     if (typeof assessmentResponse === 'object') {
