@@ -14,6 +14,7 @@ import {
   OpenInNew,
   CheckCircleOutlined,
   ErrorOutline,
+  Cancel as CancelIcon,
 } from '@material-ui/icons';
 import GridContainer from 'components/Grid/GridContainer';
 import GridItem from 'components/Grid/GridItem';
@@ -26,7 +27,7 @@ import fullName from 'utils/fullName';
 import { classesType } from 'types/global';
 import Loading from 'components/Loader/Loading';
 import CustomInfo from 'components/CustomInfo/CustomInfo';
-import { successColor, infoColor } from 'assets/jss/color-theme';
+import { successColor, infoColor, dangerColor } from 'assets/jss/color-theme';
 import { getUserFromSession, getTokenFromSession } from '../../../utils/session';
 import { eSurveyStatus } from '../../../constants';
 
@@ -76,16 +77,18 @@ class AssessmentResponseList extends React.Component {
                   <TableCell>{fullName(participant)}</TableCell>
                   <TableCell>{participant.email}</TableCell>
                   <TableCell>
-                    <Link
-                      data-tip="Show Result"
-                      to={status === eSurveyStatus.completed
-                    || status === eSurveyStatus.expired
-                        ? `/assessment/result/${surveyId}/${participant.id}`
-                        : `/participant/assessment/${surveyId}`
+                    {
+                      (status === eSurveyStatus.completed || status === eSurveyStatus.expired)
+                      && (
+                        <Link
+                          data-tip="Show Result"
+                          to={`/assessment/result/${surveyId}/${participant.id}`}
+                        >
+                          <OpenInNew style={{ color: `${infoColor}` }} />
+                        </Link>
+                      )
                     }
-                    >
-                      <OpenInNew style={{ color: `${infoColor}` }} />
-                    </Link>
+                    { status !== eSurveyStatus.completed && <CancelIcon style={{ color: `${dangerColor}` }} />}
                   </TableCell>
                   <TableCell>
                     {status === eSurveyStatus.completed
