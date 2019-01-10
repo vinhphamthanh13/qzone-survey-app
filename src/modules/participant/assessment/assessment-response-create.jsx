@@ -10,6 +10,7 @@ import Card from 'components/Card/Card';
 import CardBody from 'components/Card/CardBody';
 import listPageStyle from 'assets/jss/material-dashboard-pro-react/modules/registerPageStyle';
 import { fetchSurvey } from 'services/api/assessment';
+import Loading from 'components/Loader/Loading';
 import * as Survey from 'survey-react';
 import { createSurveyResponse, fetchResponseByAssessmentAndParticipantId } from 'services/api/assessment-response';
 import { classesType, historyType, matchType } from 'types/global';
@@ -39,6 +40,7 @@ class AssessmentResponseCreate extends React.Component {
         questionAnswers: '',
         status: 'COMPLETED',
       },
+      completingSurvey: false,
       userId: '',
     };
   }
@@ -73,6 +75,7 @@ class AssessmentResponseCreate extends React.Component {
 
   sendDataToServer = (survey) => {
     let resultAsString = survey.data;
+    this.setState({ completingSurvey: true });
     if (typeof (resultAsString) !== 'string') {
       resultAsString = JSON.stringify(survey.data);
     }
@@ -98,32 +101,54 @@ class AssessmentResponseCreate extends React.Component {
   };
 
   render() {
-    const { classes, surveyData } = this.props;
-    if (!surveyData) { return null; }
+    const { classes, surveyData, assessmentResponse } = this.props;
+    const { completingSurvey } = this.state;
+    if (!surveyData) { window.location = '/participant/assessment/answers'; }
     const { title, description, survey } = surveyData;
-    surveyInfo = new Survey.Model(survey);
+    let createResponse;
+    if (typeof assessmentResponse === 'object') {
+      createResponse = <Loading isLoading />;
+    } else if (survey) {
+      const spaSurvey = {
+        showProgressBar: 'bottom',
+        goNextPageAutomatic: false,
+        showNavigationButtons: true,
+        pages: JSON.parse(survey).pages[0].elements.map(question => ({
+          questions: [question],
+        })),
+        completedHtml: '<p>Your answer:</p>',
+      };
+      surveyInfo = new Survey.Model(spaSurvey);
+
+      createResponse = (
+        <React.Fragment>
+          <h2 className={classes.cardTitle}>{title}</h2>
+          <CardBody>
+            <div className={classes.center}>
+              {description}
+            </div>
+            <hr />
+            <GridContainer>
+              <GridItem xs={12} sm={10}>
+                <Survey.Survey
+                  model={surveyInfo}
+                  className={classes.buttonDisplay}
+                  onComplete={this.sendDataToServer}
+                />
+              </GridItem>
+            </GridContainer>
+          </CardBody>
+        </React.Fragment>
+      );
+    }
     return (
       <div className={classes.content}>
         <div className={classes.container}>
           <GridContainer justify="center">
             <GridItem xs={12} sm={12} md={10}>
               <Card className={classes.cardSignup}>
-                <h2 className={classes.cardTitle}>{title}</h2>
-                <CardBody>
-                  <div className={classes.center}>
-                    {description}
-                  </div>
-                  <hr />
-                  <GridContainer>
-                    <GridItem xs={12} sm={10}>
-                      <Survey.Survey
-                        model={surveyInfo}
-                        className={classes.buttonDisplay}
-                        onComplete={this.sendDataToServer}
-                      />
-                    </GridItem>
-                  </GridContainer>
-                </CardBody>
+                {!completingSurvey && createResponse}
+                {completingSurvey && <Loading isLoading /> }
               </Card>
             </GridItem>
           </GridContainer>

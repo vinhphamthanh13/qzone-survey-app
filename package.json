@@ -45,7 +45,7 @@
     "redux": "^4.0.0",
     "redux-promise": "^0.6.0",
     "redux-react-session": "^2.5.0",
-    "survey-react": "^1.0.38",
+    "survey-react": "^1.0.63",
     "surveyjs-editor": "^1.0.38",
     "surveyjs-widgets": "^1.0.38",
     "whatwg-fetch": "2.0.3",
