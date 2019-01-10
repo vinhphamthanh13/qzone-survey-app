@@ -114,7 +114,10 @@ class AssessmentResponseCreate extends React.Component {
         goNextPageAutomatic: false,
         showNavigationButtons: true,
         pages: JSON.parse(survey).pages[0].elements.map(question => ({
-          questions: [question],
+          questions: [{
+            ...question,
+            isRequired: true,
+          }],
         })),
         completedHtml: '<p>Your answer:</p>',
       };
