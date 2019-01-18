@@ -31,7 +31,7 @@ class Dashboard extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      listAssessments: [],
+      listAssessments: null,
       isDataLoading: [],
     };
   }
