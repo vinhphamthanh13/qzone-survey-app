@@ -8,8 +8,9 @@ import ChartistGraph from 'react-chartist';
 import Chartist from 'chartist';
 import 'chartist-plugin-tooltips';
 import { classesType } from 'types/global';
-import CustomInfo from 'components/CustomInfo/CustomInfo';
 import { fetchSurveyChart } from 'services/api/assessment-response';
+import Loading from 'components/Loader/Loading';
+import CustomInfo from 'components/CustomInfo/CustomInfo';
 
 class SurveyChart extends PureComponent {
   static defaultProps = {
@@ -136,14 +137,22 @@ class SurveyChart extends PureComponent {
   render() {
     const { classes } = this.props;
     const chartData = this.drawingChart(this.state, classes);
-    const chartDrawing = chartData.data.labels ? (
-      <ChartistGraph
-        data={chartData.data}
-        type="Bar"
-        options={chartData.options}
-        listener={chartData.animation}
-        className="ct-bar ct-major-twelfth"
-      />) : <CustomInfo content="There is no data for statistics from the assessment" />;
+    const { data: { labels } } = chartData;
+    let chartDrawing = null;
+    if (typeof labels === 'undefined') {
+      chartDrawing = <Loading isLoading />;
+    } else if (labels === null) {
+      chartDrawing = <CustomInfo content="There is no data for statistics from the assessment" />;
+    } else {
+      chartDrawing = (
+        <ChartistGraph
+          data={chartData.data}
+          type="Bar"
+          options={chartData.options}
+          listener={chartData.animation}
+          className="ct-bar ct-major-twelfth"
+        />);
+    }
     return (chartDrawing);
   }
 }
