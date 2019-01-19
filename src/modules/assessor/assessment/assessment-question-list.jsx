@@ -10,7 +10,7 @@ import {
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Alert from 'react-s-alert';
 import AlertMessage from 'components/Alert/Message';
-import { Delete, QuestionAnswer as QAIcon } from '@material-ui/icons';
+import { Delete, QuestionAnswer as QAIcon, Email as EIcon } from '@material-ui/icons';
 import LinkIcon from '@material-ui/icons/Link';
 import ReactTooltip from 'react-tooltip';
 import GridContainer from 'components/Grid/GridContainer';
@@ -45,6 +45,7 @@ class AssessorAssessmentQuestionList extends React.Component {
     fetchSurveys: PropTypes.func.isRequired,
     deleteSurvey: PropTypes.func.isRequired,
     deleteAllSurvey: PropTypes.func.isRequired,
+    user: PropTypes.objectOf(PropTypes.any).isRequired,
   };
 
   constructor(props) {
@@ -55,6 +56,8 @@ class AssessorAssessmentQuestionList extends React.Component {
       isOpenDeleteSurvey: false,
       sId: '',
       dialogType: CTA.DELETE,
+      cachedSurveyList: null,
+      assessorEmail: null,
     };
   }
 
@@ -71,6 +74,11 @@ class AssessorAssessmentQuestionList extends React.Component {
         });
       }
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { surveyList, user: { detail: { email } } } = nextProps;
+    this.setState({ cachedSurveyList: surveyList, assessorEmail: email });
   }
 
   onOpenSurveyDeleteHandler = (SID = '') => {
@@ -114,7 +122,7 @@ class AssessorAssessmentQuestionList extends React.Component {
         dialogType: CTA.DELETE_CONFIRMED,
         deleteAll: false,
       });
-      fetchSurveysAction(token);
+      fetchSurveysAction();
     });
   };
 
@@ -125,15 +133,16 @@ class AssessorAssessmentQuestionList extends React.Component {
   };
 
   render() {
-    const { classes, surveyList } = this.props;
+    const { classes } = this.props;
     const {
-      deleteAll, isOpenDeleteSurvey, sId, dialogType,
+      deleteAll, isOpenDeleteSurvey, sId,
+      dialogType, cachedSurveyList, assessorEmail,
     } = this.state;
     let disableDeleteAll = true;
     let assessmentList = null;
-    if (Object.is(surveyList, null) || Object.is(surveyList, undefined)) {
+    if (Object.is(cachedSurveyList, null) || Object.is(cachedSurveyList, undefined)) {
       assessmentList = <Loading isLoading />;
-    } else if (surveyList.length === 0) {
+    } else if (cachedSurveyList.length === 0) {
       assessmentList = <CustomInfo content="There is no Assessment in your list" />;
     } else {
       disableDeleteAll = false;
@@ -172,7 +181,7 @@ class AssessorAssessmentQuestionList extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {surveyList.map((surveyItem, index) => (
+            {cachedSurveyList.map((surveyItem, index) => (
               <TableRow hover key={surveyItem.id}>
                 <TableCell padding="checkbox" className={classes.order}>{index + 1}</TableCell>
                 <TableCell><Link data-tip="Show assessment" to={`/assessment/show/${surveyItem.id}`}>{surveyItem.title}</Link></TableCell>
@@ -181,8 +190,10 @@ class AssessorAssessmentQuestionList extends React.Component {
                   <Link style={iconStyle} data-tip="Delete assessment" to="#" onClick={() => this.onOpenSurveyDeleteHandler(surveyItem.id)}><Delete /></Link>
                   <CopyToClipboard text={`${SURVEY_APP_URL}/surveys/${surveyItem.id}`}>
                     {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                    <Link data-tip="Copy assessment link" to="#" onClick={this.handleClick}><LinkIcon /></Link>
+                    <Link style={iconStyle} data-tip="Copy assessment link" to="#" onClick={this.handleClick}><LinkIcon /></Link>
                   </CopyToClipboard>
+                  {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                  <a style={iconStyle} data-tip="Send Email" href={`mailto:${assessorEmail}`}><EIcon /></a>
                 </TableCell>
                 <TableCell>
                   <ReactTooltip className={classes.assessTooltip} />
@@ -226,7 +237,10 @@ class AssessorAssessmentQuestionList extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return { surveyList: state.surveys.list || null };
+  return {
+    surveyList: state.surveys.list || [],
+    user: state.user,
+  };
 }
 
 export default compose(

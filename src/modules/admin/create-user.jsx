@@ -57,6 +57,7 @@ class CreateUser extends PureComponent {
       isDialogOpen: false,
       editedUser: null,
       deletedUser: null,
+      cachedUserList: null,
     };
   }
 
@@ -66,6 +67,11 @@ class CreateUser extends PureComponent {
     } = this.props;
     fetchMultipleUserTypeAction(ASUser);
   };
+
+  componentWillReceiveProps(nextProps) {
+    const { userList } = nextProps;
+    this.setState({ cachedUserList: userList });
+  }
 
   openDialog = () => {
     this.setState({ isDialogOpen: true });
@@ -161,8 +167,10 @@ class CreateUser extends PureComponent {
   };
 
   render() {
-    const { classes, userList } = this.props;
-    const { isDialogOpen, editedUser, deletedUser } = this.state;
+    const { classes } = this.props;
+    const {
+      isDialogOpen, editedUser, deletedUser, cachedUserList,
+    } = this.state;
     const creation = isDialogOpen ? (
       <CreateUserDialog
         open={isDialogOpen}
@@ -171,9 +179,9 @@ class CreateUser extends PureComponent {
         editedUser={editedUser}
       />) : null;
     let listUser = null;
-    if (Object.is(userList, null) || Object.is(userList, undefined)) {
+    if (Object.is(cachedUserList, null) || Object.is(cachedUserList, undefined)) {
       listUser = <Loading isLoading />;
-    } else if (userList.length === 0) {
+    } else if (cachedUserList.length === 0) {
       listUser = <CustomInfo content="There is no User added." />;
     } else {
       listUser = (
@@ -188,7 +196,7 @@ class CreateUser extends PureComponent {
             </TableRow>
           </TableHead>
           <TableBody>
-            {userList.map(user => (
+            {cachedUserList.map(user => (
               <TableRow key={user.id}>
                 <TableCell className={classes.userTypeCol}>{user.userType}</TableCell>
                 <TableCell>{user.firstname}</TableCell>

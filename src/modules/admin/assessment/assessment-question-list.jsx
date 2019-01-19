@@ -54,6 +54,7 @@ class AdminAssessmentQuestionList extends React.Component {
       isOpenDeleteSurvey: false,
       sId: '',
       dialogType: CTA.DELETE,
+      cachedSurveyList: null,
     };
   }
 
@@ -61,10 +62,15 @@ class AdminAssessmentQuestionList extends React.Component {
     const { checkAuth: checkAuthAction, fetchSurveys: fetchSurveysAction } = this.props;
     checkAuthAction(async (session) => {
       if (session) {
-        fetchSurveysAction(session.token);
+        fetchSurveysAction();
         this.setState({ token: session.token });
       }
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { surveyList } = nextProps;
+    this.setState({ cachedSurveyList: surveyList });
   }
 
   onOpenSurveyDeleteHandler = (SID = '') => {
@@ -81,8 +87,8 @@ class AdminAssessmentQuestionList extends React.Component {
   };
 
   deleteAllShowingHandler = () => {
-    const { surveyList } = this.props;
-    if (surveyList.length) {
+    const { cachedSurveyList } = this.state;
+    if (cachedSurveyList.length) {
       this.setState(prevState => ({
         deleteAll: !prevState.deleteAll,
       }));
@@ -121,15 +127,15 @@ class AdminAssessmentQuestionList extends React.Component {
   };
 
   render() {
-    const { classes, surveyList, history } = this.props;
+    const { classes, history } = this.props;
     const {
-      deleteAll, isOpenDeleteSurvey, sId, dialogType,
+      deleteAll, isOpenDeleteSurvey, sId, dialogType, cachedSurveyList,
     } = this.state;
     let disableDeleteAll = true;
     let assessmentList = null;
-    if (Object.is(surveyList, null) || Object.is(surveyList, undefined)) {
+    if (Object.is(cachedSurveyList, null) || Object.is(cachedSurveyList, undefined)) {
       assessmentList = <Loading isLoading />;
-    } else if (surveyList.length === 0) {
+    } else if (cachedSurveyList.length === 0) {
       assessmentList = <CustomInfo content="There is no Assessment in your list!" />;
     } else {
       disableDeleteAll = false;
@@ -171,7 +177,7 @@ class AdminAssessmentQuestionList extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {(surveyList)
+            {(cachedSurveyList)
               .map((surveyItem, index) => (
                 <TableRow hover key={surveyItem.id}>
                   <TableCell padding="checkbox" className={classes.order}>{index + 1}</TableCell>
