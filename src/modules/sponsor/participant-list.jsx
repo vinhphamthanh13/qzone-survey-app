@@ -23,6 +23,7 @@ import CustomInfo from 'components/CustomInfo/CustomInfo';
 import participantListStyle from './participant-list.style';
 import ParticipantListExcel from './participant-list-excel';
 import { eUserType, userStatus } from '../../constants';
+import sortBy from '../../utils/sort';
 
 const rows = ['#', 'First name', 'Last name', 'Email', 'Phone number'];
 
@@ -100,7 +101,7 @@ class ParticipantList extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {cachedParticipantList.map(({
+            {sortBy(cachedParticipantList, 'firstname').map(({
               id, firstname, lastname, email, phoneNumber,
             }, index) => (
               <TableRow key={id}>
