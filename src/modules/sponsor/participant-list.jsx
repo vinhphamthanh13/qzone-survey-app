@@ -37,12 +37,18 @@ class ParticipantList extends React.Component {
     super(props);
     this.state = {
       checkList: [],
+      cachedParticipantList: null,
     };
   }
 
   componentDidMount() {
     const { fetchUserTypeList: fetchUserTypeListAction } = this.props;
     fetchUserTypeListAction({ userType: eUserType.participant });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { participantList } = nextProps;
+    this.setState({ cachedParticipantList: participantList });
   }
 
   checkAll = () => {
@@ -65,12 +71,12 @@ class ParticipantList extends React.Component {
   };
 
   render() {
-    const { classes, participantList } = this.props;
-    const { checkList } = this.state;
+    const { classes } = this.props;
+    const { checkList, cachedParticipantList } = this.state;
     let listParticipant = null;
-    if (Object.is(participantList, null) || Object.is(participantList, undefined)) {
+    if (Object.is(cachedParticipantList, null) || Object.is(cachedParticipantList, undefined)) {
       listParticipant = <Loading isLoading />;
-    } else if (participantList.length === 0) {
+    } else if (cachedParticipantList.length === 0) {
       listParticipant = <CustomInfo content="There is no Participant in list." />;
     } else {
       listParticipant = (
@@ -80,9 +86,9 @@ class ParticipantList extends React.Component {
               <TableCell>
                 <Checkbox
                   className={classes.deleteAllChecked}
-                  checked={checkList.length === participantList.length}
+                  checked={checkList.length === cachedParticipantList.length}
                   indeterminate={checkList.length > 0
-                  && checkList.length !== participantList.length}
+                  && checkList.length !== cachedParticipantList.length}
                   onChange={this.checkAll}
                 />
               </TableCell>
@@ -94,7 +100,7 @@ class ParticipantList extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {participantList.map(({
+            {cachedParticipantList.map(({
               id, firstname, lastname, email, phoneNumber,
             }, index) => (
               <TableRow key={id}>
@@ -128,7 +134,7 @@ class ParticipantList extends React.Component {
                 <ParticipantListExcel
                   checkList={checkList}
                   classes={classes}
-                  participantList={participantList}
+                  participantList={cachedParticipantList || []}
                 />
               </div>
             </CardHeader>
