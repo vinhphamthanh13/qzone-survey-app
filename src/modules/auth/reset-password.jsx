@@ -112,7 +112,7 @@ class ResetPassword extends React.Component {
             <Button onClick={this.handleClose}>
               Close
             </Button>
-            <Button onClick={this.handleResetPassword} color="rose">
+            <Button disabled={emailState === 'error' || emailState === false} onClick={this.handleResetPassword} color="rose">
               Submit
             </Button>
           </DialogActions>
