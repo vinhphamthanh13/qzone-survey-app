@@ -16,7 +16,7 @@ import { fetchUserTypeList } from 'services/api/user';
 import Assessor from 'modules/assessor/assessor';
 import { classesType } from 'types/global';
 import { eUserType } from '../../constants';
-import sortByEmail from '../../utils/sort';
+import sortBy from '../../utils/sort';
 
 let editor = false;
 class SurveyForm extends React.Component {
@@ -47,7 +47,7 @@ class SurveyForm extends React.Component {
       surveyInfo, titleState, descriptionState, mode,
     } = survey;
     if (mode === 'create' || surveyInfo.survey) { editor = true; }
-    const cachedAssessorList = sortByEmail(assessorList);
+    const cachedAssessorList = sortBy(assessorList, 'email');
     return assessorList && (
       <form>
         <GridContainer>

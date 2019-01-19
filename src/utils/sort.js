@@ -1,10 +1,10 @@
-const sortByEmail = (list) => {
+const sortBy = (list, property) => {
   if (list && list.length) {
     list.sort((a, b) => {
       let compareResult = 0;
-      if (a.email < b.email) {
+      if (a[property] < b[property]) {
         compareResult = -1;
-      } else if (a.email > b.email) {
+      } else if (a[property] > b[property]) {
         compareResult = 1;
       }
       return compareResult;
@@ -13,4 +13,4 @@ const sortByEmail = (list) => {
   return list;
 };
 
-export default sortByEmail;
+export default sortBy;
