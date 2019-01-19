@@ -40,6 +40,10 @@ class AssessmentResponseList extends React.Component {
     surveyAnswers: PropTypes.arrayOf(PropTypes.object).isRequired,
   };
 
+  state = {
+    cachedAnswerList: null,
+  };
+
   async componentDidMount() {
     const { userId } = await getUserFromSession();
     const { token } = await getTokenFromSession();
@@ -47,12 +51,18 @@ class AssessmentResponseList extends React.Component {
     fetchSurveyAnswerByParticipantIdAction(userId, token);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { surveyAnswers } = nextProps;
+    this.setState({ cachedAnswerList: surveyAnswers });
+  }
+
   render() {
-    const { classes, surveyAnswers } = this.props;
+    const { classes } = this.props;
+    const { cachedAnswerList } = this.state;
     let surveyAnswerList = null;
-    if (Object.is(surveyAnswers, null) || Object.is(surveyAnswers, undefined)) {
+    if (Object.is(cachedAnswerList, null) || Object.is(cachedAnswerList, undefined)) {
       surveyAnswerList = <Loading isLoading />;
-    } else if (surveyAnswers.length === 0) {
+    } else if (cachedAnswerList.length === 0) {
       surveyAnswerList = <CustomInfo content="You have no Assessment at the moment!" />;
     } else {
       surveyAnswerList = (
@@ -68,11 +78,11 @@ class AssessmentResponseList extends React.Component {
           </TableHead>
           <TableBody>
             {
-              surveyAnswers.map(({ participant, status, surveyId }, index) => (
+              cachedAnswerList.map(({ participant, status, surveyId }, index) => (
                 <TableRow key={surveyId}>
                   <TableCell padding="checkbox" className={classes.order}>{index + 1}</TableCell>
                   <TableCell>
-                    {surveyAnswers[index].surveyDTO.title}
+                    {cachedAnswerList[index].surveyDTO.title}
                   </TableCell>
                   <TableCell>{fullName(participant)}</TableCell>
                   <TableCell>{participant.email}</TableCell>
@@ -125,7 +135,7 @@ class AssessmentResponseList extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return { surveyAnswers: state.surveyParticipantAnswer.sResponseByParticipant };
+  return { surveyAnswers: state.surveyParticipantAnswer.sResponseByParticipant || [] };
 }
 
 export default compose(
