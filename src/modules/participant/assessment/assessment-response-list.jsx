@@ -80,7 +80,7 @@ class AssessmentResponseList extends React.Component {
             {
               cachedAnswerList.map(({ participant, status, surveyId }, index) => (
                 <TableRow key={surveyId}>
-                  <TableCell padding="checkbox" className={classes.order}>{index + 1}</TableCell>
+                  <TableCell align="left">{index + 1}</TableCell>
                   <TableCell>
                     {cachedAnswerList[index].surveyDTO.title}
                   </TableCell>

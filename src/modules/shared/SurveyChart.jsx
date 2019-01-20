@@ -11,6 +11,7 @@ import { classesType } from 'types/global';
 import { fetchSurveyChart } from 'services/api/assessment-response';
 import Loading from 'components/Loader/Loading';
 import CustomInfo from 'components/CustomInfo/CustomInfo';
+import sortBy from '../../utils/sort';
 
 class SurveyChart extends PureComponent {
   static defaultProps = {
@@ -50,19 +51,19 @@ class SurveyChart extends PureComponent {
       const queResult = {};
       chartBars.map((chart) => {
         const { question, listSelectedItems } = chart;
-        queResult[question.replace(/question(\d+)/, '$1')] = listSelectedItems;
-        queSorted = this.sortObject(queResult);
+        queResult[question.replace(/[^0-9]/g, '')] = listSelectedItems;
+        queSorted = sortBy(queResult, 'question');
         return chart;
       });
     }
     const queKeys = Object.keys(queSorted);
     if (queKeys.length) {
-      queKeys.map((question) => {
+      queKeys.map((question, qInd) => {
         labels.push(`Q${question}`);
         queSorted[question].map((item, ind) => {
           const { questionItem, numSelected } = item;
           series[ind] = series[ind] ? [...series[ind]] : [];
-          series[ind].push({ meta: questionItem, value: numSelected });
+          series[ind][qInd] = { meta: questionItem, value: numSelected };
           return numSelected;
         });
         return question;
@@ -75,10 +76,6 @@ class SurveyChart extends PureComponent {
       },
     });
   }
-
-  sortObject = obj => Object.keys(obj).sort().reduce(
-    (r, k) => Object.assign(r, { [k]: obj[k] }), {},
-  );
 
   drawingChart = (state, classes) => ({
     data: state.chart,
