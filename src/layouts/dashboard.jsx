@@ -86,7 +86,10 @@ class Dashboard extends React.Component {
   componentWillReceiveProps = (nextProps) => {
     const { user: newUser } = nextProps;
     const { user: oldUser, history, location } = this.props;
-
+    if (this.ps) {
+      this.mainPanelRef.current.scrollTop = 0;
+      this.ps.update();
+    }
     if (!oldUser.userType && newUser.userType) {
       if (newUser.userType === eUserType.participant) {
         this.sidebarRoutes = participantRoutes.concat(commonRoutes);
