@@ -74,7 +74,10 @@ class Dashboard extends React.Component {
       }
     }
 
-    if (navigator.platform.includes('Win')) {
+    if (navigator.platform.includes('Win')
+      && !Object.is(this.mainPanelRef, undefined)
+      && !Object.is(this.mainPanelRef, null)
+    ) {
       this.ps = new PerfectScrollbar(this.mainPanelRef.current, {
         suppressScrollX: true,
         suppressScrollY: false,
