@@ -16,7 +16,7 @@ class SocialLogin extends PureComponent {
       <div className={classes.socialLine}>
         <Button
           justIcon
-          href="https://www.twitter.com"
+          href=""
           target="_blank"
           color="transparent"
           className={`${classes.socialButton} ${classes.twitterButton}`}
@@ -25,7 +25,7 @@ class SocialLogin extends PureComponent {
         </Button>
         <Button
           justIcon
-          href="https://www.facebook.com"
+          href=""
           target="_blank"
           color="transparent"
           className={`${classes.socialButton} ${classes.fbButton}`}
@@ -34,7 +34,7 @@ class SocialLogin extends PureComponent {
         </Button>
         <Button
           justIcon
-          href="https://www.plus.google.com"
+          href=""
           target="_blank"
           color="transparent"
           className={`${classes.socialButton} ${classes.googleButton}`}
