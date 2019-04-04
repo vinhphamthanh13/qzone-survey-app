@@ -13,6 +13,7 @@ import customCheckboxRadioSwitch from 'assets/jss/material-dashboard-pro-react/c
 import theme from 'assets/jss/material-dashboard-pro-react/layouts/theme';
 import {
   dangerColor, successColor, darkGrayColor, sanMarinoColor, whiteColor, silverColor,
+  pacificBlueColor, roseColor,
 } from 'assets/jss/color-theme';
 
 const loginPageStyle = {
@@ -151,7 +152,7 @@ const loginPageStyle = {
     height: '28vh',
     borderRadius: 8,
     marginTop: '-2.2em',
-    background: theme.indigoTheme.palette.primary.main,
+    background: `linear-gradient(to bottom, ${roseColor}, ${pacificBlueColor})`,
     boxShadow: `2px 3px 3px ${silverColor}`,
   },
   inputIcon: {
@@ -170,6 +171,7 @@ const loginPageStyle = {
   },
   loginButtonLabel: {
     fontSize: 'medium',
+    background: `linear-gradient(to top, ${roseColor}, ${pacificBlueColor})`,
   },
 };
 
