@@ -11,7 +11,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
     render={props => (
       Storage.local.get(surveyLocalData.USER_TYPE)
         ? <Component {...props} />
-        : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
+        : <Redirect to={{ pathname: '/register', state: { from: props.location } }} />
     )}
   />
 );

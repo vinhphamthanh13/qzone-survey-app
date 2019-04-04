@@ -21,7 +21,7 @@ class AssessmentResponse extends React.Component {
     location: locationType.isRequired,
     user: userDetailType.isRequired,
     fetchUserByUserIdAction: PropTypes.func.isRequired,
-  }
+  };
 
   state = {
     isLoggedIn: true,
@@ -48,7 +48,7 @@ class AssessmentResponse extends React.Component {
       return (
         <Redirect
           to={{
-            pathname: '/login',
+            pathname: '/register',
             state: { from: location.pathname },
           }}
         />

@@ -8,8 +8,6 @@ import Alert from 'react-s-alert';
 import AlertMessage from 'components/Alert/Message';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
-import GridContainer from 'components/Grid/GridContainer';
-import GridItem from 'components/Grid/GridItem';
 import CustomInput from 'components/CustomInput/CustomInput';
 import Button from 'components/CustomButtons/Button';
 import Card from 'components/Card/Card';
@@ -18,9 +16,9 @@ import CardBody from 'components/Card/CardBody';
 import CardFooter from 'components/Card/CardFooter';
 import loginPageStyle from 'assets/jss/material-dashboard-pro-react/modules/loginPageStyle';
 import { Email, Lock } from '@material-ui/icons';
+import { Icon } from '@material-ui/core';
 import { loginUser } from 'services/api/user';
 import { classesType, historyType, locationType } from 'types/global';
-import SocialLogin from 'modules/auth/social-login';
 import VerificationPage from './verification-page';
 import ResetPassword from './reset-password';
 import validateEmail from '../../utils/validateEmail';
@@ -147,86 +145,82 @@ class LoginPage extends React.Component {
 
     return (
       <div className={classes.content}>
-        <div className={classes.container}>
-          <GridContainer justify="center" className={classes.loginPanel}>
-            <GridItem xs={12} sm={6} md={5}>
-              <form onSubmit={this.handleSubmit}>
-                <Card login className={classes[cardAnimation]}>
-                  <CardHeader className={classes.headerWrapper}>
-                    <div className={classNames(classes.textCenter, classes.headerPanel)}>
-                      <h3 className={classes.contrastText}>Log in</h3>
-                      <div className={classes.iconsBar}>
-                        <SocialLogin />
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardBody>
-                    <CustomInput
-                      labelText="Email"
-                      success={emailState === 'success'}
-                      error={emailState === 'error'}
-                      id="email"
-                      formControlProps={{ fullWidth: true }}
-                      inputProps={{
-                        onChange: event => this.change(event, 'email'),
-                        type: 'email',
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <Email className={classes[adornmentEmailClass]} />
-                          </InputAdornment>
-                        ),
-                      }}
-                      iconAppend={false}
-                    />
-                    <CustomInput
-                      labelText="Password"
-                      success={passwordState === 'success'}
-                      error={passwordState === 'error'}
-                      id="password"
-                      formControlProps={{ fullWidth: true }}
-                      inputProps={{
-                        onChange: event => this.change(event, 'password'),
-                        type: 'password',
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <Lock className={classes[adornmentPasswordClass]} />
-                          </InputAdornment>
-                        ),
-                      }}
-                      iconAppend={false}
-                    />
-                    <ResetPassword classes={classes} />
-                    <VerificationPage
-                      open={openVerificationModal}
-                      email={email}
-                      history={history}
-                      page={AUTH_PAGE.LOGIN}
-                      actionAfterSubmit={this.login}
-                    />
-                  </CardBody>
-                  <CardFooter className={classes.footerWrapper}>
-                    <Button
-                      fullWidth
-                      color="rose"
-                      disabled={disabled}
-                      className={classes.loginButtonLabel}
-                      type="submit"
-                    >
-                      let&#39;s go
-                    </Button>
-                  </CardFooter>
-                  <div>
-                    <Link to="/register" className={classes.alertLink}>
-                      <h5 className={classNames(classes.noMarginTop, classes.textCenter)}>
-                        Register
-                      </h5>
-                    </Link>
-                  </div>
-                </Card>
-              </form>
-            </GridItem>
-          </GridContainer>
-        </div>
+        <form onSubmit={this.handleSubmit}>
+          <Card login className={classes[cardAnimation]}>
+            <CardHeader className={classes.headerWrapper}>
+              <div className={classNames(classes.textCenter, classes.headerPanel)}>
+                <h3 className={classes.contrastText}>Log in</h3>
+                <div className={classes.iconsBar}>
+                  <Icon><i className="fab fa-twitter" /></Icon>
+                  <Icon><i className="fab fa-facebook" /></Icon>
+                  <Icon><i className="fab fa-google" /></Icon>
+                </div>
+              </div>
+            </CardHeader>
+            <CardBody>
+              <CustomInput
+                labelText="Email"
+                success={emailState === 'success'}
+                error={emailState === 'error'}
+                id="email"
+                formControlProps={{ fullWidth: true }}
+                inputProps={{
+                  onChange: event => this.change(event, 'email'),
+                  type: 'email',
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Email className={classes[adornmentEmailClass]} />
+                    </InputAdornment>
+                  ),
+                }}
+                iconAppend={false}
+              />
+              <CustomInput
+                labelText="Password"
+                success={passwordState === 'success'}
+                error={passwordState === 'error'}
+                id="password"
+                formControlProps={{ fullWidth: true }}
+                inputProps={{
+                  onChange: event => this.change(event, 'password'),
+                  type: 'password',
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Lock className={classes[adornmentPasswordClass]} />
+                    </InputAdornment>
+                  ),
+                }}
+                iconAppend={false}
+              />
+              <ResetPassword classes={classes} />
+              <VerificationPage
+                open={openVerificationModal}
+                email={email}
+                history={history}
+                page={AUTH_PAGE.LOGIN}
+                actionAfterSubmit={this.login}
+              />
+            </CardBody>
+            <CardFooter className={classes.footerWrapper}>
+              <Button
+                fullWidth
+                color="rose"
+                disabled={disabled}
+                className={classes.loginButtonLabel}
+                type="submit"
+              >
+                let&#39;s go
+              </Button>
+            </CardFooter>
+            <div>
+              <Link to="/register" className={classes.alertLink}>
+                <h5 className={classNames(classes.noMarginTop, classes.textCenter)}>
+                  Register
+                </h5>
+              </Link>
+            </div>
+          </Card>
+        </form>
       </div>
     );
   }

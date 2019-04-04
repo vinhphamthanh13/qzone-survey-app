@@ -5,6 +5,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import PerfectScrollbar from 'perfect-scrollbar';
+import { Storage } from 'react-jhipster';
 import withStyles from '@material-ui/core/styles/withStyles';
 import ReactLoader from 'components/Loader/react-loader';
 import {
@@ -21,7 +22,7 @@ import {
   historyType, locationType, classesType, userDetailType,
 } from 'types/global';
 import { getUserFromSession } from 'utils/session';
-import { eUserType } from '../constants';
+import { eUserType, surveyLocalData } from '../constants';
 
 const switchRoutes = sidebarRoutes => (
   <Switch>
@@ -77,6 +78,7 @@ class Dashboard extends React.Component {
     if (navigator.platform.includes('Win')
       && !Object.is(this.mainPanelRef, undefined)
       && !Object.is(this.mainPanelRef, null)
+      && !Object.is(this.mainPanelRef.current, null)
     ) {
       this.ps = new PerfectScrollbar(this.mainPanelRef.current, {
         suppressScrollX: true,
@@ -137,12 +139,12 @@ class Dashboard extends React.Component {
       [classes.mainPanelWithPerfectScrollbar]: navigator.platform.includes('Win'),
     })}`;
     return (
-      !isLoggedIn
+      !isLoggedIn || !Storage.local.get(surveyLocalData.USER_TYPE)
         ? (
           <div className={mainPanel}>
             <Redirect
               to={{
-                pathname: '/login',
+                pathname: '/register',
                 state: { from: location.pathname },
               }}
             />

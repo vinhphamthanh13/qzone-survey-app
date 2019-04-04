@@ -18,7 +18,6 @@ import CardFooter from 'components/Card/CardFooter';
 import CardHeader from 'components/Card/CardHeader';
 import Loading from 'components/Loader/Loading';
 import { Poll } from '@material-ui/icons';
-import fullName from 'utils/fullName';
 import { classesType, matchType, historyType } from 'types/global';
 import CustomLogo from 'components/CustomLogo/CustomLogo';
 
@@ -58,7 +57,7 @@ class AssessmentResponseResult extends React.Component {
       assessmentResult = <Loading isLoading />;
     } else {
       const {
-        title, description, survey, user, logo,
+        title, description, survey, logo,
       } = surveyDetail;
       surveyInfo = new Survey.Model(survey);
       surveyInfo.mode = 'display';
@@ -88,16 +87,6 @@ class AssessmentResponseResult extends React.Component {
             <GridItem xs={12} sm={7}>
               <h4>
                 {description}
-              </h4>
-            </GridItem>
-          </GridContainer>
-          <GridContainer>
-            <GridItem xs={12} sm={3}>
-              <h4>Assessor:</h4>
-            </GridItem>
-            <GridItem xs={12} sm={7}>
-              <h4>
-                {fullName(user)}
               </h4>
             </GridItem>
           </GridContainer>

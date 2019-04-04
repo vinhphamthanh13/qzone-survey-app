@@ -4,8 +4,7 @@
 
 const pagesStyle = {
   wrapper: {
-    height: 'auto',
-    minHeight: '100vh',
+    height: '100vh',
     position: 'relative',
     top: '0',
     overflow: 'hidden',
