@@ -26,8 +26,9 @@ const loginPageStyle = {
   },
   iconsBar: {
     display: 'flex',
-    justifyContent: 'center',
-    marginTop: '2.8em',
+    justifyContent: 'space-evenly',
+    margin: '2.8em auto',
+    width: '70%',
     color: theme.indigoTheme.palette.primary.contrastText,
   },
   socialIcon: {
@@ -47,7 +48,8 @@ const loginPageStyle = {
     justifyContent: 'flex-end',
   },
   content: {
-    minHeight: '100vh',
+    margin: '0 auto',
+    width: '360px',
     position: 'relative',
     zIndex: '4',
   },

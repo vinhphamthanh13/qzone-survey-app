@@ -77,6 +77,7 @@ class Dashboard extends React.Component {
     if (navigator.platform.includes('Win')
       && !Object.is(this.mainPanelRef, undefined)
       && !Object.is(this.mainPanelRef, null)
+      && !Object.is(this.mainPanelRef.current, null)
     ) {
       this.ps = new PerfectScrollbar(this.mainPanelRef.current, {
         suppressScrollX: true,
@@ -142,7 +143,7 @@ class Dashboard extends React.Component {
           <div className={mainPanel}>
             <Redirect
               to={{
-                pathname: '/login',
+                pathname: '/register',
                 state: { from: location.pathname },
               }}
             />
