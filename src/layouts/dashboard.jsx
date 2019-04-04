@@ -138,13 +138,22 @@ class Dashboard extends React.Component {
       [classes.mainPanelSidebarMini]: miniActive,
       [classes.mainPanelWithPerfectScrollbar]: navigator.platform.includes('Win'),
     })}`;
+    let redirectPath = '';
+    if (!isLoggedIn) {
+      if (location.pathname === '/') {
+        redirectPath = '/login';
+      } else {
+        redirectPath = '/register';
+      }
+    }
+
     return (
       !isLoggedIn || !Storage.local.get(surveyLocalData.USER_TYPE)
         ? (
           <div className={mainPanel}>
             <Redirect
               to={{
-                pathname: '/register',
+                pathname: redirectPath,
                 state: { from: location.pathname },
               }}
             />
