@@ -111,16 +111,24 @@ class AssessmentResponseCreate extends React.Component {
     if (typeof assessmentResponse === 'object') {
       createResponse = <Loading isLoading />;
     } else if (survey) {
+      const surveyFromString = JSON.parse(survey);
+      let fullPage = [];
+      // eslint-disable-next-line
+      surveyFromString.pages.map((page) => {
+        if (page.elements) {
+          fullPage = [...page.elements.map(question => ({
+            questions: [{
+              ...question,
+              isRequired: true,
+            }],
+          }))];
+        }
+      });
       const spaSurvey = {
         showProgressBar: 'bottom',
         goNextPageAutomatic: false,
         showNavigationButtons: true,
-        pages: JSON.parse(survey).pages[0].elements.map(question => ({
-          questions: [{
-            ...question,
-            isRequired: true,
-          }],
-        })),
+        pages: fullPage,
         completedHtml: '<p>Your answer:</p>',
       };
       surveyInfo = new Survey.Model(spaSurvey);
