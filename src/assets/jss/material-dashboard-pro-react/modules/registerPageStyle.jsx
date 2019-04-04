@@ -7,12 +7,16 @@ import {
   cardTitle,
 } from 'assets/jss/material-dashboard-pro-react';
 import customCheckboxRadioSwitch from 'assets/jss/material-dashboard-pro-react/customCheckboxRadioSwitch';
-import { altoColor, darkGrayColor, whiteRgb } from 'assets/jss/color-theme';
+import {
+  altoColor, darkGrayColor, whiteRgb, roseColor, pacificBlueColor,
+} from 'assets/jss/color-theme';
 
 const registerPageStyle = {
   ...customCheckboxRadioSwitch,
   standardCardTitle: {
     ...cardTitle,
+    color: whiteRgb,
+    fontWeight: 'bold',
   },
   cardTitle: {
     ...cardTitle,
@@ -23,6 +27,15 @@ const registerPageStyle = {
     position: 'relative',
     zIndex: '3',
     paddingTop: '0vh',
+    maxWidth: '600px',
+  },
+  registerHeader: {
+    color: 'white',
+    margin: '0 auto',
+    width: '100%',
+    padding: '1em',
+    textAlign: 'center',
+    background: `linear-gradient(to bottom, ${roseColor}, ${pacificBlueColor})`,
   },
   content: {
     minHeight: '100vh',
@@ -101,7 +114,8 @@ const registerPageStyle = {
   },
   headerWrapper: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+    background: `linear-gradient(to bottom, ${roseColor}, ${pacificBlueColor})`,
     alignItems: 'center',
     borderBottom: `1px solid ${altoColor}`,
   },

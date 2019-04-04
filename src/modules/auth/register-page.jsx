@@ -1,19 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Checkbox, FormControlLabel, Button as MaterialButton } from '@material-ui/core';
+import {
+  Checkbox, FormControlLabel, Button as MaterialButton,
+  Typography,
+} from '@material-ui/core';
 import { Check } from '@material-ui/icons';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import Alert from 'react-s-alert';
 import AlertMessage from 'components/Alert/Message';
 import { Link } from 'react-router-dom';
-import GridContainer from 'components/Grid/GridContainer';
-import GridItem from 'components/Grid/GridItem';
 import Button from 'components/CustomButtons/Button';
 import CustomInput from 'components/CustomInput/CustomInput';
 import Card from 'components/Card/Card';
-import CardHeader from 'components/Card/CardHeader';
 import CardBody from 'components/Card/CardBody';
 import CardFooter from 'components/Card/CardFooter';
 import registerPageStyle from 'assets/jss/material-dashboard-pro-react/modules/registerPageStyle';
@@ -194,121 +194,117 @@ class RegisterPage extends React.Component {
       <div className={classes.content}>
         <div className={classes.container}>
           {loading && <ReactLoader loading={loading} />}
-          <GridContainer justify="center">
-            <GridItem xs={12} sm={10} md={8} lg={6}>
-              <Card login className={classes[cardAnimaton]}>
-                <CardHeader className={classes.headerWrapper}>
-                  <h3 className={classes.standardCardTitle}>Register</h3>
-                </CardHeader>
-                <form onSubmit={this.registerClick}>
-                  <CardBody>
-                    <div className={classes.inputWrapper}>
-                      <CustomInput
-                        labelText="First name (required)"
-                        success={firstnameState === 'success'}
-                        error={firstnameState === 'error'}
-                        id="firstname"
-                        inputProps={{
-                          autoFocus: true,
-                          onChange: event => this.change(event, 'firstname', 'name'),
-                          type: 'text',
-                        }}
+          <Card className={classes[cardAnimaton]}>
+            <div className={classes.registerHeader}>
+              <Typography variant="headline" color="inherit" className={classes.standardCardTitle}>Register</Typography>
+            </div>
+            <form onSubmit={this.registerClick}>
+              <CardBody>
+                <div className={classes.inputWrapper}>
+                  <CustomInput
+                    labelText="First name (required)"
+                    success={firstnameState === 'success'}
+                    error={firstnameState === 'error'}
+                    id="firstname"
+                    inputProps={{
+                      autoFocus: true,
+                      onChange: event => this.change(event, 'firstname', 'name'),
+                      type: 'text',
+                    }}
+                  />
+                  <CustomInput
+                    labelText="Last name (required)"
+                    success={lastnameState === 'success'}
+                    error={lastnameState === 'error'}
+                    id="lastname"
+                    inputProps={{
+                      onChange: event => this.change(event, 'lastname', 'name'),
+                      type: 'text',
+                    }}
+                  />
+                </div>
+                <CustomInput
+                  labelText="Email (required)"
+                  success={emailState === 'success'}
+                  error={emailState === 'error'}
+                  id="email"
+                  formControlProps={{ fullWidth: true }}
+                  inputProps={{
+                    onChange: event => this.change(event, 'email', 'email'),
+                    type: 'email',
+                  }}
+                />
+                <PasswordField
+                  onChangePassword={event => this.change(event, 'password', 'password')}
+                  onChangeConfirmPwd={event => this.change(event, 'confirmPwd', 'confirmPwd')}
+                  passwordState={passwordState}
+                  confirmPwdState={confirmPwdState}
+                />
+                <div>
+                  <FormControlLabel
+                    className={classes.registerTermsWrapper}
+                    control={(
+                      <Checkbox
+                        onClick={event => this.change(event, eRegisterPage.registerTermAndCondition, 'checkbox')}
+                        checkedIcon={<Check className={classes.checkedIcon} />}
+                        icon={<Check className={classes.uncheckedIcon} />}
+                        classes={{ checked: classes.checked }}
                       />
-                      <CustomInput
-                        labelText="Last name (required)"
-                        success={lastnameState === 'success'}
-                        error={lastnameState === 'error'}
-                        id="lastname"
-                        inputProps={{
-                          onChange: event => this.change(event, 'lastname', 'name'),
-                          type: 'text',
-                        }}
+                    )}
+                    classes={{
+                      label: `${classes.label} ${registerTermAndConditionState === 'error' ? classes.labelError : ''}`,
+                    }}
+                    label={(
+                      <span>
+                      I agree to the&nbsp;
+                        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                        <Link to="#" className={registerTermAndConditionState === 'error' ? classes.labelError : ''}>Terms</Link>
+                        &nbsp;and&nbsp;
+                        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                        <Link to="#" className={registerTermAndConditionState === 'error' ? classes.labelError : ''}>Conditions</Link>
+                      </span>
+                    )}
+                  />
+                  <FormControlLabel
+                    className={classes.registerTermsWrapper}
+                    control={(
+                      <Checkbox
+                        onClick={event => this.change(event, eRegisterPage.eReceivedInfo, 'checkbox')}
+                        checkedIcon={<Check className={classes.checkedIcon} />}
+                        icon={<Check className={classes.uncheckedIcon} />}
+                        classes={{ checked: classes.checked }}
+                        name={eRegisterPage.eReceivedInfo}
                       />
-                    </div>
-                    <CustomInput
-                      labelText="Email (required)"
-                      success={emailState === 'success'}
-                      error={emailState === 'error'}
-                      id="email"
-                      formControlProps={{ fullWidth: true }}
-                      inputProps={{
-                        onChange: event => this.change(event, 'email', 'email'),
-                        type: 'email',
-                      }}
-                    />
-                    <PasswordField
-                      onChangePassword={event => this.change(event, 'password', 'password')}
-                      onChangeConfirmPwd={event => this.change(event, 'confirmPwd', 'confirmPwd')}
-                      passwordState={passwordState}
-                      confirmPwdState={confirmPwdState}
-                    />
-                    <div>
-                      <FormControlLabel
-                        className={classes.registerTermsWrapper}
-                        control={(
-                          <Checkbox
-                            onClick={event => this.change(event, eRegisterPage.registerTermAndCondition, 'checkbox')}
-                            checkedIcon={<Check className={classes.checkedIcon} />}
-                            icon={<Check className={classes.uncheckedIcon} />}
-                            classes={{ checked: classes.checked }}
-                          />
-                        )}
-                        classes={{
-                          label: `${classes.label} ${registerTermAndConditionState === 'error' ? classes.labelError : ''}`,
-                        }}
-                        label={(
-                          <span>
-                          I agree to the&nbsp;
-                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                            <Link to="#" className={registerTermAndConditionState === 'error' ? classes.labelError : ''}>Terms</Link>
-                            &nbsp;and&nbsp;
-                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                            <Link to="#" className={registerTermAndConditionState === 'error' ? classes.labelError : ''}>Conditions</Link>
-                          </span>
-                        )}
-                      />
-                      <FormControlLabel
-                        className={classes.registerTermsWrapper}
-                        control={(
-                          <Checkbox
-                            onClick={event => this.change(event, eRegisterPage.eReceivedInfo, 'checkbox')}
-                            checkedIcon={<Check className={classes.checkedIcon} />}
-                            icon={<Check className={classes.uncheckedIcon} />}
-                            classes={{ checked: classes.checked }}
-                            name={eRegisterPage.eReceivedInfo}
-                          />
-                        )}
-                        classes={{ label: `${classes.label}` }}
-                        label={
-                          <span>Agree to Receive Information About Private Health Insurance</span>
-                        }
-                      />
-                    </div>
-                    <VerificationPage
-                      open={openVerificationModal}
-                      email={email}
-                      history={history}
-                      page={AUTH_PAGE.REGISTER}
-                    />
-                  </CardBody>
-                  <CardFooter className={classes.footerWrapper}>
-                    <MaterialButton
-                      className={classes.loginButton}
-                      onClick={this.goToLogin}
-                    >
-                      Log in
-                    </MaterialButton>
-                    <Button
-                      color="rose"
-                      type="submit"
-                    >
-                      Register
-                    </Button>
-                  </CardFooter>
-                </form>
-              </Card>
-            </GridItem>
-          </GridContainer>
+                    )}
+                    classes={{ label: `${classes.label}` }}
+                    label={
+                      <span>Agree to Receive Information About Private Health Insurance</span>
+                    }
+                  />
+                </div>
+                <VerificationPage
+                  open={openVerificationModal}
+                  email={email}
+                  history={history}
+                  page={AUTH_PAGE.REGISTER}
+                />
+              </CardBody>
+              <CardFooter className={classes.footerWrapper}>
+                <MaterialButton
+                  className={classes.loginButton}
+                  onClick={this.goToLogin}
+                >
+                  Log in
+                </MaterialButton>
+                <Button
+                  color="rose"
+                  type="submit"
+                >
+                  Register
+                </Button>
+              </CardFooter>
+            </form>
+          </Card>
         </div>
       </div>
     );
