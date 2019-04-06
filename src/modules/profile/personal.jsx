@@ -22,6 +22,7 @@ class Personal extends PureComponent {
   static propTypes = {
     classes: classesType.isRequired,
     firstname: PropTypes.string,
+    userType: PropTypes.string.isRequired,
     firstnameState: PropTypes.string.isRequired,
     lastname: PropTypes.string,
     lastnameState: PropTypes.string.isRequired,
@@ -46,6 +47,7 @@ class Personal extends PureComponent {
       firstname: props.firstname,
       firstnameState: props.firstnameState,
       lastname: props.lastname,
+      userType: props.userType,
       lastnameState: props.lastnameState,
       department: props.department,
       companyName: props.companyName,
@@ -110,6 +112,7 @@ class Personal extends PureComponent {
       firstname,
       firstnameState,
       lastname,
+      userType,
       lastnameState,
       department,
       companyName,
@@ -191,6 +194,14 @@ class Personal extends PureComponent {
                   disabled: !isEditMode,
                 }}
                 value={lastname}
+              />
+            </GridItem>
+            <GridItem md={6}>
+              <CustomInput
+                labelText="UserType (required)"
+                id="userType"
+                formControlProps={{ fullWidth: true }}
+                value={userType}
               />
             </GridItem>
             <GridItem md={6}>

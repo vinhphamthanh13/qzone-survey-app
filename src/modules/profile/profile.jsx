@@ -23,6 +23,7 @@ class Profile extends React.Component {
       personal: {
         firstname: props.user.firstname,
         lastname: props.user.lastname,
+        userType: props.user.userType,
         companyName: props.user.companyName,
         department: props.user.department,
         phoneNumber: props.user.phoneNumber,
@@ -55,6 +56,7 @@ class Profile extends React.Component {
           ...prevState.personal,
           firstname: nextProps.user.firstname,
           lastname: nextProps.user.lastname,
+          userType: nextProps.user.userType,
           companyName: nextProps.user.companyName,
           department: nextProps.user.department,
           phoneNumber: nextProps.user.phoneNumber,
