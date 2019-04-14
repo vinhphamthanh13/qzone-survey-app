@@ -1,5 +1,6 @@
 import RegisterPage from 'modules/auth/register-page';
-import LoginPage from 'modules/auth/login-page';
+// import LoginPage from 'modules/auth/login-page';
+import Login from 'modules/auth/Login';
 
 import { PersonAdd, Fingerprint } from '@material-ui/icons';
 
@@ -10,7 +11,7 @@ const authRoutes = [
     short: 'Login',
     mini: 'LP',
     icon: Fingerprint,
-    component: LoginPage,
+    component: Login,
   },
   {
     path: '/register',

@@ -9,6 +9,7 @@ const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
+const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
 
@@ -183,6 +184,21 @@ module.exports = {
                   ],
                 },
               },
+            ],
+          },
+          {
+            test: /\.module\.(scss|sass)$/,
+            use: [
+              require.resolve('style-loader'),
+              {
+                loader: require.resolve('sass-loader'),
+                options: {
+                  importLoaders: 2,
+                  modules: true,
+                  getLocalIdent: getCSSModuleLocalIdent,
+                },
+              },
+              
             ],
           },
           // "file" loader makes sure those assets get served by WebpackDevServer.

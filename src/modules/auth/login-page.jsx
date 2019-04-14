@@ -24,6 +24,7 @@ import ResetPassword from './reset-password';
 import validateEmail from '../../utils/validateEmail';
 import validatePassword from '../../utils/validatePassword';
 import { userStatus, AUTH_PAGE } from '../../constants';
+import s from './LogIn.module.scss';
 
 class LoginPage extends React.Component {
   static propTypes = {
@@ -201,6 +202,9 @@ class LoginPage extends React.Component {
                 actionAfterSubmit={this.login}
               />
             </CardBody>
+            <div className={s.test}>
+              Hey survey!
+            </div>
             <CardFooter className={classes.footerWrapper}>
               <Button
                 fullWidth
